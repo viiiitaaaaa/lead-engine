@@ -337,5 +337,149 @@
     "название": "Instagram Followers & Followings Scraper",
     "польз.": 1239,
     "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_scraper__streamers": {
+    "actor": "streamers/youtube-scraper",
+    "название": "YouTube Scraper",
+    "польз.": 128820,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_transcript_scraper__pintostudio": {
+    "actor": "pintostudio/youtube-transcript-scraper",
+    "название": "Youtube Transcript Scraper",
+    "польз.": 25218,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_comments_scraper__streamers": {
+    "actor": "streamers/youtube-comments-scraper",
+    "название": "YouTube Comments Scraper",
+    "польз.": 24558,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_shorts_scraper__streamers": {
+    "actor": "streamers/youtube-shorts-scraper",
+    "название": "YouTube Shorts Scraper",
+    "польз.": 65291,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_channel_scraper__streamers": {
+    "actor": "streamers/youtube-channel-scraper",
+    "название": "Fast YouTube Channel Scraper",
+    "польз.": 23842,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_channel_video_scraper__grow_media": {
+    "actor": "grow_media/youtube-channel-video-scraper",
+    "название": "Youtube Channel Video Scraper",
+    "польз.": 5450,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_transcript_ai_scraper__codepoetry": {
+    "actor": "codepoetry/youtube-transcript-ai-scraper",
+    "название": "YouTube Transcript Scraper Pro (Captions + AI Fallback)",
+    "польз.": 1864,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_channel_information_scraper__apidojo": {
+    "actor": "apidojo/youtube-channel-information-scraper",
+    "название": "Fast YouTube Channel Scraper API | Profiles, Subs & Stats",
+    "польз.": 2393,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_channel_scraper__grow_media": {
+    "actor": "grow_media/youtube-channel-scraper",
+    "название": "Youtube Channel Scraper",
+    "польз.": 2230,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_comments_scraper__api-ninja": {
+    "actor": "api-ninja/youtube-comments-scraper",
+    "название": "YouTube Comments Scraper",
+    "польз.": 571,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_channel_email_scraper__lurkapi": {
+    "actor": "lurkapi/youtube-channel-email-scraper",
+    "название": "YouTube Channel Email Scraper",
+    "польз.": 1122,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_search_api__grow_media": {
+    "actor": "grow_media/youtube-search-api",
+    "название": "Youtube Search Api",
+    "польз.": 1448,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_channel_lookalike_finder__dataovercoffee": {
+    "actor": "dataovercoffee/youtube-channel-lookalike-finder",
+    "название": "Search Similar YouTube Channels by Content, Not Keywords",
+    "польз.": 584,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "youtube_transcript_metadata_extractor__dz_omar": {
+    "actor": "dz_omar/youtube-transcript-metadata-extractor",
+    "название": "Youtube Transcript",
+    "польз.": 1000,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "douyin_search_scraper__zen-studio": {
+    "actor": "zen-studio/douyin-search-scraper",
+    "название": "Douyin 抖音 Search Scraper + Video Downloader - 60+ Fields",
+    "польз.": 10871,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "vk_video_scraper__easyapi": {
+    "actor": "easyapi/vk-video-scraper",
+    "название": "VK Video Scraper",
+    "польз.": 70,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "douyin_video_audio_downloader__apple_yang": {
+    "actor": "apple_yang/douyin-video-audio-downloader",
+    "название": "Douyin Video Downloader API (No Watermark, Fast & Reliable)",
+    "польз.": 159,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "wechat_channels_video_downloader__agentflow": {
+    "actor": "agentflow/wechat-channels-video-downloader",
+    "название": "WeChat Channels (Shipinhao) Video Downloader 视频号下载",
+    "польз.": 598,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "fast_tiktok_api__novi": {
+    "actor": "novi/fast-tiktok-api",
+    "название": "Fast TikTok API (free-watermark videos)",
+    "польз.": 2223,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "bilibili_scraper__lofomachines": {
+    "actor": "lofomachines/bilibili-scraper",
+    "название": "Bilibili Scraper 哔哩哔哩采集器 - Videos, Profiles, Comments & Search",
+    "польз.": 227,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_video_scraper_api__apple_yang": {
+    "actor": "apple_yang/instagram-video-scraper-api",
+    "название": "Instagram Video Scraper API – Extract Video, Audio & Metadata",
+    "польз.": 101,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "vk_video_scraper_vkontakte__scrapestorm": {
+    "actor": "scrapestorm/vk-video-scraper-vkontakte",
+    "название": "VK Video Scraper 🎬 (вконтакте)",
+    "польз.": 30,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "video_intelligence__marielise.dev": {
+    "actor": "marielise.dev/video-intelligence",
+    "название": "Video Intelligence - AI Transcript, SEO, Chapters & Summary",
+    "польз.": 54,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "meta_ad_library_scraper__themineworks": {
+    "actor": "themineworks/meta-ad-library-scraper",
+    "название": "Facebook Ad Library Scraper | Meta Ads, 21 Fields, No Login",
+    "польз.": 44,
+    "добавлен": "30.09 по её списку, не проверен"
   }
 }
