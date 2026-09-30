@@ -166,7 +166,8 @@ def main():
 
     avito = pd.concat([pd.read_excel(f) for f in sorted(OUT.glob("авито_*.xlsx"))], ignore_index=True)
     avito = avito[[c for c in ("title", "phone", "url", "seller.name", "seller", "snippet") if c in avito.columns]]
-    cian = pd.read_excel(max(OUT.glob("циан_*.xlsx"), key=lambda p: p.stat().st_mtime))
+    cian_x = max(OUT.glob("циан_свод_*.xlsx"), key=lambda p: p.stat().st_mtime)  # свод: parsers/cian_digest.py
+    cian, cian_sellers = pd.read_excel(cian_x, sheet_name="дома"), pd.read_excel(cian_x, sheet_name="продавцы")
 
     out = DRIVE / f"база_lead_engine_{datetime.now():%Y-%m-%d}.xlsx"
     with pd.ExcelWriter(out) as w:
@@ -174,10 +175,11 @@ def main():
         tg_df.to_excel(w, sheet_name="Telegram-каналы", index=False)
         avito.to_excel(w, sheet_name="Авито", index=False)
         cian.to_excel(w, sheet_name="Циан", index=False)
+        cian_sellers.to_excel(w, sheet_name="Циан-продавцы", index=False)
     print(f"организаций: {len(base)} ({base['источник'].value_counts().to_dict()})")
     print(base["тип"].value_counts().to_dict())
     print(f"с телефоном: {(base['телефоны'] != '').sum()}, с почтой: {(base['почты'] != '').sum()}")
-    print(f"Telegram-каналов: {len(tg_df)}, Авито: {len(avito)}, Циан: {len(cian)}")
+    print(f"Telegram-каналов: {len(tg_df)}, Авито: {len(avito)}, Циан: {len(cian)} домов, {len(cian_sellers)} продавцов")
     print(out)
 
 

@@ -138,6 +138,11 @@ details[open] summary{margin-bottom:12px}
     <div class="tbl" style="margin-top:14px"><table><thead><tr><th>Чат</th><th>Вид</th><th>Участников</th><th>Собрано</th><th>Жителей посёлков</th><th>Доля</th></tr></thead><tbody id="ovrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><details><summary>Telegram — сырой список каналов с упоминаниями (в основном шум) <span class="sub" id="tgsub"></span></summary>
     <div class="tbl"><table><thead><tr><th>Канал</th><th>Найдено постов</th><th>Подписчиков</th><th>Пример</th></tr></thead><tbody id="tgrows"></tbody></table></div></details></div>
+  <div class="card" style="margin-top:16px"><h2>Циан — кто продаёт дома на Рублёвке и Новой Риге <span class="sub" id="csub"></span></h2>
+    <div class="sub" style="margin-bottom:12px">Дома от 50 млн ₽. Продавцы — агентства и риелторы элитной загородки: канал «Брокеры» по схеме. Слева — где больше всего продают.</div>
+    <section class="grid two" style="margin:0"><div id="cplaces"></div>
+    <div><div class="tools"><input type="search" id="cq" placeholder="Поиск: агентство, посёлок"><select id="cw"><option value="">Все продавцы</option><option>агентство</option><option>риелтор</option><option>УК</option></select><span class="sub" id="ccount"></span></div>
+    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Продавец</th><th>Домов</th><th>Цены, млн ₽</th><th>Телефон</th><th>Где продаёт</th></tr></thead><tbody id="csrows"></tbody></table></div></div></section></div>
   <div class="card" style="margin-top:16px"><details><summary>Авито — объявления подрядчиков <span class="sub" id="avsub"></span></summary>
     <div class="tbl"><table><thead><tr><th>Объявление</th><th>Продавец</th><th>Телефон</th></tr></thead><tbody id="avrows"></tbody></table></div></details></div>
   <div class="foot" id="foot"></div>
@@ -214,6 +219,15 @@ if (D.ov && D.ov.length) {
 $("tgsub").textContent = `· первые ${D.tg.length} по числу упоминаний`;
 $("tgrows").innerHTML = D.tg.map(t => `<tr><td class="lk"><a href="${esc(t.ch)}" target="_blank">${esc(t.ch.replace("https://t.me/","@"))}</a><div class="k">${esc(t.title)}</div></td>
   <td class="num">${t.posts}</td><td class="num">${t.subs==null?"—":fmt(t.subs)}</td><td class="k">${esc(t.ex)}</td></tr>`).join("");
+const cpm = Math.max(1,...Object.values(D.cplaces));
+$("csub").textContent = `· ${fmt(D.chouses)} домов · ${D.cs.length} продавцов`;
+$("cplaces").innerHTML = Object.entries(D.cplaces).map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><i style="width:${v/cpm*100}%"></i><em>${v}</em></div>`).join("");
+function crender(){ const q=$("cq").value.toLowerCase(), w=$("cw").value;
+  const r=D.cs.filter(c=>(!w||c.who===w)&&(!q||(c.name+" "+c.where).toLowerCase().includes(q)));
+  $("ccount").textContent=`${r.length} из ${D.cs.length}`;
+  $("csrows").innerHTML=r.map(c=>`<tr><td><b>${esc(c.name)}</b><div class="k">${esc(c.who)} · ${esc(c.hw)}</div></td><td class="num">${c.n}</td><td class="num">${esc(c.price)}</td>
+    <td class="ph">${esc(c.phone).split(", ").slice(0,2).join("<br>")}</td><td class="k">${esc(c.where)}</td></tr>`).join(""); }
+["cq","cw"].forEach(id=>$(id).addEventListener("input",crender)); crender();
 $("avsub").textContent = `· ${D.avito.length} объявлений`;
 $("avrows").innerHTML = D.avito.map(a => `<tr><td class="lk">${a.url?`<a href="${esc(a.url)}" target="_blank">открыть</a> `:""}${esc(a.title)}</td>
   <td class="k">${esc(a.seller)}</td><td class="ph">${esc(a.phone)}</td></tr>`).join("");

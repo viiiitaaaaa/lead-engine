@@ -52,11 +52,11 @@ CHANNELS = [
     ("2ГИС", "собрано", "196 организаций с контактами"),
     ("Почты с сайтов", "собрано", "328 почт с 234 сайтов"),
     ("Авито", "собрано", "200 объявлений подрядчиков"),
-    ("Циан", "разведка", "6 домов — фильтр узкий, переделать"),
+    ("Циан", "собрано", "622 дома от 50 млн ₽ на Рублёвке и Новой Риге, 152 продавца"),
     ("Telegram", "собрано", "45 отобрано; участники 21 чата (хэши): жители сидят в «Собаки Новая Рига», «Автолюбители НР и Рублёвка», «Мамы Новой Риги»"),
     ("Дизайн-бюро", "план", "AI-поиск → анализ → персональный оффер"),
     ("Партнёры", "план", "сегментация базы → мини-лендинг"),
-    ("Брокеры", "план", "персональный outreach"),
+    ("Брокеры", "разведка", "63 агентства и 87 риелторов с Циана — база для персонального outreach"),
     ("Блогеры", "план", "интеграционный пакет"),
     ("УК и консьержи", "план", "мини-лендинг + PDF"),
     ("Клубы (фитнес, SPA)", "план", "outreach с полезной темой"),
@@ -109,6 +109,8 @@ def main():
     base = pd.read_excel(base_x, sheet_name="организации")
     tg = pd.read_excel(base_x, sheet_name="Telegram-каналы")
     avito = pd.read_excel(base_x, sheet_name="Авито")
+    cian = pd.read_excel(base_x, sheet_name="Циан")
+    cian_s = pd.read_excel(base_x, sheet_name="Циан-продавцы").fillna("")
     rev = pd.read_excel(rev_x, sheet_name="отзывы")
     compl = pd.read_excel(pain_x, sheet_name="жалобы")
 
@@ -169,6 +171,9 @@ def main():
     members = sorted((ROOT / "data" / "raw").glob("tg_members_*.json"))
     village = {u.replace("https://t.me/", "") for u in tgo[tgo["группа"].str.startswith("1.")]["ссылка"]}
     ov_res = len(set().union(set(), *(set(v["h"]) for f in members for k, v in json.loads(f.read_text(encoding="utf-8")).items() if k in village)))
+    cs_rows = [{"name": s(r["продавец"]), "who": s(r["кто"]), "n": int(r["домов"]), "phone": s(r["телефоны"]), "price": s(r["цены, млн ₽"]),
+                "hw": s(r["шоссе"]), "where": s(r["где продаёт"])} for _, r in cian_s.iterrows()]
+    cian_places = cian["посёлок/место"].fillna("").loc[lambda x: x != ""].value_counts().head(20).to_dict()
     av_rows = [{"title": s(r.get("title")), "phone": s(r.get("phone")), "url": s(r.get("url")),
                 "seller": s(r.get("seller.name") if "seller.name" in avito.columns else r.get("seller"))[:80]}
                for _, r in avito.iterrows()]
@@ -185,8 +190,8 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
-        "spend": [("Apify", "≈14 из 19 $ (Starter, до 29.10)"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "cs": cs_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "spend": [("Apify", "≈15.7 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
     }
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))
     OUT.write_text(html, encoding="utf-8")
