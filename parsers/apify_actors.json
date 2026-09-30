@@ -115,5 +115,59 @@
     "название": "Yandex Realty Scraper",
     "польз.": 2,
     "добавлен": "30.09 по её списку, не проверен"
+  },
+  "2gis_reviews_scraper__dami_studio": {
+    "actor": "dami_studio/2gis-reviews-scraper",
+    "название": "2GIS Reviews Scraper API",
+    "польз.": 19,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "cian_scraper__one-api": {
+    "actor": "one-api/cian-scraper",
+    "название": "Cian.ru Scraper",
+    "польз.": 53,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "telegram_member_scraper__agentx": {
+    "actor": "agentx/telegram-member-scraper",
+    "название": "Telegram Member Scraper",
+    "польз.": 1380,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "avito_ru_scraper__abotapi": {
+    "actor": "abotapi/avito-ru-scraper",
+    "название": "Avito.ru Scraper - Listings, Prices, Sellers & 25+ Fields",
+    "польз.": 342,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "avito_realty_scraper__zen-studio": {
+    "actor": "zen-studio/avito-realty-scraper",
+    "название": "Авито Недвижимость: Парсер / Avito Real Estate Scraper",
+    "польз.": 56,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "avito_russia_scraper__fatihtahta": {
+    "actor": "fatihtahta/avito-russia-scraper",
+    "название": "Avito.RU Scraper | Fast & Reliable",
+    "польз.": 450,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "telegram_keyword_search_scraper__lofomachines": {
+    "actor": "lofomachines/telegram-keyword-search-scraper",
+    "название": "Telegram Keyword Search Scraper",
+    "польз.": 1276,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "telegram_channel_message__truefetch": {
+    "actor": "truefetch/telegram-channel-message",
+    "название": "Telegram Channel Message",
+    "польз.": 950,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "contact_info_scraper__vdrmota": {
+    "actor": "vdrmota/contact-info-scraper",
+    "название": "Contact Details Scraper",
+    "польз.": 61344,
+    "добавлен": "30.09 по её списку, не проверен"
   }
 }
