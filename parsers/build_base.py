@@ -100,6 +100,18 @@ def main():
                      "Telegram": soc("telegram"), "ВК": soc("vk"), "другие соцсети": "",
                      "рейтинг": g.get("totalScore"), "отзывов": g.get("reviewsCount"), "источник": "2ГИС",
                      "ссылка": g.get("url"), "почта 2ГИС": g.get("email")})
+    # компании из её списка, найденные только поиском Яндекса (parsers/yandex_search_bd.py)
+    found = sorted(OUT.glob("яндекс_поиск_*.xlsx"), key=lambda p: p.stat().st_mtime)
+    if found:
+        listed = [l.strip() for l in (ROOT / "data" / "lists" / "компании_и_поселки_2026-09-30.txt").read_text(encoding="utf-8").splitlines() if l.strip()]
+        for r in pd.read_excel(found[-1]).fillna("").to_dict("records"):
+            if not r["сайт"]:
+                continue
+            name = next((n for n in listed if norm(n).split()[-1] in norm(r["запрос"]) or norm(n).split()[0] in norm(r["запрос"])), r["запрос"])
+            rows.append({"название": name, "тип": "компания", "вид деятельности": r["что на сайте"], "адрес": "",
+                         "телефоны": r["телефоны с сайта"], "сайт": r["сайт"], "WhatsApp": "", "Telegram": "", "ВК": "",
+                         "другие соцсети": r["соцсети"], "рейтинг": None, "отзывов": None, "источник": "поиск Яндекса",
+                         "ссылка": r["справочник"] or r["сайт"], "почта 2ГИС": r["почты с сайта"]})
     base = pd.DataFrame(rows)
     # почты и телефоны с сайтов — по домену
     mails = {}
@@ -122,9 +134,12 @@ def main():
               "Ромашково", "Николина Гора", "Усово", "Дарьино", "Лапино", "Солослово", "Трувиль"]
     fits = r"строит|ремонт|дизайн|архитект|инженер|отдел|недвиж|посёл|посел|девелоп|климат|вентиляц|мебел|сантех|проект|дом|котт|благоустр|отоплен|кондицион"
     marks, lists = [], []
+    src_is_search = [x == "поиск Яндекса" for x in base["источник"]]
     for t, cat, addr in zip(base["название"], base["вид деятельности"].fillna(""), base["адрес"].fillna("")):
         m = in_list(t, keys)
-        if m and m not in places and not re.search(fits, cat, re.I):
+        if src_is_search.pop(0) if src_is_search else False:
+            marks.append("из нашего списка (найдена поиском, проверить сайт)"); lists.append(m or t)
+        elif m and m not in places and not re.search(fits, cat, re.I):
             marks.append("проверить: совпало только название"); lists.append(m)
         elif m:
             marks.append("из нашего списка"); lists.append(m)

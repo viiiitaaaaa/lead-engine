@@ -21,13 +21,13 @@ h1{font-size:26px;margin:0;font-weight:600;letter-spacing:-.01em}
 h2{font-size:15px;margin:0 0 14px;font-weight:600}
 .sub{color:var(--muted);font-size:12.5px}
 .grid{display:grid;gap:16px}
-.kpis{grid-template-columns:repeat(8,1fr);margin-bottom:16px}
+.kpis{grid-template-columns:repeat(5,1fr);margin-bottom:16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
 .kpi{padding:14px}
 .kpi b{display:block;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
 .kpi span{color:var(--muted);font-size:12.5px}
 .two{grid-template-columns:1fr 1fr;margin-bottom:16px}
-@media(max-width:1100px){.kpis{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:860px){.two{grid-template-columns:1fr}}
 @media(max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}}
 .bar{display:grid;grid-template-columns:170px 1fr 40px;align-items:center;gap:10px;margin:7px 0;font-size:13px}
@@ -53,6 +53,7 @@ h2{font-size:15px;margin:0 0 14px;font-weight:600}
 .chip{font-size:12.5px;padding:4px 10px;border-radius:14px;border:1px solid var(--line)}
 .chip.точно{background:var(--accent-soft);border-color:transparent}
 .chip.похожие{background:var(--warn-soft);border-color:transparent}
+.chip.местность{background:var(--plan-soft);border-color:transparent}
 .chip.нет{text-decoration:line-through;color:var(--muted)}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin:10px 0 0}
 .tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
@@ -69,6 +70,12 @@ td .k{color:var(--muted);font-size:12px}
 .lk a{display:inline-block;font-size:11.5px;padding:1px 6px;border-radius:5px;background:var(--accent-soft);color:var(--accent);text-decoration:none;margin:1px 2px 1px 0;font-weight:600}
 .ph{white-space:nowrap;font-variant-numeric:tabular-nums}
 .bad{color:var(--warn);font-weight:600}
+.new{display:inline-block;font-size:10.5px;padding:0 6px;border-radius:8px;background:var(--warn-soft);color:var(--warn);font-weight:600;margin-left:6px;vertical-align:1px}
+.ours{background:var(--accent-soft);color:var(--accent)}
+.chk{background:var(--plan-soft);color:var(--muted)}
+.mail{font-size:12px;word-break:break-all}
+details summary{cursor:pointer;font-weight:600;font-size:15px}
+details[open] summary{margin-bottom:12px}
 .foot{margin-top:18px;color:var(--muted);font-size:12px}
 </style>
 </head>
@@ -76,7 +83,7 @@ td .k{color:var(--muted);font-size:12px}
 <div class="wrap">
   <header>
     <div><h1>Лидогенерация · коттеджи и подрядчики</h1>
-      <div class="sub">Новая Рига и Рублёвка · данные с Яндекс Карт</div></div>
+      <div class="sub">Новая Рига и Рублёвка · Яндекс Карты, 2ГИС, сайты компаний, Авито, Telegram</div></div>
     <div class="sub" id="built"></div>
   </header>
 
@@ -93,28 +100,35 @@ td .k{color:var(--muted);font-size:12px}
   </div>
 
   <div class="card" style="margin-bottom:16px">
-    <h2>Ваш список — что нашлось на Картах</h2>
+    <h2>Ваш список — что нашлось</h2>
     <div class="chips" id="cover"></div>
-    <div class="legend"><span>■ зелёный — найдено точно</span><span>■ оранжевый — нашлись похожие, проверить</span><span>зачёркнуто — не найдено</span></div>
+    <div class="legend"><span>■ зелёный — найдено точно</span><span>■ серый — посёлки в этой местности</span><span>■ оранжевый — совпало только название, проверить</span><span>зачёркнуто — не найдено</span></div>
   </div>
 
   <div class="card">
     <h2>Организации</h2>
     <div class="tools">
-      <input type="search" id="q" placeholder="Поиск: название, вид деятельности, адрес">
+      <input type="search" id="q" placeholder="Поиск: название, вид деятельности, адрес, почта">
       <select id="seg"><option value="">Все сегменты</option></select>
+      <select id="nw"><option value="">Все: новые и из списка</option><option value="new">Только новые</option><option value="ours">Только из нашего списка</option><option value="chk">Проверить</option></select>
       <label><input type="checkbox" id="msg"> есть WhatsApp / Telegram</label>
+      <label><input type="checkbox" id="ml"> есть почта</label>
       <label><input type="checkbox" id="junk" checked> скрыть нерелевантное</label>
       <span class="sub" id="count"></span>
     </div>
     <div class="tbl"><table>
       <thead><tr>
-        <th data-k="name">Название</th><th data-k="seg">Сегмент</th><th data-k="phone">Телефон</th><th>Связь</th>
+        <th data-k="name">Название</th><th data-k="seg">Сегмент</th><th data-k="phone">Телефон</th><th data-k="mail">Почта</th><th>Связь</th>
         <th data-k="rating">Рейтинг</th><th data-k="reviews" class="sorted">Отзывов</th><th data-k="neg">Негатив</th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table></div>
   </div>
+  <div class="card" style="margin-top:16px"><details><summary>Telegram — каналы, где упоминаются посёлки <span class="sub" id="tgsub"></span></summary>
+    <div class="sub" style="margin-bottom:10px">Для анализа аудитории: жителям не пишем. Много случайных каналов — отбираем настоящие каналы и чаты посёлков.</div>
+    <div class="tbl"><table><thead><tr><th>Канал</th><th>Найдено постов</th><th>Подписчиков</th><th>Пример</th></tr></thead><tbody id="tgrows"></tbody></table></div></details></div>
+  <div class="card" style="margin-top:16px"><details><summary>Авито — объявления подрядчиков <span class="sub" id="avsub"></span></summary>
+    <div class="tbl"><table><thead><tr><th>Объявление</th><th>Продавец</th><th>Телефон</th></tr></thead><tbody id="avrows"></tbody></table></div></details></div>
   <div class="foot" id="foot"></div>
 </div>
 <script>
@@ -125,8 +139,8 @@ const fmt = n => n.toLocaleString("ru-RU");
 
 $("built").textContent = "Обновлено " + D.built;
 const K = D.kpi;
-[[K.orgs,"организаций"],[K.phone,"с телефоном"],[K.site,"с сайтом"],[K.msg,"с WhatsApp или Telegram"],
- [K.villages,"коттеджных посёлков"],[K.reviews,"отзывов разобрано"],[K.neg,"негативных (1–3★)"],[K.reply+"%","негатива с ответом компании"]]
+[[K.orgs,"организаций в базе"],[K.new,"новых, не из вашего списка"],[K.phone,"с телефоном"],[K.mail,"с почтой"],[K.msg,"с WhatsApp или Telegram"],
+ [K.villages,"коттеджных посёлков"],[K.site,"с сайтом"],[K.reviews,"отзывов собрано"],[K.neg,"негативных (0–3★)"],[K.complaints,"жалоб по делу"]]
  .forEach(([v,l]) => $("kpis").insertAdjacentHTML("beforeend", `<div class="card kpi"><b>${typeof v==="number"?fmt(v):v}</b><span>${l}</span></div>`));
 
 const segMax = Math.max(...Object.values(D.segments));
@@ -137,10 +151,10 @@ Object.entries(D.segments).forEach(([k,v]) => {
 D.channels.forEach(([n,st,d]) => $("channels").insertAdjacentHTML("beforeend",
   `<div class="chi st-${st}"><b>${esc(n)}<span class="tag t-${st}">${st}</span></b><small>${esc(d)}</small></div>`));
 
-$("painsub").textContent = `· темы в ${fmt(K.neg)} отзывах с оценкой 1–3`;
+$("painsub").textContent = `· ${fmt(K.complaints)} жалоб по делу из ${fmt(K.neg)} негативных отзывов, разметка по темам`;
 D.pains.forEach(p => $("pains").insertAdjacentHTML("beforeend", `<div class="card pain">
   <h3><span>${esc(p.name)}</span><span>${fmt(p.n)}</span></h3>
-  <div class="meta">ответили ${p.answered}% · чаще: ${Object.entries(p.seg).map(([s,n])=>esc(s)+" "+n).join(", ")||"—"}</div>
+  <div class="meta">подрядчики ${p.split["подрядчики"]||0} · посёлки ${p.split["посёлки"]||0}</div>
   ${p.quotes.map(q=>`<div class="q">«${esc(q.t)}»<small>${esc(q.o)} · ${esc(q.d)}</small></div>`).join("")}</div>`));
 
 D.cover.forEach(c => $("cover").insertAdjacentHTML("beforeend",
@@ -148,18 +162,20 @@ D.cover.forEach(c => $("cover").insertAdjacentHTML("beforeend",
 
 let sortK = "reviews", asc = false;
 function render(){
-  const q = $("q").value.toLowerCase(), seg = $("seg").value;
-  let r = D.rows.filter(o => (!seg || o.seg===seg) && (!$("msg").checked || o.wa || o.tg)
+  const q = $("q").value.toLowerCase(), seg = $("seg").value, nw = $("nw").value;
+  let r = D.rows.filter(o => (!seg || o.seg===seg) && (!$("msg").checked || o.wa || o.tg) && (!$("ml").checked || o.mail)
+    && (!nw || (nw==="new" && o.new.startsWith("новая")) || (nw==="ours" && o.new.startsWith("из нашего списка")) || (nw==="chk" && o.new.startsWith("проверить")))
     && (!$("junk").checked || seg==="Нерелевантное" || o.seg!=="Нерелевантное")
-    && (!q || (o.name+" "+o.kind+" "+o.addr).toLowerCase().includes(q)));
+    && (!q || (o.name+" "+o.kind+" "+o.addr+" "+o.mail).toLowerCase().includes(q)));
   r.sort((a,b) => { const x=a[sortK], y=b[sortK];
     if (x==null||x==="") return 1; if (y==null||y==="") return -1;
     return (typeof x==="number" ? x-y : String(x).localeCompare(y,"ru")) * (asc?1:-1); });
   $("count").textContent = `показано ${r.length} из ${D.rows.length}`;
   $("rows").innerHTML = r.map(o => `<tr>
-    <td><b>${esc(o.name)}</b><div class="k">${esc(o.kind)}</div><div class="k">${esc(o.addr)}</div></td>
-    <td>${esc(o.seg)}<div class="k">${o.src==="ключевое"?"по ключевому слову":o.src==="посёлок"?"поиск посёлков":"из вашего списка"}</div></td>
-    <td class="ph">${esc(o.phone).split(", ").join("<br>")}</td>
+    <td><b>${esc(o.name)}</b>${o.new.startsWith("из нашего списка")?`<span class="new ours" title="${esc(o.new)}">из списка</span>`:o.new.startsWith("проверить")?`<span class="new chk" title="совпало только название с «${esc(o.list)}»">проверить</span>`:`<span class="new" title="${o.list?"в местности: "+esc(o.list):""}">новая</span>`}<div class="k">${esc(o.kind)}</div><div class="k">${esc(o.addr)}</div></td>
+    <td>${esc(o.seg)}<div class="k">${esc(o.src)}</div></td>
+    <td class="ph">${esc(o.phone).split(", ").slice(0,3).join("<br>")}</td>
+    <td class="mail">${esc(o.mail).split(", ").slice(0,3).join("<br>")}</td>
     <td class="lk">${o.site?`<a href="${esc(o.site)}" target="_blank">сайт</a>`:""}${o.wa?`<a href="${esc(o.wa)}" target="_blank">WA</a>`:""}${o.tg?`<a href="${esc(o.tg)}" target="_blank">TG</a>`:""}${o.vk?`<a href="${esc(o.vk)}" target="_blank">ВК</a>`:""}${o.card?`<a href="${esc(o.card)}" target="_blank">Карты</a>`:""}</td>
     <td class="num">${o.rating??"—"}</td><td class="num">${o.reviews?fmt(o.reviews):"—"}</td>
     <td class="num ${o.neg>=30?"bad":""}">${o.neg==null?"—":o.neg+"%"}</td></tr>`).join("");
@@ -169,8 +185,14 @@ document.querySelectorAll("th[data-k]").forEach(th => th.onclick = () => {
   document.querySelectorAll("th").forEach(t => t.classList.remove("sorted","asc"));
   th.classList.add("sorted"); if (asc) th.classList.add("asc"); render();
 });
-["q","seg","msg","junk"].forEach(id => $(id).addEventListener("input", render));
+["q","seg","nw","msg","ml","junk"].forEach(id => $(id).addEventListener("input", render));
 render();
+$("tgsub").textContent = `· первые ${D.tg.length} по числу упоминаний`;
+$("tgrows").innerHTML = D.tg.map(t => `<tr><td class="lk"><a href="${esc(t.ch)}" target="_blank">${esc(t.ch.replace("https://t.me/","@"))}</a><div class="k">${esc(t.title)}</div></td>
+  <td class="num">${t.posts}</td><td class="num">${t.subs==null?"—":fmt(t.subs)}</td><td class="k">${esc(t.ex)}</td></tr>`).join("");
+$("avsub").textContent = `· ${D.avito.length} объявлений`;
+$("avrows").innerHTML = D.avito.map(a => `<tr><td class="lk">${a.url?`<a href="${esc(a.url)}" target="_blank">открыть</a> `:""}${esc(a.title)}</td>
+  <td class="k">${esc(a.seller)}</td><td class="ph">${esc(a.phone)}</td></tr>`).join("");
 $("foot").innerHTML = "Источники: " + D.sources.map(esc).join(", ") + " · Траты: " + D.spend.map(([a,b])=>esc(a)+" — "+esc(b)).join("; ")
   + " · Имена авторов отзывов не хранятся. Пересобрать: <code>python dashboard/build_dashboard.py</code>";
 </script>

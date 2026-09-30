@@ -1,4 +1,5 @@
-"""Панель лидогенерации для Chrome: одна HTML-страница из последних выгрузок (Яндекс Карты + отзывы).
+"""Панель лидогенерации для Chrome: одна HTML-страница из единой базы (Яндекс Карты + 2ГИС + почты с сайтов +
+Авито + Telegram) и карты болей (отзывы, размеченные по темам).
 
 python dashboard/build_dashboard.py          # собрать и открыть в Chrome
 python dashboard/build_dashboard.py --no-open
@@ -46,9 +47,13 @@ PAINS = [
 CHANNELS = [
     ("Яндекс Карты", "собрано", "организации с телефонами, сайтами, мессенджерами"),
     ("Отзывы Яндекс Карт", "собрано", "карта болей клиентов, без имён авторов"),
+    ("Поиск Яндекса", "собрано", "10 компаний из списка, которых нет на Картах: сайты, почты"),
     ("Каталоги посёлков", "разведка", "villagio-vip.ru — HTML, onehouse.ru — Tilda"),
-    ("2ГИС · Авито · Циан", "план", "сборщики Apify подобраны"),
-    ("Telegram", "план", "только пересечения аудиторий групп, жителям не пишем"),
+    ("2ГИС", "собрано", "196 организаций с контактами"),
+    ("Почты с сайтов", "собрано", "328 почт с 234 сайтов"),
+    ("Авито", "собрано", "200 объявлений подрядчиков"),
+    ("Циан", "разведка", "6 домов — фильтр узкий, переделать"),
+    ("Telegram", "разведка", "380 каналов с упоминаниями посёлков; дальше — пересечения групп, жителям не пишем"),
     ("Дизайн-бюро", "план", "AI-поиск → анализ → персональный оффер"),
     ("Партнёры", "план", "сегментация базы → мини-лендинг"),
     ("Брокеры", "план", "персональный outreach"),
@@ -89,71 +94,95 @@ def s(v) -> str:
     return "" if pd.isna(v) else str(v)
 
 
+BASE_GLOB = "база_lead_engine_*.xlsx"
+THEMES = {"Пропадают, не отвечают после оплаты": "Связь и отношение", "Брак, плохое качество": "Качество и брак",
+          "Сорваны сроки": "Сроки", "Смета растёт, доплаты": "Деньги и смета", "Гарантия только на бумаге": "Гарантия",
+          "Обман, деньги не вернули": "Обман и возврат денег", "Инженерия дома (котёл, вода, вентиляция, электрика)": "Инженерия дома",
+          "Поставки и комплектация (не то, подделка, некомплект)": "Поставки и оборудование",
+          "Коммуникации посёлка (газ, свет, дороги, вода)": "Коммуникации посёлка", "Отдел продаж обещает то, чего нет": "Обещания отдела продаж",
+          "Управляющая компания и платежи": "УК и платежи"}
+
+
 def main():
-    maps_x, rev_x = latest("яндекс_карты_BD_*.xlsx"), latest("яндекс_отзывы_*.xlsx")
-    orgs = pd.read_excel(maps_x, sheet_name="организации")
-    byq = pd.read_excel(maps_x, sheet_name="по запросам")
+    base_x = max(DRIVE.parent.glob(BASE_GLOB), key=lambda p: p.stat().st_mtime)
+    rev_x, pain_x = latest("яндекс_отзывы_*.xlsx"), latest("карта_болей_*.xlsx")
+    base = pd.read_excel(base_x, sheet_name="организации")
+    tg = pd.read_excel(base_x, sheet_name="Telegram-каналы")
+    avito = pd.read_excel(base_x, sheet_name="Авито")
     rev = pd.read_excel(rev_x, sheet_name="отзывы")
+    compl = pd.read_excel(pain_x, sheet_name="жалобы")
 
-    orgs["сегмент"] = orgs["вид деятельности"].map(lambda k: segment(s(k)))
-    rev["neg"] = rev["оценка"].between(1, 3)
+    base["сегмент"] = base["вид деятельности"].map(lambda k: segment(s(k)))
+    rev["neg"] = rev["оценка"].between(0, 3)
     neg_share = rev.groupby("карточка")["neg"].mean()
+    seg_by_card = dict(zip(base["ссылка"], base["сегмент"]))
 
-    # боли — только отзывы с оценкой 1–3
-    neg = rev[rev["neg"] & rev["отзыв"].notna()].copy()
-    neg["seg"] = neg["карточка"].map(dict(zip(orgs["карточка"], orgs["сегмент"])))
-    # цитаты: сперва отзывы про одну тему (длинные жалобы подходят ко всем), без повторов между темами
-    neg["themes"] = sum(neg["отзыв"].str.contains(rx, case=False, regex=True).astype(int) for _, rx in PAINS)
+    # боли — разметка помощниками (карта_болей_*.xlsx, лист «жалобы»)
+    compl["темы"] = compl["темы (по-русски)"].fillna("").str.split("; ")
+    ex = compl.explode("темы")
+    ex = ex[ex["темы"].isin(THEMES)]
+    ex["ntheme"] = ex["темы (по-русски)"].str.count(";") + 1
+    ex["len"] = ex["отзыв"].fillna("").str.len()
     pains, used = [], set()
-    for name, rx in PAINS:
-        hit = neg[neg["отзыв"].str.contains(rx, case=False, regex=True)]
-        pick = hit[~hit.index.isin(used)].sort_values(["themes", "дата"], ascending=[True, False]).head(3)
-        used |= set(pick.index)
-        quotes = [{"t": (t[:260] + "…") if len(t) > 260 else t, "o": o, "d": d}
-                  for t, o, d in pick[["отзыв", "организация", "дата"]].itertuples(index=False)]
-        pains.append({"name": name, "n": len(hit), "answered": round(hit["ответ компании"].notna().mean() * 100) if len(hit) else 0,
-                      "seg": hit["seg"].value_counts().head(3).to_dict(), "quotes": quotes})
+    for theme, grp in ex.groupby("темы"):
+        pick = grp[~grp["отзыв"].isin(used) & grp["len"].between(60, 600)].sort_values(["ntheme", "дата"], ascending=[True, False]).head(3)
+        used |= set(pick["отзыв"])
+        split = grp["тип запроса"].map(lambda k: "посёлки" if k == "посёлок" else "подрядчики").value_counts().to_dict()
+        pains.append({"name": THEMES[theme], "n": len(grp), "split": split,
+                      "quotes": [{"t": (t[:260] + "…") if len(t) > 260 else t, "o": o, "d": str(d)[:10], "why": w}
+                                 for t, o, d, w in pick[["отзыв", "организация", "дата", "суть"]].itertuples(index=False)]})
     pains.sort(key=lambda p: -p["n"])
 
-    # её список: что нашлось
+    # её список: что нашлось в базе
     names = list(dict.fromkeys(l.strip() for l in LISTS.read_text(encoding="utf-8").splitlines() if l.strip()))
     cover = []
     for n in names:
-        q = f"коттеджные посёлки {n}" if n in PLACES else f"{n} Москва"
-        got = byq[byq["запрос"] == q]
-        keys = {lat(w)[:4] for w in (n.split()[0], n.split()[-1]) if len(lat(w)) >= 3}
-        exact = got[got["название"].fillna("").map(lat).map(lambda t: any(k in t for k in keys))]
-        status = "нет" if got.empty else ("точно" if len(exact) or n in PLACES else "похожие")
-        cover.append({"name": n, "kind": "посёлок" if n in PLACES else "компания", "n": len(got), "status": status,
-                      "top": s(got["название"].iloc[0]) if len(got) else ""})
+        hit = base[base["наш список"] == n]
+        marks = set(hit["новая?"])
+        status = ("точно" if any(m.startswith("из нашего списка") for m in marks) else "местность" if "новая, в местности из списка" in marks
+                  else "похожие" if marks else "нет")
+        cover.append({"name": n, "kind": "посёлок/местность" if n in PLACES else "компания", "n": len(hit), "status": status,
+                      "top": ", ".join(hit["название"].astype(str).head(3))})
 
+    first = lambda v: s(v).split(", ")[0]
     rows = [{
-        "name": s(r["название"]), "seg": r["сегмент"], "kind": s(r["вид деятельности"]), "src": s(r["тип запроса"]),
-        "addr": s(r["адрес"]), "phone": s(r["телефоны"]), "site": s(r["сайт"]).split(", ")[0],
-        "wa": s(r["WhatsApp"]).split(", ")[0], "tg": s(r["Telegram"]).split(", ")[0], "vk": s(r["ВК"]).split(", ")[0],
-        "rating": None if pd.isna(r["рейтинг"]) else float(r["рейтинг"]),
+        "name": s(r["название"]), "new": s(r["новая?"]), "list": s(r["наш список"]), "seg": r["сегмент"],
+        "kind": s(r["вид деятельности"]), "src": s(r["источник"]), "addr": s(r["адрес"]),
+        "phone": s(r["телефоны"]) or s(r["телефоны с сайта"]), "mail": s(r["почты"]),
+        "site": first(r["сайт"]), "wa": first(r["WhatsApp"]), "tg": first(r["Telegram"]), "vk": first(r["ВК"]),
+        "rating": None if pd.isna(r["рейтинг"]) else round(float(r["рейтинг"]), 1),
         "reviews": 0 if pd.isna(r["отзывов"]) else int(r["отзывов"]),
-        "neg": None if r["карточка"] not in neg_share else round(float(neg_share[r["карточка"]]) * 100),
-        "card": s(r["карточка"]),
-    } for _, r in orgs.iterrows()]
+        "neg": None if r["ссылка"] not in neg_share else round(float(neg_share[r["ссылка"]]) * 100),
+        "card": s(r["ссылка"]),
+    } for _, r in base.iterrows()]
 
-    has = lambda c: int((orgs[c].fillna("") != "").sum())
+    tg_rows = [{"ch": s(r["канал"]), "title": s(r["название"]), "posts": int(r["постов найдено"]),
+                "subs": None if pd.isna(r["подписчиков"]) else int(r["подписчиков"]), "ex": s(r["пример"])[:200]}
+               for _, r in tg.head(60).iterrows()]
+    av_rows = [{"title": s(r.get("title")), "phone": s(r.get("phone")), "url": s(r.get("url")),
+                "seller": s(r.get("seller.name") if "seller.name" in avito.columns else r.get("seller"))[:80]}
+               for _, r in avito.iterrows()]
+
+    nonempty = lambda c: int((base[c].fillna("").astype(str) != "").sum())
     data = {
         "built": datetime.now().strftime("%d.%m.%Y %H:%M"),
-        "sources": [maps_x.name, rev_x.name],
-        "kpi": {"orgs": len(orgs), "phone": has("телефоны"), "site": has("сайт"),
-                "msg": int(((orgs["WhatsApp"].fillna("") != "") | (orgs["Telegram"].fillna("") != "")).sum()),
-                "villages": int((orgs["сегмент"] == "Посёлки").sum()), "reviews": len(rev),
-                "neg": int(rev["neg"].sum()), "reply": round(rev.loc[rev["neg"], "ответ компании"].notna().mean() * 100)},
-        "segments": orgs["сегмент"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows,
-        "spend": [("Apify", "5.86 из 6 $ (бесплатный тариф, месяц)"), ("Bright Data", "≈0.6 $ (≈400 запросов × 1.5 $/1000)")],
+        "sources": [base_x.name, rev_x.name, pain_x.name],
+        "kpi": {"orgs": len(base), "new": int(base["новая?"].str.startswith("новая").sum()),
+                "phone": int(((base["телефоны"].fillna("") != "") | (base["телефоны с сайта"].fillna("") != "")).sum()),
+                "mail": nonempty("почты"), "site": nonempty("сайт"),
+                "msg": int(((base["WhatsApp"].fillna("") != "") | (base["Telegram"].fillna("") != "")).sum()),
+                "villages": int((base["тип"] == "посёлок").sum()), "reviews": len(rev),
+                "neg": int(rev["neg"].sum()), "complaints": len(compl)},
+        "segments": base["сегмент"].value_counts().to_dict(),
+        "sources_n": base["источник"].value_counts().to_dict(),
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "avito": av_rows,
+        "spend": [("Apify", "≈5.75 из 19 $ (Starter, до 29.10)"), ("Bright Data", "≈0.6 $ (Карты и отзывы)")],
     }
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))
     OUT.write_text(html, encoding="utf-8")
     drive_copy = DRIVE.parent / OUT.name
     shutil.copy(OUT, drive_copy)
-    print(f"панель: {OUT}\nкопия: {drive_copy}")
+    print(f"панель: {OUT}; копия: {drive_copy}")
     if "--no-open" not in sys.argv:
         subprocess.Popen(["cmd", "/c", "start", "chrome", str(OUT)])
 
