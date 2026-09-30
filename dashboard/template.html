@@ -138,6 +138,10 @@ details[open] summary{margin-bottom:12px}
     <div class="tbl" style="margin-top:14px"><table><thead><tr><th>Чат</th><th>Вид</th><th>Участников</th><th>Собрано</th><th>Жителей посёлков</th><th>Доля</th></tr></thead><tbody id="ovrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><details><summary>Telegram — сырой список каналов с упоминаниями (в основном шум) <span class="sub" id="tgsub"></span></summary>
     <div class="tbl"><table><thead><tr><th>Канал</th><th>Найдено постов</th><th>Подписчиков</th><th>Пример</th></tr></thead><tbody id="tgrows"></tbody></table></div></details></div>
+  <div class="card" style="margin-top:16px"><h2>Посёлки из каталогов Villagio и ONEHOUSE <span class="sub" id="ksub"></span></h2>
+    <div class="tools"><input type="search" id="kq" placeholder="Поиск посёлка"><select id="kh"><option value="">Наша территория</option><option value="*">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select>
+      <label><input type="checkbox" id="ko"> только из нашего списка</label><label><input type="checkbox" id="kc"> продаются дома (Циан)</label><span class="sub" id="kcount"></span></div>
+    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>Шоссе</th><th>км от МКАД</th><th>Домов на Циане</th><th>Объектов у Villagio</th><th>Ссылки</th></tr></thead><tbody id="krows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h2>Циан — кто продаёт дома на Рублёвке и Новой Риге <span class="sub" id="csub"></span></h2>
     <div class="sub" style="margin-bottom:12px">Дома от 50 млн ₽. Продавцы — агентства и риелторы элитной загородки: канал «Брокеры» по схеме. Слева — где больше всего продают.</div>
     <section class="grid two" style="margin:0"><div id="cplaces"></div>
@@ -219,6 +223,13 @@ if (D.ov && D.ov.length) {
 $("tgsub").textContent = `· первые ${D.tg.length} по числу упоминаний`;
 $("tgrows").innerHTML = D.tg.map(t => `<tr><td class="lk"><a href="${esc(t.ch)}" target="_blank">${esc(t.ch.replace("https://t.me/","@"))}</a><div class="k">${esc(t.title)}</div></td>
   <td class="num">${t.posts}</td><td class="num">${t.subs==null?"—":fmt(t.subs)}</td><td class="k">${esc(t.ex)}</td></tr>`).join("");
+function krender(){ const q=$("kq").value.toLowerCase(), h=$("kh").value;
+  const r=D.kat.filter(k=>(h==="*"||(!h?k.terr:k.hw===h))&&(!$("ko").checked||k.ours)&&(!$("kc").checked||k.cian)&&(!q||k.name.toLowerCase().includes(q)));
+  $("kcount").textContent=`${r.length} из ${D.kat.length}`;
+  $("krows").innerHTML=r.map(k=>`<tr><td><b>${esc(k.name)}</b>${k.ours?`<span class="new ours">из списка</span>`:""}</td><td class="k">${esc(k.hw)}</td><td class="num">${k.km??"—"}</td>
+    <td class="num">${k.cian||"—"}</td><td class="num">${k.vil||"—"}</td><td class="lk">${k.u1?`<a href="${esc(k.u1)}" target="_blank">Villagio</a>`:""}${k.u2?`<a href="${esc(k.u2)}" target="_blank">ONEHOUSE</a>`:""}${k.tg?`<a href="${esc(k.tg)}" target="_blank">TG</a>`:""}</td></tr>`).join(""); }
+$("ksub").textContent=`· ${D.kat.length} посёлков, ${D.kat.filter(k=>k.terr).length} на нашей территории`;
+["kq","kh","ko","kc"].forEach(id=>$(id).addEventListener("input",krender)); krender();
 const cpm = Math.max(1,...Object.values(D.cplaces));
 $("csub").textContent = `· ${fmt(D.chouses)} домов · ${D.cs.length} продавцов`;
 $("cplaces").innerHTML = Object.entries(D.cplaces).map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><i style="width:${v/cpm*100}%"></i><em>${v}</em></div>`).join("");
