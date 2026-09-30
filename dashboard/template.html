@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лидогенерация — панель</title>
+<style>
+:root{
+  --bg:#f6f4f0; --card:#fff; --ink:#1d1c1a; --muted:#6f6a62; --line:#e6e1d8;
+  --accent:#2f5d50; --accent-soft:#e3ece8; --warn:#b5652a; --warn-soft:#f6e9dd; --plan:#9a948a; --plan-soft:#efece6;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#161614; --card:#1f1f1c; --ink:#ecebe7; --muted:#a19c93; --line:#34332f;
+  --accent:#7fb8a5; --accent-soft:#23332d; --warn:#e0a070; --warn-soft:#3a2b20; --plan:#8a857c; --plan-soft:#2a2926;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Segoe UI",system-ui,sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:28px 20px 60px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:26px;margin:0;font-weight:600;letter-spacing:-.01em}
+h2{font-size:15px;margin:0 0 14px;font-weight:600}
+.sub{color:var(--muted);font-size:12.5px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(8,1fr);margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.kpi{padding:14px}
+.kpi b{display:block;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:12.5px}
+.two{grid-template-columns:1fr 1fr;margin-bottom:16px}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:860px){.two{grid-template-columns:1fr}}
+@media(max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.bar{display:grid;grid-template-columns:170px 1fr 40px;align-items:center;gap:10px;margin:7px 0;font-size:13px}
+.bar i{display:block;height:10px;border-radius:5px;background:var(--accent)}
+.bar em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.bar.dim i{background:var(--plan)}
+.ch{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.chi{border-radius:8px;padding:8px 10px;font-size:12.5px;border:1px solid var(--line)}
+.chi b{display:block;font-size:13px;font-weight:600}
+.chi small{color:var(--muted)}
+.st-собрано{background:var(--accent-soft);border-color:transparent}
+.st-разведка{background:var(--warn-soft);border-color:transparent}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;margin-left:4px;vertical-align:1px}
+.t-собрано{background:var(--accent);color:var(--card)}
+.t-разведка{background:var(--warn);color:var(--card)}
+.t-план{background:var(--plan-soft);color:var(--muted)}
+.pains{grid-template-columns:repeat(auto-fill,minmax(290px,1fr));margin-bottom:16px}
+.pain h3{margin:0;font-size:14px;display:flex;justify-content:space-between}
+.pain .meta{color:var(--muted);font-size:12px;margin:4px 0 10px}
+.q{border-left:2px solid var(--line);padding:2px 0 2px 10px;margin:8px 0;font-size:12.5px}
+.q small{display:block;color:var(--muted);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;padding:4px 10px;border-radius:14px;border:1px solid var(--line)}
+.chip.точно{background:var(--accent-soft);border-color:transparent}
+.chip.похожие{background:var(--warn-soft);border-color:transparent}
+.chip.нет{text-decoration:line-through;color:var(--muted)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin:10px 0 0}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+input[type=search],select{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+input[type=search]{flex:1;min-width:200px}
+label{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:12px;padding:8px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap;user-select:none}
+th.sorted::after{content:" ↓"} th.sorted.asc::after{content:" ↑"}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td .k{color:var(--muted);font-size:12px}
+.lk a{display:inline-block;font-size:11.5px;padding:1px 6px;border-radius:5px;background:var(--accent-soft);color:var(--accent);text-decoration:none;margin:1px 2px 1px 0;font-weight:600}
+.ph{white-space:nowrap;font-variant-numeric:tabular-nums}
+.bad{color:var(--warn);font-weight:600}
+.foot{margin-top:18px;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><h1>Лидогенерация · коттеджи и подрядчики</h1>
+      <div class="sub">Новая Рига и Рублёвка · данные с Яндекс Карт</div></div>
+    <div class="sub" id="built"></div>
+  </header>
+
+  <section class="grid kpis" id="kpis"></section>
+
+  <section class="grid two">
+    <div class="card"><h2>Кого нашли — по сегментам</h2><div id="segs"></div></div>
+    <div class="card"><h2>Каналы схемы воронки</h2><div class="ch" id="channels"></div></div>
+  </section>
+
+  <div class="card" style="margin-bottom:16px">
+    <h2>Боли клиентов из отзывов <span class="sub" id="painsub"></span></h2>
+    <section class="grid pains" id="pains" style="margin:0"></section>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <h2>Ваш список — что нашлось на Картах</h2>
+    <div class="chips" id="cover"></div>
+    <div class="legend"><span>■ зелёный — найдено точно</span><span>■ оранжевый — нашлись похожие, проверить</span><span>зачёркнуто — не найдено</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Организации</h2>
+    <div class="tools">
+      <input type="search" id="q" placeholder="Поиск: название, вид деятельности, адрес">
+      <select id="seg"><option value="">Все сегменты</option></select>
+      <label><input type="checkbox" id="msg"> есть WhatsApp / Telegram</label>
+      <label><input type="checkbox" id="junk" checked> скрыть нерелевантное</label>
+      <span class="sub" id="count"></span>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr>
+        <th data-k="name">Название</th><th data-k="seg">Сегмент</th><th data-k="phone">Телефон</th><th>Связь</th>
+        <th data-k="rating">Рейтинг</th><th data-k="reviews" class="sorted">Отзывов</th><th data-k="neg">Негатив</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+  </div>
+  <div class="foot" id="foot"></div>
+</div>
+<script>
+const D = /*DATA*/null;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = n => n.toLocaleString("ru-RU");
+
+$("built").textContent = "Обновлено " + D.built;
+const K = D.kpi;
+[[K.orgs,"организаций"],[K.phone,"с телефоном"],[K.site,"с сайтом"],[K.msg,"с WhatsApp или Telegram"],
+ [K.villages,"коттеджных посёлков"],[K.reviews,"отзывов разобрано"],[K.neg,"негативных (1–3★)"],[K.reply+"%","негатива с ответом компании"]]
+ .forEach(([v,l]) => $("kpis").insertAdjacentHTML("beforeend", `<div class="card kpi"><b>${typeof v==="number"?fmt(v):v}</b><span>${l}</span></div>`));
+
+const segMax = Math.max(...Object.values(D.segments));
+Object.entries(D.segments).forEach(([k,v]) => {
+  $("segs").insertAdjacentHTML("beforeend", `<div class="bar ${k==="Нерелевантное"||k==="Прочее"?"dim":""}"><span>${esc(k)}</span><i style="width:${v/segMax*100}%"></i><em>${v}</em></div>`);
+  $("seg").insertAdjacentHTML("beforeend", `<option>${esc(k)}</option>`);
+});
+D.channels.forEach(([n,st,d]) => $("channels").insertAdjacentHTML("beforeend",
+  `<div class="chi st-${st}"><b>${esc(n)}<span class="tag t-${st}">${st}</span></b><small>${esc(d)}</small></div>`));
+
+$("painsub").textContent = `· темы в ${fmt(K.neg)} отзывах с оценкой 1–3`;
+D.pains.forEach(p => $("pains").insertAdjacentHTML("beforeend", `<div class="card pain">
+  <h3><span>${esc(p.name)}</span><span>${fmt(p.n)}</span></h3>
+  <div class="meta">ответили ${p.answered}% · чаще: ${Object.entries(p.seg).map(([s,n])=>esc(s)+" "+n).join(", ")||"—"}</div>
+  ${p.quotes.map(q=>`<div class="q">«${esc(q.t)}»<small>${esc(q.o)} · ${esc(q.d)}</small></div>`).join("")}</div>`));
+
+D.cover.forEach(c => $("cover").insertAdjacentHTML("beforeend",
+  `<span class="chip ${c.status}" title="${esc(c.kind)} · результатов: ${c.n}${c.top?" · первый: "+esc(c.top):""}">${esc(c.name)}</span>`));
+
+let sortK = "reviews", asc = false;
+function render(){
+  const q = $("q").value.toLowerCase(), seg = $("seg").value;
+  let r = D.rows.filter(o => (!seg || o.seg===seg) && (!$("msg").checked || o.wa || o.tg)
+    && (!$("junk").checked || seg==="Нерелевантное" || o.seg!=="Нерелевантное")
+    && (!q || (o.name+" "+o.kind+" "+o.addr).toLowerCase().includes(q)));
+  r.sort((a,b) => { const x=a[sortK], y=b[sortK];
+    if (x==null||x==="") return 1; if (y==null||y==="") return -1;
+    return (typeof x==="number" ? x-y : String(x).localeCompare(y,"ru")) * (asc?1:-1); });
+  $("count").textContent = `показано ${r.length} из ${D.rows.length}`;
+  $("rows").innerHTML = r.map(o => `<tr>
+    <td><b>${esc(o.name)}</b><div class="k">${esc(o.kind)}</div><div class="k">${esc(o.addr)}</div></td>
+    <td>${esc(o.seg)}<div class="k">${o.src==="ключевое"?"по ключевому слову":o.src==="посёлок"?"поиск посёлков":"из вашего списка"}</div></td>
+    <td class="ph">${esc(o.phone).split(", ").join("<br>")}</td>
+    <td class="lk">${o.site?`<a href="${esc(o.site)}" target="_blank">сайт</a>`:""}${o.wa?`<a href="${esc(o.wa)}" target="_blank">WA</a>`:""}${o.tg?`<a href="${esc(o.tg)}" target="_blank">TG</a>`:""}${o.vk?`<a href="${esc(o.vk)}" target="_blank">ВК</a>`:""}${o.card?`<a href="${esc(o.card)}" target="_blank">Карты</a>`:""}</td>
+    <td class="num">${o.rating??"—"}</td><td class="num">${o.reviews?fmt(o.reviews):"—"}</td>
+    <td class="num ${o.neg>=30?"bad":""}">${o.neg==null?"—":o.neg+"%"}</td></tr>`).join("");
+}
+document.querySelectorAll("th[data-k]").forEach(th => th.onclick = () => {
+  const k = th.dataset.k; asc = sortK===k ? !asc : k==="name"||k==="seg"; sortK = k;
+  document.querySelectorAll("th").forEach(t => t.classList.remove("sorted","asc"));
+  th.classList.add("sorted"); if (asc) th.classList.add("asc"); render();
+});
+["q","seg","msg","junk"].forEach(id => $(id).addEventListener("input", render));
+render();
+$("foot").innerHTML = "Источники: " + D.sources.map(esc).join(", ") + " · Траты: " + D.spend.map(([a,b])=>esc(a)+" — "+esc(b)).join("; ")
+  + " · Имена авторов отзывов не хранятся. Пересобрать: <code>python dashboard/build_dashboard.py</code>";
+</script>
+</body>
+</html>

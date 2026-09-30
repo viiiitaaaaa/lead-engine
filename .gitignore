@@ -4,3 +4,5 @@ data/lists/
 __pycache__/
 *.pyc
 .venv/
+dashboard/*.html
+!dashboard/template.html
