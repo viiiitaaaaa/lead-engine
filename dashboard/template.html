@@ -76,6 +76,10 @@ td .k{color:var(--muted);font-size:12px}
 .mail{font-size:12px;word-break:break-all}
 details summary{cursor:pointer;font-weight:600;font-size:15px}
 details[open] summary{margin-bottom:12px}
+.tgg h3{font-size:13.5px;margin:16px 0 6px;font-weight:600}.tgg h3:first-child{margin-top:0}
+.tgg h3 small{color:var(--muted);font-weight:400}
+.pill{display:inline-block;font-size:10.5px;padding:0 6px;border-radius:8px;margin-left:6px;vertical-align:1px;font-weight:600}
+.pill.чат{background:var(--accent-soft);color:var(--accent)}.pill.канал{background:var(--plan-soft);color:var(--muted)}
 .foot{margin-top:18px;color:var(--muted);font-size:12px}
 </style>
 </head>
@@ -124,8 +128,10 @@ details[open] summary{margin-bottom:12px}
       <tbody id="rows"></tbody>
     </table></div>
   </div>
-  <div class="card" style="margin-top:16px"><details><summary>Telegram — каналы, где упоминаются посёлки <span class="sub" id="tgsub"></span></summary>
-    <div class="sub" style="margin-bottom:10px">Для анализа аудитории: жителям не пишем. Много случайных каналов — отбираем настоящие каналы и чаты посёлков.</div>
+  <div class="card" style="margin-top:16px"><h2>Telegram — чаты и каналы наших посёлков <span class="sub" id="tgosub"></span></h2>
+    <div class="sub" style="margin-bottom:12px">Жителям не пишем. Чаты группы 1 — только для подсчёта пересечений (хэши id, без имён); каналы — для кейсов и партнёрства с админами; посёлки и УК — вход по схеме.</div>
+    <div class="tgg" id="tggroups"></div></div>
+  <div class="card" style="margin-top:16px"><details><summary>Telegram — сырой список каналов с упоминаниями (в основном шум) <span class="sub" id="tgsub"></span></summary>
     <div class="tbl"><table><thead><tr><th>Канал</th><th>Найдено постов</th><th>Подписчиков</th><th>Пример</th></tr></thead><tbody id="tgrows"></tbody></table></div></details></div>
   <div class="card" style="margin-top:16px"><details><summary>Авито — объявления подрядчиков <span class="sub" id="avsub"></span></summary>
     <div class="tbl"><table><thead><tr><th>Объявление</th><th>Продавец</th><th>Телефон</th></tr></thead><tbody id="avrows"></tbody></table></div></details></div>
@@ -187,6 +193,12 @@ document.querySelectorAll("th[data-k]").forEach(th => th.onclick = () => {
 });
 ["q","seg","nw","msg","ml","junk"].forEach(id => $(id).addEventListener("input", render));
 render();
+const tgG = {}; D.tgo.forEach(r => (tgG[r.g] ||= []).push(r));
+$("tgosub").textContent = `· ${D.tgo.length} отобрано из поиска Яндекса и 380 каналов · ${fmt(D.tgo.reduce((a,r)=>a+r.n,0))} человек суммарно`;
+$("tggroups").innerHTML = Object.entries(tgG).map(([g,rs]) => `<h3>${esc(g)} <small>· ${rs.length} · ${fmt(rs.reduce((a,r)=>a+r.n,0))} чел.</small></h3>
+  <div class="tbl"><table><thead><tr><th>Название</th><th>Людей</th><th>Заметка</th><th>Описание</th></tr></thead><tbody>${rs.sort((a,b)=>b.n-a.n).map(r=>`<tr>
+  <td class="lk"><a href="${esc(r.url)}" target="_blank">${esc(r.url.replace("https://t.me/","@"))}</a><span class="pill ${esc(r.type)}">${esc(r.type)}</span><div><b>${esc(r.title)}</b></div></td>
+  <td class="num">${r.n?fmt(r.n):"—"}</td><td class="k">${esc(r.note)}</td><td class="k">${esc(r.desc)}</td></tr>`).join("")}</tbody></table></div>`).join("");
 $("tgsub").textContent = `· первые ${D.tg.length} по числу упоминаний`;
 $("tgrows").innerHTML = D.tg.map(t => `<tr><td class="lk"><a href="${esc(t.ch)}" target="_blank">${esc(t.ch.replace("https://t.me/","@"))}</a><div class="k">${esc(t.title)}</div></td>
   <td class="num">${t.posts}</td><td class="num">${t.subs==null?"—":fmt(t.subs)}</td><td class="k">${esc(t.ex)}</td></tr>`).join("");
