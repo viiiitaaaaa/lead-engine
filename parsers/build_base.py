@@ -34,11 +34,40 @@ def digits(p):
     return "7" + d[1:] if len(d) == 11 and d[0] in "78" else d
 
 
+ALIASES = {"миллениум": ["millennium", "миллениум"], "виладжио": ["villagio", "виладжио", "вилладжио"],
+           "агаларов": ["agalarov", "агаларов"], "papushevo": ["papushevo", "папушево"], "берг хаус": ["бергхаус", "берг хаус", "berghaus"],
+           "one house": ["one house", "onehouse", "уан хаус"], "kub": ["kub", "куб хаус"], "render house": ["render house", "рендер хаус"],
+           "rotenstein": ["rotenstein", "ротенштейн"], "arhion": ["arhion", "архион"], "aurumv": ["aurum", "аурум"],
+           "ge arch": ["ge arch", "гe arch"], "ieo": ["ieo"], "трувиль": ["трувиль", "trouville"]}
+
+
+def norm(x):
+    return re.sub(r"[^a-zа-я0-9 ]", " ", str(x).lower().replace("ё", "е")).strip()
+
+
+def our_names():
+    names = [l.strip() for l in (ROOT / "data" / "lists" / "компании_и_поселки_2026-09-30.txt").read_text(encoding="utf-8").splitlines() if l.strip()]
+    keys = []
+    for n in names:
+        nn = norm(n).replace("группа компаний ", "").replace("ателье элитных проектов ", "")
+        variants = next((v for k, v in ALIASES.items() if k in nn), [nn])
+        keys.append((n, [norm(v) for v in variants]))
+    return keys
+
+
+def in_list(title, keys):
+    t = norm(title)
+    for n, variants in keys:
+        if any(v and re.search(r"(^|\s)" + re.escape(v) + r"($|\s|\d)", t) for v in variants):
+            return n
+    return ""
+
+
 def kind(cat, q):
     if "посёлок" in str(cat).lower():
         return "посёлок"
     if q == "компания":
-        return "компания из списка"
+        return "компания"
     return "подрядчик / поставщик"
 
 
@@ -88,7 +117,22 @@ def main():
                      for s, e in zip(base["сайт"], base.get("почта 2ГИС", [""] * len(base)))]
     base["телефоны с сайта"] = [site_info(s, "телефоны с сайта") for s in base["сайт"]]
     base = base.drop(columns=["почта 2ГИС"], errors="ignore")
-    cols = ["название", "тип", "вид деятельности", "телефоны", "почты", "телефоны с сайта", "сайт", "WhatsApp",
+    keys = our_names()
+    places = ["Пирогово", "Завидово", "Серебряный бор", "Жуковка", "Барвиха", "Раздоры", "Шульгино", "Подушкино",
+              "Ромашково", "Николина Гора", "Усово", "Дарьино", "Лапино", "Солослово", "Трувиль"]
+    fits = r"строит|ремонт|дизайн|архитект|инженер|отдел|недвиж|посёл|посел|девелоп|климат|вентиляц|мебел|сантех|проект|дом|котт|благоустр|отоплен|кондицион"
+    marks, lists = [], []
+    for t, cat, addr in zip(base["название"], base["вид деятельности"].fillna(""), base["адрес"].fillna("")):
+        m = in_list(t, keys)
+        if m and m not in places and not re.search(fits, cat, re.I):
+            marks.append("проверить: совпало только название"); lists.append(m)
+        elif m:
+            marks.append("из нашего списка"); lists.append(m)
+        else:
+            p = next((pl for pl in places if norm(pl) in norm(addr)), "")
+            marks.append("новая, в местности из списка" if p else "новая"); lists.append(p)
+    base["наш список"], base["новая?"] = lists, marks
+    cols = ["название", "новая?", "наш список", "тип", "вид деятельности", "телефоны", "почты", "телефоны с сайта", "сайт", "WhatsApp",
             "Telegram", "ВК", "другие соцсети", "адрес", "рейтинг", "отзывов", "источник", "ссылка"]
     base = base[cols].sort_values(["тип", "отзывов"], ascending=[True, False])
 
