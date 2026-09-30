@@ -187,15 +187,15 @@ let sortK = "reviews", asc = false;
 function render(){
   const q = $("q").value.toLowerCase(), seg = $("seg").value, nw = $("nw").value;
   let r = D.rows.filter(o => (!seg || o.seg===seg) && (!$("msg").checked || o.wa || o.tg) && (!$("ml").checked || o.mail)
-    && (!nw || (nw==="new" && o.new.startsWith("новая")) || (nw==="ours" && o.new.startsWith("из нашего списка")) || (nw==="chk" && o.new.startsWith("проверить")))
-    && (!$("junk").checked || seg==="Нерелевантное" || o.seg!=="Нерелевантное")
+    && (!nw || (nw==="new" && o.new.startsWith("новая")) || (nw==="ours" && o.new.startsWith("из нашего списка")) || (nw==="chk" && /^(проверить|сомнительно|из нашего списка \(найдена)/.test(o.new)))
+    && (!$("junk").checked || seg==="Нерелевантное" || (o.seg!=="Нерелевантное" && !o.new.startsWith("отсеяно")))
     && (!q || (o.name+" "+o.kind+" "+o.addr+" "+o.mail).toLowerCase().includes(q)));
   r.sort((a,b) => { const x=a[sortK], y=b[sortK];
     if (x==null||x==="") return 1; if (y==null||y==="") return -1;
     return (typeof x==="number" ? x-y : String(x).localeCompare(y,"ru")) * (asc?1:-1); });
   $("count").textContent = `показано ${r.length} из ${D.rows.length}`;
   $("rows").innerHTML = r.map(o => `<tr>
-    <td><b>${esc(o.name)}</b>${o.new.startsWith("из нашего списка")?`<span class="new ours" title="${esc(o.new)}">из списка</span>`:o.new.startsWith("проверить")?`<span class="new chk" title="совпало только название с «${esc(o.list)}»">проверить</span>`:`<span class="new" title="${o.list?"в местности: "+esc(o.list):""}">новая</span>`}<div class="k">${esc(o.kind)}</div><div class="k">${esc(o.addr)}</div></td>
+    <td><b>${esc(o.name)}</b>${o.new.startsWith("из нашего списка")?`<span class="new ours" title="${esc(o.new)}">из списка</span>`:o.new.startsWith("отсеяно")?`<span class="new chk" title="${esc(o.new)}">отсеяно</span>`:o.new.startsWith("сомнительно")?`<span class="new chk" title="${esc(o.new)}">сомнительно</span>`:o.new.startsWith("проверить")?`<span class="new chk" title="совпало только название с «${esc(o.list)}»">проверить</span>`:`<span class="new" title="${o.list?"в местности: "+esc(o.list):""}">новая</span>`}<div class="k">${esc(o.kind)}</div><div class="k">${esc(o.addr)}</div></td>
     <td>${esc(o.seg)}<div class="k">${esc(o.src)}</div></td>
     <td class="ph">${esc(o.phone).split(", ").slice(0,3).join("<br>")}</td>
     <td class="mail">${esc(o.mail).split(", ").slice(0,3).join("<br>")}</td>

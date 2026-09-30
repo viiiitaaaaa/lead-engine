@@ -147,6 +147,20 @@ def main():
             p = next((pl for pl in places if norm(pl) in norm(addr)), "")
             marks.append("новая, в местности из списка" if p else "новая"); lists.append(p)
     base["наш список"], base["новая?"] = lists, marks
+    # ручные решения по спорным совпадениям: data/lists/proverka.tsv (подтверждена / не то / сомнительно)
+    chk = ROOT / "data" / "lists" / "proverka.tsv"
+    if chk.exists():
+        label = {"подтверждена": "из нашего списка (проверено)", "не то": "отсеяно: однофамилец", "сомнительно": "сомнительно"}
+        for v in pd.read_csv(chk, sep="	").fillna("").to_dict("records"):
+            hit = base["название"].astype(str).str.contains(v["название содержит"], case=False, regex=False)
+            if v["сайт или адрес содержит"]:
+                where = (base["сайт"].astype(str) + " " + base["адрес"].astype(str))
+                hit &= where.str.contains(v["сайт или адрес содержит"], case=False, regex=False)
+            else:  # без сайта/адреса правило трогает только спорные совпадения, не подтверждённые по виду деятельности
+                hit &= base["новая?"].str.startswith(("проверить", "из нашего списка (найдена"))
+            base.loc[hit, "новая?"] = label[v["вердикт"]] + (f' — {v["заметка"]}' if v["заметка"] else "")
+            if v.get("правильное название"):
+                base.loc[hit, ["название", "наш список"]] = v["правильное название"]
     cols = ["название", "новая?", "наш список", "тип", "вид деятельности", "телефоны", "почты", "телефоны с сайта", "сайт", "WhatsApp",
             "Telegram", "ВК", "другие соцсети", "адрес", "рейтинг", "отзывов", "источник", "ссылка"]
     base = base[cols].sort_values(["тип", "отзывов"], ascending=[True, False])
