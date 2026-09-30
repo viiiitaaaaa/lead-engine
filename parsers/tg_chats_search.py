@@ -1,11 +1,13 @@
 """Чаты и каналы посёлков в Telegram через поиск Яндекса (Bright Data): «site:t.me <посёлок> чат».
 
-python parsers/tg_chats_search.py
+python parsers/tg_chats_search.py            # чаты посёлков из списка
+python parsers/tg_chats_search.py --topics   # тематические чаты территории (ремонт, мамы, фитнес…)
 Итог: data/raw/tgsearch_<время>.json — ссылки t.me с заголовком и сниппетом по каждому запросу.
 Правило: жителям не пишем — ссылки нужны только для пересечений участников (docs/telegram_auditoriya.md).
 """
 import json
 import re
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
@@ -22,16 +24,23 @@ VILLAGES = ["Жуковка", "Барвиха", "Раздоры", "Шульги�
 TERRITORY = ["Рублевка чат жителей", "Новая Рига чат жителей", "Ильинское шоссе чат", "Рублево-Успенское шоссе чат",
              "Новорижское шоссе коттеджный поселок чат", "коттеджный поселок Одинцовский чат жителей",
              "коттеджный поселок Истра чат жителей", "коттеджный поселок Красногорск чат жителей"]
+TOPICS = ["ремонт", "дизайн интерьера", "ландшафтный дизайн", "архитектор", "строительство дома", "мебель", "инженерные системы",
+          "мамы", "частная школа", "детский сад", "собаки", "кинологи", "бьюти", "фитнес", "теннис", "гольф", "конный клуб",
+          "яхт клуб", "рестораны", "автомобили", "бизнес клуб", "недвижимость", "отдам даром барахолка", "работа вакансии"]
+AREAS = ["Рублевка", "Новая Рига"]
 
 
 def main():
     token = env("BRIGHTDATA_API_TOKEN")
-    qs = [f"site:t.me {v} поселок чат" for v in VILLAGES] + [f"site:t.me {t}" for t in TERRITORY]
+    if "--topics" in sys.argv:
+        qs = [f"site:t.me {t} {a} чат" for t in TOPICS for a in AREAS]
+    else:
+        qs = [f"site:t.me {v} поселок чат" for v in VILLAGES] + [f"site:t.me {t}" for t in TERRITORY]
     with ThreadPoolExecutor(6) as pool:
         res = list(pool.map(lambda q: serp(q, token), qs))
     raw = {q: [i for i in items if re.search(r"t\.me/", i["url"])] for q, items in zip(qs, res)}
     stamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-    out = ROOT / "data" / "raw" / f"tgsearch_{stamp}.json"
+    out = ROOT / "data" / "raw" / f"tgsearch{'_topics' if '--topics' in sys.argv else ''}_{stamp}.json"
     out.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
     print(f"запросов {len(qs)}, пустых {sum(not v for v in raw.values())}, ссылок {sum(map(len, raw.values()))} → {out}")
 

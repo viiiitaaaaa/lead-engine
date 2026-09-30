@@ -53,7 +53,7 @@ CHANNELS = [
     ("Почты с сайтов", "собрано", "328 почт с 234 сайтов"),
     ("Авито", "собрано", "200 объявлений подрядчиков"),
     ("Циан", "разведка", "6 домов — фильтр узкий, переделать"),
-    ("Telegram", "собрано", "45 отобрано: 11 чатов жителей, 16 местных каналов, 14 посёлков/УК, 4 брокера; дальше — пересечения групп"),
+    ("Telegram", "собрано", "45 отобрано; участники 21 чата (хэши): жители сидят в «Собаки Новая Рига», «Автолюбители НР и Рублёвка», «Мамы Новой Риги»"),
     ("Дизайн-бюро", "план", "AI-поиск → анализ → персональный оффер"),
     ("Партнёры", "план", "сегментация базы → мини-лендинг"),
     ("Брокеры", "план", "персональный outreach"),
@@ -162,6 +162,13 @@ def main():
     tgo = pd.read_csv(ROOT / "data" / "lists" / "tg_poselki_otbor.tsv", sep="	").fillna("")
     tgo_rows = [{"g": r["группа"], "url": r["ссылка"], "title": r["название"], "type": r["тип"], "n": int(r["людей"] or 0),
                  "note": r["заметка"], "desc": r["описание"][:220]} for _, r in tgo.iterrows()]
+    ov_p = ROOT / "data" / "lists" / "tg_overlap.tsv"
+    ov = pd.read_csv(ov_p, sep="	").fillna("") if ov_p.exists() else pd.DataFrame()
+    ov_rows = [{"chat": r["чат"], "title": r["название"], "kind": r["вид"], "size": int(r["участников в чате"] or 0),
+                "got": int(r["собрано"]), "n": int(r["жителей посёлков"]), "pct": r["доля, %"]} for _, r in ov.iterrows()]
+    members = sorted((ROOT / "data" / "raw").glob("tg_members_*.json"))
+    village = {u.replace("https://t.me/", "") for u in tgo[tgo["группа"].str.startswith("1.")]["ссылка"]}
+    ov_res = len(set().union(set(), *(set(v["h"]) for f in members for k, v in json.loads(f.read_text(encoding="utf-8")).items() if k in village)))
     av_rows = [{"title": s(r.get("title")), "phone": s(r.get("phone")), "url": s(r.get("url")),
                 "seller": s(r.get("seller.name") if "seller.name" in avito.columns else r.get("seller"))[:80]}
                for _, r in avito.iterrows()]
@@ -178,8 +185,8 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "avito": av_rows,
-        "spend": [("Apify", "≈5.8 из 19 $ (Starter, до 29.10)"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "spend": [("Apify", "≈14 из 19 $ (Starter, до 29.10)"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
     }
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))
     OUT.write_text(html, encoding="utf-8")
