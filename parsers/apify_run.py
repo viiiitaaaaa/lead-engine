@@ -1,7 +1,7 @@
 """Запуск любого сборщика из apify_actors.json с потолком трат (асинхронно: старт → ожидание → выгрузка).
 
 python parsers/apify_run.py 2gis input.json --cap 0.5 [--name 2гис_компании]
-Итог: data/raw/<ключ>_<время>.json + таблица в Google Диск → Выгрузки.
+Итог: data/raw/<ключ>_<время>.json (таблица на Диск — только с --xlsx: всё смотрим в панели, таблиц не плодим).
 """
 import argparse
 import json
@@ -47,13 +47,14 @@ def main():
     a.add_argument("input", help="json с параметрами сборщика")
     a.add_argument("--cap", type=float, default=0.3, help="потолок трат за запуск, $")
     a.add_argument("--name", help="имя таблицы на Диске")
+    a.add_argument("--xlsx", action="store_true", help="ещё и таблицу на Диск (по умолчанию нет)")
     o = a.parse_args()
     items, r = run(ACTORS[o.key]["actor"], json.loads(Path(o.input).read_text(encoding="utf-8")), o.cap)
     stamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
     raw = ROOT / "data" / "raw" / f"{o.key}_{stamp}.json"
     raw.parent.mkdir(parents=True, exist_ok=True)
     raw.write_text(json.dumps(items, ensure_ascii=False, indent=1), encoding="utf-8")
-    if items:
+    if items and o.xlsx:
         df = pd.json_normalize(items, max_level=1)
         df = df.apply(lambda c: c.map(lambda v: json.dumps(v, ensure_ascii=False) if isinstance(v, (list, dict)) else v))
         out = DRIVE / f"{o.name or o.key}_{stamp}.xlsx"

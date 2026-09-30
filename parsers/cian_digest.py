@@ -1,16 +1,15 @@
 """Свод Циана: все data/raw/cian_*.json → дома (без дублей) + продавцы (брокеры, агентства, застройщики).
 
 python parsers/cian_digest.py
-Итог: Google Диск → Выгрузки\\циан_свод_<дата>.xlsx (лист «дома» первый — его читает build_base.py, лист «продавцы»).
+Итог: data/lists/cian_doma.tsv и cian_prodavcy.tsv — их читают build_base.py и панель (таблиц на Диск не пишем).
 """
 import json
 import re
 from collections import Counter
-from datetime import datetime
 
 import pandas as pd
 
-from apify_run import DRIVE, ROOT
+from apify_run import ROOT
 
 SKIP_GEO = {1, 2, 210}  # страна, область, городской округ
 
@@ -45,10 +44,9 @@ def main():
                         "цены, млн ₽": f'{g["цена, млн ₽"].min():g}–{g["цена, млн ₽"].max():g}',
                         "шоссе": ", ".join(sorted(set(g["шоссе"]) - {""})), "где продаёт": ", ".join(f"{p} ({n})" for p, n in top)})
     s = pd.DataFrame(sellers).sort_values("домов", ascending=False)
-    out = DRIVE / f"циан_свод_{datetime.now():%Y-%m-%d}.xlsx"
-    with pd.ExcelWriter(out) as w:
-        h.to_excel(w, sheet_name="дома", index=False)
-        s.to_excel(w, sheet_name="продавцы", index=False)
+    out = ROOT / "data" / "lists" / "cian_doma.tsv"
+    h.to_csv(out, sep="\t", index=False)
+    s.to_csv(ROOT / "data" / "lists" / "cian_prodavcy.tsv", sep="\t", index=False)
     print(f"домов {len(h)}, продавцов {len(s)} ({s['кто'].value_counts().to_dict()}) → {out}")
     print(h["посёлок/место"].value_counts().head(15).to_dict())
 

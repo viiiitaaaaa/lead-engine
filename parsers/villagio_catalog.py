@@ -2,8 +2,7 @@
 
 python parsers/villagio_catalog.py
 python parsers/villagio_catalog.py --fix   # перечитать карточки без шоссе
-Итог: data/raw/villagio_<время>.json и Google Диск → Выгрузки\\villagio_посёлки_<время>.xlsx:
-посёлок, шоссе, км до МКАД, объектов в продаже, эксперты Villagio по посёлку, ссылка.
+Итог: data/raw/villagio_<время>.json: посёлок, шоссе, км, объектов, эксперты, ссылка (дальше — villages_merge.py и панель).
 """
 import html
 import json
@@ -16,7 +15,7 @@ from datetime import datetime
 
 import pandas as pd
 
-from apify_run import DRIVE, ROOT
+from apify_run import ROOT
 
 SITE = "https://villagio-vip.ru"
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128 Safari/537.36"}
@@ -73,11 +72,8 @@ def main():
 def save(rows):
     stamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
     (ROOT / "data" / "raw" / f"villagio_{stamp}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
-    df = pd.DataFrame(rows).sort_values(["шоссе", "км до МКАД"])
-    out = DRIVE / f"villagio_посёлки_{stamp}.xlsx"
-    df.to_excel(out, index=False)
-    print(df["шоссе"].value_counts().head(12).to_dict())
-    print(out)
+    df = pd.DataFrame(rows)
+    print(len(df), df["шоссе"].value_counts().head(12).to_dict())
 
 
 if __name__ == "__main__":

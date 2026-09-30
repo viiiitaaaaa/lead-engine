@@ -141,12 +141,15 @@ details[open] summary{margin-bottom:12px}
   <div class="card" style="margin-top:16px"><h2>Посёлки из каталогов Villagio и ONEHOUSE <span class="sub" id="ksub"></span></h2>
     <div class="tools"><input type="search" id="kq" placeholder="Поиск посёлка"><select id="kh"><option value="">Наша территория</option><option value="*">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select>
       <label><input type="checkbox" id="ko"> только из нашего списка</label><label><input type="checkbox" id="kc"> продаются дома (Циан)</label><span class="sub" id="kcount"></span></div>
-    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>Шоссе</th><th>км от МКАД</th><th>Домов на Циане</th><th>Объектов у Villagio</th><th>Ссылки</th></tr></thead><tbody id="krows"></tbody></table></div></div>
+    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>Шоссе</th><th>км от МКАД</th><th>Домов на Циане</th><th>Объектов у Villagio</th><th>Эксперты Villagio</th><th>Ссылки</th></tr></thead><tbody id="krows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h2>Циан — кто продаёт дома на Рублёвке и Новой Риге <span class="sub" id="csub"></span></h2>
     <div class="sub" style="margin-bottom:12px">Дома от 50 млн ₽. Продавцы — агентства и риелторы элитной загородки: канал «Брокеры» по схеме. Слева — где больше всего продают.</div>
     <section class="grid two" style="margin:0"><div id="cplaces"></div>
     <div><div class="tools"><input type="search" id="cq" placeholder="Поиск: агентство, посёлок"><select id="cw"><option value="">Все продавцы</option><option>агентство</option><option>риелтор</option><option>УК</option></select><span class="sub" id="ccount"></span></div>
     <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Продавец</th><th>Домов</th><th>Цены, млн ₽</th><th>Телефон</th><th>Где продаёт</th></tr></thead><tbody id="csrows"></tbody></table></div></div></section></div>
+  <div class="card" style="margin-top:16px"><details><summary>Циан — все дома <span class="sub" id="chsub"></span></summary>
+    <div class="tools"><input type="search" id="chq" placeholder="Поиск: посёлок, продавец, адрес"><select id="chh"><option value="">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select><span class="sub" id="chcount"></span></div>
+    <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Посёлок / место</th><th>Цена, млн ₽</th><th>Что</th><th>Продавец</th><th>Телефон</th><th></th></tr></thead><tbody id="chrows"></tbody></table></div></details></div>
   <div class="card" style="margin-top:16px"><details><summary>Авито — объявления подрядчиков <span class="sub" id="avsub"></span></summary>
     <div class="tbl"><table><thead><tr><th>Объявление</th><th>Продавец</th><th>Телефон</th></tr></thead><tbody id="avrows"></tbody></table></div></details></div>
   <div class="foot" id="foot"></div>
@@ -227,7 +230,7 @@ function krender(){ const q=$("kq").value.toLowerCase(), h=$("kh").value;
   const r=D.kat.filter(k=>(h==="*"||(!h?k.terr:k.hw===h))&&(!$("ko").checked||k.ours)&&(!$("kc").checked||k.cian)&&(!q||k.name.toLowerCase().includes(q)));
   $("kcount").textContent=`${r.length} из ${D.kat.length}`;
   $("krows").innerHTML=r.map(k=>`<tr><td><b>${esc(k.name)}</b>${k.ours?`<span class="new ours">из списка</span>`:""}</td><td class="k">${esc(k.hw)}</td><td class="num">${k.km??"—"}</td>
-    <td class="num">${k.cian||"—"}</td><td class="num">${k.vil||"—"}</td><td class="lk">${k.u1?`<a href="${esc(k.u1)}" target="_blank">Villagio</a>`:""}${k.u2?`<a href="${esc(k.u2)}" target="_blank">ONEHOUSE</a>`:""}${k.tg?`<a href="${esc(k.tg)}" target="_blank">TG</a>`:""}</td></tr>`).join(""); }
+    <td class="num">${k.cian||"—"}</td><td class="num">${k.vil||"—"}</td><td class="k">${esc(k.exp)}</td><td class="lk">${k.u1?`<a href="${esc(k.u1)}" target="_blank">Villagio</a>`:""}${k.u2?`<a href="${esc(k.u2)}" target="_blank">ONEHOUSE</a>`:""}${k.tg?`<a href="${esc(k.tg)}" target="_blank">TG</a>`:""}</td></tr>`).join(""); }
 $("ksub").textContent=`· ${D.kat.length} посёлков, ${D.kat.filter(k=>k.terr).length} на нашей территории`;
 ["kq","kh","ko","kc"].forEach(id=>$(id).addEventListener("input",krender)); krender();
 const cpm = Math.max(1,...Object.values(D.cplaces));
@@ -239,6 +242,13 @@ function crender(){ const q=$("cq").value.toLowerCase(), w=$("cw").value;
   $("csrows").innerHTML=r.map(c=>`<tr><td><b>${esc(c.name)}</b><div class="k">${esc(c.who)} · ${esc(c.hw)}</div></td><td class="num">${c.n}</td><td class="num">${esc(c.price)}</td>
     <td class="ph">${esc(c.phone).split(", ").slice(0,2).join("<br>")}</td><td class="k">${esc(c.where)}</td></tr>`).join(""); }
 ["cq","cw"].forEach(id=>$(id).addEventListener("input",crender)); crender();
+function chrender(){ const q=$("chq").value.toLowerCase(), h=$("chh").value;
+  const r=D.ch.filter(c=>(!h||c.hw===h)&&(!q||(c.place+" "+c.seller+" "+c.what).toLowerCase().includes(q)));
+  $("chcount").textContent=`${r.length} из ${D.ch.length}`;
+  $("chrows").innerHTML=r.map(c=>`<tr><td><b>${esc(c.place||"—")}</b><div class="k">${esc(c.hw)}${c.km?" · "+esc(c.km)+" км":""}</div></td><td class="num">${c.price??"—"}</td><td class="k">${esc(c.what)}</td>
+    <td>${esc(c.seller)}<div class="k">${esc(c.who)}</div></td><td class="ph">${esc(c.phone)}</td><td class="lk"><a href="${esc(c.url)}" target="_blank">Циан</a></td></tr>`).join(""); }
+$("chsub").textContent=`· ${D.ch.length} объявлений от 50 млн ₽`;
+["chq","chh"].forEach(id=>$(id).addEventListener("input",chrender)); chrender();
 $("avsub").textContent = `· ${D.avito.length} объявлений`;
 $("avrows").innerHTML = D.avito.map(a => `<tr><td class="lk">${a.url?`<a href="${esc(a.url)}" target="_blank">открыть</a> `:""}${esc(a.title)}</td>
   <td class="k">${esc(a.seller)}</td><td class="ph">${esc(a.phone)}</td></tr>`).join("");

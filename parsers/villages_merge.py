@@ -2,15 +2,14 @@
 
 python parsers/villages_merge.py
 Берёт последний data/raw/villagio_*.json, data/lists/onehouse_poselki.tsv (собран в Chrome — сайт не пускает запросы),
-циан_свод_*.xlsx и data/lists/tg_poselki_otbor.tsv. Итог: data/lists/poselki_katalog.tsv + Выгрузки\\посёлки_каталог_<дата>.xlsx.
+data/lists/cian_doma.tsv и tg_poselki_otbor.tsv. Итог: data/lists/poselki_katalog.tsv — его показывает панель.
 """
 import json
 import re
-from datetime import datetime
 
 import pandas as pd
 
-from apify_run import DRIVE, ROOT
+from apify_run import ROOT
 
 TR = dict(zip("абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
               ["a", "b", "v", "g", "d", "e", "e", "zh", "z", "i", "i", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "h", "ts",
@@ -40,11 +39,12 @@ def main():
     for _, r in vil.iterrows():
         k = key(r["посёлок"])
         rows[k] = {"посёлок": r["посёлок"].strip("«»"), "шоссе": hw(r["шоссе"]), "км до МКАД": r["км до МКАД"],
-                   "Villagio": r["ссылка"], "ONEHOUSE": "", "объектов у Villagio": r["объектов в продаже"]}
+                   "Villagio": r["ссылка"], "ONEHOUSE": "", "объектов у Villagio": r["объектов в продаже"],
+                   "эксперты Villagio": r.get("эксперты Villagio") or ""}
     for _, r in one.iterrows():
         k = key(r["посёлок"])
         e = rows.setdefault(k, {"посёлок": r["посёлок"], "шоссе": hw(r["шоссе"]), "км до МКАД": r["км до МКАД"],
-                                "Villagio": "", "объектов у Villagio": 0})
+                                "Villagio": "", "объектов у Villagio": 0, "эксперты Villagio": ""})
         e["ONEHOUSE"] = f"https://onehouse.ru/estate/village/{r['slug']}"
         if pd.isna(e.get("км до МКАД")) and not pd.isna(r["км до МКАД"]):
             e["км до МКАД"] = r["км до МКАД"]
@@ -57,7 +57,7 @@ def main():
     lists = [l.strip() for l in (ROOT / "data" / "lists" / "компании_и_поселки_2026-09-30.txt").read_text(encoding="utf-8").splitlines() if l.strip()]
     lk = {key(l): l for l in lists}
     df["наш список"] = df["посёлок"].map(lambda n: lk.get(key(n), ""))
-    cian = pd.read_excel(max(DRIVE.glob("циан_свод_*.xlsx"), key=lambda p: p.stat().st_mtime), sheet_name="дома")
+    cian = pd.read_csv(ROOT / "data" / "lists" / "cian_doma.tsv", sep="	")
     ck = cian["посёлок/место"].fillna("").map(lambda p: key(re.sub(r"\(КП\)|^(д|пос|с)\.\s*", "", p))).value_counts().to_dict()
     df["домов на Циане"] = df["посёлок"].map(lambda n: ck.get(key(n), 0))
     tg = pd.read_csv(ROOT / "data" / "lists" / "tg_poselki_otbor.tsv", sep="\t").fillna("")
@@ -66,13 +66,10 @@ def main():
     df["наша территория"] = df["шоссе"].str.contains("Новорижск|Рублёво|Ильинск")
     df = df.sort_values(["наша территория", "домов на Циане", "объектов у Villagio"], ascending=False)
     df.to_csv(ROOT / "data" / "lists" / "poselki_katalog.tsv", sep="\t", index=False)
-    out = DRIVE / f"посёлки_каталог_{datetime.now():%Y-%m-%d}.xlsx"
-    df.to_excel(out, index=False)
     t = df[df["наша территория"]]
     print(f"посёлков {len(df)}, на нашей территории {len(t)}; в обоих каталогах {((df['Villagio'] != '') & (df['ONEHOUSE'] != '')).sum()}")
     print(t["шоссе"].value_counts().to_dict(), "| из нашего списка:", (df["наш список"] != "").sum(),
           "| с домами на Циане:", (t["домов на Циане"] > 0).sum(), "| с Telegram:", (df["Telegram"] != "").sum())
-    print(out)
 
 
 if __name__ == "__main__":

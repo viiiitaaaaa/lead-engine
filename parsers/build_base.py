@@ -166,8 +166,8 @@ def main():
 
     avito = pd.concat([pd.read_excel(f) for f in sorted(OUT.glob("авито_*.xlsx"))], ignore_index=True)
     avito = avito[[c for c in ("title", "phone", "url", "seller.name", "seller", "snippet") if c in avito.columns]]
-    cian_x = max(OUT.glob("циан_свод_*.xlsx"), key=lambda p: p.stat().st_mtime)  # свод: parsers/cian_digest.py
-    cian, cian_sellers = pd.read_excel(cian_x, sheet_name="дома"), pd.read_excel(cian_x, sheet_name="продавцы")
+    lists = Path(__file__).resolve().parent.parent / "data" / "lists"  # свод Циана: parsers/cian_digest.py
+    cian, cian_sellers = pd.read_csv(lists / "cian_doma.tsv", sep="	"), pd.read_csv(lists / "cian_prodavcy.tsv", sep="	")
 
     out = DRIVE / f"база_lead_engine_{datetime.now():%Y-%m-%d}.xlsx"
     with pd.ExcelWriter(out) as w:

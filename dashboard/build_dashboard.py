@@ -173,11 +173,14 @@ def main():
     ov_res = len(set().union(set(), *(set(v["h"]) for f in members for k, v in json.loads(f.read_text(encoding="utf-8")).items() if k in village)))
     cs_rows = [{"name": s(r["продавец"]), "who": s(r["кто"]), "n": int(r["домов"]), "phone": s(r["телефоны"]), "price": s(r["цены, млн ₽"]),
                 "hw": s(r["шоссе"]), "where": s(r["где продаёт"])} for _, r in cian_s.iterrows()]
+    ch_rows = [{"place": s(r["посёлок/место"]), "hw": s(r["шоссе"]), "km": s(r["до МКАД, км"]), "price": None if pd.isna(r["цена, млн ₽"]) else float(r["цена, млн ₽"]),
+                "what": s(r["что"]), "seller": s(r["продавец"]), "who": s(r["кто продаёт"]), "phone": s(r["телефон"]), "url": s(r["ссылка"])}
+               for _, r in cian.iterrows()]
     cian_places = cian["посёлок/место"].fillna("").loc[lambda x: x != ""].value_counts().head(20).to_dict()
     kat = pd.read_csv(ROOT / "data" / "lists" / "poselki_katalog.tsv", sep="	").fillna("")
     kat_rows = [{"name": s(r["посёлок"]), "hw": s(r["шоссе"]), "km": None if r["км до МКАД"] == "" else int(float(r["км до МКАД"])),
                  "ours": s(r["наш список"]), "cian": int(r["домов на Циане"]), "vil": int(r["объектов у Villagio"] or 0),
-                 "tg": s(r["Telegram"]), "u1": s(r["Villagio"]), "u2": s(r["ONEHOUSE"]), "terr": bool(r["наша территория"])} for _, r in kat.iterrows()]
+                 "tg": s(r["Telegram"]), "exp": s(r["эксперты Villagio"]), "u1": s(r["Villagio"]), "u2": s(r["ONEHOUSE"]), "terr": bool(r["наша территория"])} for _, r in kat.iterrows()]
     av_rows = [{"title": s(r.get("title")), "phone": s(r.get("phone")), "url": s(r.get("url")),
                 "seller": s(r.get("seller.name") if "seller.name" in avito.columns else r.get("seller"))[:80]}
                for _, r in avito.iterrows()]
@@ -194,7 +197,7 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "kat": kat_rows, "cs": cs_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "kat": kat_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
         "spend": [("Apify", "≈15.7 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
     }
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))
