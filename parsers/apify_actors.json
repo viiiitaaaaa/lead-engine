@@ -73,5 +73,47 @@
     "оценка": "без отзывов, 68 польз.",
     "зачем": "дома и участки в посёлках на Яндекс Недвижимости: цены, телефоны продавцов, история цен",
     "цена": "$0.003 объявление, $0.0015 телефон, $0.05 запуск"
+  },
+  "yandex_reverse_image_search__johnvc": {
+    "actor": "johnvc/yandex-reverse-image-search",
+    "название": "Yandex Reverse Image Search API",
+    "польз.": 185,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "yandex_maps_reviews_scraper__fetch_cat": {
+    "actor": "fetch_cat/yandex-maps-reviews-scraper",
+    "название": "Yandex Maps Reviews Scraper",
+    "польз.": 52,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "Scrape_Yandex__johnvc": {
+    "actor": "johnvc/Scrape-Yandex",
+    "название": "Yandex (Яндекс) | Парсер Поиска Яндекса",
+    "польз.": 2170,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "yandex_maps_scraper__zen-studio": {
+    "actor": "zen-studio/yandex-maps-scraper",
+    "название": "Yandex Maps Scraper | Парсер Яндекс Карт - Leads & Reviews",
+    "польз.": 1030,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "yandex_maps_scraper__dami_studio": {
+    "actor": "dami_studio/yandex-maps-scraper",
+    "название": "Yandex Maps Scraper API",
+    "польз.": 48,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "yandex_zen_scraper__sashaebashu": {
+    "actor": "sashaebashu/yandex-zen-scraper",
+    "название": "Yandex Zen Scraper",
+    "польз.": 38,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "yandex_realty_scraper__normdata": {
+    "actor": "normdata/yandex-realty-scraper",
+    "название": "Yandex Realty Scraper",
+    "польз.": 2,
+    "добавлен": "30.09 по её списку, не проверен"
   }
 }
