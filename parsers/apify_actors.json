@@ -169,5 +169,173 @@
     "название": "Contact Details Scraper",
     "польз.": 61344,
     "добавлен": "30.09 по её списку, не проверен"
+  },
+  "vk_posts_scraper__maximedupre": {
+    "actor": "maximedupre/vk-posts-scraper",
+    "название": "VK Posts Scraper",
+    "польз.": 313,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "vk_people_scraper__easyapi": {
+    "actor": "easyapi/vk-people-scraper",
+    "название": "VK People Scraper",
+    "польз.": 222,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "vk_instant_content_scraper__endspec": {
+    "actor": "endspec/vk-instant-content-scraper",
+    "название": "VK Content Scraper — Posts, Users, Communities",
+    "польз.": 94,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "vk_videos_search_scraper__easyapi": {
+    "actor": "easyapi/vk-videos-search-scraper",
+    "название": "VK Videos Search Scraper 🎥",
+    "польз.": 214,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "vk_groups_scraper__khadinakbar": {
+    "actor": "khadinakbar/vk-groups-scraper",
+    "название": "VK Groups Scraper",
+    "польз.": 45,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "vkontakte__jupri": {
+    "actor": "jupri/vkontakte",
+    "название": "VK Socials Extractor",
+    "польз.": 245,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_scraper__apify": {
+    "actor": "apify/instagram-scraper",
+    "название": "Instagram Scraper",
+    "польз.": 411529,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_profile_scraper__apify": {
+    "actor": "apify/instagram-profile-scraper",
+    "название": "Instagram Profile Scraper",
+    "польз.": 232031,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_reel_scraper__apify": {
+    "actor": "apify/instagram-reel-scraper",
+    "название": "Instagram Reel Scraper",
+    "польз.": 154423,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_post_scraper__apify": {
+    "actor": "apify/instagram-post-scraper",
+    "название": "Instagram Post Scraper",
+    "польз.": 133361,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_hashtag_scraper__apify": {
+    "actor": "apify/instagram-hashtag-scraper",
+    "название": "Instagram Hashtag Scraper",
+    "польз.": 120503,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_comment_scraper__apify": {
+    "actor": "apify/instagram-comment-scraper",
+    "название": "Instagram Comments Scraper",
+    "польз.": 56866,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_search_scraper__apify": {
+    "actor": "apify/instagram-search-scraper",
+    "название": "Instagram Search Scraper",
+    "польз.": 28809,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_scraper_followers_following_no_cookies__scraping_solutions": {
+    "actor": "scraping_solutions/instagram-scraper-followers-following-no-cookies",
+    "название": "Instagram Followers/Following Scraper | No Login | No Cookies",
+    "польз.": 16017,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_post_details__data-slayer": {
+    "actor": "data-slayer/instagram-post-details",
+    "название": "Instagram Post & Reel Details Scraper · No Login",
+    "польз.": 3711,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_profile_scraper_bio_posts__coderx": {
+    "actor": "coderx/instagram-profile-scraper-bio-posts",
+    "название": "Instagram Profile Scraper (Bio & Posts)",
+    "польз.": 6436,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_scraper__apidojo": {
+    "actor": "apidojo/instagram-scraper",
+    "название": "Instagram Scraper (Pay Per Result)",
+    "польз.": 9340,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_posts_scraper_lowcost__sones": {
+    "actor": "sones/instagram-posts-scraper-lowcost",
+    "название": "Instagram Posts Scraper Lowcost (0.3$/1K 🤑)",
+    "польз.": 7340,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_transcripts_scraper__apple_yang": {
+    "actor": "apple_yang/instagram-transcripts-scraper",
+    "название": "Instagram Transcript API & Profile Scraper - AI Video to Text",
+    "польз.": 2891,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_followers_scraper__datadoping": {
+    "actor": "datadoping/instagram-followers-scraper",
+    "название": "Instagram Followers Scraper (No Cookie)",
+    "польз.": 5972,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_tagged_scraper__apify": {
+    "actor": "apify/instagram-tagged-scraper",
+    "название": "Instagram Mentions Scraper",
+    "польз.": 10502,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_followers_count_scraper__apify": {
+    "actor": "apify/instagram-followers-count-scraper",
+    "название": "Instagram Followers Count Scraper",
+    "польз.": 15987,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_search_reels__patient_discovery": {
+    "actor": "patient_discovery/instagram-search-reels",
+    "название": "Instagram Reels Scraper from any keyword - No Login - No cookie",
+    "польз.": 3004,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_followers_following_scraper__apify": {
+    "actor": "apify/instagram-followers-following-scraper",
+    "название": "Instagram Followers and Following Scraper",
+    "польз.": 3102,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_scraper_api__apidojo": {
+    "actor": "apidojo/instagram-scraper-api",
+    "название": "Fast Instagram Scraper API - Posts, Reels, Profiles & Hashtags",
+    "польз.": 2615,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_likes_scraper__datadoping": {
+    "actor": "datadoping/instagram-likes-scraper",
+    "название": "Instagram Likes Scraper (No Cookie)",
+    "польз.": 2290,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_reel_analytics_by_url__patient_discovery": {
+    "actor": "patient_discovery/instagram-reel-analytics-by-url",
+    "название": "Instagram Reel & Post Analytics by URL",
+    "польз.": 971,
+    "добавлен": "30.09 по её списку, не проверен"
+  },
+  "instagram_followers_followings_scraper__thenetaji": {
+    "actor": "thenetaji/instagram-followers-followings-scraper",
+    "название": "Instagram Followers & Followings Scraper",
+    "польз.": 1239,
+    "добавлен": "30.09 по её списку, не проверен"
   }
 }
