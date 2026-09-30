@@ -1,485 +1,495 @@
 {
-  "_что": "Лучшие по отзывам сборщики Apify под схему воронки (пересмотрено 30.09.2026: оценка ★ и число отзывов, при равенстве — число пользователей). Запуск: python parsers/apify_run.py <ключ> input.json --cap 0.5",
-  "yandex_maps": {
-    "actor": "m_mamaev/yandex-maps-places-scraper",
-    "оценка": "★3.6 (11 отз.), 1545 польз.",
-    "зачем": "карточки Яндекс Карт: телефоны, сайт, адрес, рейтинг",
-    "цена": "$0.004 орг., $0.0005 отзыв, $0.02 запуск",
-    "проверен": "30.09 — работает; у zen-studio тоже ★3.6, но отзывов меньше"
-  },
-  "yandex_reviews": {
-    "actor": "zen-studio/yandex-maps-reviews-scraper",
-    "оценка": "★5 (2 отз.), 569 польз.",
-    "зачем": "все отзывы Яндекс Карт → карта болей"
-  },
-  "yandex_search": {
-    "actor": "johnvc/yandex-scrape-yandex-search-results-at-scale---per-result",
-    "оценка": "★5 (4 отз.)",
-    "зачем": "поиск Яндекса: чаты, форумы, сайты посёлков"
-  },
-  "2gis": {
-    "actor": "m_mamaev/2gis-places-scraper",
-    "оценка": "★4.8 (13 отз.), 1312 польз.",
-    "зачем": "карточки 2ГИС: телефоны, почты, сайты",
-    "цена": "$0.003 орг., $0.0015 контакты, $0.03 запуск"
-  },
-  "2gis_reviews": {
-    "actor": "zen-studio/2gis-reviews-scraper",
-    "оценка": "★5 (2 отз.), 389 польз.",
-    "зачем": "отзывы 2ГИС → боли"
-  },
-  "avito": {
-    "actor": "zen-studio/avito-listings-scraper",
-    "оценка": "★5 (3 отз.), 1086 польз.",
-    "зачем": "объявления подрядчиков с телефонами"
-  },
-  "avito_sellers": {
-    "actor": "zen-studio/avito-seller-profile-scraper",
-    "оценка": "★5 (3 отз.)",
-    "зачем": "профили продавцов Авито: телефоны, отзывы"
-  },
-  "cian": {
-    "actor": "igolaizola/cian-ru-scraper",
-    "оценка": "без отзывов, 180 польз. (лучше нет)",
-    "зачем": "дома и участки в посёлках, застройщики"
-  },
-  "telegram": {
-    "actor": "webfinity/telegram-channel-content-media-scraper-v2",
-    "оценка": "★5 (8 отз.), 1138 польз.",
-    "зачем": "посты каналов посёлков и конкурентов"
-  },
-  "telegram_groups": {
-    "actor": "powerai/telegram-groups-search-scraper",
-    "оценка": "★5 (1 отз.), 239 польз.",
-    "зачем": "поиск чатов по словам («Миллениум Парк чат»)"
-  },
-  "instagram_tags": {
-    "actor": "scraping_solutions/instagram-hashtag-scraper-pro-no-cookies",
-    "оценка": "★5 (5 отз.), 1117 польз.",
-    "зачем": "посты по хэштегам #новаярига #домподключ…"
-  },
-  "instagram_profiles": {
-    "actor": "coderx/instagram-profile-scraper-api",
-    "оценка": "★5 (12 отз.), 3360 польз.",
-    "зачем": "профили конкурентов: био, контакты, посты"
-  },
-  "vk": {
-    "actor": "easyapi/vk-posts-scraper",
-    "оценка": "★5 (1 отз.), 376 польз.",
-    "зачем": "посты групп посёлков ВКонтакте"
-  },
-  "yandex_realty": {
-    "actor": "zen-studio/yandex-realty-scraper",
-    "оценка": "без отзывов, 68 польз.",
-    "зачем": "дома и участки в посёлках на Яндекс Недвижимости: цены, телефоны продавцов, история цен",
-    "цена": "$0.003 объявление, $0.0015 телефон, $0.05 запуск"
-  },
-  "yandex_reverse_image_search__johnvc": {
-    "actor": "johnvc/yandex-reverse-image-search",
-    "название": "Yandex Reverse Image Search API",
-    "польз.": 185,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "yandex_maps_reviews_scraper__fetch_cat": {
-    "actor": "fetch_cat/yandex-maps-reviews-scraper",
-    "название": "Yandex Maps Reviews Scraper",
-    "польз.": 52,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "Scrape_Yandex__johnvc": {
-    "actor": "johnvc/Scrape-Yandex",
-    "название": "Yandex (Яндекс) | Парсер Поиска Яндекса",
-    "польз.": 2170,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "yandex_maps_scraper__zen-studio": {
-    "actor": "zen-studio/yandex-maps-scraper",
-    "название": "Yandex Maps Scraper | Парсер Яндекс Карт - Leads & Reviews",
-    "польз.": 1030,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "yandex_maps_scraper__dami_studio": {
-    "actor": "dami_studio/yandex-maps-scraper",
-    "название": "Yandex Maps Scraper API",
-    "польз.": 48,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "yandex_zen_scraper__sashaebashu": {
-    "actor": "sashaebashu/yandex-zen-scraper",
-    "название": "Yandex Zen Scraper",
-    "польз.": 38,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "yandex_realty_scraper__normdata": {
-    "actor": "normdata/yandex-realty-scraper",
-    "название": "Yandex Realty Scraper",
-    "польз.": 2,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "2gis_reviews_scraper__dami_studio": {
-    "actor": "dami_studio/2gis-reviews-scraper",
-    "название": "2GIS Reviews Scraper API",
-    "польз.": 19,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "cian_scraper__one-api": {
-    "actor": "one-api/cian-scraper",
-    "название": "Cian.ru Scraper",
-    "польз.": 53,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "telegram_member_scraper__agentx": {
-    "actor": "agentx/telegram-member-scraper",
-    "название": "Telegram Member Scraper",
-    "польз.": 1380,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "avito_ru_scraper__abotapi": {
-    "actor": "abotapi/avito-ru-scraper",
-    "название": "Avito.ru Scraper - Listings, Prices, Sellers & 25+ Fields",
-    "польз.": 342,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "avito_realty_scraper__zen-studio": {
-    "actor": "zen-studio/avito-realty-scraper",
-    "название": "Авито Недвижимость: Парсер / Avito Real Estate Scraper",
-    "польз.": 56,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "avito_russia_scraper__fatihtahta": {
-    "actor": "fatihtahta/avito-russia-scraper",
-    "название": "Avito.RU Scraper | Fast & Reliable",
-    "польз.": 450,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "telegram_keyword_search_scraper__lofomachines": {
-    "actor": "lofomachines/telegram-keyword-search-scraper",
-    "название": "Telegram Keyword Search Scraper",
-    "польз.": 1276,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "telegram_channel_message__truefetch": {
-    "actor": "truefetch/telegram-channel-message",
-    "название": "Telegram Channel Message",
-    "польз.": 950,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "contact_info_scraper__vdrmota": {
-    "actor": "vdrmota/contact-info-scraper",
-    "название": "Contact Details Scraper",
-    "польз.": 61344,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "vk_posts_scraper__maximedupre": {
-    "actor": "maximedupre/vk-posts-scraper",
-    "название": "VK Posts Scraper",
-    "польз.": 313,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "vk_people_scraper__easyapi": {
-    "actor": "easyapi/vk-people-scraper",
-    "название": "VK People Scraper",
-    "польз.": 222,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "vk_instant_content_scraper__endspec": {
-    "actor": "endspec/vk-instant-content-scraper",
-    "название": "VK Content Scraper — Posts, Users, Communities",
-    "польз.": 94,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "vk_videos_search_scraper__easyapi": {
-    "actor": "easyapi/vk-videos-search-scraper",
-    "название": "VK Videos Search Scraper 🎥",
-    "польз.": 214,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "vk_groups_scraper__khadinakbar": {
-    "actor": "khadinakbar/vk-groups-scraper",
-    "название": "VK Groups Scraper",
-    "польз.": 45,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "vkontakte__jupri": {
-    "actor": "jupri/vkontakte",
-    "название": "VK Socials Extractor",
-    "польз.": 245,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_scraper__apify": {
-    "actor": "apify/instagram-scraper",
-    "название": "Instagram Scraper",
-    "польз.": 411529,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_profile_scraper__apify": {
-    "actor": "apify/instagram-profile-scraper",
-    "название": "Instagram Profile Scraper",
-    "польз.": 232031,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_reel_scraper__apify": {
-    "actor": "apify/instagram-reel-scraper",
-    "название": "Instagram Reel Scraper",
-    "польз.": 154423,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_post_scraper__apify": {
-    "actor": "apify/instagram-post-scraper",
-    "название": "Instagram Post Scraper",
-    "польз.": 133361,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_hashtag_scraper__apify": {
-    "actor": "apify/instagram-hashtag-scraper",
-    "название": "Instagram Hashtag Scraper",
-    "польз.": 120503,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_comment_scraper__apify": {
-    "actor": "apify/instagram-comment-scraper",
-    "название": "Instagram Comments Scraper",
-    "польз.": 56866,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_search_scraper__apify": {
-    "actor": "apify/instagram-search-scraper",
-    "название": "Instagram Search Scraper",
-    "польз.": 28809,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_scraper_followers_following_no_cookies__scraping_solutions": {
-    "actor": "scraping_solutions/instagram-scraper-followers-following-no-cookies",
-    "название": "Instagram Followers/Following Scraper | No Login | No Cookies",
-    "польз.": 16017,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_post_details__data-slayer": {
-    "actor": "data-slayer/instagram-post-details",
-    "название": "Instagram Post & Reel Details Scraper · No Login",
-    "польз.": 3711,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_profile_scraper_bio_posts__coderx": {
-    "actor": "coderx/instagram-profile-scraper-bio-posts",
-    "название": "Instagram Profile Scraper (Bio & Posts)",
-    "польз.": 6436,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_scraper__apidojo": {
-    "actor": "apidojo/instagram-scraper",
-    "название": "Instagram Scraper (Pay Per Result)",
-    "польз.": 9340,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_posts_scraper_lowcost__sones": {
-    "actor": "sones/instagram-posts-scraper-lowcost",
-    "название": "Instagram Posts Scraper Lowcost (0.3$/1K 🤑)",
-    "польз.": 7340,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_transcripts_scraper__apple_yang": {
-    "actor": "apple_yang/instagram-transcripts-scraper",
-    "название": "Instagram Transcript API & Profile Scraper - AI Video to Text",
-    "польз.": 2891,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_followers_scraper__datadoping": {
-    "actor": "datadoping/instagram-followers-scraper",
-    "название": "Instagram Followers Scraper (No Cookie)",
-    "польз.": 5972,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_tagged_scraper__apify": {
-    "actor": "apify/instagram-tagged-scraper",
-    "название": "Instagram Mentions Scraper",
-    "польз.": 10502,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_followers_count_scraper__apify": {
-    "actor": "apify/instagram-followers-count-scraper",
-    "название": "Instagram Followers Count Scraper",
-    "польз.": 15987,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_search_reels__patient_discovery": {
-    "actor": "patient_discovery/instagram-search-reels",
-    "название": "Instagram Reels Scraper from any keyword - No Login - No cookie",
-    "польз.": 3004,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_followers_following_scraper__apify": {
-    "actor": "apify/instagram-followers-following-scraper",
-    "название": "Instagram Followers and Following Scraper",
-    "польз.": 3102,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_scraper_api__apidojo": {
-    "actor": "apidojo/instagram-scraper-api",
-    "название": "Fast Instagram Scraper API - Posts, Reels, Profiles & Hashtags",
-    "польз.": 2615,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_likes_scraper__datadoping": {
-    "actor": "datadoping/instagram-likes-scraper",
-    "название": "Instagram Likes Scraper (No Cookie)",
-    "польз.": 2290,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_reel_analytics_by_url__patient_discovery": {
-    "actor": "patient_discovery/instagram-reel-analytics-by-url",
-    "название": "Instagram Reel & Post Analytics by URL",
-    "польз.": 971,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_followers_followings_scraper__thenetaji": {
-    "actor": "thenetaji/instagram-followers-followings-scraper",
-    "название": "Instagram Followers & Followings Scraper",
-    "польз.": 1239,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_scraper__streamers": {
-    "actor": "streamers/youtube-scraper",
-    "название": "YouTube Scraper",
-    "польз.": 128820,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_transcript_scraper__pintostudio": {
-    "actor": "pintostudio/youtube-transcript-scraper",
-    "название": "Youtube Transcript Scraper",
-    "польз.": 25218,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_comments_scraper__streamers": {
-    "actor": "streamers/youtube-comments-scraper",
-    "название": "YouTube Comments Scraper",
-    "польз.": 24558,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_shorts_scraper__streamers": {
-    "actor": "streamers/youtube-shorts-scraper",
-    "название": "YouTube Shorts Scraper",
-    "польз.": 65291,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_channel_scraper__streamers": {
-    "actor": "streamers/youtube-channel-scraper",
-    "название": "Fast YouTube Channel Scraper",
-    "польз.": 23842,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_channel_video_scraper__grow_media": {
-    "actor": "grow_media/youtube-channel-video-scraper",
-    "название": "Youtube Channel Video Scraper",
-    "польз.": 5450,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_transcript_ai_scraper__codepoetry": {
-    "actor": "codepoetry/youtube-transcript-ai-scraper",
-    "название": "YouTube Transcript Scraper Pro (Captions + AI Fallback)",
-    "польз.": 1864,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_channel_information_scraper__apidojo": {
-    "actor": "apidojo/youtube-channel-information-scraper",
-    "название": "Fast YouTube Channel Scraper API | Profiles, Subs & Stats",
-    "польз.": 2393,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_channel_scraper__grow_media": {
-    "actor": "grow_media/youtube-channel-scraper",
-    "название": "Youtube Channel Scraper",
-    "польз.": 2230,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_comments_scraper__api-ninja": {
-    "actor": "api-ninja/youtube-comments-scraper",
-    "название": "YouTube Comments Scraper",
-    "польз.": 571,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_channel_email_scraper__lurkapi": {
-    "actor": "lurkapi/youtube-channel-email-scraper",
-    "название": "YouTube Channel Email Scraper",
-    "польз.": 1122,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_search_api__grow_media": {
-    "actor": "grow_media/youtube-search-api",
-    "название": "Youtube Search Api",
-    "польз.": 1448,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_channel_lookalike_finder__dataovercoffee": {
-    "actor": "dataovercoffee/youtube-channel-lookalike-finder",
-    "название": "Search Similar YouTube Channels by Content, Not Keywords",
-    "польз.": 584,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "youtube_transcript_metadata_extractor__dz_omar": {
-    "actor": "dz_omar/youtube-transcript-metadata-extractor",
-    "название": "Youtube Transcript",
-    "польз.": 1000,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "douyin_search_scraper__zen-studio": {
-    "actor": "zen-studio/douyin-search-scraper",
-    "название": "Douyin 抖音 Search Scraper + Video Downloader - 60+ Fields",
-    "польз.": 10871,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "vk_video_scraper__easyapi": {
-    "actor": "easyapi/vk-video-scraper",
-    "название": "VK Video Scraper",
-    "польз.": 70,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "douyin_video_audio_downloader__apple_yang": {
-    "actor": "apple_yang/douyin-video-audio-downloader",
-    "название": "Douyin Video Downloader API (No Watermark, Fast & Reliable)",
-    "польз.": 159,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "wechat_channels_video_downloader__agentflow": {
-    "actor": "agentflow/wechat-channels-video-downloader",
-    "название": "WeChat Channels (Shipinhao) Video Downloader 视频号下载",
-    "польз.": 598,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "fast_tiktok_api__novi": {
-    "actor": "novi/fast-tiktok-api",
-    "название": "Fast TikTok API (free-watermark videos)",
-    "польз.": 2223,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "bilibili_scraper__lofomachines": {
-    "actor": "lofomachines/bilibili-scraper",
-    "название": "Bilibili Scraper 哔哩哔哩采集器 - Videos, Profiles, Comments & Search",
-    "польз.": 227,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "instagram_video_scraper_api__apple_yang": {
-    "actor": "apple_yang/instagram-video-scraper-api",
-    "название": "Instagram Video Scraper API – Extract Video, Audio & Metadata",
-    "польз.": 101,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "vk_video_scraper_vkontakte__scrapestorm": {
-    "actor": "scrapestorm/vk-video-scraper-vkontakte",
-    "название": "VK Video Scraper 🎬 (вконтакте)",
-    "польз.": 30,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "video_intelligence__marielise.dev": {
-    "actor": "marielise.dev/video-intelligence",
-    "название": "Video Intelligence - AI Transcript, SEO, Chapters & Summary",
-    "польз.": 54,
-    "добавлен": "30.09 по её списку, не проверен"
-  },
-  "meta_ad_library_scraper__themineworks": {
-    "actor": "themineworks/meta-ad-library-scraper",
-    "название": "Facebook Ad Library Scraper | Meta Ads, 21 Fields, No Login",
-    "польз.": 44,
-    "добавлен": "30.09 по её списку, не проверен"
-  }
+ "_что": "Лучшие по отзывам сборщики Apify под схему воронки (пересмотрено 30.09.2026: оценка ★ и число отзывов, при равенстве — число пользователей). Запуск: python parsers/apify_run.py <ключ> input.json --cap 0.5",
+ "yandex_maps": {
+  "actor": "m_mamaev/yandex-maps-places-scraper",
+  "оценка": "★3.6 (11 отз.), 1545 польз.",
+  "зачем": "карточки Яндекс Карт: телефоны, сайт, адрес, рейтинг",
+  "цена": "$0.004 орг., $0.0005 отзыв, $0.02 запуск",
+  "проверен": "30.09 — работает; у zen-studio тоже ★3.6, но отзывов меньше"
+ },
+ "yandex_reviews": {
+  "actor": "zen-studio/yandex-maps-reviews-scraper",
+  "оценка": "★5 (2 отз.), 569 польз.",
+  "зачем": "все отзывы Яндекс Карт → карта болей"
+ },
+ "yandex_search": {
+  "actor": "johnvc/yandex-scrape-yandex-search-results-at-scale---per-result",
+  "оценка": "★5 (4 отз.)",
+  "зачем": "поиск Яндекса: чаты, форумы, сайты посёлков"
+ },
+ "2gis": {
+  "actor": "m_mamaev/2gis-places-scraper",
+  "оценка": "★4.8 (13 отз.), 1312 польз.",
+  "зачем": "карточки 2ГИС: телефоны, почты, сайты",
+  "цена": "$0.003 орг., $0.0015 контакты, $0.03 запуск"
+ },
+ "2gis_reviews": {
+  "actor": "zen-studio/2gis-reviews-scraper",
+  "оценка": "★5 (2 отз.), 389 польз.",
+  "зачем": "отзывы 2ГИС → боли"
+ },
+ "avito": {
+  "actor": "zen-studio/avito-listings-scraper",
+  "оценка": "★5 (3 отз.), 1086 польз.",
+  "зачем": "объявления подрядчиков с телефонами"
+ },
+ "avito_sellers": {
+  "actor": "zen-studio/avito-seller-profile-scraper",
+  "оценка": "★5 (3 отз.)",
+  "зачем": "профили продавцов Авито: телефоны, отзывы"
+ },
+ "cian": {
+  "actor": "igolaizola/cian-ru-scraper",
+  "оценка": "без отзывов, 180 польз. (лучше нет)",
+  "зачем": "дома и участки в посёлках, застройщики"
+ },
+ "telegram": {
+  "actor": "webfinity/telegram-channel-content-media-scraper-v2",
+  "оценка": "★5 (8 отз.), 1138 польз.",
+  "зачем": "посты каналов посёлков и конкурентов"
+ },
+ "telegram_groups": {
+  "actor": "powerai/telegram-groups-search-scraper",
+  "оценка": "★5 (1 отз.), 239 польз.",
+  "зачем": "поиск чатов по словам («Миллениум Парк чат»)"
+ },
+ "instagram_tags": {
+  "actor": "scraping_solutions/instagram-hashtag-scraper-pro-no-cookies",
+  "оценка": "★5 (5 отз.), 1117 польз.",
+  "зачем": "посты по хэштегам #новаярига #домподключ…"
+ },
+ "instagram_profiles": {
+  "actor": "coderx/instagram-profile-scraper-api",
+  "оценка": "★5 (12 отз.), 3360 польз.",
+  "зачем": "профили конкурентов: био, контакты, посты"
+ },
+ "vk": {
+  "actor": "easyapi/vk-posts-scraper",
+  "оценка": "★5 (1 отз.), 376 польз.",
+  "зачем": "посты групп посёлков ВКонтакте"
+ },
+ "yandex_realty": {
+  "actor": "zen-studio/yandex-realty-scraper",
+  "оценка": "без отзывов, 68 польз.",
+  "зачем": "дома и участки в посёлках на Яндекс Недвижимости: цены, телефоны продавцов, история цен",
+  "цена": "$0.003 объявление, $0.0015 телефон, $0.05 запуск"
+ },
+ "yandex_reverse_image_search__johnvc": {
+  "actor": "johnvc/yandex-reverse-image-search",
+  "название": "Yandex Reverse Image Search API",
+  "польз.": 185,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "yandex_maps_reviews_scraper__fetch_cat": {
+  "actor": "fetch_cat/yandex-maps-reviews-scraper",
+  "название": "Yandex Maps Reviews Scraper",
+  "польз.": 52,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "Scrape_Yandex__johnvc": {
+  "actor": "johnvc/Scrape-Yandex",
+  "название": "Yandex (Яндекс) | Парсер Поиска Яндекса",
+  "польз.": 2170,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "yandex_maps_scraper__zen-studio": {
+  "actor": "zen-studio/yandex-maps-scraper",
+  "название": "Yandex Maps Scraper | Парсер Яндекс Карт - Leads & Reviews",
+  "польз.": 1030,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "yandex_maps_scraper__dami_studio": {
+  "actor": "dami_studio/yandex-maps-scraper",
+  "название": "Yandex Maps Scraper API",
+  "польз.": 48,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "yandex_zen_scraper__sashaebashu": {
+  "actor": "sashaebashu/yandex-zen-scraper",
+  "название": "Yandex Zen Scraper",
+  "польз.": 38,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "yandex_realty_scraper__normdata": {
+  "actor": "normdata/yandex-realty-scraper",
+  "название": "Yandex Realty Scraper",
+  "польз.": 2,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "2gis_reviews_scraper__dami_studio": {
+  "actor": "dami_studio/2gis-reviews-scraper",
+  "название": "2GIS Reviews Scraper API",
+  "польз.": 19,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "cian_scraper__one-api": {
+  "actor": "one-api/cian-scraper",
+  "название": "Cian.ru Scraper",
+  "польз.": 53,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "telegram_member_scraper__agentx": {
+  "actor": "agentx/telegram-member-scraper",
+  "название": "Telegram Member Scraper",
+  "польз.": 1380,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "avito_ru_scraper__abotapi": {
+  "actor": "abotapi/avito-ru-scraper",
+  "название": "Avito.ru Scraper - Listings, Prices, Sellers & 25+ Fields",
+  "польз.": 342,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "avito_realty_scraper__zen-studio": {
+  "actor": "zen-studio/avito-realty-scraper",
+  "название": "Авито Недвижимость: Парсер / Avito Real Estate Scraper",
+  "польз.": 56,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "avito_russia_scraper__fatihtahta": {
+  "actor": "fatihtahta/avito-russia-scraper",
+  "название": "Avito.RU Scraper | Fast & Reliable",
+  "польз.": 450,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "telegram_keyword_search_scraper__lofomachines": {
+  "actor": "lofomachines/telegram-keyword-search-scraper",
+  "название": "Telegram Keyword Search Scraper",
+  "польз.": 1276,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "telegram_channel_message__truefetch": {
+  "actor": "truefetch/telegram-channel-message",
+  "название": "Telegram Channel Message",
+  "польз.": 950,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "contact_info_scraper__vdrmota": {
+  "actor": "vdrmota/contact-info-scraper",
+  "название": "Contact Details Scraper",
+  "польз.": 61344,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "vk_posts_scraper__maximedupre": {
+  "actor": "maximedupre/vk-posts-scraper",
+  "название": "VK Posts Scraper",
+  "польз.": 313,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "vk_people_scraper__easyapi": {
+  "actor": "easyapi/vk-people-scraper",
+  "название": "VK People Scraper",
+  "польз.": 222,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "vk_instant_content_scraper__endspec": {
+  "actor": "endspec/vk-instant-content-scraper",
+  "название": "VK Content Scraper — Posts, Users, Communities",
+  "польз.": 94,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "vk_videos_search_scraper__easyapi": {
+  "actor": "easyapi/vk-videos-search-scraper",
+  "название": "VK Videos Search Scraper 🎥",
+  "польз.": 214,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "vk_groups_scraper__khadinakbar": {
+  "actor": "khadinakbar/vk-groups-scraper",
+  "название": "VK Groups Scraper",
+  "польз.": 45,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "vkontakte__jupri": {
+  "actor": "jupri/vkontakte",
+  "название": "VK Socials Extractor",
+  "польз.": 245,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_scraper__apify": {
+  "actor": "apify/instagram-scraper",
+  "название": "Instagram Scraper",
+  "польз.": 411529,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_profile_scraper__apify": {
+  "actor": "apify/instagram-profile-scraper",
+  "название": "Instagram Profile Scraper",
+  "польз.": 232031,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_reel_scraper__apify": {
+  "actor": "apify/instagram-reel-scraper",
+  "название": "Instagram Reel Scraper",
+  "польз.": 154423,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_post_scraper__apify": {
+  "actor": "apify/instagram-post-scraper",
+  "название": "Instagram Post Scraper",
+  "польз.": 133361,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_hashtag_scraper__apify": {
+  "actor": "apify/instagram-hashtag-scraper",
+  "название": "Instagram Hashtag Scraper",
+  "польз.": 120503,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_comment_scraper__apify": {
+  "actor": "apify/instagram-comment-scraper",
+  "название": "Instagram Comments Scraper",
+  "польз.": 56866,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_search_scraper__apify": {
+  "actor": "apify/instagram-search-scraper",
+  "название": "Instagram Search Scraper",
+  "польз.": 28809,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_scraper_followers_following_no_cookies__scraping_solutions": {
+  "actor": "scraping_solutions/instagram-scraper-followers-following-no-cookies",
+  "название": "Instagram Followers/Following Scraper | No Login | No Cookies",
+  "польз.": 16017,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_post_details__data-slayer": {
+  "actor": "data-slayer/instagram-post-details",
+  "название": "Instagram Post & Reel Details Scraper · No Login",
+  "польз.": 3711,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_profile_scraper_bio_posts__coderx": {
+  "actor": "coderx/instagram-profile-scraper-bio-posts",
+  "название": "Instagram Profile Scraper (Bio & Posts)",
+  "польз.": 6436,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_scraper__apidojo": {
+  "actor": "apidojo/instagram-scraper",
+  "название": "Instagram Scraper (Pay Per Result)",
+  "польз.": 9340,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_posts_scraper_lowcost__sones": {
+  "actor": "sones/instagram-posts-scraper-lowcost",
+  "название": "Instagram Posts Scraper Lowcost (0.3$/1K 🤑)",
+  "польз.": 7340,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_transcripts_scraper__apple_yang": {
+  "actor": "apple_yang/instagram-transcripts-scraper",
+  "название": "Instagram Transcript API & Profile Scraper - AI Video to Text",
+  "польз.": 2891,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_followers_scraper__datadoping": {
+  "actor": "datadoping/instagram-followers-scraper",
+  "название": "Instagram Followers Scraper (No Cookie)",
+  "польз.": 5972,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_tagged_scraper__apify": {
+  "actor": "apify/instagram-tagged-scraper",
+  "название": "Instagram Mentions Scraper",
+  "польз.": 10502,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_followers_count_scraper__apify": {
+  "actor": "apify/instagram-followers-count-scraper",
+  "название": "Instagram Followers Count Scraper",
+  "польз.": 15987,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_search_reels__patient_discovery": {
+  "actor": "patient_discovery/instagram-search-reels",
+  "название": "Instagram Reels Scraper from any keyword - No Login - No cookie",
+  "польз.": 3004,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_followers_following_scraper__apify": {
+  "actor": "apify/instagram-followers-following-scraper",
+  "название": "Instagram Followers and Following Scraper",
+  "польз.": 3102,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_scraper_api__apidojo": {
+  "actor": "apidojo/instagram-scraper-api",
+  "название": "Fast Instagram Scraper API - Posts, Reels, Profiles & Hashtags",
+  "польз.": 2615,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_likes_scraper__datadoping": {
+  "actor": "datadoping/instagram-likes-scraper",
+  "название": "Instagram Likes Scraper (No Cookie)",
+  "польз.": 2290,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_reel_analytics_by_url__patient_discovery": {
+  "actor": "patient_discovery/instagram-reel-analytics-by-url",
+  "название": "Instagram Reel & Post Analytics by URL",
+  "польз.": 971,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_followers_followings_scraper__thenetaji": {
+  "actor": "thenetaji/instagram-followers-followings-scraper",
+  "название": "Instagram Followers & Followings Scraper",
+  "польз.": 1239,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_scraper__streamers": {
+  "actor": "streamers/youtube-scraper",
+  "название": "YouTube Scraper",
+  "польз.": 128820,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_transcript_scraper__pintostudio": {
+  "actor": "pintostudio/youtube-transcript-scraper",
+  "название": "Youtube Transcript Scraper",
+  "польз.": 25218,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_comments_scraper__streamers": {
+  "actor": "streamers/youtube-comments-scraper",
+  "название": "YouTube Comments Scraper",
+  "польз.": 24558,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_shorts_scraper__streamers": {
+  "actor": "streamers/youtube-shorts-scraper",
+  "название": "YouTube Shorts Scraper",
+  "польз.": 65291,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_channel_scraper__streamers": {
+  "actor": "streamers/youtube-channel-scraper",
+  "название": "Fast YouTube Channel Scraper",
+  "польз.": 23842,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_channel_video_scraper__grow_media": {
+  "actor": "grow_media/youtube-channel-video-scraper",
+  "название": "Youtube Channel Video Scraper",
+  "польз.": 5450,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_transcript_ai_scraper__codepoetry": {
+  "actor": "codepoetry/youtube-transcript-ai-scraper",
+  "название": "YouTube Transcript Scraper Pro (Captions + AI Fallback)",
+  "польз.": 1864,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_channel_information_scraper__apidojo": {
+  "actor": "apidojo/youtube-channel-information-scraper",
+  "название": "Fast YouTube Channel Scraper API | Profiles, Subs & Stats",
+  "польз.": 2393,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_channel_scraper__grow_media": {
+  "actor": "grow_media/youtube-channel-scraper",
+  "название": "Youtube Channel Scraper",
+  "польз.": 2230,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_comments_scraper__api-ninja": {
+  "actor": "api-ninja/youtube-comments-scraper",
+  "название": "YouTube Comments Scraper",
+  "польз.": 571,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_channel_email_scraper__lurkapi": {
+  "actor": "lurkapi/youtube-channel-email-scraper",
+  "название": "YouTube Channel Email Scraper",
+  "польз.": 1122,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_search_api__grow_media": {
+  "actor": "grow_media/youtube-search-api",
+  "название": "Youtube Search Api",
+  "польз.": 1448,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_channel_lookalike_finder__dataovercoffee": {
+  "actor": "dataovercoffee/youtube-channel-lookalike-finder",
+  "название": "Search Similar YouTube Channels by Content, Not Keywords",
+  "польз.": 584,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "youtube_transcript_metadata_extractor__dz_omar": {
+  "actor": "dz_omar/youtube-transcript-metadata-extractor",
+  "название": "Youtube Transcript",
+  "польз.": 1000,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "douyin_search_scraper__zen-studio": {
+  "actor": "zen-studio/douyin-search-scraper",
+  "название": "Douyin 抖音 Search Scraper + Video Downloader - 60+ Fields",
+  "польз.": 10871,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "vk_video_scraper__easyapi": {
+  "actor": "easyapi/vk-video-scraper",
+  "название": "VK Video Scraper",
+  "польз.": 70,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "douyin_video_audio_downloader__apple_yang": {
+  "actor": "apple_yang/douyin-video-audio-downloader",
+  "название": "Douyin Video Downloader API (No Watermark, Fast & Reliable)",
+  "польз.": 159,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "wechat_channels_video_downloader__agentflow": {
+  "actor": "agentflow/wechat-channels-video-downloader",
+  "название": "WeChat Channels (Shipinhao) Video Downloader 视频号下载",
+  "польз.": 598,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "fast_tiktok_api__novi": {
+  "actor": "novi/fast-tiktok-api",
+  "название": "Fast TikTok API (free-watermark videos)",
+  "польз.": 2223,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "bilibili_scraper__lofomachines": {
+  "actor": "lofomachines/bilibili-scraper",
+  "название": "Bilibili Scraper 哔哩哔哩采集器 - Videos, Profiles, Comments & Search",
+  "польз.": 227,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "instagram_video_scraper_api__apple_yang": {
+  "actor": "apple_yang/instagram-video-scraper-api",
+  "название": "Instagram Video Scraper API – Extract Video, Audio & Metadata",
+  "польз.": 101,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "vk_video_scraper_vkontakte__scrapestorm": {
+  "actor": "scrapestorm/vk-video-scraper-vkontakte",
+  "название": "VK Video Scraper 🎬 (вконтакте)",
+  "польз.": 30,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "video_intelligence__marielise.dev": {
+  "actor": "marielise.dev/video-intelligence",
+  "название": "Video Intelligence - AI Transcript, SEO, Chapters & Summary",
+  "польз.": 54,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "meta_ad_library_scraper__themineworks": {
+  "actor": "themineworks/meta-ad-library-scraper",
+  "название": "Facebook Ad Library Scraper | Meta Ads, 21 Fields, No Login",
+  "польз.": 44,
+  "добавлен": "30.09 по её списку, не проверен"
+ },
+ "tgkit_finder": {
+  "actor": "automation-lab/tgkit-telegram-channel-finder-scraper",
+  "название": "TGKit Telegram Channel Finder",
+  "польз.": 63,
+  "добавлен": "01.10: русские запросы → TGKit HTTP 422, работает только латиница; для посёлков бесполезен"
+ },
+ "_отказ_tgstat_parser": {
+  "actor": "backhoe/tgstat-channel-parser",
+  "почему": "01.10: 27 из 30 запусков за месяц зависли по времени — не использовать"
+ }
 }
