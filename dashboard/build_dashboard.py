@@ -171,8 +171,11 @@ def main():
     members = sorted((ROOT / "data" / "raw").glob("tg_members_*.json"))
     village = {u.replace("https://t.me/", "") for u in tgo[tgo["группа"].str.startswith("1.")]["ссылка"]}
     ov_res = len(set().union(set(), *(set(v["h"]) for f in members for k, v in json.loads(f.read_text(encoding="utf-8")).items() if k in village)))
+    bf = sorted((ROOT / "data" / "raw").glob("brokers_*.json"))  # сайты и почты агентств: parsers/brokers_contacts.py
+    br = json.loads(bf[-1].read_text(encoding="utf-8")) if bf else {}
     cs_rows = [{"name": s(r["продавец"]), "who": s(r["кто"]), "n": int(r["домов"]), "phone": s(r["телефоны"]), "price": s(r["цены, млн ₽"]),
-                "hw": s(r["шоссе"]), "where": s(r["где продаёт"])} for _, r in cian_s.iterrows()]
+                "hw": s(r["шоссе"]), "where": s(r["где продаёт"]), "site": (br.get(r["продавец"]) or {}).get("сайт", ""),
+                "mail": (br.get(r["продавец"]) or {}).get("почты", "")} for _, r in cian_s.iterrows()]
     ch_rows = [{"place": s(r["посёлок/место"]), "hw": s(r["шоссе"]), "km": s(r["до МКАД, км"]), "price": None if pd.isna(r["цена, млн ₽"]) else float(r["цена, млн ₽"]),
                 "what": s(r["что"]), "seller": s(r["продавец"]), "who": s(r["кто продаёт"]), "phone": s(r["телефон"]), "url": s(r["ссылка"])}
                for _, r in cian.iterrows()]
@@ -180,7 +183,7 @@ def main():
     kat = pd.read_csv(ROOT / "data" / "lists" / "poselki_katalog.tsv", sep="	").fillna("")
     kat_rows = [{"name": s(r["посёлок"]), "hw": s(r["шоссе"]), "km": None if r["км до МКАД"] == "" else int(float(r["км до МКАД"])),
                  "ours": s(r["наш список"]), "cian": int(r["домов на Циане"]), "vil": int(r["объектов у Villagio"] or 0),
-                 "tg": s(r["Telegram"]), "exp": s(r["эксперты Villagio"]), "u1": s(r["Villagio"]), "u2": s(r["ONEHOUSE"]), "terr": bool(r["наша территория"])} for _, r in kat.iterrows()]
+                 "tg": s(r["Telegram"]), "exp": s(r["эксперты Villagio"]), "ck": s(r.get("контакт: что", "")), "cs": s(r.get("контакт: сайт", "")), "cp": s(r.get("контакт: телефоны", "")), "cm": s(r.get("контакт: почты", "")), "u1": s(r["Villagio"]), "u2": s(r["ONEHOUSE"]), "terr": bool(r["наша территория"])} for _, r in kat.iterrows()]
     av_rows = [{"title": s(r.get("title")), "phone": s(r.get("phone")), "url": s(r.get("url")),
                 "seller": s(r.get("seller.name") if "seller.name" in avito.columns else r.get("seller"))[:80]}
                for _, r in avito.iterrows()]

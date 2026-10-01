@@ -64,6 +64,10 @@ def main():
     tgt = [(key(f'{r["название"]} {r["заметка"]}'), r["ссылка"]) for _, r in tg.iterrows()]
     df["Telegram"] = df["посёлок"].map(lambda n: next((u for t, u in tgt if len(key(n)) > 4 and key(n) in t), ""))
     df["наша территория"] = df["шоссе"].str.contains("Новорижск|Рублёво|Ильинск")
+    ukf = sorted((ROOT / "data" / "raw").glob("uk_*.json"))  # контакты УК / сайта посёлка: parsers/uk_search.py
+    uk = json.loads(ukf[-1].read_text(encoding="utf-8")) if ukf else {}
+    for col, fld in (("контакт: что", "что это"), ("контакт: сайт", "сайт"), ("контакт: телефоны", "телефоны"), ("контакт: почты", "почты")):
+        df[col] = df["посёлок"].map(lambda n: (uk.get(n) or {}).get(fld, ""))
     df = df.sort_values(["наша территория", "домов на Циане", "объектов у Villagio"], ascending=False)
     df.to_csv(ROOT / "data" / "lists" / "poselki_katalog.tsv", sep="\t", index=False)
     t = df[df["наша территория"]]
