@@ -142,6 +142,10 @@ details[open] summary{margin-bottom:12px}
     <div class="tools"><input type="search" id="kq" placeholder="Поиск посёлка"><select id="kh"><option value="">Наша территория</option><option value="*">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select>
       <label><input type="checkbox" id="ko"> только из нашего списка</label><label><input type="checkbox" id="kc"> продаются дома (Циан)</label><label><input type="checkbox" id="kk"> есть контакт УК / посёлка</label><span class="sub" id="kcount"></span></div>
     <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>Шоссе</th><th>км от МКАД</th><th>Домов на Циане</th><th>Объектов у Villagio</th><th>УК / сайт посёлка</th><th>Телефон</th><th>Почта</th><th>Эксперты Villagio</th><th>Ссылки</th></tr></thead><tbody id="krows"></tbody></table></div></div>
+  <div class="card" style="margin-top:16px"><h2>Редакции, СМИ и блогеры территории <span class="sub" id="mdsub"></span></h2>
+    <div class="sub" style="margin-bottom:10px">Для PR и размещения кейсов. Только находки про Рублёвку, Новую Ригу, Ильинское ш. или загородную жизнь.</div>
+    <div class="tools"><input type="search" id="mdq" placeholder="Поиск"><select id="mdk"><option value="">Все виды</option><option>сайт / СМИ</option><option>Telegram</option><option>ВК</option><option>YouTube</option><option>Дзен</option></select><span class="sub" id="mdcount"></span></div>
+    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Издание / блог</th><th>Вид</th><th>Подписчиков</th><th>Почта</th><th>Телефон</th><th>О чём</th></tr></thead><tbody id="mdrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h2>Циан — кто продаёт дома на Рублёвке и Новой Риге <span class="sub" id="csub"></span></h2>
     <div class="sub" style="margin-bottom:12px">Дома от 50 млн ₽. Продавцы — агентства и риелторы элитной загородки: канал «Брокеры» по схеме. Слева — где больше всего продают.</div>
     <section class="grid two" style="margin:0"><div id="cplaces"></div>
@@ -233,6 +237,13 @@ function krender(){ const q=$("kq").value.toLowerCase(), h=$("kh").value;
     <td class="num">${k.cian||"—"}</td><td class="num">${k.vil||"—"}</td><td class="lk">${k.cs?`<a href="${esc(k.cs)}" target="_blank">${esc(k.ck)}</a>`:"—"}</td><td class="ph">${esc(k.cp).split(", ").slice(0,2).join("<br>")}</td><td class="mail">${esc(k.cm).split(", ").slice(0,2).join("<br>")}</td><td class="k">${esc(k.exp)}</td><td class="lk">${k.u1?`<a href="${esc(k.u1)}" target="_blank">Villagio</a>`:""}${k.u2?`<a href="${esc(k.u2)}" target="_blank">ONEHOUSE</a>`:""}${k.tg?`<a href="${esc(k.tg)}" target="_blank">TG</a>`:""}</td></tr>`).join(""); }
 $("ksub").textContent=`· ${D.kat.length} посёлков, ${D.kat.filter(k=>k.terr).length} на нашей территории`;
 ["kq","kh","ko","kc","kk"].forEach(id=>$(id).addEventListener("input",krender)); krender();
+function mdrender(){ const q=$("mdq").value.toLowerCase(), k=$("mdk").value;
+  const r=D.md.filter(m=>(!k||m.kind===k)&&(!q||(m.title+" "+m.snip+" "+m.url).toLowerCase().includes(q))).sort((a,b)=>(b.n||0)-(a.n||0));
+  $("mdcount").textContent=`${r.length} из ${D.md.length}`;
+  $("mdrows").innerHTML=r.map(m=>`<tr><td class="lk"><a href="${esc(m.url)}" target="_blank">открыть</a> <b>${esc(m.title)}</b></td><td class="k">${esc(m.kind)}<div>${esc(m.grp)}</div></td>
+    <td class="num">${m.n?fmt(m.n):"—"}</td><td class="mail">${esc(m.mail).split(", ").slice(0,2).join("<br>")}</td><td class="ph">${esc(m.phone).split(", ").slice(0,2).join("<br>")}</td><td class="k">${esc(m.snip)}</td></tr>`).join(""); }
+$("mdsub").textContent = D.md.length?`· ${D.md.length} находок`:"· ещё не собрано";
+["mdq","mdk"].forEach(id=>$(id).addEventListener("input",mdrender)); mdrender();
 const cpm = Math.max(1,...Object.values(D.cplaces));
 $("csub").textContent = `· ${fmt(D.chouses)} домов · ${D.cs.length} продавцов`;
 $("cplaces").innerHTML = Object.entries(D.cplaces).map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><i style="width:${v/cpm*100}%"></i><em>${v}</em></div>`).join("");
