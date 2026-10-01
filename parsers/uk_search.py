@@ -46,6 +46,7 @@ def one(row: dict, token: str) -> dict:
 def main():
     kat = pd.read_csv(ROOT / "data" / "lists" / "poselki_katalog.tsv", sep="\t").fillna("")
     kat = kat[kat["наша территория"].astype(str) == "True"]
+    kat = kat.assign(_p=(kat["наш список"] != "") * 1000 + kat["домов на Циане"].astype(int)).sort_values("_p", ascending=False)
     if "--limit" in sys.argv:
         kat = kat.head(int(sys.argv[sys.argv.index("--limit") + 1]))
     token = env("BRIGHTDATA_API_TOKEN")
@@ -53,7 +54,7 @@ def main():
     res = json.loads(part.read_text(encoding="utf-8")) if part.exists() else {}
     rows = [r for r in kat.to_dict("records") if r["посёлок"] not in res]
     print(f"уже есть {len(res)}, осталось {len(rows)}", flush=True)
-    with ThreadPoolExecutor(8) as pool:
+    with ThreadPoolExecutor(16) as pool:
         for n, (r, v) in enumerate(zip(rows, pool.map(lambda r: one(r, token), rows)), 1):
             res[r["посёлок"]] = v
             if n % 10 == 0 or n == len(rows):

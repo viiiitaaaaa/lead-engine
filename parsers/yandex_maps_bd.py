@@ -5,8 +5,9 @@
 
 python parsers/yandex_maps_bd.py                 # весь план запросов (список + ключевые слова)
 python parsers/yandex_maps_bd.py "Калита Москва"  # отдельные запросы
-python parsers/yandex_maps_bd.py --merge          # собрать одну таблицу из всех прошлых выгрузок data/raw/ymaps_*.json
-Итог: data/raw/ymaps_<время>.json и таблица в Google Диск → Выгрузки.
+python parsers/yandex_maps_bd.py --clubs          # клубы, школы, бьюти, рестораны территории (партнёры по схеме)
+python parsers/yandex_maps_bd.py --merge          # только пересобрать общий файл из data/raw/ymaps_*.json
+Итог: data/raw/ymaps_<время>.json; все выгрузки сливаются в data/lists/ymaps_orgs.tsv — его читает build_base.py.
 """
 import json
 import re
@@ -31,6 +32,8 @@ KEYWORDS = ["отделка домов под ключ", "ремонт котт�
             "вентиляция загородного дома", "умный дом коттедж", "итальянская мебель под заказ",
             "европейская сантехника", "элитный коттеджный посёлок", "управляющая компания коттеджного посёлка"]
 AREAS = ["Новорижское шоссе", "Рублёво-Успенское шоссе"]
+CLUBS = ["фитнес клуб", "спа", "гольф клуб", "яхт клуб", "конный клуб", "теннисный клуб", "частная школа", "частный детский сад",
+         "салон красоты премиум", "ресторан", "ветеринарная клиника", "автосалон премиум", "антикварный салон"]
 
 
 def env(name: str) -> str:
@@ -99,7 +102,15 @@ def row(kind: str, query: str, o: dict) -> dict:
 def main():
     stamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
     kinds = dict((q, k) for k, q in plan())
-    if sys.argv[1:] == ["--merge"]:
+    if sys.argv[1:] in (["--merge"], ["--clubs"]):
+        if sys.argv[1:] == ["--clubs"]:
+            token = env("BRIGHTDATA_API_TOKEN")
+            queries = [("клуб/досуг", f"{c} {a}") for c in CLUBS for a in AREAS + ["Ильинское шоссе"]]
+            print(f"запросов: {len(queries)}", flush=True)
+            with ThreadPoolExecutor(5) as pool:
+                got = list(pool.map(lambda kq: (kq, fetch(kq[1], token)), queries))
+            (ROOT / "data" / "raw" / f"ymaps_{stamp}.json").write_text(
+                json.dumps({q: {"kind": k, "items": items} for (k, q), items in got}, ensure_ascii=False), encoding="utf-8")
         results = {}
         for f in sorted((ROOT / "data" / "raw").glob("ymaps_*.json")):
             for q, v in json.loads(f.read_text(encoding="utf-8")).items():
@@ -120,6 +131,8 @@ def main():
         rawp.parent.mkdir(parents=True, exist_ok=True)
         rawp.write_text(json.dumps({q: {"kind": k, "items": items} for (k, q), items in results},
                                    ensure_ascii=False), encoding="utf-8")
+        sys.argv[1:] = ["--merge"]
+        return main()  # общий файл всегда из всех выгрузок
     rows, empty = [], []
     for (kind, q), items in results:
         if not items:
@@ -127,15 +140,11 @@ def main():
         rows += [row(kind, q, o) for o in items]
     df = pd.DataFrame(rows)
     uniq = df.drop_duplicates("id").drop(columns=["запрос"]) if len(df) else df
-    DRIVE.mkdir(parents=True, exist_ok=True)
-    out = DRIVE / f"яндекс_карты_BD_{stamp}.xlsx"
-    with pd.ExcelWriter(out) as w:
-        uniq.to_excel(w, sheet_name="организации", index=False)
-        df.to_excel(w, sheet_name="по запросам", index=False)
-        pd.DataFrame({"запрос без результатов": empty}).to_excel(w, sheet_name="пусто", index=False)
+    out = ROOT / "data" / "lists" / "ymaps_orgs.tsv"
+    uniq.to_csv(out, sep="	", index=False)
     print(f"строк: {len(df)}, уникальных организаций: {len(uniq)}, пустых запросов: {len(empty)}")
     print(f"с телефоном: {(uniq['телефоны'] != '').sum() if len(uniq) else 0}, с сайтом: {(uniq['сайт'] != '').sum() if len(uniq) else 0}")
-    print(f"таблица: {out}")
+    print(f"общий файл: {out}")
 
 
 if __name__ == "__main__":

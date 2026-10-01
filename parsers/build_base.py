@@ -72,11 +72,12 @@ def kind(cat, q):
 
 
 def main():
-    ymaps = pd.read_excel(max(OUT.glob("яндекс_карты_BD_*.xlsx"), key=lambda p: p.stat().st_mtime), sheet_name="организации")
-    ymaps = ymaps[~ymaps["вид деятельности"].fillna("").str.contains(JUNK, case=False)]
+    ymaps = pd.read_csv(ROOT / "data" / "lists" / "ymaps_orgs.tsv", sep="	").fillna("")  # parsers/yandex_maps_bd.py
+    clubs = ymaps["тип запроса"] == "клуб/досуг"  # рестораны, бьюти, клубы — партнёры по схеме, не мусор
+    ymaps = ymaps[clubs | ~ymaps["вид деятельности"].str.contains(JUNK, case=False)]
     rows = []
     for r in ymaps.to_dict("records"):
-        rows.append({"название": r["название"], "тип": kind(r["вид деятельности"], r["тип запроса"]),
+        rows.append({"название": r["название"], "тип": "клуб / досуг" if r["тип запроса"] == "клуб/досуг" else kind(r["вид деятельности"], r["тип запроса"]),
                      "вид деятельности": r["вид деятельности"], "адрес": r["адрес"],
                      "телефоны": r["телефоны"] or "", "сайт": r["сайт"] or "", "WhatsApp": r["WhatsApp"],
                      "Telegram": r["Telegram"], "ВК": r["ВК"], "другие соцсети": r["другие соцсети"],
