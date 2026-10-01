@@ -121,6 +121,11 @@ def main():
         m = mails.setdefault(d, {"почты": set(), "телефоны с сайта": set()})
         m["почты"].update(c.get("emails") or [])
         m["телефоны с сайта"].update(c.get("phones") or [])
+    sc = ROOT / "data" / "raw" / "site_contacts.json"  # добор почт со всех сайтов: parsers/site_emails.py
+    for d, v in (json.loads(sc.read_text(encoding="utf-8")) if sc.exists() else {}).items():
+        m = mails.setdefault(d, {"почты": set(), "телефоны с сайта": set()})
+        m["почты"].update(v["почты"])
+        m["телефоны с сайта"].update(v["телефоны"])
     def site_info(s, field):
         vals = set()
         for u in str(s).split(","):
