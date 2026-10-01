@@ -150,6 +150,12 @@ details[open] summary{margin-bottom:12px}
       <select id="cvc"><option value="">Любой класс</option><option>элит</option><option>бизнес</option><option>комфорт</option><option>эконом</option></select>
       <label><input type="checkbox" id="cvs"> застройщик продаёт</label><label><input type="checkbox" id="cvl"> продают участки</label><label><input type="checkbox" id="cvb"> идёт стройка</label><label><input type="checkbox" id="cvk"> есть контакт</label><span class="sub" id="cvcount"></span></div>
     <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>км</th><th>Застройщик</th><th>Телефон</th><th>Почта</th><th>Сдача</th><th>Участков</th><th>Домов</th><th>Строится</th><th>Материал</th><th>Ссылки</th></tr></thead><tbody id="cvrows"></tbody></table></div></div></section></div>
+  <div class="card" style="margin-top:16px"><h2>Подрядчики, которые уже работают в наших посёлках <span class="sub" id="pdsub"></span></h2>
+    <div class="sub" style="margin-bottom:12px">Нашли поиском Яндекса «строительство и отделка дома в КП …»: компании со страницей под посёлок или с объектом в нём.
+      Это и конкуренты, и партнёры (стройка без своей отделки и инженерии). «В скольких посёлках» — чем больше, тем плотнее компания сидит на территории.</div>
+    <div class="tools"><input type="search" id="pdq" placeholder="Поиск: компания, посёлок"><select id="pdk"><option value="">Любой вид</option><option>стройка</option><option>отделка и ремонт</option><option>архитектор / дизайн</option><option>инженерия</option></select>
+      <label><input type="checkbox" id="pdn" checked> только новые (нет в базе)</label><label><input type="checkbox" id="pd2"> в 2+ посёлках</label><label><input type="checkbox" id="pdd"> показать сомнительные</label><span class="sub" id="pdcount"></span></div>
+    <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Компания</th><th>Посёлков</th><th>Где работает</th><th>Вид</th><th>Телефон</th><th>Почта</th></tr></thead><tbody id="pdrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h2>Редакции, СМИ и блогеры территории <span class="sub" id="mdsub"></span></h2>
     <div class="sub" style="margin-bottom:10px">Для PR и размещения кейсов. Только находки про Рублёвку, Новую Ригу, Ильинское ш. или загородную жизнь.</div>
     <div class="tools"><input type="search" id="mdq" placeholder="Поиск"><select id="mdk"><option value="">Все виды</option><option>сайт / СМИ</option><option>Telegram</option><option>ВК</option><option>YouTube</option><option>Дзен</option></select><span class="sub" id="mdcount"></span></div>
@@ -261,6 +267,16 @@ function cvrender(){ const q=$("cvq").value.toLowerCase(), h=$("cvh").value, c=$
     <td class="num">${v.land||"—"}</td><td class="num">${(v.cot+v.th)||"—"}</td><td class="num">${v.bld?`<b>${v.bld}</b>`:"—"}</td><td class="k">${esc(v.mat)}</td>
     <td class="lk">${v.site?`<a href="${esc(v.site)}" target="_blank">сайт</a>`:""}<a href="${esc(v.url)}" target="_blank">Циан</a></td></tr>`).join(""); }
 ["cvq","cvh","cvc","cvs","cvl","cvb","cvk"].forEach(id=>$(id).addEventListener("input",cvrender)); cvrender();
+const PD = D.pdr || [];
+$("pdsub").textContent = PD.length ? `· ${PD.filter(p=>!p.doubt).length} компаний · новых ${PD.filter(p=>!p.inbase&&!p.doubt).length} · в 2+ посёлках ${PD.filter(p=>p.n>=2).length} · с телефоном ${PD.filter(p=>p.phone).length}` : "· ещё не собрано";
+function pdrender(){ const q=$("pdq").value.toLowerCase(), k=$("pdk").value;
+  const r=PD.filter(p=>(!k||p.kind.includes(k))&&(!$("pdn").checked||!p.inbase)&&(!$("pd2").checked||p.n>=2)&&($("pdd").checked||!p.doubt)&&(!q||(p.site+" "+p.title+" "+p.where).toLowerCase().includes(q)));
+  $("pdcount").textContent=`${r.length} из ${PD.length}`;
+  $("pdrows").innerHTML=r.map(p=>`<tr><td class="lk"><a href="https://${esc(p.site)}" target="_blank"><b>${esc(p.site)}</b></a>${p.inbase?`<span class="new ours">в базе</span>`:""}${p.doubt?`<span class="new chk" title="возможно, просто проект с названием посёлка">сомнительно</span>`:""}
+    <div class="k"><a href="${esc(p.url)}" target="_blank">${esc(p.title)}</a></div><div class="k">${esc(p.snip)}</div></td>
+    <td class="num"><b>${p.n}</b></td><td class="k">${esc(p.where)}</td><td class="k">${esc(p.kind)}</td>
+    <td class="ph">${esc(p.phone).split(", ").slice(0,2).join("<br>")||"—"}</td><td class="mail">${esc(p.mail).split(", ").slice(0,2).join("<br>")||"—"}</td></tr>`).join(""); }
+["pdq","pdk","pdn","pd2","pdd"].forEach(id=>$(id).addEventListener("input",pdrender)); pdrender();
 function mdrender(){ const q=$("mdq").value.toLowerCase(), k=$("mdk").value;
   const r=D.md.filter(m=>(!k||m.kind===k)&&(!q||(m.title+" "+m.snip+" "+m.url).toLowerCase().includes(q))).sort((a,b)=>(b.n||0)-(a.n||0));
   $("mdcount").textContent=`${r.length} из ${D.md.length}`;

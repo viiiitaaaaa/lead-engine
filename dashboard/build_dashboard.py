@@ -197,6 +197,11 @@ def main():
                 "land": num(r["участков в продаже"]), "cot": num(r["коттеджей в продаже"]), "th": num(r["таунхаусов в продаже"]),
                 "bld": num(r["строится объектов"]), "ha": r["площадь, га"], "mat": r["материал"], "fin": r["что пишет застройщик об отделке"],
                 "url": r["Циан"]} for _, r in cv.iterrows()]
+    pdp = ROOT / "data" / "lists" / "podryadchiki_poselkov.tsv"  # подрядчики в посёлках: parsers/contractors_search.py
+    pd_ = pd.read_csv(pdp, sep="	", dtype=str).fillna("") if pdp.exists() else pd.DataFrame()
+    pd_rows = [{"site": r["сайт"], "n": int(r["посёлков"]), "where": r["посёлки"], "title": r["заголовок"], "snip": r["сниппет"][:220],
+                "url": r["пример страницы"], "phone": r["телефоны"], "mail": r["почты"], "inbase": r["уже в базе"] == "True",
+                "kind": r.get("вид", ""), "doubt": r.get("сомнительно", "") == "True"} for _, r in pd_.iterrows()]
     mf = sorted((ROOT / "data" / "raw").glob("media_*.json"))  # СМИ и блогеры: parsers/media_search.py
     media = json.loads(mf[-1].read_text(encoding="utf-8")) if mf else []
     md_rows = [{"kind": m["вид"], "grp": m["группа"], "title": m["название"], "url": m["ссылка"], "snip": m["сниппет"][:220],
@@ -217,7 +222,7 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "pdr": pd_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
         "spend": [("Apify", "≈15.7 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
     }
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))
