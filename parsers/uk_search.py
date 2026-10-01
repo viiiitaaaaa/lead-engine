@@ -2,6 +2,7 @@
 
 python parsers/uk_search.py            # все посёлки нашей территории из data/lists/poselki_katalog.tsv
 python parsers/uk_search.py --limit 20 # проба
+python parsers/uk_search.py --reclass  # пересортировать последнюю выгрузку строже, без запросов
 Итог: data/raw/uk_<время>.json — {посёлок: {сайт, что это (УК / сайт посёлка), заголовок, сниппет, телефоны, почты}}; показывает панель.
 """
 import json
@@ -43,7 +44,29 @@ def one(row: dict, token: str) -> dict:
             "телефоны": ph, "почты": ml}
 
 
+JUNK_SITES = r"buro-estate|pointestate|forumhouse|domzamkad|xn--e1agfdnfp|cian|avito|dzen|journal|statya|article|news|novosti|lomonosov|spb|len/"
+REG = r"sravni|building-info|datanewton|rusprofile|checko|list-org|zachestnyibiznes|sbis|audit-it|vbankcenter|zoon|2gis|yandex\.ru/maps"
+
+
+def reclass(v: dict) -> dict:
+    """строже: УК — только если управляющая/ТСН в заголовке; справочник юрлиц — «юрлицо» (его собственные контакты не берём);
+    статьи/форумы/каталоги — убрать"""
+    if not v.get("сайт") or re.search(JUNK_SITES, v["сайт"], re.I):
+        return {**v, "что это": "", "сайт": "", "телефоны": "", "почты": ""}
+    if re.search(REG, v["сайт"], re.I):
+        mails = ", ".join(re.findall(r"[\w.+-]+@[\w-]+\.[a-z]{2,}(?:\.[a-z]{2,})?", v["сниппет"]))  # почта юрлица из сниппета справочника
+        return {**v, "что это": "юрлицо / справочник", "телефоны": "", "почты": mails}
+    strict = re.search(r"управляющ|(?<![а-яё])ук(?![а-яё])|эксплуатац|служба заказчика|тсн", v["заголовок"], re.I)
+    return {**v, "что это": "УК" if strict else "сайт посёлка"}
+
+
 def main():
+    if "--reclass" in sys.argv:  # пересортировать последнюю выгрузку без запросов
+        f = sorted((ROOT / "data" / "raw").glob("uk_2*.json"))[-1]
+        res = {k: reclass(v) for k, v in json.loads(f.read_text(encoding="utf-8")).items()}
+        f.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
+        from collections import Counter
+        return print(Counter(v["что это"] or "—" for v in res.values()))
     kat = pd.read_csv(ROOT / "data" / "lists" / "poselki_katalog.tsv", sep="\t").fillna("")
     kat = kat[kat["наша территория"].astype(str) == "True"]
     kat = kat.assign(_p=(kat["наш список"] != "") * 1000 + kat["домов на Циане"].astype(int)).sort_values("_p", ascending=False)
@@ -56,7 +79,7 @@ def main():
     print(f"уже есть {len(res)}, осталось {len(rows)}", flush=True)
     with ThreadPoolExecutor(16) as pool:
         for n, (r, v) in enumerate(zip(rows, pool.map(lambda r: one(r, token), rows)), 1):
-            res[r["посёлок"]] = v
+            res[r["посёлок"]] = reclass(v)
             if n % 10 == 0 or n == len(rows):
                 part.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
                 print(f"сделано {n} из {len(rows)}", flush=True)
