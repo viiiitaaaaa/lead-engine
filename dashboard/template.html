@@ -142,6 +142,14 @@ details[open] summary{margin-bottom:12px}
     <div class="tools"><input type="search" id="kq" placeholder="Поиск посёлка"><select id="kh"><option value="">Наша территория</option><option value="*">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select>
       <label><input type="checkbox" id="ko"> только из нашего списка</label><label><input type="checkbox" id="kc"> продаются дома (Циан)</label><label><input type="checkbox" id="kk"> есть контакт УК / посёлка</label><span class="sub" id="kcount"></span></div>
     <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>Шоссе</th><th>км от МКАД</th><th>Домов на Циане</th><th>Объектов у Villagio</th><th>УК / сайт посёлка</th><th>Телефон</th><th>Почта</th><th>Эксперты Villagio</th><th>Ссылки</th></tr></thead><tbody id="krows"></tbody></table></div></div>
+  <div class="card" style="margin-top:16px"><h2>Застройщики посёлков (Циан) <span class="sub" id="cvsub"></span></h2>
+    <div class="sub" style="margin-bottom:12px">Канал «Партнёры»: застройщик продаёт дома и участки — его покупателям нужны отделка, инженерия, комплектация.
+      «Участки» = покупают без подряда, строят сами; «строится» = объекты в стройке сейчас. До 60 км от МКАД. Телефон — тот, что застройщик указал на Циане.</div>
+    <section class="grid two" style="margin:0"><div id="cvdevs"></div>
+    <div><div class="tools"><input type="search" id="cvq" placeholder="Поиск: посёлок, застройщик"><select id="cvh"><option value="">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select>
+      <select id="cvc"><option value="">Любой класс</option><option>элит</option><option>бизнес</option><option>комфорт</option><option>эконом</option></select>
+      <label><input type="checkbox" id="cvs"> застройщик продаёт</label><label><input type="checkbox" id="cvl"> продают участки</label><label><input type="checkbox" id="cvb"> идёт стройка</label><label><input type="checkbox" id="cvk"> есть контакт</label><span class="sub" id="cvcount"></span></div>
+    <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>км</th><th>Застройщик</th><th>Телефон</th><th>Почта</th><th>Сдача</th><th>Участков</th><th>Домов</th><th>Строится</th><th>Материал</th><th>Ссылки</th></tr></thead><tbody id="cvrows"></tbody></table></div></div></section></div>
   <div class="card" style="margin-top:16px"><h2>Редакции, СМИ и блогеры территории <span class="sub" id="mdsub"></span></h2>
     <div class="sub" style="margin-bottom:10px">Для PR и размещения кейсов. Только находки про Рублёвку, Новую Ригу, Ильинское ш. или загородную жизнь.</div>
     <div class="tools"><input type="search" id="mdq" placeholder="Поиск"><select id="mdk"><option value="">Все виды</option><option>сайт / СМИ</option><option>Telegram</option><option>ВК</option><option>YouTube</option><option>Дзен</option></select><span class="sub" id="mdcount"></span></div>
@@ -237,6 +245,22 @@ function krender(){ const q=$("kq").value.toLowerCase(), h=$("kh").value;
     <td class="num">${k.cian||"—"}</td><td class="num">${k.vil||"—"}</td><td class="lk">${k.cs?`<a href="${esc(k.cs)}" target="_blank">${esc(k.ck)}</a>`:"—"}</td><td class="ph">${esc(k.cp).split(", ").slice(0,2).join("<br>")}</td><td class="mail">${esc(k.cm).split(", ").slice(0,2).join("<br>")}</td><td class="k">${esc(k.exp)}</td><td class="lk">${k.u1?`<a href="${esc(k.u1)}" target="_blank">Villagio</a>`:""}${k.u2?`<a href="${esc(k.u2)}" target="_blank">ONEHOUSE</a>`:""}${k.tg?`<a href="${esc(k.tg)}" target="_blank">TG</a>`:""}</td></tr>`).join(""); }
 $("ksub").textContent=`· ${D.kat.length} посёлков, ${D.kat.filter(k=>k.terr).length} на нашей территории`;
 ["kq","kh","ko","kc","kk"].forEach(id=>$(id).addEventListener("input",krender)); krender();
+const CV = D.cv || [];
+if (CV.length) {
+  const devs = {}; CV.forEach(v => { if (v.dev) { const d = devs[v.dev] ||= {n:0,b:0}; d.n++; d.b += v.bld; } });
+  const top = Object.entries(devs).sort((a,b)=>b[1].n-a[1].n||b[1].b-a[1].b).slice(0,20), mx = Math.max(1,...top.map(([,d])=>d.n));
+  $("cvdevs").innerHTML = `<h3>Крупнейшие застройщики <small>· посёлков · строится</small></h3>` + top.map(([n,d])=>`<div class="bar"><span>${esc(n)}</span><i style="width:${d.n/mx*100}%"></i><em>${d.n} · ${d.b}</em></div>`).join("");
+  $("cvsub").textContent = `· ${CV.length} посёлков · застройщик у ${CV.filter(v=>v.dev).length} · застройщик продаёт ${CV.filter(v=>v.st==="застройщик продаёт").length} · продают участки ${CV.filter(v=>v.land).length} · строится ${fmt(CV.reduce((a,v)=>a+v.bld,0))} объектов · с контактом ${CV.filter(v=>v.phone||v.mail).length}`;
+} else $("cvsub").textContent = "· ещё не собрано";
+function cvrender(){ const q=$("cvq").value.toLowerCase(), h=$("cvh").value, c=$("cvc").value;
+  const r=CV.filter(v=>(!h||v.hw===h)&&(!c||v.cls===c)&&(!$("cvs").checked||v.st==="застройщик продаёт")&&(!$("cvl").checked||v.land)&&(!$("cvb").checked||v.bld)&&(!$("cvk").checked||v.phone||v.mail)&&(!q||(v.name+" "+v.dev).toLowerCase().includes(q)))
+    .sort((a,b)=>b.bld-a.bld||(a.km??999)-(b.km??999));
+  $("cvcount").textContent=`${r.length} из ${CV.length}`;
+  $("cvrows").innerHTML=r.map(v=>`<tr><td><b>${esc(v.name)}</b><div class="k">${esc(v.hw)} · ${esc(v.cls)}${v.st?" · "+esc(v.st):""}</div></td><td class="num">${v.km??"—"}</td>
+    <td>${esc(v.dev)||"—"}${v.fin?`<div class="k" title="${esc(v.fin)}">${esc(v.fin.slice(0,90))}…</div>`:""}</td><td class="ph">${esc(v.phone).split(", ").slice(0,2).join("<br>")||"—"}</td><td class="mail">${esc(v.mail).split(", ").slice(0,2).join("<br>")||"—"}</td><td class="num">${esc(v.fy)||"—"}</td>
+    <td class="num">${v.land||"—"}</td><td class="num">${(v.cot+v.th)||"—"}</td><td class="num">${v.bld?`<b>${v.bld}</b>`:"—"}</td><td class="k">${esc(v.mat)}</td>
+    <td class="lk">${v.site?`<a href="${esc(v.site)}" target="_blank">сайт</a>`:""}<a href="${esc(v.url)}" target="_blank">Циан</a></td></tr>`).join(""); }
+["cvq","cvh","cvc","cvs","cvl","cvb","cvk"].forEach(id=>$(id).addEventListener("input",cvrender)); cvrender();
 function mdrender(){ const q=$("mdq").value.toLowerCase(), k=$("mdk").value;
   const r=D.md.filter(m=>(!k||m.kind===k)&&(!q||(m.title+" "+m.snip+" "+m.url).toLowerCase().includes(q))).sort((a,b)=>(b.n||0)-(a.n||0));
   $("mdcount").textContent=`${r.length} из ${D.md.length}`;

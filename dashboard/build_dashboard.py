@@ -189,6 +189,14 @@ def main():
     kat_rows = [{"name": s(r["посёлок"]), "hw": s(r["шоссе"]), "km": None if r["км до МКАД"] == "" else int(float(r["км до МКАД"])),
                  "ours": s(r["наш список"]), "cian": int(r["домов на Циане"]), "vil": int(r["объектов у Villagio"] or 0),
                  "tg": s(r["Telegram"]), "exp": s(r["эксперты Villagio"]), "ck": s(r.get("контакт: что", "")), "cs": s(r.get("контакт: сайт", "")), "cp": s(r.get("контакт: телефоны", "")), "cm": s(r.get("контакт: почты", "")), "u1": s(r["Villagio"]), "u2": s(r["ONEHOUSE"]), "terr": bool(r["наша территория"])} for _, r in kat.iterrows()]
+    cvp = ROOT / "data" / "lists" / "cian_poselki.tsv"  # застройщики посёлков: parsers/cian_villages.py
+    cv = pd.read_csv(cvp, sep="	", dtype=str).fillna("") if cvp.exists() else pd.DataFrame()
+    num = lambda v: int(float(v)) if v not in ("", None) else 0
+    cv_rows = [{"name": r["посёлок"], "hw": r["шоссе"], "km": num(r["км до МКАД"]) or None, "cls": r["класс"], "dev": r["застройщик"],
+                "phone": r["телефон застройщика"] or r.get("телефоны с сайта", ""), "mail": r.get("почты с сайта", ""), "site": r["сайт"], "st": r["статус продаж"], "fy": r["сдача"],
+                "land": num(r["участков в продаже"]), "cot": num(r["коттеджей в продаже"]), "th": num(r["таунхаусов в продаже"]),
+                "bld": num(r["строится объектов"]), "ha": r["площадь, га"], "mat": r["материал"], "fin": r["что пишет застройщик об отделке"],
+                "url": r["Циан"]} for _, r in cv.iterrows()]
     mf = sorted((ROOT / "data" / "raw").glob("media_*.json"))  # СМИ и блогеры: parsers/media_search.py
     media = json.loads(mf[-1].read_text(encoding="utf-8")) if mf else []
     md_rows = [{"kind": m["вид"], "grp": m["группа"], "title": m["название"], "url": m["ссылка"], "snip": m["сниппет"][:220],
@@ -209,7 +217,7 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
         "spend": [("Apify", "≈15.7 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
     }
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))
