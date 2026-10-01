@@ -197,6 +197,10 @@ def main():
                 "land": num(r["участков в продаже"]), "cot": num(r["коттеджей в продаже"]), "th": num(r["таунхаусов в продаже"]),
                 "bld": num(r["строится объектов"]), "ha": r["площадь, га"], "mat": r["материал"], "fin": r["что пишет застройщик об отделке"],
                 "url": r["Циан"]} for _, r in cv.iterrows()]
+    sbp = ROOT / "data" / "lists" / "soobshchestva_poselkov.tsv"  # ВК и FORUMHOUSE посёлков: parsers/residents_search.py
+    sb = pd.read_csv(sbp, sep="	", dtype=str).fillna("") if sbp.exists() else pd.DataFrame()
+    sb_rows = [{"v": r["посёлок"], "kind": r["вид"], "url": r["ссылка"], "title": r["название"], "snip": r["сниппет"][:220],
+                "n": int(float(r["участников"])) if r["участников"] else None} for _, r in sb.iterrows()]
     pdp = ROOT / "data" / "lists" / "podryadchiki_poselkov.tsv"  # подрядчики в посёлках: parsers/contractors_search.py
     pd_ = pd.read_csv(pdp, sep="	", dtype=str).fillna("") if pdp.exists() else pd.DataFrame()
     pd_rows = [{"site": r["сайт"], "n": int(r["посёлков"]), "where": r["посёлки"], "title": r["заголовок"], "snip": r["сниппет"][:220],
@@ -222,7 +226,7 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "pdr": pd_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "pdr": pd_rows, "sb": sb_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
         "spend": [("Apify", "≈15.7 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
     }
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))

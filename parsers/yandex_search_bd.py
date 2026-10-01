@@ -8,6 +8,7 @@ import html as H
 import json
 import re
 import sys
+import time
 import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -28,7 +29,9 @@ def clean(z):
 def serp(query, token):
     body = json.dumps({"zone": "serp_api1", "url": "https://yandex.ru/search/?lr=213&text=" + urllib.parse.quote(query),
                        "format": "raw"}).encode()
-    for _ in range(3):
+    for n in range(6):  # с 02.10 Bright Data часто отдаёт 200 с пустым телом через ~30 с — повторяем с паузой
+        if n:
+            time.sleep(5 * n)
         try:
             h = urllib.request.urlopen(urllib.request.Request(
                 "https://api.brightdata.com/request", data=body, method="POST",

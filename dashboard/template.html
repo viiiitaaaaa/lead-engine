@@ -136,6 +136,11 @@ details[open] summary{margin-bottom:12px}
     <div class="sub" style="margin-bottom:12px">Сколько людей из 9 чатов посёлков нашлось в каждом тематическом чате. Считаем по хэшам, без имён. Чем больше жителей, тем лучше там размещать кейсы или договариваться с админом.</div>
     <div id="ovbars"></div>
     <div class="tbl" style="margin-top:14px"><table><thead><tr><th>Чат</th><th>Вид</th><th>Участников</th><th>Собрано</th><th>Жителей посёлков</th><th>Доля</th></tr></thead><tbody id="ovrows"></tbody></table></div></div>
+  <div class="card" style="margin-top:16px"><h2>ВКонтакте и FORUMHOUSE — сообщества посёлков <span class="sub" id="sbsub"></span></h2>
+    <div class="sub" style="margin-bottom:12px">250 самых важных посёлков. Жителям не пишем: группы ВК — чтобы понимать, чем живёт посёлок; ветки FORUMHOUSE — боли и обсуждения стройки.
+      Элитные посёлки во ВК почти не сидят — основная аудитория в Telegram (раздел выше).</div>
+    <div class="tools"><input type="search" id="sbq" placeholder="Поиск: посёлок, название"><select id="sbk"><option value="">Все виды</option><option>ВК: сообщество</option><option>ВК: продажи / услуги</option><option>FORUMHOUSE</option></select><span class="sub" id="sbcount"></span></div>
+    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Сообщество</th><th>Посёлок</th><th>Вид</th><th>Участников</th><th>О чём</th></tr></thead><tbody id="sbrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><details><summary>Telegram — сырой список каналов с упоминаниями (в основном шум) <span class="sub" id="tgsub"></span></summary>
     <div class="tbl"><table><thead><tr><th>Канал</th><th>Найдено постов</th><th>Подписчиков</th><th>Пример</th></tr></thead><tbody id="tgrows"></tbody></table></div></details></div>
   <div class="card" style="margin-top:16px"><h2>Посёлки из каталогов Villagio и ONEHOUSE <span class="sub" id="ksub"></span></h2>
@@ -267,6 +272,14 @@ function cvrender(){ const q=$("cvq").value.toLowerCase(), h=$("cvh").value, c=$
     <td class="num">${v.land||"—"}</td><td class="num">${(v.cot+v.th)||"—"}</td><td class="num">${v.bld?`<b>${v.bld}</b>`:"—"}</td><td class="k">${esc(v.mat)}</td>
     <td class="lk">${v.site?`<a href="${esc(v.site)}" target="_blank">сайт</a>`:""}<a href="${esc(v.url)}" target="_blank">Циан</a></td></tr>`).join(""); }
 ["cvq","cvh","cvc","cvs","cvl","cvb","cvk"].forEach(id=>$(id).addEventListener("input",cvrender)); cvrender();
+const SB = D.sb || [];
+$("sbsub").textContent = SB.length ? `· ${SB.length} находок · групп ВК ${SB.filter(s=>s.kind==="ВК: сообщество").length} в ${new Set(SB.filter(s=>s.kind==="ВК: сообщество").map(s=>s.v)).size} посёлках · веток FORUMHOUSE ${SB.filter(s=>s.kind==="FORUMHOUSE").length}` : "· ещё не собрано";
+function sbrender(){ const q=$("sbq").value.toLowerCase(), k=$("sbk").value;
+  const r=SB.filter(s=>(!k||s.kind===k)&&(!q||(s.v+" "+s.title+" "+s.snip).toLowerCase().includes(q))).sort((a,b)=>(b.n||0)-(a.n||0));
+  $("sbcount").textContent=`${r.length} из ${SB.length}`;
+  $("sbrows").innerHTML=r.map(s=>`<tr><td class="lk"><a href="${esc(s.url)}" target="_blank"><b>${esc(s.title)}</b></a></td><td>${esc(s.v)}</td><td class="k">${esc(s.kind)}</td>
+    <td class="num">${s.n?fmt(s.n):"—"}</td><td class="k">${esc(s.snip)}</td></tr>`).join(""); }
+["sbq","sbk"].forEach(id=>$(id).addEventListener("input",sbrender)); sbrender();
 const PD = D.pdr || [];
 $("pdsub").textContent = PD.length ? `· ${PD.filter(p=>!p.doubt).length} компаний · новых ${PD.filter(p=>!p.inbase&&!p.doubt).length} · в 2+ посёлках ${PD.filter(p=>p.n>=2).length} · с телефоном ${PD.filter(p=>p.phone).length}` : "· ещё не собрано";
 function pdrender(){ const q=$("pdq").value.toLowerCase(), k=$("pdk").value;
