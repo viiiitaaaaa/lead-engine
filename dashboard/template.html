@@ -161,6 +161,12 @@ details[open] summary{margin-bottom:12px}
       <select id="cvc"><option value="">Любой класс</option><option>элит</option><option>бизнес</option><option>комфорт</option><option>эконом</option></select>
       <label><input type="checkbox" id="cvs"> застройщик продаёт</label><label><input type="checkbox" id="cvl"> продают участки</label><label><input type="checkbox" id="cvb"> идёт стройка</label><label><input type="checkbox" id="cvk"> есть контакт</label><span class="sub" id="cvcount"></span></div>
     <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>км</th><th>Застройщик</th><th>Телефон</th><th>Почта</th><th>Сдача</th><th>Участков</th><th>Домов</th><th>Строится</th><th>Материал</th><th>Ссылки</th></tr></thead><tbody id="cvrows"></tbody></table></div></div></section></div>
+  <div class="card" style="margin-top:16px"><h2>Тендеры на нашей территории <span class="sub" id="tdsub"></span></h2>
+    <div class="sub" style="margin-bottom:12px">Открытые закупки (идёт подача заявок) по нашим работам: благоустройство и ландшафт, стройка, ремонт и отделка, инженерия, бассейн/SPA, мебель и оснащение, проектирование.
+      Территория — Одинцовский округ, Звенигород, Барвиха, Рублёвка, Красногорск, Истра. Сортировка — ближайший срок подачи сверху.</div>
+    <div class="tools"><input type="search" id="tdq" placeholder="Поиск: объект, заказчик"><select id="tdk"><option value="">Любой вид работ</option></select>
+      <select id="tds"><option value="">Любой этап</option></select><label><input type="checkbox" id="tdm"> от 1 млн ₽</label><span class="sub" id="tdcount"></span></div>
+    <div class="tbl" style="max-height:620px;overflow-y:auto"><table><thead><tr><th>Объект закупки</th><th>Заказчик</th><th>Вид работ</th><th>Цена, ₽</th><th>Подача до</th><th>Этап / способ</th></tr></thead><tbody id="tdrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h2>Дизайн-бюро — кто делает загородку премиум <span class="sub" id="dbsub"></span></h2>
     <div class="sub" style="margin-bottom:12px">Разбор сайтов (главная + до 3 страниц портфолио): сколько про загородные дома и сколько про квартиры, упоминания наших посёлков и шоссе, признаки премиума.
       «Комплектация» — бюро само поставляет мебель и оборудование (конкурент в этой части); без неё — естественный партнёр. Группа 1 — главная цель для персонального оффера.</div>
@@ -306,6 +312,17 @@ function svrender(){ const q=$("svq").value.toLowerCase(), h=$("svh").value, c=$
     <td class="num" title="${esc(v.pods)}">${v.pod||"—"}</td>
     <td class="lk">${v.u1?`<a href="${esc(v.u1)}" target="_blank">Villagio</a>`:""}${v.u2?`<a href="${esc(v.u2)}" target="_blank">ONEHOUSE</a>`:""}${v.u3?`<a href="${esc(v.u3)}" target="_blank">Циан</a>`:""}</td></tr>`).join(""); }
 ["svq","svh","svc","svo","svk","svb"].forEach(id=>$(id).addEventListener("input",svrender)); svrender();
+const TD = D.td || [];
+[...new Set(TD.flatMap(t=>t.kind.split(", ")))].sort().forEach(k=>$("tdk").insertAdjacentHTML("beforeend",`<option>${esc(k)}</option>`));
+[...new Set(TD.map(t=>t.st))].filter(Boolean).forEach(k=>$("tds").insertAdjacentHTML("beforeend",`<option>${esc(k)}</option>`));
+$("tdsub").textContent = TD.length ? `· ${TD.length} закупок · на ${fmt(Math.round(TD.reduce((a,t)=>a+(t.price||0),0)/1e6))} млн ₽ · подача открыта у ${TD.filter(t=>t.st==="Подача заявок").length}` : "· ещё не собрано";
+const dmy = s => s ? s.split(".").reverse().join("") : "99999999";
+function tdrender(){ const q=$("tdq").value.toLowerCase(), k=$("tdk").value, s=$("tds").value;
+  const r=TD.filter(t=>(!k||t.kind.includes(k))&&(!s||t.st===s)&&(!$("tdm").checked||(t.price||0)>=1e6)&&(!q||(t.obj+" "+t.cust).toLowerCase().includes(q))).sort((a,b)=>dmy(a.end).localeCompare(dmy(b.end)));
+  $("tdcount").textContent=`${r.length} из ${TD.length}`;
+  $("tdrows").innerHTML=r.map(t=>`<tr><td class="lk"><a href="${esc(t.url)}" target="_blank"><b>№ ${esc(t.num)}</b></a> <span class="k">${esc(t.src)} · ${esc(t.law)}</span><div>${esc(t.obj)}</div></td>
+    <td class="k">${esc(t.cust)}</td><td class="k">${esc(t.kind)}</td><td class="num">${t.price?fmt(Math.round(t.price)):"—"}</td><td class="num"><b>${esc(t.end)||"—"}</b></td><td class="k">${esc(t.st)}<div>${esc(t.how)}</div></td></tr>`).join(""); }
+["tdq","tdk","tds","tdm"].forEach(id=>$(id).addEventListener("input",tdrender)); tdrender();
 const IG = D.ig || [];
 $("igsub").textContent = IG.length ? `· ${IG.length} аккаунтов · живых (пост за 30 дней) ${IG.filter(i=>i.last>=new Date(Date.now()-30*864e5).toISOString().slice(0,10)).length}` : "· ещё не собрано";
 $("igrows").innerHTML = IG.map(i=>`<tr><td class="lk"><a href="https://instagram.com/${esc(i.h)}" target="_blank"><b>@${esc(i.h)}</b></a></td><td>${esc(i.who)}<div class="k">${esc(i.what)}</div></td>

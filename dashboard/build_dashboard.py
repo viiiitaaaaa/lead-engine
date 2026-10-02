@@ -65,7 +65,7 @@ CHANNELS = [
     ("ВК и FORUMHOUSE", "собрано", "104 группы ВК в 84 посёлках (маленькие), 14 веток FORUMHOUSE"),
     ("Instagram конкурентов", "собрано", "66 аккаунтов бюро и подрядчиков: подписчики, живость; аудиторию не собираем"),
     ("Сводка по посёлкам", "собрано", "521 посёлок в одной строке: застройщик, УК, стройка, Telegram, ВК, подрядчики"),
-    ("Тендеры", "пропущено", "ваше решение 01.10"),
+    ("Тендеры", "собрано", "госзакупки: 17 открытых закупок на нашей территории по нашим работам (в основном муниципальный ремонт); B2B-Center без входа почти пуст"),
     ("Автоворонка кейсов", "план", "единая точка входа"),
     ("Лендинг / бот", "план", "под каждый выпуск"),
     ("Bitrix24", "план", "CRM, UTM источника"),
@@ -231,6 +231,11 @@ def main():
                 "last": r["последний пост"], "bio": r["о себе"][:200]} for _, r in ig.iterrows()]
     adp = ROOT / "data" / "lists" / "ad100_2026.tsv"  # AD100 2026 (США), справочно: собран в Chrome
     ad_rows = pd.read_csv(adp, sep="	").fillna("").values.tolist() if adp.exists() else []
+    tdp = ROOT / "data" / "lists" / "tendery.tsv"  # тендеры: parsers/tenders_zakupki.py (+ коммерческие площадки)
+    td = pd.read_csv(tdp, sep="	", dtype=str).fillna("") if tdp.exists() else pd.DataFrame()
+    td_rows = [{"num": r["номер"], "src": r.get("площадка", "") or "ЕИС (госзакупки)", "law": r["закон"], "how": r["способ"], "st": r["этап"],
+                "obj": r["объект"][:300], "cust": r["заказчик"][:150], "price": float(r["цена, ₽"]) if r["цена, ₽"] else None,
+                "end": r["окончание подачи"], "kind": r["вид работ"], "url": r["ссылка"]} for _, r in td.iterrows()]
     mf = sorted((ROOT / "data" / "raw").glob("media_*.json"))  # СМИ и блогеры: parsers/media_search.py
     media = json.loads(mf[-1].read_text(encoding="utf-8")) if mf else []
     md_rows = [{"kind": m["вид"], "grp": m["группа"], "title": m["название"], "url": m["ссылка"], "snip": m["сниппет"][:220],
@@ -251,7 +256,7 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "td": td_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
         "spend": [("Apify", "≈15.7 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
     }
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))
