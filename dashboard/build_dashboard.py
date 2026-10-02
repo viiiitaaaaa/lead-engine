@@ -236,7 +236,7 @@ def main():
                         "ln": d.get("юрлицо: как найдено", ""), "twins": len(d.get("тёзки ЕГРЮЛ") or []),
                         "sites": d.get("сайты") or [], "rev": d.get("отзывы") or [], "art": d.get("статьи") or [],
                         "q": d.get("вопросы") or [], "cl": d.get("клиенты") or [], "money": d.get("выручка кратко", ""),
-                        "staff": d.get("сотрудников", ""), "ym": {"n": len(r), "neg": int(r["neg"].sum()) if len(r) else 0,
+                        "staff": d.get("сотрудников", ""), "vleg": d.get("юрлица посёлка") or [], "rtx": (d.get("отзывы: тексты") or [])[:40], "ym": {"n": len(r), "neg": int(r["neg"].sum()) if len(r) else 0,
                         "rating": None if g["рейтинг"].dropna().empty else float(pd.to_numeric(g["рейтинг"], errors="coerce").max()),
                         "themes": [f"{k} ({v})" for k, v in th.items()],
                         "quotes": [s[:220] for s in c.sort_values("дата", ascending=False)["суть"].head(3)]}})

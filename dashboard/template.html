@@ -315,10 +315,12 @@ function dsrender(){ const q=$("dsq").value.toLowerCase(), v=$("dsv").value;
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:10px">
       <div><h3>Юрлицо</h3>${L.юрлицо?`<div><b>${esc(L.юрлицо)}</b></div><div class="k">ИНН ${esc(L.ИНН)} · ОГРН ${esc(L.ОГРН)} · с ${esc(L.регистрация)}</div><div class="k">${esc(L.руководитель)}</div><div class="k">${esc(d.ln)}</div>`:`<div class="k">${d.twins?"тёзки в ЕГРЮЛ: "+d.twins+" — нужен ИНН":"не найдено"}</div>`}
         ${d.money||d.staff?`<div class="k">Выручка: ${esc(d.money)||"—"} · сотрудников: ${esc(d.staff)||"—"}</div>`:""}
+        ${d.vleg.length?`<h3>Юрлица посёлка</h3>${d.vleg.map(x=>`<div class="k"><b>${esc(x.роль)}</b> «${esc(x["как в Циане"])}»: ${esc(x.юрлицо)}${x.ИНН?" · ИНН "+esc(x.ИНН):""}${x.руководитель?" · "+esc(x.руководитель):""}</div>`).join("")}`:""}
         <h3>Сайт</h3>${s.map(x=>`<div class="lk"><a href="${esc(x.сайт)}" target="_blank">${esc(x.сайт)}</a></div><div class="k">${esc(x.описание||x.заголовок)}</div>${x["упоминает наши места"]?.length?`<div class="k">Наши места на сайте: ${esc(x["упоминает наши места"].join(", "))}</div>`:""}${x["страниц проектов"]?`<div class="k">Страниц проектов/портфолио: ${x["страниц проектов"]}</div>`:""}`).join("")||'<div class="k">—</div>'}
         <h3>Соцсети и мессенджеры</h3><div class="lk">${Object.entries(soc).map(([k,u])=>u.map(x=>`<a href="${esc(x)}" target="_blank">${esc(k)}</a>`).join("")).join("")||"—"}</div></div>
       <div><h3>Отзывы на Яндекс Картах</h3>${d.ym.n?`<div class="k">${d.ym.n} отзывов${d.ym.rating?" · рейтинг "+d.ym.rating:""} · негатив ${d.ym.neg}</div><div class="k">Жалобы: ${esc(d.ym.themes.join("; "))||"—"}</div>${d.ym.quotes.map(x=>`<div class="q">«${esc(x)}»</div>`).join("")}`:'<div class="k">нет карточки с отзывами</div>'}
-        <h3>Отзывы на других площадках</h3>${lnk(d.rev)}</div>
+        <h3>Отзывы на других площадках</h3>${lnk(d.rev)}
+        ${d.rtx.length?`<h3>Тексты отзывов с площадок (${d.rtx.length})</h3>${d.rtx.map(x=>`<div class="q">${x.оценка?"★"+esc(x.оценка)+" ":""}«${esc(x.текст)}»<small>${esc(x.откуда)} ${esc(x.дата)}</small></div>`).join("")}`:""}</div>
       <div><h3>Статьи и новости</h3>${lnk(d.art)}<h3>Вопросы и обсуждения</h3>${lnk(d.q)}<h3>Клиенты и проекты</h3>${lnk(d.cl)}</div>
     </div></details>`; }).join(""); }
 ["dsq","dsv"].forEach(id=>$(id).addEventListener("input",dsrender)); dsrender();
