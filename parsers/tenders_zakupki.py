@@ -131,6 +131,64 @@ def b2b() -> list:
     return rows
 
 
+FAB_REGION = "v5Vyhe3DF-8Z4oX6kQWKhA"  # «Московская область» в фильтре «Регион заказчика» Fabrikant (снято в Chrome 02.10)
+FAB_WORDS = ["Одинцовский", "Одинцово", "Звенигород", "Кубинка", "Голицыно", "Истра", "Истринский", "Красногорск", "Нахабино",
+             "Барвиха", "Жуковка", "Рублево", "Новая Рига", "Новорижское", "Павловская Слобода", "коттеджный поселок",
+             "благоустройство", "ландшафт", "озеленение", "отделка", "ремонт помещений", "капитальный ремонт", "вентиляция",
+             "инженерные системы", "бассейн", "мебель", "дизайн интерьера", "проектирование", "кровля", "фасад"]
+
+
+def fabrikant() -> list:
+    """Fabrikant (44-ФЗ, 223-ФЗ и коммерческие): регион заказчика = Московская область, статус «Приём заявок», без входа.
+    Страница — Next.js: закупки лежат объектами {"lots_view_info_id", "common_name", "price", "date_unsealing", …} в данных RSC."""
+    dec = json.JSONDecoder()
+    found = {}
+    for w in FAB_WORDS:
+        total, p = None, 1
+        while p <= 30:
+            t = get(f"https://www.fabrikant.ru/procedure/search?customer_region_ids[]={FAB_REGION}&query={urllib.parse.quote(w)}"
+                    f"&statuses[]=1&page_number={p}").replace('\\"', '"').replace("\\\\", "\\")
+            if total is None:
+                m = re.search(r'"total":(\d+)', t)
+                total = int(m.group(1)) if m else 0
+            new = 0
+            heads = list(re.finditer(r'\{"url":"(https?://[^"]+)","name":"', t))  # заголовок карточки: ссылка, название, номер лота
+            for i, m in enumerate(heads):
+                try:
+                    o, _ = dec.raw_decode(t, m.start())
+                except ValueError:
+                    continue
+                if "lotId" not in o:
+                    continue
+                lid = str(o["lotId"])
+                if lid in found:
+                    found[lid]["запросы"].append(w)
+                    continue
+                seg = t[m.end(): heads[i + 1].start() if i + 1 < len(heads) else m.end() + 15000]
+                org = re.search(r'"Организатор".{0,200}?"name":"(.*?)"\}', seg)
+                cust = re.search(r'"Заказчик".{0,300}?"children":"(.*?)"\}', seg)
+                price = re.search(r'"children":\["([\d\s  ]+)",\["\$","span",null,\{"className":"[^"]*","children":\[",","(\d+)"', seg)
+                pub = re.search(r'"Дата публикации".{0,200}?"children":"(\d{2}\.\d{2}\.\d{4})', seg)
+                end = re.search(r'"Дата окончания при[её]ма заявок".{0,200}?"children":"(\d{2}\.\d{2}\.\d{4})', seg)
+                if not end:  # срок подгружается ссылкой "$L75" — ищем строку «75:[…]» в данных страницы
+                    ref = re.search(r'"Дата окончания при[её]ма заявок"\}\],"\$L([0-9a-f]+)"', seg)
+                    end = ref and re.search(r"\n" + ref.group(1) + r':.{0,300}?(\d{2}\.\d{2}\.\d{4})', t)
+                kind_ = re.search(r'"children":"(Закупки по 44-ФЗ|Закупки по 223-ФЗ|Коммерческие закупки[^"]*|[^"]*закупк[^"]*)"\}\]\]\}', t[max(0, m.start() - 3000):m.start()])
+                new += 1
+                found[lid] = {"номер": o.get("purchaseOosNumber") or str(o.get("procedureNumber") or lid), "площадка": "Fabrikant",
+                              "закон": {"44fz": "44-ФЗ", "223fz": "223-ФЗ"}.get(o.get("sectionEnum"), o.get("sectionEnum") or ""),
+                              "способ": kind_.group(1) if kind_ else "", "этап": "Подача заявок", "объект": o.get("name", ""),
+                              "заказчик": (cust or org).group(1) if (cust or org) else "",
+                              "цена, ₽": float(re.sub(r"\D", "", price.group(1)) + "." + price.group(2)) if price else None,
+                              "размещено": pub.group(1) if pub else "", "окончание подачи": end.group(1) if end else "",
+                              "ссылка": o["url"], "запросы": [w]}
+            if not new or p * 10 >= total:
+                break
+            p += 1
+        print(f"Fabrikant «{w}»: всего {total}, собрано {len(found)}", flush=True)
+    return list(found.values())
+
+
 def kind(text: str) -> str:
     return ", ".join(k for k, p in KINDS.items() if re.search(p, text, re.I))
 
@@ -145,7 +203,7 @@ def main():
             for r in rows:
                 found.setdefault(r["номер"], {**r, "запросы": []})["запросы"].append(q)
             print(f"запросов {n} из {len(qs)}, закупок {len(found)}, {time.time() - t0:.0f} с", flush=True)
-    rows = list(found.values()) + b2b()
+    rows = list(found.values()) + b2b() + fabrikant()
     out = ROOT / "data" / "raw" / f"tenders_{datetime.now():%Y-%m-%d_%H-%M}.json"
     out.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
     table(rows)
@@ -154,6 +212,8 @@ def main():
 def table(rows: list) -> None:
     keep = []
     for r in rows:
+        for k in ("объект", "заказчик"):  # у Fabrikant остаются экранированные кавычки
+            r[k] = (r.get(k) or "").replace('\\"', '"').replace("\\", "")
         text = r["объект"] + " " + r["заказчик"] + " " + r.get("текст", "")  # у B2B территория — в тексте страницы закупки
         if not re.search(TERR, text, re.I) or re.search(NOT_OURS, r["объект"], re.I):
             continue
