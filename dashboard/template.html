@@ -44,7 +44,7 @@ h2{font-size:15px;margin:0 0 14px;font-weight:600}
 .tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;margin-left:4px;vertical-align:1px}
 .t-собрано{background:var(--accent);color:var(--card)}
 .t-разведка{background:var(--warn);color:var(--card)}
-.t-план{background:var(--plan-soft);color:var(--muted)}
+.t-план,.t-пропущено{background:var(--plan-soft);color:var(--muted)}
 .pains{grid-template-columns:repeat(auto-fill,minmax(290px,1fr));margin-bottom:16px}
 .pain h3{margin:0;font-size:14px;display:flex;justify-content:space-between}
 .pain .meta{color:var(--muted);font-size:12px;margin:4px 0 10px}
@@ -155,6 +155,12 @@ details[open] summary{margin-bottom:12px}
       <select id="cvc"><option value="">Любой класс</option><option>элит</option><option>бизнес</option><option>комфорт</option><option>эконом</option></select>
       <label><input type="checkbox" id="cvs"> застройщик продаёт</label><label><input type="checkbox" id="cvl"> продают участки</label><label><input type="checkbox" id="cvb"> идёт стройка</label><label><input type="checkbox" id="cvk"> есть контакт</label><span class="sub" id="cvcount"></span></div>
     <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>км</th><th>Застройщик</th><th>Телефон</th><th>Почта</th><th>Сдача</th><th>Участков</th><th>Домов</th><th>Строится</th><th>Материал</th><th>Ссылки</th></tr></thead><tbody id="cvrows"></tbody></table></div></div></section></div>
+  <div class="card" style="margin-top:16px"><h2>Дизайн-бюро — кто делает загородку премиум <span class="sub" id="dbsub"></span></h2>
+    <div class="sub" style="margin-bottom:12px">Разбор сайтов (главная + до 3 страниц портфолио): сколько про загородные дома и сколько про квартиры, упоминания наших посёлков и шоссе, признаки премиума.
+      «Комплектация» — бюро само поставляет мебель и оборудование (конкурент в этой части); без неё — естественный партнёр. Группа 1 — главная цель для персонального оффера.</div>
+    <div class="tools"><input type="search" id="dbq" placeholder="Поиск: бюро, место"><select id="dbg"><option value="">Все группы</option></select><select id="dbf"><option value="">Любой профиль</option><option>интерьер</option><option>архитектура</option><option>ландшафт</option></select>
+      <label><input type="checkbox" id="dbp"> упоминают наши места</label><label><input type="checkbox" id="dbk"> без своей комплектации</label><label><input type="checkbox" id="dbn"> только новые (из поиска)</label><span class="sub" id="dbcount"></span></div>
+    <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Бюро</th><th>Группа</th><th>Загородка / квартиры</th><th>Наши места</th><th>Премиум</th><th>Комплект. / надзор</th><th>Телефон</th><th>Почта</th><th>Соцсети</th></tr></thead><tbody id="dbrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h2>Подрядчики, которые уже работают в наших посёлках <span class="sub" id="pdsub"></span></h2>
     <div class="sub" style="margin-bottom:12px">Нашли поиском Яндекса «строительство и отделка дома в КП …»: компании со страницей под посёлок или с объектом в нём.
       Это и конкуренты, и партнёры (стройка без своей отделки и инженерии). «В скольких посёлках» — чем больше, тем плотнее компания сидит на территории.</div>
@@ -272,6 +278,19 @@ function cvrender(){ const q=$("cvq").value.toLowerCase(), h=$("cvh").value, c=$
     <td class="num">${v.land||"—"}</td><td class="num">${(v.cot+v.th)||"—"}</td><td class="num">${v.bld?`<b>${v.bld}</b>`:"—"}</td><td class="k">${esc(v.mat)}</td>
     <td class="lk">${v.site?`<a href="${esc(v.site)}" target="_blank">сайт</a>`:""}<a href="${esc(v.url)}" target="_blank">Циан</a></td></tr>`).join(""); }
 ["cvq","cvh","cvc","cvs","cvl","cvb","cvk"].forEach(id=>$(id).addEventListener("input",cvrender)); cvrender();
+const DB = D.db || [];
+[...new Set(DB.map(b=>b.g))].sort().forEach(g=>$("dbg").insertAdjacentHTML("beforeend",`<option>${esc(g)}</option>`));
+$("dbsub").textContent = DB.length ? `· ${DB.length} бюро · загородный премиум ${DB.filter(b=>b.g.startsWith("1.")).length} · загородка ${DB.filter(b=>b.g.startsWith("2.")).length} · упоминают наши места ${DB.filter(b=>b.places).length} · новых из поиска ${DB.filter(b=>b.src.startsWith("поиск")).length}` : "· ещё не собрано";
+function dbrender(){ const q=$("dbq").value.toLowerCase(), g=$("dbg").value;
+  const f=$("dbf").value; const r=DB.filter(b=>(!g||b.g===g)&&(!f||b.prof===f)&&(!$("dbp").checked||b.places)&&(!$("dbk").checked||!b.kompl)&&(!$("dbn").checked||b.src.startsWith("поиск"))&&(!q||(b.name+" "+b.site+" "+b.places).toLowerCase().includes(q)))
+    .sort((a,b)=>a.g.localeCompare(b.g)||b.zag-a.zag);
+  $("dbcount").textContent=`${r.length} из ${DB.length}`;
+  $("dbrows").innerHTML=r.map(b=>`<tr><td class="lk"><a href="https://${esc(b.site)}" target="_blank"><b>${esc(b.name)}</b></a>${b.src.startsWith("поиск")?`<span class="new">новое</span>`:""}<div class="k">${esc(b.site)}</div><div class="k">${esc(b.title)}</div></td>
+    <td class="k">${esc(b.g)}<div>${esc(b.prof)}</div></td><td class="num">${b.zag} / ${b.flat}</td><td class="k">${esc(b.places)||"—"}</td><td class="num">${b.prem||"—"}</td>
+    <td class="k">${b.kompl?"комплектация":"—"}${b.nadzor?"<br>надзор":""}</td>
+    <td class="ph">${esc(b.phone).split(", ").slice(0,2).join("<br>")||"—"}</td><td class="mail">${esc(b.mail).split(", ").slice(0,2).join("<br>")||"—"}</td>
+    <td class="lk">${b.ig?`<a href="${esc(b.ig)}" target="_blank">IG</a>`:""}${b.tg?`<a href="${esc(b.tg)}" target="_blank">TG</a>`:""}</td></tr>`).join(""); }
+["dbq","dbg","dbf","dbp","dbk","dbn"].forEach(id=>$(id).addEventListener("input",dbrender)); dbrender();
 const SB = D.sb || [];
 $("sbsub").textContent = SB.length ? `· ${SB.length} находок · групп ВК ${SB.filter(s=>s.kind==="ВК: сообщество").length} в ${new Set(SB.filter(s=>s.kind==="ВК: сообщество").map(s=>s.v)).size} посёлках · веток FORUMHOUSE ${SB.filter(s=>s.kind==="FORUMHOUSE").length}` : "· ещё не собрано";
 function sbrender(){ const q=$("sbq").value.toLowerCase(), k=$("sbk").value;
