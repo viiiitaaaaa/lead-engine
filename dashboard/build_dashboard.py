@@ -63,7 +63,8 @@ CHANNELS = [
     ("УК и консьержи", "собрано", "418 посёлков проверено: УК 20, сайт посёлка 185, телефон или почта у 142"),
     ("Редакции и СМИ", "собрано", "107 находок: 70 сайтов СМИ, почта у 32 — блок «СМИ и блогеры»"),
     ("ВК и FORUMHOUSE", "собрано", "104 группы ВК в 84 посёлках (маленькие), 14 веток FORUMHOUSE"),
-    ("YouTube · Instagram", "план", "только по вашей команде"),
+    ("Instagram конкурентов", "собрано", "66 аккаунтов бюро и подрядчиков: подписчики, живость; аудиторию не собираем"),
+    ("Сводка по посёлкам", "собрано", "521 посёлок в одной строке: застройщик, УК, стройка, Telegram, ВК, подрядчики"),
     ("Тендеры", "пропущено", "ваше решение 01.10"),
     ("Автоворонка кейсов", "план", "единая точка входа"),
     ("Лендинг / бот", "план", "под каждый выпуск"),
@@ -214,6 +215,22 @@ def main():
     pd_rows = [{"site": r["сайт"], "n": int(r["посёлков"]), "where": r["посёлки"], "title": r["заголовок"], "snip": r["сниппет"][:220],
                 "url": r["пример страницы"], "phone": r["телефоны"], "mail": r["почты"], "inbase": r["уже в базе"] == "True",
                 "kind": r.get("вид", ""), "doubt": r.get("сомнительно", "") == "True"} for _, r in pd_.iterrows()]
+    svp = ROOT / "data" / "lists" / "poselki_svod.tsv"  # строка = посёлок: parsers/poselki_svod.py
+    sv = pd.read_csv(svp, sep="	", dtype=str).fillna("") if svp.exists() else pd.DataFrame()
+    toint = lambda v: int(float(v)) if v not in ("", None) else 0
+    sv_rows = [{"name": r["посёлок"], "hw": r["шоссе"], "km": toint(r["км до МКАД"]) or None, "ours": r["наш список"], "cls": r["класс"],
+                "dev": r["застройщик"], "dsite": r["сайт застройщика"], "dph": r["телефоны застройщика"], "dml": r["почты застройщика"],
+                "st": r["статус продаж"], "fy": r["сдача"], "land": toint(r["участков в продаже"]), "bld": toint(r["строится объектов"]),
+                "cian": toint(r["домов на Циане (от 50 млн)"]), "uk": r["УК / сайт посёлка"], "usite": r["сайт посёлка"],
+                "uph": r["телефоны посёлка"], "uml": r["почты посёлка"], "tg": r["Telegram"], "vk": toint(r["групп ВК"]),
+                "vku": r["ВК"].split(", ")[0], "fh": toint(r["веток FORUMHOUSE"]), "pod": toint(r["подрядчиков работает"]),
+                "pods": r["подрядчики"], "u1": r["Villagio"], "u2": r["ONEHOUSE"], "u3": r["Циан"]} for _, r in sv.iterrows()]
+    igp = ROOT / "data" / "lists" / "instagram_konkurenty.tsv"  # Instagram конкурентов: parsers/instagram_profiles.py
+    ig = pd.read_csv(igp, sep="	", dtype=str).fillna("") if igp.exists() else pd.DataFrame()
+    ig_rows = [{"h": r["аккаунт"], "who": r["чей"], "what": r["кто это"], "n": toint(r["подписчиков"]), "posts": toint(r["постов"]),
+                "last": r["последний пост"], "bio": r["о себе"][:200]} for _, r in ig.iterrows()]
+    adp = ROOT / "data" / "lists" / "ad100_2026.tsv"  # AD100 2026 (США), справочно: собран в Chrome
+    ad_rows = pd.read_csv(adp, sep="	").fillna("").values.tolist() if adp.exists() else []
     mf = sorted((ROOT / "data" / "raw").glob("media_*.json"))  # СМИ и блогеры: parsers/media_search.py
     media = json.loads(mf[-1].read_text(encoding="utf-8")) if mf else []
     md_rows = [{"kind": m["вид"], "grp": m["группа"], "title": m["название"], "url": m["ссылка"], "snip": m["сниппет"][:220],
@@ -234,7 +251,7 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
         "spend": [("Apify", "≈15.7 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Bright Data", "≈0.7 $ (Карты, отзывы, поиск Яндекса)")],
     }
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))

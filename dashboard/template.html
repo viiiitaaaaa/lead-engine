@@ -143,10 +143,16 @@ details[open] summary{margin-bottom:12px}
     <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Сообщество</th><th>Посёлок</th><th>Вид</th><th>Участников</th><th>О чём</th></tr></thead><tbody id="sbrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><details><summary>Telegram — сырой список каналов с упоминаниями (в основном шум) <span class="sub" id="tgsub"></span></summary>
     <div class="tbl"><table><thead><tr><th>Канал</th><th>Найдено постов</th><th>Подписчиков</th><th>Пример</th></tr></thead><tbody id="tgrows"></tbody></table></div></details></div>
-  <div class="card" style="margin-top:16px"><h2>Посёлки из каталогов Villagio и ONEHOUSE <span class="sub" id="ksub"></span></h2>
+  <div class="card" style="margin-top:16px"><h2>Посёлки — всё в одной строке <span class="sub" id="svsub"></span></h2>
+    <div class="sub" style="margin-bottom:12px">Формат ТЗ «строка = посёлок»: каталоги Villagio/ONEHOUSE + Циан (застройщик, стройка) + УК + Telegram + ВК/FORUMHOUSE + подрядчики, которые там работают. До 60 км от МКАД по трём шоссе.</div>
+    <div class="tools"><input type="search" id="svq" placeholder="Поиск: посёлок, застройщик"><select id="svh"><option value="">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select>
+      <select id="svc"><option value="">Любой класс</option><option>элит</option><option>бизнес</option><option>комфорт</option><option>эконом</option></select>
+      <label><input type="checkbox" id="svo"> из нашего списка</label><label><input type="checkbox" id="svk"> есть контакт</label><label><input type="checkbox" id="svb"> идёт стройка</label><span class="sub" id="svcount"></span></div>
+    <div class="tbl" style="max-height:620px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>км</th><th>Застройщик</th><th>Контакт застройщика</th><th>УК / сайт посёлка</th><th>Стройка / участки</th><th>Домов на Циане</th><th>Сообщества</th><th>Подрядчиков</th><th>Ссылки</th></tr></thead><tbody id="svrows"></tbody></table></div></div>
+  <div class="card" style="margin-top:16px"><details><summary>Посёлки из каталогов Villagio и ONEHOUSE (исходный список) <span class="sub" id="ksub"></span></summary>
     <div class="tools"><input type="search" id="kq" placeholder="Поиск посёлка"><select id="kh"><option value="">Наша территория</option><option value="*">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select>
       <label><input type="checkbox" id="ko"> только из нашего списка</label><label><input type="checkbox" id="kc"> продаются дома (Циан)</label><label><input type="checkbox" id="kk"> есть контакт УК / посёлка</label><span class="sub" id="kcount"></span></div>
-    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>Шоссе</th><th>км от МКАД</th><th>Домов на Циане</th><th>Объектов у Villagio</th><th>УК / сайт посёлка</th><th>Телефон</th><th>Почта</th><th>Эксперты Villagio</th><th>Ссылки</th></tr></thead><tbody id="krows"></tbody></table></div></div>
+    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>Шоссе</th><th>км от МКАД</th><th>Домов на Циане</th><th>Объектов у Villagio</th><th>УК / сайт посёлка</th><th>Телефон</th><th>Почта</th><th>Эксперты Villagio</th><th>Ссылки</th></tr></thead><tbody id="krows"></tbody></table></div></details></div>
   <div class="card" style="margin-top:16px"><h2>Застройщики посёлков (Циан) <span class="sub" id="cvsub"></span></h2>
     <div class="sub" style="margin-bottom:12px">Канал «Партнёры»: застройщик продаёт дома и участки — его покупателям нужны отделка, инженерия, комплектация.
       «Участки» = покупают без подряда, строят сами; «строится» = объекты в стройке сейчас. До 60 км от МКАД. Телефон — тот, что застройщик указал на Циане.</div>
@@ -161,6 +167,11 @@ details[open] summary{margin-bottom:12px}
     <div class="tools"><input type="search" id="dbq" placeholder="Поиск: бюро, место"><select id="dbg"><option value="">Все группы</option></select><select id="dbf"><option value="">Любой профиль</option><option>интерьер</option><option>архитектура</option><option>ландшафт</option></select>
       <label><input type="checkbox" id="dbp"> упоминают наши места</label><label><input type="checkbox" id="dbk"> без своей комплектации</label><label><input type="checkbox" id="dbn"> только новые (из поиска)</label><span class="sub" id="dbcount"></span></div>
     <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Бюро</th><th>Группа</th><th>Загородка / квартиры</th><th>Наши места</th><th>Премиум</th><th>Комплект. / надзор</th><th>Телефон</th><th>Почта</th><th>Соцсети</th></tr></thead><tbody id="dbrows"></tbody></table></div></div>
+  <div class="card" style="margin-top:16px"><h2>Instagram конкурентов и партнёров <span class="sub" id="igsub"></span></h2>
+    <div class="sub" style="margin-bottom:12px">Аккаунты, ссылки на которые стоят на сайтах и в карточках компаний из базы. Кто сильнее в соцсетях и жив ли аккаунт (последний пост). Подписчиков-людей не собираем.</div>
+    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Аккаунт</th><th>Чей</th><th>Подписчиков</th><th>Постов</th><th>Последний пост</th><th>О себе</th></tr></thead><tbody id="igrows"></tbody></table></div>
+    <details style="margin-top:12px"><summary>AD100 2026 (Architectural Digest, США) — справочно <span class="sub" id="adsub"></span></summary>
+      <div class="sub" style="margin:8px 0">Сто студий из США и Европы, ни одной из России — как ориентир уровня и стиля, не как лиды.</div><div class="ch" id="adlist"></div></details></div>
   <div class="card" style="margin-top:16px"><h2>Подрядчики, которые уже работают в наших посёлках <span class="sub" id="pdsub"></span></h2>
     <div class="sub" style="margin-bottom:12px">Нашли поиском Яндекса «строительство и отделка дома в КП …»: компании со страницей под посёлок или с объектом в нём.
       Это и конкуренты, и партнёры (стройка без своей отделки и инженерии). «В скольких посёлках» — чем больше, тем плотнее компания сидит на территории.</div>
@@ -278,6 +289,29 @@ function cvrender(){ const q=$("cvq").value.toLowerCase(), h=$("cvh").value, c=$
     <td class="num">${v.land||"—"}</td><td class="num">${(v.cot+v.th)||"—"}</td><td class="num">${v.bld?`<b>${v.bld}</b>`:"—"}</td><td class="k">${esc(v.mat)}</td>
     <td class="lk">${v.site?`<a href="${esc(v.site)}" target="_blank">сайт</a>`:""}<a href="${esc(v.url)}" target="_blank">Циан</a></td></tr>`).join(""); }
 ["cvq","cvh","cvc","cvs","cvl","cvb","cvk"].forEach(id=>$(id).addEventListener("input",cvrender)); cvrender();
+const SV = D.sv || [];
+const has = v => v.dph||v.dml||v.uph||v.uml;
+$("svsub").textContent = SV.length ? `· ${SV.length} посёлков · застройщик у ${SV.filter(v=>v.dev).length} · контакт у ${SV.filter(has).length} · подрядчики известны у ${SV.filter(v=>v.pod).length} · элит/бизнес ${SV.filter(v=>v.cls==="элит"||v.cls==="бизнес").length}` : "· ещё не собрано";
+const two = s => esc(s).split(", ").slice(0,2).join("<br>");
+function svrender(){ const q=$("svq").value.toLowerCase(), h=$("svh").value, c=$("svc").value;
+  const r=SV.filter(v=>(!h||v.hw===h)&&(!c||v.cls===c)&&(!$("svo").checked||v.ours)&&(!$("svk").checked||has(v))&&(!$("svb").checked||v.bld)&&(!q||(v.name+" "+v.dev).toLowerCase().includes(q)))
+    .sort((a,b)=>(b.ours?1:0)-(a.ours?1:0)||b.cian-a.cian||b.bld-a.bld||(a.km??999)-(b.km??999));
+  $("svcount").textContent=`${r.length} из ${SV.length}`;
+  $("svrows").innerHTML=r.slice(0,400).map(v=>`<tr><td><b>${esc(v.name)}</b>${v.ours?`<span class="new ours">из списка</span>`:""}<div class="k">${esc(v.hw)}${v.cls?" · "+esc(v.cls):""}${v.st?" · "+esc(v.st):""}${v.fy?" · сдача "+esc(v.fy):""}</div></td>
+    <td class="num">${v.km??"—"}</td><td>${esc(v.dev)||"—"}${v.dsite?`<div class="lk"><a href="${esc(v.dsite)}" target="_blank">сайт</a></div>`:""}</td>
+    <td class="ph">${two(v.dph)}${v.dml?`<div class="mail">${two(v.dml)}</div>`:""}${!v.dph&&!v.dml?"—":""}</td>
+    <td>${v.uk?`<div class="k">${esc(v.uk)}</div>`:""}${v.usite?`<div class="lk"><a href="${esc(v.usite)}" target="_blank">сайт</a></div>`:""}<div class="ph">${two(v.uph)}</div><div class="mail">${two(v.uml)}</div>${!v.uk&&!v.uph&&!v.uml?"—":""}</td>
+    <td class="num">${v.bld?`<b>${v.bld}</b>`:"—"} / ${v.land||"—"}</td><td class="num">${v.cian||"—"}</td>
+    <td class="lk">${v.tg?`<a href="${esc(v.tg)}" target="_blank">TG</a>`:""}${v.vk?`<a href="${esc(v.vku)}" target="_blank">ВК${v.vk>1?" ×"+v.vk:""}</a>`:""}${v.fh?`<span class="k">FH ${v.fh}</span>`:""}${!v.tg&&!v.vk&&!v.fh?"—":""}</td>
+    <td class="num" title="${esc(v.pods)}">${v.pod||"—"}</td>
+    <td class="lk">${v.u1?`<a href="${esc(v.u1)}" target="_blank">Villagio</a>`:""}${v.u2?`<a href="${esc(v.u2)}" target="_blank">ONEHOUSE</a>`:""}${v.u3?`<a href="${esc(v.u3)}" target="_blank">Циан</a>`:""}</td></tr>`).join(""); }
+["svq","svh","svc","svo","svk","svb"].forEach(id=>$(id).addEventListener("input",svrender)); svrender();
+const IG = D.ig || [];
+$("igsub").textContent = IG.length ? `· ${IG.length} аккаунтов · живых (пост за 30 дней) ${IG.filter(i=>i.last>=new Date(Date.now()-30*864e5).toISOString().slice(0,10)).length}` : "· ещё не собрано";
+$("igrows").innerHTML = IG.map(i=>`<tr><td class="lk"><a href="https://instagram.com/${esc(i.h)}" target="_blank"><b>@${esc(i.h)}</b></a></td><td>${esc(i.who)}<div class="k">${esc(i.what)}</div></td>
+  <td class="num"><b>${i.n?fmt(i.n):"—"}</b></td><td class="num">${i.posts?fmt(i.posts):"—"}</td><td class="num">${esc(i.last)||"—"}</td><td class="k">${esc(i.bio)}</td></tr>`).join("");
+$("adsub").textContent = `· ${(D.ad||[]).length} студий`;
+$("adlist").innerHTML = (D.ad||[]).map(([n,s])=>`<div class="chi"><b><a href="https://${esc(s)}" target="_blank">${esc(n)}</a></b></div>`).join("");
 const DB = D.db || [];
 [...new Set(DB.map(b=>b.g))].sort().forEach(g=>$("dbg").insertAdjacentHTML("beforeend",`<option>${esc(g)}</option>`));
 $("dbsub").textContent = DB.length ? `· ${DB.length} бюро · загородный премиум ${DB.filter(b=>b.g.startsWith("1.")).length} · загородка ${DB.filter(b=>b.g.startsWith("2.")).length} · упоминают наши места ${DB.filter(b=>b.places).length} · новых из поиска ${DB.filter(b=>b.src.startsWith("поиск")).length}` : "· ещё не собрано";
