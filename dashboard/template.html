@@ -109,6 +109,11 @@ details[open] summary{margin-bottom:12px}
     <div class="chips" id="cover"></div>
     <div class="legend"><span>■ зелёный — найдено точно</span><span>■ серый — посёлки в этой местности</span><span>■ оранжевый — совпало только название, проверить</span><span>зачёркнуто — не найдено</span></div>
   </div>
+  <div class="card" style="margin-bottom:16px"><h2>Ваш список — все контакты <span class="sub" id="sksub"></span></h2>
+    <div class="sub" style="margin-bottom:10px">Все телефоны и почты по каждому пункту: карточки базы, глубокий обход сайтов, поиск Яндекса, справочники юрлиц. Наведите на контакт — откуда он.
+      <b>брокер</b> — контакт агентства недвижимости, а не самого посёлка/компании.</div>
+    <div class="tools"><input type="search" id="skq" placeholder="Поиск по названию"><select id="skv"><option value="">Компании и посёлки</option><option value="компания">Компании</option><option value="посёлок">Посёлки</option></select><label><input type="checkbox" id="skb"> скрыть контакты брокеров</label><span class="sub" id="skcount"></span></div>
+    <div class="tbl" style="max-height:620px;overflow-y:auto"><table><thead><tr><th>Пункт списка</th><th>Телефоны</th><th>Почты</th></tr></thead><tbody id="skrows"></tbody></table></div></div>
 
   <div class="card">
     <h2>Организации</h2>
@@ -295,6 +300,15 @@ function cvrender(){ const q=$("cvq").value.toLowerCase(), h=$("cvh").value, c=$
     <td class="num">${v.land||"—"}</td><td class="num">${(v.cot+v.th)||"—"}</td><td class="num">${v.bld?`<b>${v.bld}</b>`:"—"}</td><td class="k">${esc(v.mat)}</td>
     <td class="lk">${v.site?`<a href="${esc(v.site)}" target="_blank">сайт</a>`:""}<a href="${esc(v.url)}" target="_blank">Циан</a></td></tr>`).join(""); }
 ["cvq","cvh","cvc","cvs","cvl","cvb","cvk"].forEach(id=>$(id).addEventListener("input",cvrender)); cvrender();
+const SK = D.sk || [];
+const fph = v => v.length===11 ? `+${v[0]} ${v.slice(1,4)} ${v.slice(4,7)}-${v.slice(7,9)}-${v.slice(9)}` : v;
+$("sksub").textContent = SK.length ? `· ${SK.length} пунктов · телефонов ${SK.reduce((a,s)=>a+s.ph.length,0)} · почт ${SK.reduce((a,s)=>a+s.ml.length,0)}` : "· ещё не собрано";
+function skrender(){ const q=$("skq").value.toLowerCase(), v=$("skv").value, nb=$("skb").checked;
+  const r=SK.filter(s=>(!v||s.vid===v)&&(!q||(s.name+" "+s.vil).toLowerCase().includes(q)));
+  const list=(a,f)=>a.filter(c=>!nb||!c.br).map(c=>`<div title="${esc(c.src)}">${esc(f(c.v))}${c.br?' <span class="new chk">брокер</span>':""}</div>`).join("")||"—";
+  $("skcount").textContent=`${r.length} из ${SK.length}`;
+  $("skrows").innerHTML=r.map(s=>`<tr><td><b>${esc(s.name)}</b><div class="k">${esc(s.vid)}${s.vil?" · "+esc(s.vil):""}</div></td><td class="ph">${list(s.ph,fph)}</td><td class="mail">${list(s.ml,x=>x)}</td></tr>`).join(""); }
+["skq","skv","skb"].forEach(id=>$(id).addEventListener("input",skrender)); skrender();
 const SV = D.sv || [];
 const has = v => v.dph||v.dml||v.uph||v.uml;
 $("svsub").textContent = SV.length ? `· ${SV.length} посёлков · застройщик у ${SV.filter(v=>v.dev).length} · контакт у ${SV.filter(has).length} · подрядчики известны у ${SV.filter(v=>v.pod).length} · элит/бизнес ${SV.filter(v=>v.cls==="элит"||v.cls==="бизнес").length}` : "· ещё не собрано";

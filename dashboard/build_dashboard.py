@@ -215,6 +215,12 @@ def main():
     pd_rows = [{"site": r["сайт"], "n": int(r["посёлков"]), "where": r["посёлки"], "title": r["заголовок"], "snip": r["сниппет"][:220],
                 "url": r["пример страницы"], "phone": r["телефоны"], "mail": r["почты"], "inbase": r["уже в базе"] == "True",
                 "kind": r.get("вид", ""), "doubt": r.get("сомнительно", "") == "True"} for _, r in pd_.iterrows()]
+    skp = ROOT / "data" / "lists" / "spisok_kontakty.tsv"  # все контакты по её списку: parsers/list_contacts.py
+    sk = pd.read_csv(skp, sep="	", dtype=str).fillna("") if skp.exists() else pd.DataFrame()
+    sk_rows = []
+    for name, g in (sk.groupby("пункт", sort=False) if len(sk) else []):
+        cont = lambda k: [{"v": r["значение"], "br": r["брокер?"] == "True", "src": r["откуда"]} for _, r in g[g["контакт"] == k].iterrows()]
+        sk_rows.append({"name": name, "vid": g["вид пункта"].iloc[0], "vil": g["посёлки"].iloc[0], "ph": cont("телефон"), "ml": cont("почта")})
     svp = ROOT / "data" / "lists" / "poselki_svod.tsv"  # строка = посёлок: parsers/poselki_svod.py
     sv = pd.read_csv(svp, sep="	", dtype=str).fillna("") if svp.exists() else pd.DataFrame()
     toint = lambda v: int(float(v)) if v not in ("", None) else 0
@@ -256,7 +262,7 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "td": td_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "sk": sk_rows, "td": td_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
         "spend": [("Apify", "≈18.5 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Apify: Instagram", "0.16 $ за 70 профилей"),
                   ("Apify: Telegram 02.10", "2.18 $ за 3 чата (переплата: потолок был на каждый чат)"),
                   ("Bright Data", "≈3 $ (Карты, отзывы, поиск Яндекса: УК, подрядчики, ВК, бюро, застройщики)")],
