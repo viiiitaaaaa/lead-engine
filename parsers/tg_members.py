@@ -1,6 +1,6 @@
 """Участники открытых Telegram-чатов → только хэши id (без имён, логинов, телефонов). Для пересечений групп.
 
-python parsers/tg_members.py zhukodin ilyinskoeusovo --max 600 --cap 0.5
+python parsers/tg_members.py zhukodin ilyinskoeusovo --max 600 --cap 0.5   # --cap — на все чаты вместе (02.10: было на каждый, переплата 2.18 $ вместо 1.2)
 Итог: data/raw/tg_members_<время>.json = {чат: {"size": …, "hidden": …, "h": [хэши], "bots": n}}.
 Правило: жителям не пишем (docs/telegram_auditoriya.md). Выгрузка в Apify удаляется сразу после скачивания.
 """
@@ -44,11 +44,11 @@ def main():
     a = argparse.ArgumentParser()
     a.add_argument("chats", nargs="+")
     a.add_argument("--max", type=int, default=600, help="сколько участников брать из чата")
-    a.add_argument("--cap", type=float, default=0.5, help="потолок трат на один чат, $")
+    a.add_argument("--cap", type=float, default=0.5, help="потолок трат на ВЕСЬ запуск, $ (делится поровну между чатами)")
     o = a.parse_args()
     sl = salt()
     with ThreadPoolExecutor(5) as pool:
-        res = dict(zip(o.chats, pool.map(lambda c: collect(c, o.max, o.cap, sl), o.chats)))
+        res = dict(zip(o.chats, pool.map(lambda c: collect(c, o.max, round(o.cap / len(o.chats), 2), sl), o.chats)))
     out = ROOT / "data" / "raw" / f"tg_members_{datetime.now():%Y-%m-%d_%H-%M}.json"
     out.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
     for c, v in res.items():

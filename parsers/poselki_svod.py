@@ -70,6 +70,11 @@ def main():
         e["подрядчиков работает"], e["подрядчики"] = len(pod[k]), ", ".join(pod[k][:5])
         e["есть контакт"] = any(e.get(c) for c in ("телефоны застройщика", "почты застройщика", "телефоны посёлка", "почты посёлка"))
 
+    # её список по-русски, а посёлок назван латиницей: «Виджион» = КП VISION (Villagio Estate), выяснено 02.10
+    for name, ours in {"VISION": "Виджион"}.items():
+        k = k8(name)
+        if k in rows:
+            rows[k]["наш список"] = ours
     df = pd.DataFrame(rows.values()).fillna("")
     df["_km"] = pd.to_numeric(df["км до МКАД"], errors="coerce")
     df = df[df["_km"].fillna(0) <= 60].sort_values(["шоссе", "_km"]).drop(columns="_km")
