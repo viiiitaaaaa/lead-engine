@@ -178,12 +178,37 @@ def research() -> None:
             print(f"повтор: сделано {n} из {len(empty)}", flush=True)
 
 
+def group_items(g: str) -> list:
+    """важные группы базы: premium — 61 бюро «загородный премиум», contractors — подрядчики в посёлках, developers — застройщики посёлков"""
+    L = ROOT / "data/lists"
+    if g == "premium":
+        d = pd.read_csv(L / "dizain_byuro.tsv", sep="\t", dtype=str).fillna("")
+        d = d[d["группа"].str.startswith("1.")]
+        return [{"пункт": r["бюро"][:80], "вид": "компания", "посёлки": r["наши места"], "сайты": [r["сайт"]], "known": []} for _, r in d.iterrows()]
+    if g == "contractors":
+        d = pd.read_csv(L / "podryadchiki_poselkov.tsv", sep="\t", dtype=str).fillna("")
+        d = d[d["сомнительно"] != "True"]
+        return [{"пункт": r["сайт"], "вид": "компания", "посёлки": r["посёлки"][:200], "сайты": [r["сайт"]], "known": []} for _, r in d.iterrows()]
+    if g == "developers":
+        d = pd.read_csv(L / "cian_poselki.tsv", sep="\t", dtype=str).fillna("")
+        d = d[d["застройщик"].str.strip() != ""]
+        out = {}
+        for _, r in d.iterrows():
+            e = out.setdefault(r["застройщик"].strip(), {"пункт": r["застройщик"].strip(), "вид": "компания", "посёлки": [], "сайты": [], "known": []})
+            e["посёлки"].append(r["посёлок"])
+            if r["сайт"] and r["сайт"] not in e["сайты"]:
+                e["сайты"].append(r["сайт"])
+        return [{**e, "посёлки": ", ".join(e["посёлки"])[:200]} for e in out.values()]
+    raise SystemExit("группа: premium | contractors | developers")
+
+
 def main():
     if "--research" in sys.argv:
         return research()
-    its = list_items()
+    grp = sys.argv[sys.argv.index("--group") + 1] if "--group" in sys.argv else ""
+    its = group_items(grp) if grp else list_items()
     token = env("BRIGHTDATA_API_TOKEN")
-    part = ROOT / "data/raw/dossier_partial.json"
+    part = ROOT / f"data/raw/dossier{'_' + grp if grp else ''}_partial.json"
     res = json.loads(part.read_text(encoding="utf-8")) if part.exists() else {}
     todo = [i for i in its if i["пункт"] not in res]
     print(f"пунктов {len(its)}, осталось {len(todo)}", flush=True)
@@ -194,7 +219,7 @@ def main():
             part.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
             if n % 5 == 0 or n == len(todo):
                 print(f"сделано {n} из {len(todo)}, осталось ≈{(time.time() - t0) / n * (len(todo) - n) / 60:.0f} мин", flush=True)
-    out = ROOT / "data/raw/dossier.json"
+    out = ROOT / f"data/raw/dossier{'_' + grp if grp else ''}.json"
     out.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
     part.unlink(missing_ok=True)
     v = list(res.values())

@@ -117,6 +117,15 @@ def main():
     rev = pd.read_excel(rev_x, sheet_name="отзывы")
     compl = pd.read_excel(pain_x, sheet_name="жалобы")
 
+    # полные отзывы Яндекс Карт (сверх 50) для карточек, собранных в Chrome: parsers/yrev_import.py → подменяют первые 50
+    yf = ROOT / "data" / "raw" / "yrev_full.json"
+    if yf.exists():
+        full = json.loads(yf.read_text(encoding="utf-8"))
+        names = dict(zip(base["ссылка"], base["название"]))
+        add = pd.DataFrame([{"организация": names.get(c, ""), "оценка": pd.to_numeric(r.get("оценка"), errors="coerce"), "дата": r.get("дата", ""),
+                             "отзыв": r.get("текст", ""), "ответ компании": r.get("ответ", ""), "карточка": c} for c, rs in full.items() for r in rs])
+        if len(add):
+            rev = pd.concat([rev[~rev["карточка"].isin(full)], add], ignore_index=True)
     base["сегмент"] = base["вид деятельности"].map(lambda k: segment(s(k)))
     club = base["тип"] == "клуб / досуг"
     base.loc[club, "сегмент"] = "Клубы и досуг"
@@ -224,8 +233,13 @@ def main():
     dsp = ROOT / "data" / "raw" / "dossier.json"  # досье по её списку: parsers/list_dossier.py
     dsp = dsp if dsp.exists() else ROOT / "data" / "raw" / "dossier_partial.json"
     dos = json.loads(dsp.read_text(encoding="utf-8")) if dsp.exists() else {}
+    gsp = ROOT / "data" / "raw" / "gis_reviews.json"  # все отзывы 2ГИС: parsers/gis_reviews.py
+    gis = json.loads(gsp.read_text(encoding="utf-8")) if gsp.exists() else {}
     ds_rows = []
     for name, d in dos.items():
+        gv = gis.get(name) or {"карточки": [], "отзывы": []}
+        grev = gv["отзывы"]
+        gneg = [x for x in grev if (x.get("оценка") or 5) <= 3]
         g = base[(base["наш список"] == name) & ~base["новая?"].fillna("").str.startswith("отсеяно")]
         if d["вид"] == "посёлок":  # у посёлка — только сам посёлок/УК, не все организации местности
             g = g[(g["тип"] == "посёлок") | g["вид деятельности"].fillna("").str.contains(r"коттеджн|посёл|посел|управляющ", case=False, regex=True)]
@@ -236,7 +250,10 @@ def main():
                         "ln": d.get("юрлицо: как найдено", ""), "twins": len(d.get("тёзки ЕГРЮЛ") or []),
                         "sites": d.get("сайты") or [], "rev": d.get("отзывы") or [], "art": d.get("статьи") or [],
                         "q": d.get("вопросы") or [], "cl": d.get("клиенты") or [], "money": d.get("выручка кратко", ""),
-                        "staff": d.get("сотрудников", ""), "vleg": d.get("юрлица посёлка") or [], "rtx": (d.get("отзывы: тексты") or [])[:40], "ym": {"n": len(r), "neg": int(r["neg"].sum()) if len(r) else 0,
+                        "staff": d.get("сотрудников", ""), "vleg": d.get("юрлица посёлка") or [], "rtx": (d.get("отзывы: тексты") or [])[:40],
+                        "aud": d.get("соцсети: аудитория") or [],
+                        "gis": {"cards": gv["карточки"], "n": len(grev), "neg": len(gneg),
+                                "items": sorted(grev, key=lambda x: (x.get("оценка") or 5, x.get("дата") or ""))[:40]}, "ym": {"n": len(r), "neg": int(r["neg"].sum()) if len(r) else 0,
                         "rating": None if g["рейтинг"].dropna().empty else float(pd.to_numeric(g["рейтинг"], errors="coerce").max()),
                         "themes": [f"{k} ({v})" for k, v in th.items()],
                         "quotes": [s[:220] for s in c.sort_values("дата", ascending=False)["суть"].head(3)]}})
