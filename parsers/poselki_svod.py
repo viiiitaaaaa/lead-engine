@@ -28,7 +28,15 @@ def k8(name: str) -> str:
 
 def main():
     kat, cv, sb, pdr = read("poselki_katalog.tsv"), read("cian_poselki.tsv"), read("soobshchestva_poselkov.tsv"), read("podryadchiki_poselkov.tsv")
-    kat = kat[kat["наша территория"] == "True"]
+    # её список: посёлок из списка берём даже с другого шоссе (Пирогово, Завидово, Трувиль, Лапино…) и по вхождению названия
+    lst = [l.strip() for l in (L / "компании_и_поселки_2026-09-30.txt").read_text(encoding="utf-8").splitlines() if l.strip()]
+    lk = [(key(n), n) for n in lst if len(key(n)) >= 5]
+    kat["наш список"] = [r["наш список"] or next((n for k, n in lk if k in key(r["посёлок"])), "") for r in kat.to_dict("records")]
+    # разделы ONEHOUSE, которые она прислала 02.10 (Новорижское, Рублёвка, Рублёво-Успенское, Элитные) — тоже всегда в сводке
+    razd = read("onehouse_razdely.tsv")
+    razd = dict(zip(razd["slug"], razd["разделы ONEHOUSE"])) if len(razd) else {}
+    kat["раздел ONEHOUSE"] = kat["ONEHOUSE"].map(lambda u: razd.get(u.rstrip("/").split("/")[-1], "") if u else "")
+    kat = kat[(kat["наша территория"] == "True") | (kat["наш список"] != "") | (kat["раздел ONEHOUSE"] != "")]
     dsf = ROOT / "data" / "raw" / "developers_sites.json"
     dev_sites = json.loads(dsf.read_text(encoding="utf-8")) if dsf.exists() else {}
 
@@ -40,7 +48,8 @@ def main():
                                            "наш список": r["наш список"], "домов на Циане (от 50 млн)": r["домов на Циане"],
                                            "УК / сайт посёлка": r["контакт: что"], "сайт посёлка": r["контакт: сайт"],
                                            "телефоны посёлка": r["контакт: телефоны"], "почты посёлка": r["контакт: почты"],
-                                           "Telegram": r["Telegram"], "Villagio": r["Villagio"], "ONEHOUSE": r["ONEHOUSE"]})
+                                           "Telegram": r["Telegram"], "Villagio": r["Villagio"], "ONEHOUSE": r["ONEHOUSE"],
+                                           "раздел ONEHOUSE": r["раздел ONEHOUSE"]})
     for r in cv.to_dict("records"):
         name = re.sub(r"\s*\(.*?\)", "", r["посёлок"]).strip()
         alt = (re.search(r"\((.*?)\)", r["посёлок"]) or [None, ""])[1]  # «Chateau Souverain (Шато Соверен)» — ищем по обоим
@@ -77,7 +86,7 @@ def main():
             rows[k]["наш список"] = ours
     df = pd.DataFrame(rows.values()).fillna("")
     df["_km"] = pd.to_numeric(df["км до МКАД"], errors="coerce")
-    df = df[df["_km"].fillna(0) <= 60].sort_values(["шоссе", "_km"]).drop(columns="_km")
+    df = df[(df["_km"].fillna(0) <= 60) | (df["наш список"] != "") | (df["раздел ONEHOUSE"] != "")].sort_values(["шоссе", "_km"]).drop(columns="_km")
     df.to_csv(L / "poselki_svod.tsv", sep="\t", index=False)
     print(f"посёлков {len(df)}: застройщик {(df['застройщик'] != '').sum()}, контакт {df['есть контакт'].sum()}, "
           f"Telegram {(df['Telegram'] != '').sum()}, ВК {(df['групп ВК'] > 0).sum()}, подрядчики {(df['подрядчиков работает'] > 0).sum()}, "

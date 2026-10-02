@@ -224,7 +224,7 @@ def main():
                 "cian": toint(r["домов на Циане (от 50 млн)"]), "uk": r["УК / сайт посёлка"], "usite": r["сайт посёлка"],
                 "uph": r["телефоны посёлка"], "uml": r["почты посёлка"], "tg": r["Telegram"], "vk": toint(r["групп ВК"]),
                 "vku": r["ВК"].split(", ")[0], "fh": toint(r["веток FORUMHOUSE"]), "pod": toint(r["подрядчиков работает"]),
-                "pods": r["подрядчики"], "u1": r["Villagio"], "u2": r["ONEHOUSE"], "u3": r["Циан"]} for _, r in sv.iterrows()]
+                "pods": r["подрядчики"], "oh": r.get("раздел ONEHOUSE", ""), "u1": r["Villagio"], "u2": r["ONEHOUSE"], "u3": r["Циан"]} for _, r in sv.iterrows()]
     igp = ROOT / "data" / "lists" / "instagram_konkurenty.tsv"  # Instagram конкурентов: parsers/instagram_profiles.py
     ig = pd.read_csv(igp, sep="	", dtype=str).fillna("") if igp.exists() else pd.DataFrame()
     ig_rows = [{"h": r["аккаунт"], "who": r["чей"], "what": r["кто это"], "n": toint(r["подписчиков"]), "posts": toint(r["постов"]),

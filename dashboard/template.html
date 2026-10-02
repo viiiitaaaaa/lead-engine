@@ -147,7 +147,7 @@ details[open] summary{margin-bottom:12px}
     <div class="sub" style="margin-bottom:12px">Формат ТЗ «строка = посёлок»: каталоги Villagio/ONEHOUSE + Циан (застройщик, стройка) + УК + Telegram + ВК/FORUMHOUSE + подрядчики, которые там работают. До 60 км от МКАД по трём шоссе.</div>
     <div class="tools"><input type="search" id="svq" placeholder="Поиск: посёлок, застройщик"><select id="svh"><option value="">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select>
       <select id="svc"><option value="">Любой класс</option><option>элит</option><option>бизнес</option><option>комфорт</option><option>эконом</option></select>
-      <label><input type="checkbox" id="svo"> из нашего списка</label><label><input type="checkbox" id="svk"> есть контакт</label><label><input type="checkbox" id="svb"> идёт стройка</label><span class="sub" id="svcount"></span></div>
+      <label><input type="checkbox" id="svo"> из нашего списка</label><label><input type="checkbox" id="svr"> из разделов ONEHOUSE</label><label><input type="checkbox" id="svk"> есть контакт</label><label><input type="checkbox" id="svb"> идёт стройка</label><span class="sub" id="svcount"></span></div>
     <div class="tbl" style="max-height:620px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>км</th><th>Застройщик</th><th>Контакт застройщика</th><th>УК / сайт посёлка</th><th>Стройка / участки</th><th>Домов на Циане</th><th>Сообщества</th><th>Подрядчиков</th><th>Ссылки</th></tr></thead><tbody id="svrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><details><summary>Посёлки из каталогов Villagio и ONEHOUSE (исходный список) <span class="sub" id="ksub"></span></summary>
     <div class="tools"><input type="search" id="kq" placeholder="Поиск посёлка"><select id="kh"><option value="">Наша территория</option><option value="*">Все шоссе</option><option>Новорижское</option><option>Рублёво-Успенское</option><option>Ильинское</option></select>
@@ -300,10 +300,10 @@ const has = v => v.dph||v.dml||v.uph||v.uml;
 $("svsub").textContent = SV.length ? `· ${SV.length} посёлков · застройщик у ${SV.filter(v=>v.dev).length} · контакт у ${SV.filter(has).length} · подрядчики известны у ${SV.filter(v=>v.pod).length} · элит/бизнес ${SV.filter(v=>v.cls==="элит"||v.cls==="бизнес").length}` : "· ещё не собрано";
 const two = s => esc(s).split(", ").slice(0,2).join("<br>");
 function svrender(){ const q=$("svq").value.toLowerCase(), h=$("svh").value, c=$("svc").value;
-  const r=SV.filter(v=>(!h||v.hw===h)&&(!c||v.cls===c)&&(!$("svo").checked||v.ours)&&(!$("svk").checked||has(v))&&(!$("svb").checked||v.bld)&&(!q||(v.name+" "+v.dev).toLowerCase().includes(q)))
+  const r=SV.filter(v=>(!h||v.hw===h)&&(!c||v.cls===c)&&(!$("svo").checked||v.ours)&&(!$("svr").checked||v.oh)&&(!$("svk").checked||has(v))&&(!$("svb").checked||v.bld)&&(!q||(v.name+" "+v.dev).toLowerCase().includes(q)))
     .sort((a,b)=>(b.ours?1:0)-(a.ours?1:0)||b.cian-a.cian||b.bld-a.bld||(a.km??999)-(b.km??999));
   $("svcount").textContent=`${r.length} из ${SV.length}`;
-  $("svrows").innerHTML=r.slice(0,400).map(v=>`<tr><td><b>${esc(v.name)}</b>${v.ours?`<span class="new ours">из списка</span>`:""}<div class="k">${esc(v.hw)}${v.cls?" · "+esc(v.cls):""}${v.st?" · "+esc(v.st):""}${v.fy?" · сдача "+esc(v.fy):""}</div></td>
+  $("svrows").innerHTML=r.slice(0,400).map(v=>`<tr><td><b>${esc(v.name)}</b>${v.ours?`<span class="new ours">из списка</span>`:""}${v.oh?`<span class="new" title="${esc(v.oh)}">ONEHOUSE</span>`:""}<div class="k">${esc(v.hw)}${v.cls?" · "+esc(v.cls):""}${v.st?" · "+esc(v.st):""}${v.fy?" · сдача "+esc(v.fy):""}</div></td>
     <td class="num">${v.km??"—"}</td><td>${esc(v.dev)||"—"}${v.dsite?`<div class="lk"><a href="${esc(v.dsite)}" target="_blank">сайт</a></div>`:""}</td>
     <td class="ph">${two(v.dph)}${v.dml?`<div class="mail">${two(v.dml)}</div>`:""}${!v.dph&&!v.dml?"—":""}</td>
     <td>${v.uk?`<div class="k">${esc(v.uk)}</div>`:""}${v.usite?`<div class="lk"><a href="${esc(v.usite)}" target="_blank">сайт</a></div>`:""}<div class="ph">${two(v.uph)}</div><div class="mail">${two(v.uml)}</div>${!v.uk&&!v.uph&&!v.uml?"—":""}</td>
@@ -311,7 +311,7 @@ function svrender(){ const q=$("svq").value.toLowerCase(), h=$("svh").value, c=$
     <td class="lk">${v.tg?`<a href="${esc(v.tg)}" target="_blank">TG</a>`:""}${v.vk?`<a href="${esc(v.vku)}" target="_blank">ВК${v.vk>1?" ×"+v.vk:""}</a>`:""}${v.fh?`<span class="k">FH ${v.fh}</span>`:""}${!v.tg&&!v.vk&&!v.fh?"—":""}</td>
     <td class="num" title="${esc(v.pods)}">${v.pod||"—"}</td>
     <td class="lk">${v.u1?`<a href="${esc(v.u1)}" target="_blank">Villagio</a>`:""}${v.u2?`<a href="${esc(v.u2)}" target="_blank">ONEHOUSE</a>`:""}${v.u3?`<a href="${esc(v.u3)}" target="_blank">Циан</a>`:""}</td></tr>`).join(""); }
-["svq","svh","svc","svo","svk","svb"].forEach(id=>$(id).addEventListener("input",svrender)); svrender();
+["svq","svh","svc","svo","svr","svk","svb"].forEach(id=>$(id).addEventListener("input",svrender)); svrender();
 const TD = D.td || [];
 [...new Set(TD.flatMap(t=>t.kind.split(", ")))].sort().forEach(k=>$("tdk").insertAdjacentHTML("beforeend",`<option>${esc(k)}</option>`));
 [...new Set(TD.map(t=>t.st))].filter(Boolean).forEach(k=>$("tds").insertAdjacentHTML("beforeend",`<option>${esc(k)}</option>`));
