@@ -209,10 +209,13 @@ def main():
                 "land": num(r["участков в продаже"]), "cot": num(r["коттеджей в продаже"]), "th": num(r["таунхаусов в продаже"]),
                 "bld": num(r["строится объектов"]), "ha": r["площадь, га"], "mat": r["материал"], "fin": r["что пишет застройщик об отделке"],
                 "url": r["Циан"]} for _, r in cv.iterrows()]
+    vkp = ROOT / "data" / "raw" / "vk_members.json"  # участники групп ВК: собраны в Chrome из её вкладки vk.com (members_count)
+    vkm = json.loads(vkp.read_text(encoding="utf-8")) if vkp.exists() else {}
+    vkn = lambda u: (vkm.get((re.search(r"vk\.(?:com|ru)/([A-Za-z0-9_.]+)", u) or [None, ""])[1]) or {}).get("members")
     sbp = ROOT / "data" / "lists" / "soobshchestva_poselkov.tsv"  # ВК и FORUMHOUSE посёлков: parsers/residents_search.py
     sb = pd.read_csv(sbp, sep="	", dtype=str).fillna("") if sbp.exists() else pd.DataFrame()
     sb_rows = [{"v": r["посёлок"], "kind": r["вид"], "url": r["ссылка"], "title": r["название"], "snip": r["сниппет"][:220],
-                "n": int(float(r["участников"])) if r["участников"] else None} for _, r in sb.iterrows()]
+                "n": vkn(r["ссылка"]) or (int(float(r["участников"])) if r["участников"] else None)} for _, r in sb.iterrows()]
     dbp = ROOT / "data" / "lists" / "dizain_byuro.tsv"  # разбор сайтов дизайн-бюро: parsers/design_bureaus.py
     db = pd.read_csv(dbp, sep="	", dtype=str).fillna("") if dbp.exists() else pd.DataFrame()
     db_rows = [{"name": r["бюро"], "site": r["сайт"], "g": r["группа"], "prof": r.get("профиль", ""), "ad": r.get("AD List", "") == "True", "src": r["источник"], "zag": int(r["загородка"] or 0),
@@ -230,14 +233,18 @@ def main():
     for name, g in (sk.groupby("пункт", sort=False) if len(sk) else []):
         cont = lambda k: [{"v": r["значение"], "br": r["брокер?"] == "True", "src": r["откуда"]} for _, r in g[g["контакт"] == k].iterrows()]
         sk_rows.append({"name": name, "vid": g["вид пункта"].iloc[0], "vil": g["посёлки"].iloc[0], "ph": cont("телефон"), "ml": cont("почта")})
-    dsp = ROOT / "data" / "raw" / "dossier.json"  # досье по её списку: parsers/list_dossier.py
-    dsp = dsp if dsp.exists() else ROOT / "data" / "raw" / "dossier_partial.json"
-    dos = json.loads(dsp.read_text(encoding="utf-8")) if dsp.exists() else {}
-    gsp = ROOT / "data" / "raw" / "gis_reviews.json"  # все отзывы 2ГИС: parsers/gis_reviews.py
-    gis = json.loads(gsp.read_text(encoding="utf-8")) if gsp.exists() else {}
+    # досье: её список + группы (parsers/list_dossier.py --group premium|contractors|developers), пока идёт сбор — _partial
+    dos, gis = [], {}
+    for grp, title in (("", "ваш список"), ("premium", "дизайн-бюро премиум"), ("contractors", "подрядчики"), ("developers", "застройщики")):
+        sfx = "_" + grp if grp else ""
+        dsp = ROOT / "data" / "raw" / f"dossier{sfx}.json"
+        dsp = dsp if dsp.exists() else ROOT / "data" / "raw" / f"dossier{sfx}_partial.json"
+        dos += [(title, name, d) for name, d in (json.loads(dsp.read_text(encoding="utf-8")) if dsp.exists() else {}).items()]
+        gsp = ROOT / "data" / "raw" / f"gis_reviews{sfx}.json"  # все отзывы 2ГИС: parsers/gis_reviews.py
+        gis[title] = json.loads(gsp.read_text(encoding="utf-8")) if gsp.exists() else {}
     ds_rows = []
-    for name, d in dos.items():
-        gv = gis.get(name) or {"карточки": [], "отзывы": []}
+    for grp, name, d in dos:
+        gv = gis[grp].get(name) or {"карточки": [], "отзывы": []}
         grev = gv["отзывы"]
         gneg = [x for x in grev if (x.get("оценка") or 5) <= 3]
         g = base[(base["наш список"] == name) & ~base["новая?"].fillna("").str.startswith("отсеяно")]
@@ -246,7 +253,7 @@ def main():
         r = rev[rev["карточка"].isin(set(g["ссылка"]))]
         c = compl[compl["организация"].isin(set(g["название"]))]
         th = pd.Series([t for x in c["темы (по-русски)"] for t in str(x).split("; ") if t]).value_counts().head(4)
-        ds_rows.append({"name": name, "vid": d["вид"], "vil": d.get("посёлки", ""), "legal": d.get("юрлицо") or {},
+        ds_rows.append({"name": name, "grp": grp, "vid": d["вид"], "vil": d.get("посёлки", ""), "legal": d.get("юрлицо") or {},
                         "ln": d.get("юрлицо: как найдено", ""), "twins": len(d.get("тёзки ЕГРЮЛ") or []),
                         "sites": d.get("сайты") or [], "rev": d.get("отзывы") or [], "art": d.get("статьи") or [],
                         "q": d.get("вопросы") or [], "cl": d.get("клиенты") or [], "money": d.get("выручка кратко", ""),
@@ -265,7 +272,7 @@ def main():
                 "st": r["статус продаж"], "fy": r["сдача"], "land": toint(r["участков в продаже"]), "bld": toint(r["строится объектов"]),
                 "cian": toint(r["домов на Циане (от 50 млн)"]), "uk": r["УК / сайт посёлка"], "usite": r["сайт посёлка"],
                 "uph": r["телефоны посёлка"], "uml": r["почты посёлка"], "tg": r["Telegram"], "vk": toint(r["групп ВК"]),
-                "vku": r["ВК"].split(", ")[0], "fh": toint(r["веток FORUMHOUSE"]), "pod": toint(r["подрядчиков работает"]),
+                "vku": r["ВК"].split(", ")[0], "vkn": sum(vkn(u) or 0 for u in r["ВК"].split(", ") if u) or None, "fh": toint(r["веток FORUMHOUSE"]), "pod": toint(r["подрядчиков работает"]),
                 "pods": r["подрядчики"], "oh": r.get("раздел ONEHOUSE", ""), "u1": r["Villagio"], "u2": r["ONEHOUSE"], "u3": r["Циан"]} for _, r in sv.iterrows()]
     igp = ROOT / "data" / "lists" / "instagram_konkurenty.tsv"  # Instagram конкурентов: parsers/instagram_profiles.py
     ig = pd.read_csv(igp, sep="	", dtype=str).fillna("") if igp.exists() else pd.DataFrame()

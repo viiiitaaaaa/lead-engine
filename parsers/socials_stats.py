@@ -44,6 +44,10 @@ def tg(u: str) -> dict:
 
 def vk(u: str) -> dict:
     h = re.search(r"vk\.(?:com|ru)/([A-Za-z0-9_.]+)", u).group(1)
+    vkf = ROOT / "data/raw/vk_members.json"  # собрано в Chrome из её вкладки vk.com: без входа ВК счётчик не отдаёт
+    known = (json.loads(vkf.read_text(encoding="utf-8")) if vkf.exists() else {}).get(h) or {}
+    if known.get("members") is not None:
+        return {"сеть": "ВКонтакте", "ссылка": "https://vk.com/" + h, "подписчиков": known["members"], "последний пост": ""}
     t = get("https://m.vk.com/" + h) or get("https://vk.com/" + h)  # мобильная версия чаще отдаёт счётчик без входа
     m = re.search(r"(\d[\d\s\xa0.,]*\s*(?:K|тыс\.?)?)\s*(?:участник|подписчик)", html.unescape(re.sub(r"<[^>]+>", " ", t)))
     dates = re.findall(r'"date":(\d{10})', t)

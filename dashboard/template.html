@@ -109,9 +109,9 @@ details[open] summary{margin-bottom:12px}
     <div class="chips" id="cover"></div>
     <div class="legend"><span>■ зелёный — найдено точно</span><span>■ серый — посёлки в этой местности</span><span>■ оранжевый — совпало только название, проверить</span><span>зачёркнуто — не найдено</span></div>
   </div>
-  <div class="card" style="margin-bottom:16px"><h2>Ваш список — досье <span class="sub" id="dssub"></span></h2>
+  <div class="card" style="margin-bottom:16px"><h2>Досье — ваш список и группы <span class="sub" id="dssub"></span></h2>
     <div class="sub" style="margin-bottom:10px">По каждому пункту: юрлицо (ЕГРЮЛ), сайт и соцсети, отзывы (Яндекс Карты + другие площадки), статьи, вопросы и обсуждения, клиенты и проекты. Нажмите на строку — раскроется.</div>
-    <div class="tools"><input type="search" id="dsq" placeholder="Поиск по названию"><select id="dsv"><option value="">Компании и посёлки</option><option value="компания">Компании</option><option value="посёлок">Посёлки</option></select><span class="sub" id="dscount"></span></div>
+    <div class="tools"><input type="search" id="dsq" placeholder="Поиск по названию"><select id="dsg"><option value="">Все группы</option></select><select id="dsv"><option value="">Компании и посёлки</option><option value="компания">Компании</option><option value="посёлок">Посёлки</option></select><span class="sub" id="dscount"></span></div>
     <div id="dsrows" class="dos"></div></div>
   <div class="card" style="margin-bottom:16px"><h2>Ваш список — все контакты <span class="sub" id="sksub"></span></h2>
     <div class="sub" style="margin-bottom:10px">Все телефоны и почты по каждому пункту: карточки базы, глубокий обход сайтов, поиск Яндекса, справочники юрлиц. Наведите на контакт — откуда он.
@@ -307,11 +307,12 @@ function cvrender(){ const q=$("cvq").value.toLowerCase(), h=$("cvh").value, c=$
 const DS = D.ds || [];
 $("dssub").textContent = DS.length ? `· ${DS.length} пунктов · юрлицо у ${DS.filter(d=>d.legal.ИНН).length} · ссылок на отзывы ${DS.reduce((a,d)=>a+d.rev.length,0)} · статей ${DS.reduce((a,d)=>a+d.art.length,0)} · обсуждений ${DS.reduce((a,d)=>a+d.q.length,0)}` : "· ещё не собрано";
 const lnk = (arr) => arr.length ? arr.map(x=>`<div class="k" style="margin:3px 0"><a href="${esc(x.ссылка)}" target="_blank">${esc(x.заголовок)}</a> — ${esc(x.сниппет)}</div>`).join("") : '<div class="k">не найдено</div>';
-function dsrender(){ const q=$("dsq").value.toLowerCase(), v=$("dsv").value;
-  const r=DS.filter(d=>(!v||d.vid===v)&&(!q||(d.name+" "+d.vil).toLowerCase().includes(q)));
+[...new Set(DS.map(d=>d.grp))].forEach(g=>$("dsg").insertAdjacentHTML("beforeend",`<option>${esc(g)}</option>`));
+function dsrender(){ const q=$("dsq").value.toLowerCase(), v=$("dsv").value, gr=$("dsg").value;
+  const r=DS.filter(d=>(!gr||d.grp===gr)&&(!v||d.vid===v)&&(!q||(d.name+" "+d.vil).toLowerCase().includes(q)));
   $("dscount").textContent=`${r.length} из ${DS.length}`;
   $("dsrows").innerHTML=r.map(d=>{ const L=d.legal, s=d.sites.filter(x=>x.ответ==="ок"), soc=Object.assign({},...s.map(x=>x.соцсети||{}));
-    return `<details class="card" style="margin:8px 0;padding:10px 14px"><summary><b>${esc(d.name)}</b> <span class="k">· ${esc(d.vid)}${d.vil?" · "+esc(d.vil.slice(0,80)):""}${L.ИНН?" · ИНН "+esc(L.ИНН):""}${d.ym.n?" · отзывов на Картах "+d.ym.n+(d.ym.neg?" (негатив "+d.ym.neg+")":""):""}${d.rev.length?" · ещё отзывов-ссылок "+d.rev.length:""}${d.art.length?" · статей "+d.art.length:""}</span></summary>
+    return `<details class="card" style="margin:8px 0;padding:10px 14px"><summary><b>${esc(d.name)}</b> <span class="k">· ${esc(d.grp)} · ${esc(d.vid)}${d.vil?" · "+esc(d.vil.slice(0,80)):""}${L.ИНН?" · ИНН "+esc(L.ИНН):""}${d.ym.n?" · отзывов на Картах "+d.ym.n+(d.ym.neg?" (негатив "+d.ym.neg+")":""):""}${d.rev.length?" · ещё отзывов-ссылок "+d.rev.length:""}${d.art.length?" · статей "+d.art.length:""}</span></summary>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:10px">
       <div><h3>Юрлицо</h3>${L.юрлицо?`<div><b>${esc(L.юрлицо)}</b></div><div class="k">ИНН ${esc(L.ИНН)} · ОГРН ${esc(L.ОГРН)} · с ${esc(L.регистрация)}</div><div class="k">${esc(L.руководитель)}</div><div class="k">${esc(d.ln)}</div>`:`<div class="k">${d.twins?"тёзки в ЕГРЮЛ: "+d.twins+" — нужен ИНН":"не найдено"}</div>`}
         ${d.money||d.staff?`<div class="k">Выручка: ${esc(d.money)||"—"} · сотрудников: ${esc(d.staff)||"—"}</div>`:""}
@@ -326,7 +327,7 @@ function dsrender(){ const q=$("dsq").value.toLowerCase(), v=$("dsv").value;
         ${d.rtx.length?`<h3>Тексты отзывов с площадок (${d.rtx.length})</h3>${d.rtx.map(x=>`<div class="q">${x.оценка?"★"+esc(x.оценка)+" ":""}«${esc(x.текст)}»<small>${esc(x.откуда)} ${esc(x.дата)}</small></div>`).join("")}`:""}</div>
       <div><h3>Статьи и новости</h3>${lnk(d.art)}<h3>Вопросы и обсуждения</h3>${lnk(d.q)}<h3>Клиенты и проекты</h3>${lnk(d.cl)}</div>
     </div></details>`; }).join(""); }
-["dsq","dsv"].forEach(id=>$(id).addEventListener("input",dsrender)); dsrender();
+["dsq","dsv","dsg"].forEach(id=>$(id).addEventListener("input",dsrender)); dsrender();
 const SK = D.sk || [];
 const fph = v => v.length===11 ? `+${v[0]} ${v.slice(1,4)} ${v.slice(4,7)}-${v.slice(7,9)}-${v.slice(9)}` : v;
 $("sksub").textContent = SK.length ? `· ${SK.length} пунктов · телефонов ${SK.reduce((a,s)=>a+s.ph.length,0)} · почт ${SK.reduce((a,s)=>a+s.ml.length,0)}` : "· ещё не собрано";
@@ -349,7 +350,7 @@ function svrender(){ const q=$("svq").value.toLowerCase(), h=$("svh").value, c=$
     <td class="ph">${two(v.dph)}${v.dml?`<div class="mail">${two(v.dml)}</div>`:""}${!v.dph&&!v.dml?"—":""}</td>
     <td>${v.uk?`<div class="k">${esc(v.uk)}</div>`:""}${v.usite?`<div class="lk"><a href="${esc(v.usite)}" target="_blank">сайт</a></div>`:""}<div class="ph">${two(v.uph)}</div><div class="mail">${two(v.uml)}</div>${!v.uk&&!v.uph&&!v.uml?"—":""}</td>
     <td class="num">${v.bld?`<b>${v.bld}</b>`:"—"} / ${v.land||"—"}</td><td class="num">${v.cian||"—"}</td>
-    <td class="lk">${v.tg?`<a href="${esc(v.tg)}" target="_blank">TG</a>`:""}${v.vk?`<a href="${esc(v.vku)}" target="_blank">ВК${v.vk>1?" ×"+v.vk:""}</a>`:""}${v.fh?`<span class="k">FH ${v.fh}</span>`:""}${!v.tg&&!v.vk&&!v.fh?"—":""}</td>
+    <td class="lk">${v.tg?`<a href="${esc(v.tg)}" target="_blank">TG</a>`:""}${v.vk?`<a href="${esc(v.vku)}" target="_blank">ВК${v.vk>1?" ×"+v.vk:""}</a>${v.vkn?`<span class="k">${fmt(v.vkn)} уч.</span>`:""}`:""}${v.fh?`<span class="k">FH ${v.fh}</span>`:""}${!v.tg&&!v.vk&&!v.fh?"—":""}</td>
     <td class="num" title="${esc(v.pods)}">${v.pod||"—"}</td>
     <td class="lk">${v.u1?`<a href="${esc(v.u1)}" target="_blank">Villagio</a>`:""}${v.u2?`<a href="${esc(v.u2)}" target="_blank">ONEHOUSE</a>`:""}${v.u3?`<a href="${esc(v.u3)}" target="_blank">Циан</a>`:""}</td></tr>`).join(""); }
 ["svq","svh","svc","svo","svr","svk","svb"].forEach(id=>$(id).addEventListener("input",svrender)); svrender();
