@@ -171,7 +171,7 @@ details[open] summary{margin-bottom:12px}
     <div class="sub" style="margin-bottom:12px">Разбор сайтов (главная + до 3 страниц портфолио): сколько про загородные дома и сколько про квартиры, упоминания наших посёлков и шоссе, признаки премиума.
       «Комплектация» — бюро само поставляет мебель и оборудование (конкурент в этой части); без неё — естественный партнёр. Группа 1 — главная цель для персонального оффера.</div>
     <div class="tools"><input type="search" id="dbq" placeholder="Поиск: бюро, место"><select id="dbg"><option value="">Все группы</option></select><select id="dbf"><option value="">Любой профиль</option><option>интерьер</option><option>архитектура</option><option>ландшафт</option></select>
-      <label><input type="checkbox" id="dbp"> упоминают наши места</label><label><input type="checkbox" id="dbk"> без своей комплектации</label><label><input type="checkbox" id="dbn"> только новые (из поиска)</label><span class="sub" id="dbcount"></span></div>
+      <label><input type="checkbox" id="dbp"> упоминают наши места</label><label><input type="checkbox" id="dbk"> без своей комплектации</label><label><input type="checkbox" id="dbn"> только новые (из поиска)</label><label><input type="checkbox" id="dba"> в AD List TOP 100</label><span class="sub" id="dbcount"></span></div>
     <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Бюро</th><th>Группа</th><th>Загородка / квартиры</th><th>Наши места</th><th>Премиум</th><th>Комплект. / надзор</th><th>Телефон</th><th>Почта</th><th>Соцсети</th></tr></thead><tbody id="dbrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h2>Instagram конкурентов и партнёров <span class="sub" id="igsub"></span></h2>
     <div class="sub" style="margin-bottom:12px">Аккаунты, ссылки на которые стоят на сайтах и в карточках компаний из базы. Кто сильнее в соцсетях и жив ли аккаунт (последний пост). Подписчиков-людей не собираем.</div>
@@ -331,17 +331,17 @@ $("adsub").textContent = `· ${(D.ad||[]).length} студий`;
 $("adlist").innerHTML = (D.ad||[]).map(([n,s])=>`<div class="chi"><b><a href="https://${esc(s)}" target="_blank">${esc(n)}</a></b></div>`).join("");
 const DB = D.db || [];
 [...new Set(DB.map(b=>b.g))].sort().forEach(g=>$("dbg").insertAdjacentHTML("beforeend",`<option>${esc(g)}</option>`));
-$("dbsub").textContent = DB.length ? `· ${DB.length} бюро · загородный премиум ${DB.filter(b=>b.g.startsWith("1.")).length} · загородка ${DB.filter(b=>b.g.startsWith("2.")).length} · упоминают наши места ${DB.filter(b=>b.places).length} · новых из поиска ${DB.filter(b=>b.src.startsWith("поиск")).length}` : "· ещё не собрано";
+$("dbsub").textContent = DB.length ? `· ${DB.length} бюро · загородный премиум ${DB.filter(b=>b.g.startsWith("1.")).length} · загородка ${DB.filter(b=>b.g.startsWith("2.")).length} · упоминают наши места ${DB.filter(b=>b.places).length} · новых из поиска ${DB.filter(b=>b.src.startsWith("поиск")).length} · в AD List ${DB.filter(b=>b.ad).length}` : "· ещё не собрано";
 function dbrender(){ const q=$("dbq").value.toLowerCase(), g=$("dbg").value;
-  const f=$("dbf").value; const r=DB.filter(b=>(!g||b.g===g)&&(!f||b.prof===f)&&(!$("dbp").checked||b.places)&&(!$("dbk").checked||!b.kompl)&&(!$("dbn").checked||b.src.startsWith("поиск"))&&(!q||(b.name+" "+b.site+" "+b.places).toLowerCase().includes(q)))
+  const f=$("dbf").value; const r=DB.filter(b=>(!g||b.g===g)&&(!f||b.prof===f)&&(!$("dbp").checked||b.places)&&(!$("dbk").checked||!b.kompl)&&(!$("dbn").checked||b.src.startsWith("поиск"))&&(!$("dba").checked||b.ad)&&(!q||(b.name+" "+b.site+" "+b.places).toLowerCase().includes(q)))
     .sort((a,b)=>a.g.localeCompare(b.g)||b.zag-a.zag);
   $("dbcount").textContent=`${r.length} из ${DB.length}`;
-  $("dbrows").innerHTML=r.map(b=>`<tr><td class="lk"><a href="https://${esc(b.site)}" target="_blank"><b>${esc(b.name)}</b></a>${b.src.startsWith("поиск")?`<span class="new">новое</span>`:""}<div class="k">${esc(b.site)}</div><div class="k">${esc(b.title)}</div></td>
+  $("dbrows").innerHTML=r.map(b=>`<tr><td class="lk"><a href="https://${esc(b.site)}" target="_blank"><b>${esc(b.name)}</b></a>${b.src.startsWith("поиск")?`<span class="new">новое</span>`:""}${b.ad?`<span class="new ours" title="каталог журнала AD, 2017–2022">AD List</span>`:""}<div class="k">${esc(b.site)}</div><div class="k">${esc(b.title)}</div></td>
     <td class="k">${esc(b.g)}<div>${esc(b.prof)}</div></td><td class="num">${b.zag} / ${b.flat}</td><td class="k">${esc(b.places)||"—"}</td><td class="num">${b.prem||"—"}</td>
     <td class="k">${b.kompl?"комплектация":"—"}${b.nadzor?"<br>надзор":""}</td>
     <td class="ph">${esc(b.phone).split(", ").slice(0,2).join("<br>")||"—"}</td><td class="mail">${esc(b.mail).split(", ").slice(0,2).join("<br>")||"—"}</td>
     <td class="lk">${b.ig?`<a href="${esc(b.ig)}" target="_blank">IG</a>`:""}${b.tg?`<a href="${esc(b.tg)}" target="_blank">TG</a>`:""}</td></tr>`).join(""); }
-["dbq","dbg","dbf","dbp","dbk","dbn"].forEach(id=>$(id).addEventListener("input",dbrender)); dbrender();
+["dbq","dbg","dbf","dbp","dbk","dbn","dba"].forEach(id=>$(id).addEventListener("input",dbrender)); dbrender();
 const SB = D.sb || [];
 $("sbsub").textContent = SB.length ? `· ${SB.length} находок · групп ВК ${SB.filter(s=>s.kind==="ВК: сообщество").length} в ${new Set(SB.filter(s=>s.kind==="ВК: сообщество").map(s=>s.v)).size} посёлках · веток FORUMHOUSE ${SB.filter(s=>s.kind==="FORUMHOUSE").length}` : "· ещё не собрано";
 function sbrender(){ const q=$("sbq").value.toLowerCase(), k=$("sbk").value;

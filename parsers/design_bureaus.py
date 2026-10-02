@@ -146,7 +146,20 @@ def main():
     new = [d for d in found if d not in have and d]
     rows += [{"site": d, "название": found[d]["название"], "источник": "поиск Яндекса (новое)", "телефоны": "", "почты": "", "адрес": "",
               "карточка": "", "сниппет": found[d]["сниппет"]} for d in new]
-    print(f"бюро к разбору: из базы {len(have)}, новых из поиска {len(new)}", flush=True)
+    # AD List TOP 100 (parsers/ad_list.py, веб-архив журнала AD): добавляем бюро с сайтом, которых ещё нет
+    adl = ROOT / "data" / "lists" / "ad_list.tsv"
+    ad_sites = set()
+    if adl.exists():
+        for r in pd.read_csv(adl, sep="\t", dtype=str).fillna("").to_dict("records"):
+            d = domain(r["сайт"]) if r["сайт"] else ""
+            if not d:
+                continue
+            ad_sites.add(d)
+            if d not in have and d not in new:
+                new.append(d)
+                rows.append({"site": d, "название": r["бюро"], "источник": "AD List TOP 100 (архив)", "телефоны": r["телефоны"],
+                             "почты": r["почты"], "адрес": r["город / адрес"], "карточка": r["карточка в архиве"]})
+    print(f"бюро к разбору: из базы {len(have)}, новых из поиска и AD List {len(new)}", flush=True)
 
     cf = raw / "design_sites.json"  # кэш разбора (с текстом сайтов): продолжает с места
     cache = json.loads(cf.read_text(encoding="utf-8")) if cf.exists() else {}
@@ -169,7 +182,7 @@ def main():
         grp = category(a)
         if grp != "сайт недоступен" and re.search(r"residences|hills|poselok|kp-|village|estate", r["site"]) and prof != "интерьер":
             grp = "стройка / продажа домов"  # сайт посёлка или застройщика, а не бюро
-        out.append({"бюро": r["название"], "сайт": r["site"], "группа": grp, "профиль": prof, "источник": r["источник"],
+        out.append({"бюро": r["название"], "сайт": r["site"], "группа": grp, "профиль": prof, "AD List": r["site"] in ad_sites, "источник": r["источник"],
                     "загородка": a.get("загородка", 0), "квартиры": a.get("квартиры", 0), "наши места": a.get("наши места", ""),
                     "премиум": a.get("премиум", 0), "комплектация": a.get("комплектация", False), "надзор": a.get("надзор", False),
                     "телефоны": r["телефоны"] or a.get("телефоны", ""), "почты": r["почты"] or a.get("почты", ""),

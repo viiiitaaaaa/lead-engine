@@ -206,7 +206,7 @@ def main():
                 "n": int(float(r["участников"])) if r["участников"] else None} for _, r in sb.iterrows()]
     dbp = ROOT / "data" / "lists" / "dizain_byuro.tsv"  # разбор сайтов дизайн-бюро: parsers/design_bureaus.py
     db = pd.read_csv(dbp, sep="	", dtype=str).fillna("") if dbp.exists() else pd.DataFrame()
-    db_rows = [{"name": r["бюро"], "site": r["сайт"], "g": r["группа"], "prof": r.get("профиль", ""), "src": r["источник"], "zag": int(r["загородка"] or 0),
+    db_rows = [{"name": r["бюро"], "site": r["сайт"], "g": r["группа"], "prof": r.get("профиль", ""), "ad": r.get("AD List", "") == "True", "src": r["источник"], "zag": int(r["загородка"] or 0),
                 "flat": int(r["квартиры"] or 0), "places": r["наши места"], "prem": int(r["премиум"] or 0),
                 "kompl": r["комплектация"] == "True", "nadzor": r["надзор"] == "True", "phone": r["телефоны"], "mail": r["почты"],
                 "ig": r["instagram"].split(", ")[0], "tg": r["telegram"].split(", ")[0], "title": r["заголовок сайта"]} for _, r in db.iterrows()]
