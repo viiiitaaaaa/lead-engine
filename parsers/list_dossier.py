@@ -1,0 +1,207 @@
+"""Полное досье по её списку (компании и посёлки): «надо собрать ВСЁ — отзывы, статьи, вопросы, клиенты, информация».
+
+По каждому пункту:
+  1) сайт (до 15 страниц: о компании, реквизиты, контакты, проекты/портфолио/объекты, отзывы): ИНН, описание, соцсети и
+     мессенджеры, проекты/клиенты (упоминания посёлков и «КП …»), число проектов в портфолио;
+  2) ЕГРЮЛ (egrul.nalog.ru, бесплатно): юрлицо, ИНН, ОГРН, руководитель, дата регистрации, статус — по ИНН с сайта,
+     иначе по названию (тогда «проверить»: бывают тёзки);
+  3) поиск Яндекса (Bright Data): отзывы на других площадках, статьи и новости, вопросы и обсуждения (форумы, FORUMHOUSE),
+     клиенты/кейсы, выручка по ИНН (сниппеты справочников);
+  4) уже собранное: все контакты (spisok_kontakty.tsv), отзывы Яндекс Карт и жалобы, дизайн-разбор, подрядчики в посёлках,
+     Instagram, сводка посёлков.
+python parsers/list_dossier.py           # всё (продолжает с места: data/raw/dossier_partial.json)
+Итог: data/raw/dossier.json; панель — блок «Ваш список — досье».
+"""
+import html
+import json
+import re
+import sys
+import time
+import urllib.parse
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urljoin
+
+import pandas as pd
+
+from build_base import DRIVE, domain
+from design_bureaus import PLACES
+from list_contacts import BROKERS, items as list_items
+from yandex_maps_bd import ROOT, env
+from yandex_search_bd import REGISTRY, serp
+
+H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128 Safari/537.36", "Accept-Language": "ru"}
+PAGES = r"о-компании|o-kompanii|about|о-нас|company|rekvizit|реквизит|contact|kontakt|контакт|project|proekt|проект|portfolio|портфолио|objects|объект|works|raboty|работы|кейс|cases|клиент|client|отзыв|otzyv|review"
+SOC = {"ВКонтакте": r"https?://(?:m\.)?vk\.(?:com|ru)/[A-Za-z0-9_.]+", "Telegram": r"https?://t\.me/[A-Za-z0-9_+]{4,}",
+       "WhatsApp": r"https?://(?:wa\.me|api\.whatsapp\.com/send|chat\.whatsapp\.com)/[^\s\"'<>]+", "Instagram": r"https?://(?:www\.)?instagram\.com/[A-Za-z0-9_.]+",
+       "YouTube": r"https?://(?:www\.)?youtube\.com/(?:@|channel/|c/|user/)[A-Za-z0-9_\-.]+", "Дзен": r"https?://dzen\.ru/[A-Za-z0-9_\-.]+",
+       "Одноклассники": r"https?://ok\.ru/[A-Za-z0-9_\-./]+", "Rutube": r"https?://rutube\.ru/channel/\d+"}
+REVIEW_SITES = r"otzovik|irecommend|zoon|yell|flamp|2gis|google\.\w+/maps|profi\.ru|forumhouse|otzyvy|otziv|pravda-sotrudnikov|dreamjob|spr\.ru|orgpage|vashe-mnenie|houzz|otzovik"
+FORUMS = r"forumhouse|forum|otvet\.mail|yandex\.ru/q/|pikabu|vc\.ru|dzen\.ru|reddit|banki\.ru|ask|vopros|thread|topic"
+MEDIA_NOT = REGISTRY + r"|yandex\.|avito|cian|domclick|hh\.ru|zoon|yell|2gis|otzovik|flamp|youtube|vk\.com|t\.me|instagram"
+
+
+def get(u: str, timeout=20) -> str:
+    try:
+        return urllib.request.urlopen(urllib.request.Request(u, headers=H), timeout=timeout).read().decode("utf-8", "ignore")
+    except Exception:
+        return ""
+
+
+def text(h: str) -> str:
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<(script|style|noscript)[^>]*>.*?</\1>|<[^>]+>", " ", h, flags=re.S | re.I))).strip()
+
+
+def site_info(site: str) -> dict:
+    root = (re.match(r"https?://[^/]+", site if "://" in site else "https://" + site) or [None])[0]
+    if not root:
+        return {}
+    first = get(root) or get(root.replace("https://", "http://"))
+    if not first:
+        return {"сайт": root, "ответ": "недоступен"}
+    links = {urljoin(root, h) for h in re.findall(r'href="([^"#]+)"', first)}
+    inner = [u for u in links if domain(u) == domain(root) and re.search(PAGES, u, re.I) and not re.search(r"\.(jpe?g|png|pdf|webp)$", u, re.I)]
+    hs = [first] + [get(u) for u in sorted(inner)[:14]]
+    raw = " ".join(hs)
+    t = " ".join(text(h) for h in hs)
+    desc = html.unescape((re.search(r'<meta[^>]+name="description"[^>]+content="([^"]*)"', first, re.I) or [None, ""])[1])
+    title = text((re.search(r"<title[^>]*>(.*?)</title>", first, re.S | re.I) or [None, ""])[1])
+    inns = re.findall(r"ИНН[\s:/№]*(?:/\s*КПП)?[\s:]*(\d{10}|\d{12})(?!\d)", t)
+    places = sorted(set(m.lower() for m in re.findall(PLACES, t, re.I)))
+    kp = sorted(set(re.findall(r"(?:КП|коттеджн\w* пос[её]лк\w*)\s*[«\"]([^»\"]{3,40})[»\"]", t)))[:25]
+    proj = len({u for u in links if re.search(r"project|proekt|portfolio|objects|works|cases|кейс", u, re.I)})
+    soc = {k: sorted(set(m.rstrip("/.,") for m in re.findall(p, raw)))[:3] for k, p in SOC.items()}
+    return {"сайт": root, "ответ": "ок", "заголовок": title[:150], "описание": desc[:300], "ИНН с сайта": sorted(set(inns))[:3],
+            "упоминает наши места": places, "КП в тексте": kp, "страниц проектов": proj,
+            "соцсети": {k: v for k, v in soc.items() if v}, "страниц прочитано": len(hs)}
+
+
+def egrul(query: str) -> list:
+    """ЕГРЮЛ ФНС: до 5 записей по ИНН или названию (Москва и область)"""
+    def req(u, data=None):
+        r = urllib.request.Request(u, data=urllib.parse.urlencode(data).encode() if data else None, headers={**H, "X-Requested-With": "XMLHttpRequest"})
+        return json.loads(urllib.request.urlopen(r, timeout=40).read().decode("utf-8"))
+    for n in range(3):
+        try:
+            t = req("https://egrul.nalog.ru/", {"query": query, "region": "" if query.isdigit() else "77,50", "PreventChromeAutocomplete": ""})
+            time.sleep(1.5)
+            rows = req(f"https://egrul.nalog.ru/search-result/{t['t']}").get("rows", [])
+            return [{"юрлицо": r.get("n", ""), "ИНН": r.get("i", ""), "ОГРН": r.get("o", ""), "руководитель": r.get("g", ""),
+                     "регистрация": r.get("r", ""), "ликвидировано": r.get("e") or "", "адрес": r.get("a") or ""} for r in rows[:5]]
+        except Exception:
+            time.sleep(5 * (n + 1))
+    return []
+
+
+def found(items: list, kind: str) -> list:
+    return [{"заголовок": i["title"][:140], "ссылка": i["url"], "сниппет": i["snippet"][:260], "вид": kind} for i in items]
+
+
+def brand_keys(name: str, si: list, legal: dict) -> set:
+    """как ещё называют этот пункт: название из списка, бренд из заголовка сайта, домен, юрлицо — для отсева тёзок"""
+    from villages_merge import key
+    ks = {key(name)}
+    for s in si:
+        if s.get("сайт"):
+            ks.add(re.sub(r"[^a-z0-9]", "", domain(s["сайт"]).split(".")[0]))
+        if s.get("заголовок"):
+            ks.add(key(re.split(r"\s[-–—|]\s|:", s["заголовок"])[0]))
+    if legal.get("юрлицо"):
+        ks.add(key(re.sub(r"ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ|АКЦИОНЕРНОЕ ОБЩЕСТВО|ООО|АО", "", legal["юрлицо"])))
+    return {k for k in ks if len(k) >= 4}
+
+
+def search(name: str, vid: str, inn: str, token: str, keys: set, alt: str = "") -> dict:
+    from villages_merge import key
+    tag = "коттеджный поселок" if vid == "посёлок" else ""
+    q0 = f'"{name}"' + (f' OR "{alt}"' if alt and alt.lower() != name.lower() else "")
+    qs = {"отзывы": f"{q0} {tag} отзывы", "статьи": f"{q0} {tag} статья новости интервью",
+          "вопросы": f"{q0} {tag} форум вопрос forumhouse", "клиенты": f"{q0} {tag} проект построили клиент кейс"}
+    if inn:
+        qs["выручка"] = f"ИНН {inn} выручка сотрудники"
+    with ThreadPoolExecutor(len(qs)) as pool:  # запросы одного пункта — параллельно
+        got = dict(zip(qs, pool.map(lambda q: serp(q, token) or [], qs.values())))
+    out = {}
+    for k, raw in got.items():
+        items = [i for i in raw if "yabs.yandex" not in i["url"] and "yandex.ru/an/" not in i["url"]]
+        if k != "выручка":  # отсев тёзок: в результате должен быть бренд/домен/юрлицо именно этого пункта
+            items = [i for i in items if any(kk in key(i["title"] + " " + i["snippet"]) or kk in re.sub(r"[^a-z0-9]", "", i["url"].lower())
+                                             for kk in keys)]
+        if k == "отзывы":
+            items = [i for i in items if re.search(REVIEW_SITES, i["url"], re.I) or re.search(r"отзыв", i["title"], re.I)]
+        elif k == "статьи":
+            items = [i for i in items if not re.search(MEDIA_NOT, i["url"], re.I)]
+        elif k == "вопросы":
+            items = [i for i in items if re.search(FORUMS, i["url"], re.I)]
+        elif k == "выручка":
+            items = [i for i in items if re.search(r"выручк|оборот|сотрудник|прибыл", i["snippet"], re.I)]
+        out[k] = found(items[:8], k)
+    rev = " ".join(i["сниппет"] for i in out.get("выручка", []))
+    m = re.search(r"[Вв]ыручка[^.]{0,60}?(\d[\d\s,.]*\s*(?:млрд|млн|тыс)\.?\s*(?:руб|₽)?)", rev)
+    out["выручка кратко"] = m.group(1).strip() if m else ""
+    m = re.search(r"(\d+)\s*сотрудник", rev)
+    out["сотрудников"] = m.group(1) if m else ""
+    return out
+
+
+def one(it: dict, token: str) -> dict:
+    sites = [s for s in it["сайты"] if not re.search(BROKERS, s, re.I)][:3]
+    si = [site_info(s) for s in sites]
+    inn = next((i for s in si for i in s.get("ИНН с сайта", [])), "")
+    eg = egrul(inn) if inn else (egrul(re.sub(r"^группа компаний\s+", "", it["пункт"], flags=re.I)) if it["вид"] == "компания" else [])
+    eg_active = [e for e in eg if not e["ликвидировано"]]
+    legal = eg_active[0] if inn and eg_active else (eg_active[0] if len(eg_active) == 1 else {})
+    note = "по ИНН с сайта" if inn and legal else ("единственное действующее совпадение по названию — проверить" if legal
+                                                 else (f"тёзки: {len(eg_active)} действующих" if eg_active else ""))
+    alt = next((re.split(r"\s[-–—|]\s|:", x["заголовок"])[0].strip() for x in si if x.get("заголовок")), "")
+    s = search(it["пункт"], it["вид"], legal.get("ИНН", "") or inn, token, brand_keys(it["пункт"], si, legal), alt[:40])
+    return {"пункт": it["пункт"], "вид": it["вид"], "посёлки": it["посёлки"], "сайты": si, "юрлицо": legal, "юрлицо: как найдено": note,
+            "тёзки ЕГРЮЛ": eg_active[:5] if not legal else [], **s}
+
+
+def research() -> None:
+    """повторить только поиск Яндекса у пунктов, где он пришёл пустым (Bright Data сбоил), медленнее; сайт и юрлицо не трогаем"""
+    f = ROOT / "data/raw/dossier.json"
+    res = json.loads(f.read_text(encoding="utf-8"))
+    token = env("BRIGHTDATA_API_TOKEN")
+    empty = [v for v in res.values() if not any(v.get(k) for k in ("отзывы", "статьи", "вопросы", "клиенты"))]
+    print(f"пустой поиск у {len(empty)} из {len(res)}", flush=True)
+
+    def redo(v):
+        si, legal = v["сайты"], v["юрлицо"]
+        alt = next((re.split(r"\s[-–—|]\s|:", x["заголовок"])[0].strip() for x in si if x.get("заголовок")), "")
+        return v["пункт"], search(v["пункт"], v["вид"], legal.get("ИНН", ""), token, brand_keys(v["пункт"], si, legal), alt[:40])
+    with ThreadPoolExecutor(2) as pool:
+        for n, (name, s) in enumerate(pool.map(redo, empty), 1):
+            res[name].update(s)
+            f.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
+            print(f"повтор: сделано {n} из {len(empty)}", flush=True)
+
+
+def main():
+    if "--research" in sys.argv:
+        return research()
+    its = list_items()
+    token = env("BRIGHTDATA_API_TOKEN")
+    part = ROOT / "data/raw/dossier_partial.json"
+    res = json.loads(part.read_text(encoding="utf-8")) if part.exists() else {}
+    todo = [i for i in its if i["пункт"] not in res]
+    print(f"пунктов {len(its)}, осталось {len(todo)}", flush=True)
+    t0 = time.time()
+    with ThreadPoolExecutor(3) as pool:  # 3 пункта × до 5 запросов = ≤15 одновременно к Bright Data
+        for n, r in enumerate(pool.map(lambda i: one(i, token), todo), 1):
+            res[r["пункт"]] = r
+            part.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
+            if n % 5 == 0 or n == len(todo):
+                print(f"сделано {n} из {len(todo)}, осталось ≈{(time.time() - t0) / n * (len(todo) - n) / 60:.0f} мин", flush=True)
+    out = ROOT / "data/raw/dossier.json"
+    out.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
+    part.unlink(missing_ok=True)
+    v = list(res.values())
+    print(f"готово {len(v)}: юрлицо {sum(bool(x['юрлицо']) for x in v)}, отзывы-ссылки {sum(len(x.get('отзывы', [])) for x in v)}, "
+          f"статьи {sum(len(x.get('статьи', [])) for x in v)}, вопросы {sum(len(x.get('вопросы', [])) for x in v)}, "
+          f"клиенты {sum(len(x.get('клиенты', [])) for x in v)}, соцсети у {sum(any(s.get('соцсети') for s in x['сайты']) for x in v)}")
+
+
+if __name__ == "__main__":
+    main()

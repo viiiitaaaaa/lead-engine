@@ -221,6 +221,25 @@ def main():
     for name, g in (sk.groupby("пункт", sort=False) if len(sk) else []):
         cont = lambda k: [{"v": r["значение"], "br": r["брокер?"] == "True", "src": r["откуда"]} for _, r in g[g["контакт"] == k].iterrows()]
         sk_rows.append({"name": name, "vid": g["вид пункта"].iloc[0], "vil": g["посёлки"].iloc[0], "ph": cont("телефон"), "ml": cont("почта")})
+    dsp = ROOT / "data" / "raw" / "dossier.json"  # досье по её списку: parsers/list_dossier.py
+    dsp = dsp if dsp.exists() else ROOT / "data" / "raw" / "dossier_partial.json"
+    dos = json.loads(dsp.read_text(encoding="utf-8")) if dsp.exists() else {}
+    ds_rows = []
+    for name, d in dos.items():
+        g = base[(base["наш список"] == name) & ~base["новая?"].fillna("").str.startswith("отсеяно")]
+        if d["вид"] == "посёлок":  # у посёлка — только сам посёлок/УК, не все организации местности
+            g = g[(g["тип"] == "посёлок") | g["вид деятельности"].fillna("").str.contains(r"коттеджн|посёл|посел|управляющ", case=False, regex=True)]
+        r = rev[rev["карточка"].isin(set(g["ссылка"]))]
+        c = compl[compl["организация"].isin(set(g["название"]))]
+        th = pd.Series([t for x in c["темы (по-русски)"] for t in str(x).split("; ") if t]).value_counts().head(4)
+        ds_rows.append({"name": name, "vid": d["вид"], "vil": d.get("посёлки", ""), "legal": d.get("юрлицо") or {},
+                        "ln": d.get("юрлицо: как найдено", ""), "twins": len(d.get("тёзки ЕГРЮЛ") or []),
+                        "sites": d.get("сайты") or [], "rev": d.get("отзывы") or [], "art": d.get("статьи") or [],
+                        "q": d.get("вопросы") or [], "cl": d.get("клиенты") or [], "money": d.get("выручка кратко", ""),
+                        "staff": d.get("сотрудников", ""), "ym": {"n": len(r), "neg": int(r["neg"].sum()) if len(r) else 0,
+                        "rating": None if g["рейтинг"].dropna().empty else float(pd.to_numeric(g["рейтинг"], errors="coerce").max()),
+                        "themes": [f"{k} ({v})" for k, v in th.items()],
+                        "quotes": [s[:220] for s in c.sort_values("дата", ascending=False)["суть"].head(3)]}})
     svp = ROOT / "data" / "lists" / "poselki_svod.tsv"  # строка = посёлок: parsers/poselki_svod.py
     sv = pd.read_csv(svp, sep="	", dtype=str).fillna("") if svp.exists() else pd.DataFrame()
     toint = lambda v: int(float(v)) if v not in ("", None) else 0
@@ -262,7 +281,7 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "sk": sk_rows, "td": td_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "pains": pains, "cover": cover, "channels": CHANNELS, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "sk": sk_rows, "ds": ds_rows, "td": td_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
         "spend": [("Apify", "≈18.5 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Apify: Instagram", "0.16 $ за 70 профилей"),
                   ("Apify: Telegram 02.10", "2.18 $ за 3 чата (переплата: потолок был на каждый чат)"),
                   ("Bright Data", "≈3 $ (Карты, отзывы, поиск Яндекса: УК, подрядчики, ВК, бюро, застройщики)")],
