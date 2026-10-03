@@ -277,7 +277,7 @@ def main():
         sk_rows.append({"name": name, "vid": g["вид пункта"].iloc[0], "vil": g["посёлки"].iloc[0], "ph": cont("телефон"), "ml": cont("почта")})
     # досье: её список + группы (parsers/list_dossier.py --group premium|contractors|developers), пока идёт сбор — _partial
     dos, gis = [], {}
-    for grp, title in (("", "ваш список"), ("premium", "дизайн-бюро премиум"), ("contractors", "подрядчики"), ("developers", "застройщики")):
+    for grp, title in (("", "ваш список"), ("premium", "дизайн-бюро премиум"), ("contractors", "подрядчики"), ("developers", "застройщики"), ("montazhniki", "монтажники — партнёры"), ("konkurenty", "конкуренты")):
         sfx = "_" + grp if grp else ""
         dsp = ROOT / "data" / "raw" / f"dossier{sfx}.json"
         dsp = dsp if dsp.exists() else ROOT / "data" / "raw" / f"dossier{sfx}_partial.json"
@@ -300,7 +300,7 @@ def main():
                         "sites": d.get("сайты") or [], "rev": d.get("отзывы") or [], "art": d.get("статьи") or [],
                         "q": d.get("вопросы") or [], "cl": d.get("клиенты") or [], "money": d.get("выручка кратко", ""),
                         "staff": d.get("сотрудников", ""), "vleg": d.get("юрлица посёлка") or [], "rtx": (d.get("отзывы: тексты") or [])[:40],
-                        "aud": d.get("соцсети: аудитория") or [],
+                        "aud": d.get("соцсети: аудитория") or [], "seg": d.get("сегмент", ""), "segw": d.get("сегмент: почему", ""), "rub": d.get("рубрики", ""),
                         "gis": {"cards": gv["карточки"], "n": len(grev), "neg": len(gneg),
                                 "items": sorted(grev, key=lambda x: (x.get("оценка") or 5, x.get("дата") or ""))[:40]}, "ym": {"n": len(r), "neg": int(r["neg"].sum()) if len(r) else 0,
                         "rating": None if g["рейтинг"].dropna().empty else float(pd.to_numeric(g["рейтинг"], errors="coerce").max()),
@@ -329,6 +329,11 @@ def main():
                 "end": r["окончание подачи"], "kind": r["вид работ"], "url": r["ссылка"]} for _, r in td.iterrows()]
     mf = sorted((ROOT / "data" / "raw").glob("media_*.json"))  # СМИ и блогеры: parsers/media_search.py
     media = json.loads(mf[-1].read_text(encoding="utf-8")) if mf else []
+    kcp = ROOT / "data" / "lists" / "kommerciya_klienty.tsv"  # клиенты-коммерция на территории (её список 04.10): parsers/kommerciya_klienty.py
+    kc = pd.read_csv(kcp, sep="\t", dtype=str).fillna("") if kcp.exists() else pd.DataFrame()
+    kc_rows = [{"cat": r["категория"], "name": r["название"], "rub": r["рубрики"][:90], "adr": r["адрес"], "okr": r["округ"].split()[0],
+                "site": r["сайт"], "ph": r["телефоны"], "ml": r["почты"], "n": int(r["отзывов"] or 0), "rt": r["рейтинг"],
+                "net": r["сеть"] == "True", "br": int(r["филиалов у сети"] or 1)} for _, r in kc.iterrows()]
     md_rows = [{"kind": m["вид"], "grp": m["группа"], "title": m["название"], "url": m["ссылка"], "snip": m["сниппет"][:220],
                 "n": m.get("людей"), "mail": m.get("почты", ""), "phone": m.get("телефоны", "")} for m in media]
     av_rows = [{"title": s(r.get("title")), "phone": s(r.get("phone")), "url": s(r.get("url")),
@@ -363,7 +368,7 @@ def main():
                 "neg": int(rev["neg"].sum()), "complaints": len(compl)},
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
-        "pains": pains, "cover": cover, "channels": CHANNELS, "use": USE, "landing": landing, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "sk": sk_rows, "ds": ds_rows, "vd": vd_rows, "td": td_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "pains": pains, "cover": cover, "channels": CHANNELS, "use": USE, "landing": landing, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kc": kc_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "sk": sk_rows, "ds": ds_rows, "vd": vd_rows, "td": td_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
         "spend": [("Apify", "≈18.5 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Apify: Instagram", "0.16 $ за 70 профилей"),
                   ("Apify: Telegram 02.10", "2.18 $ за 3 чата (переплата: потолок был на каждый чат)"),
                   ("Bright Data", "≈3 $ (Карты, отзывы, поиск Яндекса: УК, подрядчики, ВК, бюро, застройщики)")],

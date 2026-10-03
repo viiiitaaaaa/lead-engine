@@ -21,7 +21,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urljoin
 
 import pandas as pd
@@ -54,6 +54,10 @@ def text(h: str) -> str:
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<(script|style|noscript)[^>]*>.*?</\1>|<[^>]+>", " ", h, flags=re.S | re.I))).strip()
 
 
+PREMIUM = r"премиум|premium|элитн|резиденц|особняк|усадьб|вилл[аыу]|загородн\w* дом|коттедж|бассейн|спа-зон|(?:от|более)\s*\d{3,4}\s*(?:м2|м²|кв\.?\s*м)"
+MASS = r"квартир|бризер|бытов\w* кондиционер|сплит-систем\w* от \d|недорог|дешев|эконом"
+
+
 SOC_JUNK = r"vk\.(com|ru)/(js|rtrg|video_ext\.php|video|share\.php|group|privacy|widget\w*|app\d+_?|away|wall|photo|feed)\b|t\.me/(share|joinchat|\+)|dzen\.ru/(id|embed|a)/?$|vk\.(com|ru)/?$"
 
 
@@ -79,7 +83,9 @@ def site_info(site: str) -> dict:
     soc = {k: sorted(set(m.rstrip("/.,") for m in re.findall(p, raw) if not re.search(SOC_JUNK, m, re.I)))[:3] for k, p in SOC.items()}
     return {"сайт": root, "ответ": "ок", "заголовок": title[:150], "описание": desc[:300], "ИНН с сайта": sorted(set(inns))[:3],
             "упоминает наши места": places, "КП в тексте": kp, "страниц проектов": proj,
-            "соцсети": {k: v for k, v in soc.items() if v}, "страниц прочитано": len(hs)}
+            "соцсети": {k: v for k, v in soc.items() if v}, "страниц прочитано": len(hs),
+            "премиум-слова": len(re.findall(PREMIUM, t, re.I)), "масс-слова": len(re.findall(MASS, t, re.I)),
+            "премиум примеры": sorted(set(m.lower() for m in re.findall(PREMIUM, t, re.I)))[:10]}
 
 
 def egrul(query: str) -> list:
@@ -154,7 +160,8 @@ def one(it: dict, token: str) -> dict:
     sites = [s for s in it["сайты"] if not re.search(BROKERS, s, re.I)][:3]
     si = [site_info(s) for s in sites]
     inn = next((i for s in si for i in s.get("ИНН с сайта", [])), "")
-    eg = egrul(inn) if inn else (egrul(re.sub(r"^группа компаний\s+", "", it["пункт"], flags=re.I)) if it["вид"] == "компания" else [])
+    # --no-egrul: сначала только сайты (налоговая тормозит при 8 потоках, 04.10), ЕГРЮЛ потом добирает --egrul у нужных
+    eg = [] if "--no-egrul" in sys.argv else (egrul(inn) if inn else (egrul(re.sub(r"^группа компаний\s+", "", it["пункт"], flags=re.I)) if it["вид"] == "компания" else []))
     eg_active = [e for e in eg if not e["ликвидировано"]]
     # юрлицо — только по ИНН с сайта; одно совпадение по названию часто тёзка (АО «Конти» кондитер, ГСК №54 — проверка 03.10) → кандидат
     legal = eg_active[0] if inn and eg_active else {}
@@ -165,7 +172,8 @@ def one(it: dict, token: str) -> dict:
     # --no-search: без поиска Яндекса (Bright Data без денег) — сайт, ЕГРЮЛ; поиск потом добирает --research
     s = {} if "--no-search" in sys.argv else search(it["пункт"], it["вид"], legal.get("ИНН", "") or inn, token,
                                                    brand_keys(it["пункт"], si, legal), alt[:40])
-    return {"пункт": it["пункт"], "вид": it["вид"], "посёлки": it["посёлки"], "сайты": si, "юрлицо": legal, "юрлицо-кандидат": cand, "юрлицо: как найдено": note,
+    extra = {k: it[k] for k in ("рубрики", "адреса", "отзывов 2ГИС") if k in it}
+    return {**extra, "пункт": it["пункт"], "вид": it["вид"], "посёлки": it["посёлки"], "сайты": si, "юрлицо": legal, "юрлицо-кандидат": cand, "юрлицо: как найдено": note,
             "тёзки ЕГРЮЛ": eg_active[:5] if not legal else [], **s}
 
 
@@ -210,7 +218,23 @@ def group_items(g: str) -> list:
             if r["сайт"] and r["сайт"] not in e["сайты"]:
                 e["сайты"].append(r["сайт"])
         return [{**e, "посёлки": ", ".join(e["посёлки"])[:200]} for e in out.values()]
-    raise SystemExit("группа: premium | contractors | developers")
+    if g == "montazhniki":  # монтажники вентиляции, климата, отопления, воды и бассейнов (2ГИС) — кандидаты в партнёры
+        from klimat_boli import ENG_RUB, NOT_NAME, NOT_RUB
+        d = json.loads((ROOT / "data/raw/klimat_montazhniki.json").read_text(encoding="utf-8"))
+        out = {}
+        for c in d.values():
+            if not c.get("сайт") or not re.search(ENG_RUB, c["рубрики"]) or re.search(NOT_RUB, c["рубрики"]) or re.search(NOT_NAME, c["название"], re.I):
+                continue
+            e = out.setdefault(domain(c["сайт"]), {"пункт": re.split(r",\s", c["название"])[0][:80], "вид": "компания", "посёлки": "",
+                                                    "сайты": [c["сайт"]], "known": [], "рубрики": c["рубрики"][:200], "адреса": [], "отзывов 2ГИС": 0})
+            e["адреса"].append(c["адрес"])
+            e["отзывов 2ГИС"] += c["отзывов"]
+        return list(out.values())
+    if g == "konkurenty":  # конкуренты Frivent (её задача 04.10 «конкурентов тоже собирай»): data/lists/konkurenty.tsv
+        d = pd.read_csv(L / "konkurenty.tsv", sep="	", dtype=str).fillna("")
+        return [{"пункт": r["конкурент"], "вид": "компания", "посёлки": "", "сайты": [r["сайт"]], "known": [], "рубрики": f"{r['тип']} · {r['страна бренда']}"}
+                for _, r in d.iterrows()]
+    raise SystemExit("группа: premium | contractors | developers | montazhniki | konkurenty")
 
 
 def main():
@@ -224,8 +248,11 @@ def main():
     todo = [i for i in its if i["пункт"] not in res]
     print(f"пунктов {len(its)}, осталось {len(todo)}", flush=True)
     t0 = time.time()
-    with ThreadPoolExecutor(3) as pool:  # 3 пункта × до 5 запросов = ≤15 одновременно к Bright Data
-        for n, r in enumerate(pool.map(lambda i: one(i, token), todo), 1):
+    th = int(sys.argv[sys.argv.index("--threads") + 1]) if "--threads" in sys.argv else (8 if "--no-search" in sys.argv else 3)
+    with ThreadPoolExecutor(th) as pool:  # 3 пункта × до 5 запросов = ≤15 одновременно к Bright Data
+        futs = [pool.submit(one, i, token) for i in todo]  # по готовности: медленный сайт не держит остальных (04.10)
+        for n, fu in enumerate(as_completed(futs), 1):
+            r = fu.result()
             res[r["пункт"]] = r
             part.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
             if n % 5 == 0 or n == len(todo):
