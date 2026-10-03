@@ -35,6 +35,8 @@ td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}
 tr:hover td{background:#fbf9f5}
 td:first-child{font-weight:600}
 .src{font-size:13px;color:var(--muted)}
+.bar{display:inline-block;height:8px;width:var(--w);background:var(--accent);border-radius:4px;margin-right:6px;vertical-align:middle}
+td:has(.bar){white-space:nowrap}
 @media (max-width:720px){main{margin:0;border-radius:0;padding:24px 16px}table{display:block;overflow-x:auto}h1{font-size:24px}}
 @media print{body{background:#fff}main{box-shadow:none;margin:0;padding:0;max-width:none}h2{break-after:avoid}tr{break-inside:avoid}tr:hover td{background:none}}
 """
