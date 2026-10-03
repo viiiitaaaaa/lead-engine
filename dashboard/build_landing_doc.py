@@ -57,7 +57,7 @@ def main():
 <title>Основа лендинга</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>{CSS}</style></head>
-<body><main><h1>{name}</h1><p class="sub">{date} · отделка, инженерия и комплектация загородных домов · Новая Рига, Рублёвка, Ильинское ш.</p>
+<body><main><h1>{name}</h1><p class="sub">{date} · поставщик технического оборудования для премиальных загородных домов и коттеджей · Новая Рига, Рублёвка, Ильинское ш.</p>
 {html}</main></body></html>"""
     OUT.write_text(page, encoding="utf-8")
     drive_copy = DRIVE.parent / OUT.name
