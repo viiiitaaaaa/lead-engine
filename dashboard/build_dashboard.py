@@ -346,6 +346,10 @@ def main():
     po = json.loads(pop.read_text(encoding="utf-8")) if pop.exists() else {}
     for v in vd_rows:
         v["мнения"] = po.get(v["посёлок"], {})
+    ptf = ROOT / "data" / "raw" / "proekty_temy.json"  # что хвалят/ругают в проектах и у застройщиков: parsers/proekty_temy.py
+    pt = json.loads(ptf.read_text(encoding="utf-8")) if ptf.exists() else {}
+    for v in vd_rows:
+        v["проекты: темы"] = pt.get(v["посёлок"], [])
     nonempty = lambda c: int((base[c].fillna("").astype(str) != "").sum())
     data = {
         "built": datetime.now().strftime("%d.%m.%Y %H:%M"),

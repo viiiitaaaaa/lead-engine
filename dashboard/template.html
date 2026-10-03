@@ -329,6 +329,12 @@ const opinBlock = (o) => { if(!o||!Object.keys(o).length) return "";
     <div><h3>Что пишут СМИ</h3>${sm||""}${sp||""}${(o.статьи||[]).map(a=>`<div class="k" style="margin:3px 0"><a href="${esc(a.url)}" target="_blank">${esc(a.title||a.url)}</a></div>`).join("")||"<div class='k'>статей не найдено</div>"}</div>
     <div><h3>Что обещают продавцы (реклама)</h3>${(o["что обещают продавцы"]||[]).slice(0,4).map(x=>`<div class="k" style="margin:3px 0">«${esc(x.фраза.slice(0,200))}» <span class="lk"><a href="${esc(x.источник)}" target="_blank">${esc(x.источник.split("/")[2])}</a></span></div>`).join("")||"<div class='k'>—</div>"}</div>
    </div></div>`; };
+
+const projBlock = (ps) => { if(!ps||!ps.length) return "";
+  const cell = (xs, sign) => xs.length ? xs.map(x=>`<div class="k" style="margin:3px 0"><b>${sign} ${esc(x.тема)}</b> (${x.сколько})${(x.цитаты||[]).map(q=>`<div style="margin-left:10px">«${esc(q.slice(0,200))}»</div>`).join("")}</div>`).join("") : "<div class='k'>—</div>";
+  return `<div style="grid-column:1/-1"><h3>Что хвалят и что ругают — проекты и застройщики (по отзывам на картах)</h3>
+   ${ps.map(p=>`<details style="margin:6px 0"><summary><b>${esc(p.проект)}</b> <span class="k">· отзывов разобрано ${p["отзывов разобрано"]}</span></summary>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:6px"><div>${cell(p.плюсы,"+")}</div><div>${cell(p.минусы,"−")}</div></div></details>`).join("")}</div>`; };
 const VD = D.vd || [];
 $("vdsub").textContent = VD.length ? `· ${VD.length} посёлков` : "· ещё не собрано";
 const kv = (o) => Object.entries(o||{}).filter(([k,v])=>v!==""&&v!==null&&!(Array.isArray(v)&&!v.length)).map(([k,v])=>`<div class="k"><b>${esc(k)}:</b> ${esc(Array.isArray(v)?v.join(", "):(typeof v==="object"?Object.entries(v).map(([a,b])=>a+" "+b).join(", "):v))}</div>`).join("");
@@ -349,6 +355,7 @@ $("vdrows").innerHTML = VD.map(v=>{ const c=v["Циан"]||{}, s=v["сводка
      <div class="k"><b>подрядчики в поиске по посёлку:</b> ${pd["в поиске по посёлку"]||0}, с подтверждёнными объектами: ${(pd["с объектами (портфолио, кейсы)"]||[]).length}</div>
      ${(pd["с объектами (портфолио, кейсы)"]||[]).map(x=>`<div class="k">${esc(x.сайт)} · ${esc((x.телефоны||"").split(", ")[0])} ${esc((x.почты||"").split(", ")[0])}</div>`).join("")}
      ${rv?`<div class="k" style="margin-top:6px"><b>отзывы:</b> ${rv.отзывов} (Яндекс ${rv.Яндекс}, 2ГИС ${rv["2ГИС"]}) · ${rv["плюс %"]}% плюсов · средняя ${rv["средняя оценка"]}</div>`:""}</div>
+   ${projBlock(v["проекты: темы"])}
    ${opinBlock(v.мнения)}
   </div></details>`; }).join("");
 const DS = D.ds || [];
