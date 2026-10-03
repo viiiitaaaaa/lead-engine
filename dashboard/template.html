@@ -116,6 +116,10 @@ details[open] summary{margin-bottom:12px}
     <div class="chips" id="cover"></div>
     <div class="legend"><span>■ зелёный — найдено точно</span><span>■ серый — посёлки в этой местности</span><span>■ оранжевый — совпало только название, проверить</span><span>зачёркнуто — не найдено</span></div>
   </div>
+  <div class="card" style="margin-bottom:16px"><h2>Посёлки из списка — досье <span class="sub" id="vdsub"></span></h2>
+    <div class="sub" style="margin:-4px 0 8px">Посёлки, которые вы подтвердили ссылками; всё собранное по каждому — в одной карточке.</div>
+    <div id="vdrows" class="dos"></div></div>
+
   <div class="card" style="margin-bottom:16px"><h2>Досье — ваш список и группы <span class="sub" id="dssub"></span></h2>
     <div class="sub" style="margin-bottom:10px">По каждому пункту: юрлицо (ЕГРЮЛ), сайт и соцсети, отзывы (Яндекс Карты + другие площадки), статьи, вопросы и обсуждения, клиенты и проекты. Нажмите на строку — раскроется.</div>
     <div class="tools"><input type="search" id="dsq" placeholder="Поиск по названию"><select id="dsg"><option value="">Все группы</option></select><select id="dsv"><option value="">Компании и посёлки</option><option value="компания">Компании</option><option value="посёлок">Посёлки</option></select><span class="sub" id="dscount"></span></div>
@@ -313,6 +317,28 @@ function cvrender(){ const q=$("cvq").value.toLowerCase(), h=$("cvh").value, c=$
     <td class="num">${v.land||"—"}</td><td class="num">${(v.cot+v.th)||"—"}</td><td class="num">${v.bld?`<b>${v.bld}</b>`:"—"}</td><td class="k">${esc(v.mat)}</td>
     <td class="lk">${v.site?`<a href="${esc(v.site)}" target="_blank">сайт</a>`:""}<a href="${esc(v.url)}" target="_blank">Циан</a></td></tr>`).join(""); }
 ["cvq","cvh","cvc","cvs","cvl","cvb","cvk"].forEach(id=>$(id).addEventListener("input",cvrender)); cvrender();
+
+const VD = D.vd || [];
+$("vdsub").textContent = VD.length ? `· ${VD.length} посёлков` : "· ещё не собрано";
+const kv = (o) => Object.entries(o||{}).filter(([k,v])=>v!==""&&v!==null&&!(Array.isArray(v)&&!v.length)).map(([k,v])=>`<div class="k"><b>${esc(k)}:</b> ${esc(Array.isArray(v)?v.join(", "):(typeof v==="object"?Object.entries(v).map(([a,b])=>a+" "+b).join(", "):v))}</div>`).join("");
+$("vdrows").innerHTML = VD.map(v=>{ const c=v["Циан"]||{}, s=v["сводка"]||{}, dm=v["дома в продаже (от 50 млн ₽)"], pd=v["подрядчики"]||{}, rv=v["отзывы"], sr=v["поиск"]||{};
+  return `<details class="card" style="margin:8px 0;padding:10px 14px"><summary><b>${esc(v["посёлок"])}</b> <span class="k">${c.класс?"· "+esc(c.класс):""}${c.шоссе?" · "+esc(c.шоссе):""}${c["км до МКАД"]?" · "+c["км до МКАД"]+" км":""}${c["в продаже"]?" · в продаже "+c["в продаже"].всего:""}${rv?" · отзывов "+rv.отзывов+" ("+rv["плюс %"]+"% плюсов)":""}</span></summary>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:10px">
+   <div><h3>Циан</h3>${c.ссылка?`<div class="lk"><a href="${esc(c.ссылка)}" target="_blank">карточка КП</a></div>`:"<div class='k'>нет карточки на Циане</div>"}
+     ${kv({"адрес":c.адрес,"статус":c["статус продаж"],"площадь, га":c["площадь, га"],"сдача":c.сдача,"этажность":c.этажность,"цены, млн ₽":(c["цены, млн ₽"]||[]).join("–"),"материал":c.материал,"застройщик":c.застройщик,"телефон застройщика":c["телефон застройщика"],"сайт":c.сайт})}
+     ${c["в продаже"]?`<div class="k"><b>в продаже:</b> коттеджей ${c["в продаже"].коттеджей}, таунхаусов ${c["в продаже"].таунхаусов}, участков ${c["в продаже"].участков}, строится ${c["в продаже"].строится}</div>`:""}
+     ${c.описание?`<div class="k" style="margin-top:6px">${esc(c.описание.slice(0,600))}${c.описание.length>600?"…":""}</div>`:""}
+     ${kv({"инфраструктура":c.инфраструктура,"рядом":c.рядом,"особенности":c.особенности,"коммуникации":c.коммуникации})}</div>
+   <div><h3>Контакты и управление</h3>${Object.keys(s).length?kv(s):"<div class='k'>в сводке посёлков нет</div>"}
+     ${(sr["ук"]||[]).length?`<h3>УК — что нашёл поиск (ссылки, не проверены)</h3>${sr["ук"].map(x=>`<div class="k" style="margin:3px 0"><a href="${esc(x.url)}" target="_blank">${esc(x.title||x.url)}</a> — ${esc((x.snip||"").slice(0,160))}</div>`).join("")}`:""}</div>
+   <div><h3>Жители и сообщества</h3>${(v.Telegram||[]).map(x=>`<div class="k"><a href="${esc(x.ссылка)}" target="_blank">${esc(x.название)}</a> · ${esc(x.тип)}${x.людей?" · "+esc(x.людей)+" чел.":""}</div>`).join("")||"<div class='k'>Telegram не найден</div>"}
+     ${(v["ВК и FORUMHOUSE"]||[]).map(x=>`<div class="k"><a href="${esc(x.ссылка)}" target="_blank">${esc(x.название)}</a> · ${esc(x.вид)}${x.участников?" · "+esc(x.участников)+" уч.":""}</div>`).join("")}
+     ${(sr["жители"]||[]).length?`<h3>Отзывы, новости, проблемы — что нашёл поиск (ссылки, не проверены)</h3>${sr["жители"].map(x=>`<div class="k" style="margin:3px 0"><a href="${esc(x.url)}" target="_blank">${esc(x.title||x.url)}</a> — ${esc((x.snip||"").slice(0,160))}</div>`).join("")}`:""}</div>
+   <div><h3>Рынок</h3>${dm?`<div class="k"><b>дома от 50 млн ₽ на Циане:</b> ${dm.объявлений}</div>${kv({"кто продаёт":dm["кто продаёт"],"продавцы":dm.продавцы})}`:"<div class='k'>домов от 50 млн ₽ в нашей выгрузке нет</div>"}
+     <div class="k"><b>подрядчики в поиске по посёлку:</b> ${pd["в поиске по посёлку"]||0}, с подтверждёнными объектами: ${(pd["с объектами (портфолио, кейсы)"]||[]).length}</div>
+     ${(pd["с объектами (портфолио, кейсы)"]||[]).map(x=>`<div class="k">${esc(x.сайт)} · ${esc((x.телефоны||"").split(", ")[0])} ${esc((x.почты||"").split(", ")[0])}</div>`).join("")}
+     ${rv?`<div class="k" style="margin-top:6px"><b>отзывы:</b> ${rv.отзывов} (Яндекс ${rv.Яндекс}, 2ГИС ${rv["2ГИС"]}) · ${rv["плюс %"]}% плюсов · средняя ${rv["средняя оценка"]}</div>`:""}</div>
+  </div></details>`; }).join("");
 const DS = D.ds || [];
 $("dssub").textContent = DS.length ? `· ${DS.length} пунктов · юрлицо у ${DS.filter(d=>d.legal.ИНН).length} · ссылок на отзывы ${DS.reduce((a,d)=>a+d.rev.length,0)} · статей ${DS.reduce((a,d)=>a+d.art.length,0)} · обсуждений ${DS.reduce((a,d)=>a+d.q.length,0)}` : "· ещё не собрано";
 const lnk = (arr) => arr.length ? arr.map(x=>`<div class="k" style="margin:3px 0"><a href="${esc(x.ссылка)}" target="_blank">${esc(x.заголовок)}</a> — ${esc(x.сниппет)}</div>`).join("") : '<div class="k">не найдено</div>';
