@@ -31,7 +31,7 @@ def main():
             if not v:
                 continue
             keys = brand_keys(r["пункт"], v["сайты"], v.get("юрлицо") or {})
-            items = [i for i in r["items"] if "yabs.yandex" not in i["url"]
+            items = [i for i in r["items"] if "yabs.yandex" not in i["url"] and not re.search(r"ya.ru/alice|alice_deeplink|Быстрый ответ Алисы", i["url"] + i["title"])
                      and any(k in key(i["title"] + " " + i["snippet"]) or k in re.sub(r"[^a-z0-9]", "", i["url"].lower()) for k in keys)]
             k = r["вид"]
             if k == "отзывы":
