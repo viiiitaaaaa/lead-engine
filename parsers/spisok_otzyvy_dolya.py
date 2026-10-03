@@ -29,6 +29,8 @@ def main():
     gdf = ROOT / "data/raw/gis_reviews_dop.json"  # карточки 2ГИС, которые она прислала (data/lists/spisok_2gis_dop.tsv)
     gdop = json.loads(gdf.read_text(encoding="utf-8")) if gdf.exists() else {}
     isk = pd.read_csv(ROOT / "data/lists/spisok_karty_iskl.tsv", sep="	", dtype=str).fillna("")
+    yrf = ROOT / "data/raw/yandex_ratings.json"  # рейтинг и число оценок с карточек Яндекса (собрано в Chrome 03.10)
+    yr = json.loads(yrf.read_text(encoding="utf-8")) if yrf.exists() else {}
     rows = []
     for name, d in dos.items():
         g = base[(base["наш список"] == name) & ~base["новая?"].fillna("").str.startswith("отсеяно")]
@@ -48,7 +50,10 @@ def main():
         n = len(allr)
         rows.append({"пункт": name, "вид": d["вид"], "отзывов": n, "Яндекс": len(ym), "2ГИС": len(gv), "Zoon": len(zv),
                      "плюс %": round((allr >= 4).mean() * 100) if n else None, "минус %": round((allr <= 3).mean() * 100) if n else None,
-                     "средняя оценка": round(allr.mean(), 1) if n else None})
+                     "средняя оценка": round(allr.mean(), 1) if n else None,
+                     "оценок на Яндексе": sum(c["ratings"] for c in yr.get(name, [])),
+                     "рейтинг Яндекса": round(sum(c["rating"] * c["ratings"] for c in yr.get(name, [])) / max(1, sum(c["ratings"] for c in yr.get(name, []))), 1)
+                     if sum(c["ratings"] for c in yr.get(name, [])) else None})
     out = pd.DataFrame(rows).sort_values(["отзывов"], ascending=False)
     out.to_csv(ROOT / "data/lists/spisok_otzyvy_dolya.tsv", sep="\t", index=False)
     has = out[out["отзывов"] > 0]
