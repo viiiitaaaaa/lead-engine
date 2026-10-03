@@ -25,6 +25,8 @@ def main():
     dop = pd.read_csv(ROOT / "data/lists/spisok_karty_dop.tsv", sep="	", dtype=str).fillna("")
     zf = ROOT / "data/raw/zoon_reviews.json"  # Zoon — собрано в Chrome по её ссылкам и поиску
     zoon = json.loads(zf.read_text(encoding="utf-8")) if zf.exists() else {}
+    gdf = ROOT / "data/raw/gis_reviews_dop.json"  # карточки 2ГИС, которые она прислала (data/lists/spisok_2gis_dop.tsv)
+    gdop = json.loads(gdf.read_text(encoding="utf-8")) if gdf.exists() else {}
     rows = []
     for name, d in dos.items():
         g = base[(base["наш список"] == name) & ~base["новая?"].fillna("").str.startswith("отсеяно")]
@@ -34,7 +36,8 @@ def main():
         g = g[~g["адрес"].fillna("").str.contains("Пушкинск") & ~g["название"].fillna("").str.contains(r"ЭкоКвартал|ИП ", regex=True)]
         extra = set(dop[dop["пункт"] == name]["ссылка"])  # карточки, подтверждённые ею или по сайту (data/lists/spisok_karty_dop.tsv)
         ym = rev[rev["карточка"].isin(set(g["ссылка"]) | extra)]["оценка"].dropna()
-        gv = pd.Series([x.get("оценка") for x in (gis.get(name) or {}).get("отзывы", [])], dtype=float).dropna()
+        gv = pd.Series([x.get("оценка") for x in (gis.get(name) or {}).get("отзывы", [])]
+                       + [x.get("оценка") for c in gdop.get(name, []) for x in c["отзывы"]], dtype=float).dropna()  # + её карточки 2ГИС (филиалы)
         zv = pd.Series([pd.to_numeric(x.get("оценка"), errors="coerce") for x in (zoon.get(name) or {}).get("отзывы", [])], dtype=float).dropna()
         allr = pd.concat([ym, gv, zv])
         n = len(allr)
