@@ -31,6 +31,10 @@ def main():
     isk = pd.read_csv(ROOT / "data/lists/spisok_karty_iskl.tsv", sep="	", dtype=str).fillna("")
     yrf = ROOT / "data/raw/yandex_ratings.json"  # рейтинг и число оценок с карточек Яндекса (собрано в Chrome 03.10)
     yr = json.loads(yrf.read_text(encoding="utf-8")) if yrf.exists() else {}
+    prf = ROOT / "data/raw/proekty_ratings.json"  # + рейтинги проектов внутри посёлков (её решение 03.10), без застройщиков
+    for v, cs in (json.loads(prf.read_text(encoding="utf-8")) if prf.exists() else {}).items():
+        have = {c["card"] for c in yr.get(v, [])}
+        yr.setdefault(v, []).extend(c for c in cs if c.get("тип") == "проект" and c.get("площадка") == "Яндекс" and c["card"] not in have)
     rows = []
     for name, d in dos.items():
         g = base[(base["наш список"] == name) & ~base["новая?"].fillna("").str.startswith("отсеяно")]
