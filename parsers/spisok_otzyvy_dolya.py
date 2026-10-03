@@ -22,6 +22,7 @@ def main():
     rev["оценка"] = pd.to_numeric(rev["оценка"], errors="coerce")
     dos = json.loads((ROOT / "data/raw/dossier.json").read_text(encoding="utf-8"))
     gis = json.loads((ROOT / "data/raw/gis_reviews.json").read_text(encoding="utf-8"))
+    dop = pd.read_csv(ROOT / "data/lists/spisok_karty_dop.tsv", sep="	", dtype=str).fillna("")
     rows = []
     for name, d in dos.items():
         g = base[(base["наш список"] == name) & ~base["новая?"].fillna("").str.startswith("отсеяно")]
@@ -29,7 +30,8 @@ def main():
             g = g[(g["тип"] == "посёлок") | g["вид деятельности"].fillna("").str.contains(r"коттеджн|посёл|посел|управляющ", case=False, regex=True)]
         # тёзки вне нашей территории и чужие проекты: «Фонтенбло» (Пушкинский р-н) у Жуковки, «ЭкоКвартал Пирогово» у Пирогово Коллекции
         g = g[~g["адрес"].fillna("").str.contains("Пушкинск") & ~g["название"].fillna("").str.contains(r"ЭкоКвартал|ИП ", regex=True)]
-        ym = rev[rev["карточка"].isin(set(g["ссылка"]))]["оценка"].dropna()
+        extra = set(dop[dop["пункт"] == name]["ссылка"])  # карточки, подтверждённые ею или по сайту (data/lists/spisok_karty_dop.tsv)
+        ym = rev[rev["карточка"].isin(set(g["ссылка"]) | extra)]["оценка"].dropna()
         gv = pd.Series([x.get("оценка") for x in (gis.get(name) or {}).get("отзывы", [])], dtype=float).dropna()
         allr = pd.concat([ym, gv])
         n = len(allr)
