@@ -10,6 +10,8 @@
   4) уже собранное: все контакты (spisok_kontakty.tsv), отзывы Яндекс Карт и жалобы, дизайн-разбор, подрядчики в посёлках,
      Instagram, сводка посёлков.
 python parsers/list_dossier.py           # всё (продолжает с места: data/raw/dossier_partial.json)
+python parsers/list_dossier.py --group developers --no-search   # без поиска Яндекса (нет денег на Bright Data): сайт + ЕГРЮЛ
+python parsers/list_dossier.py --research --group developers     # потом добрать поиск у пунктов, где он пустой
 Итог: data/raw/dossier.json; панель — блок «Ваш список — досье».
 """
 import html
@@ -154,14 +156,17 @@ def one(it: dict, token: str) -> dict:
     note = "по ИНН с сайта" if inn and legal else ("единственное действующее совпадение по названию — проверить" if legal
                                                  else (f"тёзки: {len(eg_active)} действующих" if eg_active else ""))
     alt = next((re.split(r"\s[-–—|]\s|:", x["заголовок"])[0].strip() for x in si if x.get("заголовок")), "")
-    s = search(it["пункт"], it["вид"], legal.get("ИНН", "") or inn, token, brand_keys(it["пункт"], si, legal), alt[:40])
+    # --no-search: без поиска Яндекса (Bright Data без денег) — сайт, ЕГРЮЛ; поиск потом добирает --research
+    s = {} if "--no-search" in sys.argv else search(it["пункт"], it["вид"], legal.get("ИНН", "") or inn, token,
+                                                   brand_keys(it["пункт"], si, legal), alt[:40])
     return {"пункт": it["пункт"], "вид": it["вид"], "посёлки": it["посёлки"], "сайты": si, "юрлицо": legal, "юрлицо: как найдено": note,
             "тёзки ЕГРЮЛ": eg_active[:5] if not legal else [], **s}
 
 
 def research() -> None:
     """повторить только поиск Яндекса у пунктов, где он пришёл пустым (Bright Data сбоил), медленнее; сайт и юрлицо не трогаем"""
-    f = ROOT / "data/raw/dossier.json"
+    grp = sys.argv[sys.argv.index("--group") + 1] if "--group" in sys.argv else ""
+    f = ROOT / f"data/raw/dossier{'_' + grp if grp else ''}.json"
     res = json.loads(f.read_text(encoding="utf-8"))
     token = env("BRIGHTDATA_API_TOKEN")
     empty = [v for v in res.values() if not any(v.get(k) for k in ("отзывы", "статьи", "вопросы", "клиенты"))]
