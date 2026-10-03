@@ -342,6 +342,10 @@ def main():
         landing = ""
     pdp = ROOT / "data" / "raw" / "poselki_dossier.json"  # досье посёлков из её списка (её ссылки 03.10): parsers/poselki_dossier.py
     vd_rows = list(json.loads(pdp.read_text(encoding="utf-8")).values()) if pdp.exists() else []
+    pop = ROOT / "data" / "raw" / "poselki_otzyvy.json"  # отзывы, СМИ, плюсы и минусы посёлков: parsers/poselki_otzyvy.py
+    po = json.loads(pop.read_text(encoding="utf-8")) if pop.exists() else {}
+    for v in vd_rows:
+        v["мнения"] = po.get(v["посёлок"], {})
     nonempty = lambda c: int((base[c].fillna("").astype(str) != "").sum())
     data = {
         "built": datetime.now().strftime("%d.%m.%Y %H:%M"),

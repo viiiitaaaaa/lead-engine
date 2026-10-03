@@ -318,6 +318,17 @@ function cvrender(){ const q=$("cvq").value.toLowerCase(), h=$("cvh").value, c=$
     <td class="lk">${v.site?`<a href="${esc(v.site)}" target="_blank">сайт</a>`:""}<a href="${esc(v.url)}" target="_blank">Циан</a></td></tr>`).join(""); }
 ["cvq","cvh","cvc","cvs","cvl","cvb","cvk"].forEach(id=>$(id).addEventListener("input",cvrender)); cvrender();
 
+
+const opin = (o, key, sign) => { const d=o[key]||{}; const ks=Object.keys(d); if(!ks.length) return "";
+  return ks.map(t=>`<div class="k" style="margin:4px 0"><b>${sign} ${esc(t)}</b> (${d[t].length}${(o[key+", сколько"]||{})[t]>d[t].length?" из "+o[key+", сколько"][t]:""})${d[t].slice(0,2).map(x=>`<div style="margin-left:10px">«${esc(x.фраза.slice(0,220))}» <span class="lk">${x.источник.startsWith("http")?`<a href="${esc(x.источник)}" target="_blank">источник</a>`:esc(x.источник)}</span></div>`).join("")}</div>`).join(""); };
+const opinBlock = (o) => { if(!o||!Object.keys(o).length) return "";
+  const lp=opin(o,"люди: плюсы","+"), lm=opin(o,"люди: минусы","−"), sp=opin(o,"СМИ: плюсы","+"), sm=opin(o,"СМИ: минусы","−");
+  return `<div style="grid-column:1/-1"><h3>Отзывы и пресса</h3><div class="k">Страниц про посёлок: ${o["страниц про посёлок"]||0} (люди / СМИ / продавцы: ${(o["из них люди / СМИ / продавцы"]||[]).join(" / ")})${o["отзывов с карт"]?" · отзывов с карточки карт: "+o["отзывов с карт"]:""}</div>
+   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px">
+    <div><h3>Что пишут люди</h3>${lm||""}${lp||""}${!lp&&!lm?"<div class='k'>отзывов жителей в открытом доступе не найдено</div>":""}</div>
+    <div><h3>Что пишут СМИ</h3>${sm||""}${sp||""}${(o.статьи||[]).map(a=>`<div class="k" style="margin:3px 0"><a href="${esc(a.url)}" target="_blank">${esc(a.title||a.url)}</a></div>`).join("")||"<div class='k'>статей не найдено</div>"}</div>
+    <div><h3>Что обещают продавцы (реклама)</h3>${(o["что обещают продавцы"]||[]).slice(0,4).map(x=>`<div class="k" style="margin:3px 0">«${esc(x.фраза.slice(0,200))}» <span class="lk"><a href="${esc(x.источник)}" target="_blank">${esc(x.источник.split("/")[2])}</a></span></div>`).join("")||"<div class='k'>—</div>"}</div>
+   </div></div>`; };
 const VD = D.vd || [];
 $("vdsub").textContent = VD.length ? `· ${VD.length} посёлков` : "· ещё не собрано";
 const kv = (o) => Object.entries(o||{}).filter(([k,v])=>v!==""&&v!==null&&!(Array.isArray(v)&&!v.length)).map(([k,v])=>`<div class="k"><b>${esc(k)}:</b> ${esc(Array.isArray(v)?v.join(", "):(typeof v==="object"?Object.entries(v).map(([a,b])=>a+" "+b).join(", "):v))}</div>`).join("");
@@ -338,6 +349,7 @@ $("vdrows").innerHTML = VD.map(v=>{ const c=v["Циан"]||{}, s=v["сводка
      <div class="k"><b>подрядчики в поиске по посёлку:</b> ${pd["в поиске по посёлку"]||0}, с подтверждёнными объектами: ${(pd["с объектами (портфолио, кейсы)"]||[]).length}</div>
      ${(pd["с объектами (портфолио, кейсы)"]||[]).map(x=>`<div class="k">${esc(x.сайт)} · ${esc((x.телефоны||"").split(", ")[0])} ${esc((x.почты||"").split(", ")[0])}</div>`).join("")}
      ${rv?`<div class="k" style="margin-top:6px"><b>отзывы:</b> ${rv.отзывов} (Яндекс ${rv.Яндекс}, 2ГИС ${rv["2ГИС"]}) · ${rv["плюс %"]}% плюсов · средняя ${rv["средняя оценка"]}</div>`:""}</div>
+   ${opinBlock(v.мнения)}
   </div></details>`; }).join("");
 const DS = D.ds || [];
 $("dssub").textContent = DS.length ? `· ${DS.length} пунктов · юрлицо у ${DS.filter(d=>d.legal.ИНН).length} · ссылок на отзывы ${DS.reduce((a,d)=>a+d.rev.length,0)} · статей ${DS.reduce((a,d)=>a+d.art.length,0)} · обсуждений ${DS.reduce((a,d)=>a+d.q.length,0)}` : "· ещё не собрано";
