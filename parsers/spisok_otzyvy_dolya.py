@@ -7,6 +7,7 @@ python parsers/spisok_otzyvy_dolya.py
 """
 import glob
 import json
+import re
 
 import pandas as pd
 
@@ -27,6 +28,7 @@ def main():
     zoon = json.loads(zf.read_text(encoding="utf-8")) if zf.exists() else {}
     gdf = ROOT / "data/raw/gis_reviews_dop.json"  # карточки 2ГИС, которые она прислала (data/lists/spisok_2gis_dop.tsv)
     gdop = json.loads(gdf.read_text(encoding="utf-8")) if gdf.exists() else {}
+    isk = pd.read_csv(ROOT / "data/lists/spisok_karty_iskl.tsv", sep="	", dtype=str).fillna("")
     rows = []
     for name, d in dos.items():
         g = base[(base["наш список"] == name) & ~base["новая?"].fillna("").str.startswith("отсеяно")]
@@ -34,9 +36,12 @@ def main():
             g = g[(g["тип"] == "посёлок") | g["вид деятельности"].fillna("").str.contains(r"коттеджн|посёл|посел|управляющ", case=False, regex=True)]
         # тёзки вне нашей территории и чужие проекты: «Фонтенбло» (Пушкинский р-н) у Жуковки, «ЭкоКвартал Пирогово» у Пирогово Коллекции
         g = g[~g["адрес"].fillna("").str.contains("Пушкинск") & ~g["название"].fillna("").str.contains(r"ЭкоКвартал|ИП ", regex=True)]
+        for rx in isk[isk["пункт"] == name]["название содержит"]:  # её уточнения: эти посёлки — не её пункт (spisok_karty_iskl.tsv)
+            g = g[~g["название"].astype(str).str.contains(rx, case=False, regex=True)]
         extra = set(dop[dop["пункт"] == name]["ссылка"])  # карточки, подтверждённые ею или по сайту (data/lists/spisok_karty_dop.tsv)
         ym = rev[rev["карточка"].isin(set(g["ссылка"]) | extra)]["оценка"].dropna()
-        gv = pd.Series([x.get("оценка") for x in (gis.get(name) or {}).get("отзывы", [])]
+        isk_rx = "|".join(isk[isk["пункт"] == name]["название содержит"]) or r"$^"
+        gv = pd.Series([x.get("оценка") for x in (gis.get(name) or {}).get("отзывы", []) if not re.search(isk_rx, str(x.get("карточка", "")), re.I)]
                        + [x.get("оценка") for c in gdop.get(name, []) for x in c["отзывы"]], dtype=float).dropna()  # + её карточки 2ГИС (филиалы)
         zv = pd.Series([pd.to_numeric(x.get("оценка"), errors="coerce") for x in (zoon.get(name) or {}).get("отзывы", [])], dtype=float).dropna()
         allr = pd.concat([ym, gv, zv])

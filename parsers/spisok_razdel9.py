@@ -29,6 +29,7 @@ def main():
     d = json.loads((ROOT / "data/raw/dossier.json").read_text(encoding="utf-8"))
     base = pd.read_excel(max(DRIVE.parent.glob("база_lead_engine_*.xlsx"), key=lambda p: p.stat().st_mtime), sheet_name="организации").fillna("")
     dop = pd.read_csv(ROOT / "data/lists/spisok_karty_dop.tsv", sep="\t", dtype=str).fillna("")
+    isk = pd.read_csv(ROOT / "data/lists/spisok_karty_iskl.tsv", sep="\t", dtype=str).fillna("")  # её уточнения: не её посёлки
 
     # страница сверки
     rows = ""
@@ -38,6 +39,8 @@ def main():
         g = base[(base["наш список"] == n) & ~base["новая?"].str.startswith("отсеяно")]
         if v.get("вид") == "посёлок":
             g = g[(g["тип"] == "посёлок") | g["вид деятельности"].str.contains(r"коттеджн|посёл|посел|управляющ", case=False, regex=True)]
+        for rx in isk[isk["пункт"] == n]["название содержит"]:
+            g = g[~g["название"].astype(str).str.contains(rx, case=False, regex=True)]
         cards = [f"{r['название'][:30]} ({str(r['адрес'])[:40] or dom(str(r['сайт']).split(',')[0])})" for _, r in g.head(3).iterrows()]
         cards += [f"карточка: {u.split('/org/')[1].split('/')[0]}" for u in dop[dop["пункт"] == n]["ссылка"]]
         s = st.loc[n] if n in st.index else None
