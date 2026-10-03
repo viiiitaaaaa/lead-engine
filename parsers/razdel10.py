@@ -12,7 +12,7 @@ import pandas as pd
 from yandex_maps_bd import ROOT
 
 MD = ROOT / "docs/лендинг_основа.md"
-JUNK = r"ya\.ru/alice|alice_deeplink|Быстрый ответ"
+JUNK = r"ya\.ru/alice|alice_deeplink|Быстрый ответ|tripadvisor|ozon\.by|booking\.com"  # тёзки (глазами 04.10: отель «Аляска», очиститель Fresh Air)
 
 
 def links(items: list, n: int = 2) -> str:
