@@ -29,6 +29,8 @@ VILLAGES = {
     "Пирогово": {"cian": "/kottedzhnyj-poselok-kurort-pirogovo-10299/", "site": "https://pirogovo.ru"},
     "Дарьино": {"site": "https://darino.club"},
     "Лапино": {"card": "https://yandex.ru/maps/org/novoye_lapino/145926408068/", "site": "http://novoe-lapino.ru"},
+    "Серебряный бор": {"cian": "/kottedzhnyj-poselok-serebryanyj-bor-67003/"},
+    "Ромашково": {"cian": "/kottedzhnyj-poselok-romashkovo-xxi-2897/"},  # единственный КП с этим названием на Циане — в селе Ромашково
 }
 SERP_SKIP = r"yandex\.|avito\.|youtube|rutube|hh\.ru|market\."
 CLASS = {"elite": "элит", "business": "бизнес", "comfort": "комфорт", "economy": "эконом"}
@@ -55,6 +57,8 @@ def main():
     vkn = lambda u: (vkm.get((re.search(r"vk\.(?:com|ru)/([A-Za-z0-9_.]+)", u) or [None, ""])[1]) or {}).get("members")
     sf = Path.home() / "Downloads" / "serp_poselki.json"  # поиск Яндекса в её Chrome, по 2 запроса на посёлок (03.10)
     serp = json.loads(sf.read_text(encoding="utf-8")) if sf.exists() else []
+    for extra in sorted((Path.home() / "Downloads").glob("serp_poselki_*.json")):  # дополнительные поиски (Серебряный бор, Ромашково)
+        serp += json.loads(extra.read_text(encoding="utf-8"))
     out = {}
     for name, src in VILLAGES.items():
         k = key(name)
