@@ -1,5 +1,5 @@
 """Её список (46 компаний и посёлков, «наш список» в базе): доля положительных и отрицательных отзывов по каждому пункту —
-Яндекс Карты (выгрузка отзывов + полные отзывы из Chrome, yrev_full.json) и 2ГИС (gis_reviews.json). Плюс — оценка 4–5, минус — 1–3.
+Яндекс Карты (выгрузка + полные из Chrome, yrev_full.json), 2ГИС (gis_reviews.json), Zoon (zoon_reviews.json). Плюс — оценка 4–5, минус — 1–3.
 Карточки пункта — как в панели (досье): для посёлка только сам посёлок, УК, застройщик, без школ и салонов местности.
 
 python parsers/spisok_otzyvy_dolya.py
@@ -23,6 +23,8 @@ def main():
     dos = json.loads((ROOT / "data/raw/dossier.json").read_text(encoding="utf-8"))
     gis = json.loads((ROOT / "data/raw/gis_reviews.json").read_text(encoding="utf-8"))
     dop = pd.read_csv(ROOT / "data/lists/spisok_karty_dop.tsv", sep="	", dtype=str).fillna("")
+    zf = ROOT / "data/raw/zoon_reviews.json"  # Zoon — собрано в Chrome по её ссылкам и поиску
+    zoon = json.loads(zf.read_text(encoding="utf-8")) if zf.exists() else {}
     rows = []
     for name, d in dos.items():
         g = base[(base["наш список"] == name) & ~base["новая?"].fillna("").str.startswith("отсеяно")]
@@ -33,9 +35,10 @@ def main():
         extra = set(dop[dop["пункт"] == name]["ссылка"])  # карточки, подтверждённые ею или по сайту (data/lists/spisok_karty_dop.tsv)
         ym = rev[rev["карточка"].isin(set(g["ссылка"]) | extra)]["оценка"].dropna()
         gv = pd.Series([x.get("оценка") for x in (gis.get(name) or {}).get("отзывы", [])], dtype=float).dropna()
-        allr = pd.concat([ym, gv])
+        zv = pd.Series([pd.to_numeric(x.get("оценка"), errors="coerce") for x in (zoon.get(name) or {}).get("отзывы", [])], dtype=float).dropna()
+        allr = pd.concat([ym, gv, zv])
         n = len(allr)
-        rows.append({"пункт": name, "вид": d["вид"], "отзывов": n, "Яндекс": len(ym), "2ГИС": len(gv),
+        rows.append({"пункт": name, "вид": d["вид"], "отзывов": n, "Яндекс": len(ym), "2ГИС": len(gv), "Zoon": len(zv),
                      "плюс %": round((allr >= 4).mean() * 100) if n else None, "минус %": round((allr <= 3).mean() * 100) if n else None,
                      "средняя оценка": round(allr.mean(), 1) if n else None})
     out = pd.DataFrame(rows).sort_values(["отзывов"], ascending=False)
