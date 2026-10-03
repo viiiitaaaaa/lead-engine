@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor
 from yandex_maps_bd import ROOT
 
 H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128 Safari/537.36", "Accept-Language": "ru"}
-SKIP = r"t\.me/(share|joinchat|\+)|vk\.(com|ru)/(video|share|away|wall|photo|club\d+\?|feed)|vk\.(com|ru)/?$"
+SKIP = r"vk\.(com|ru)/(js|rtrg|video_ext\.php|group|privacy|widget\w*|app\d+_?)|dzen\.ru/(id|embed|a)/?$|t\.me/(share|joinchat|\+)|vk\.(com|ru)/(video|share|away|wall|photo|club\d+\?|feed)|vk\.(com|ru)/?$"
 
 
 def get(u):

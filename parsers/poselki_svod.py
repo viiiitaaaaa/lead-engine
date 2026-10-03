@@ -26,6 +26,42 @@ def k8(name: str) -> str:
     return key(name)[:10]
 
 
+CC = ("телефоны застройщика", "почты застройщика", "телефоны посёлка", "почты посёлка")
+# заглушки из шаблонов сайтов и почты счётчиков — не контакты (проверка 03.10)
+JUNK = r"^7?(9876543210|9999999999|9000000000|1234567890|9001234567)$|ivanov@|user@mail\.ru|rating@mail\.ru|example|test@|@domain|name@|email@|your@"
+NOT_VILLAGE_SITE = r"lh-studio\.ru"  # VISION: страница студии дизайна Loft&Home (проверка 03.10)
+FREE = r"@(mail|bk|list|inbox|internal)\.ru$|@(gmail|yandex|ya|icloud|outlook|hotmail|rambler)\.\w+$"
+
+
+def clean_contacts(rows: dict) -> None:
+    """Чистка контактов сводки (03.10): заглушки и счётчики; почты чужих доменов (арендаторы ТЦ на сайте «Павлово»);
+    не больше 4 телефонов с одного поля; контакт у 3+ посёлков разных застройщиков — брокер/агрегатор → «контакты брокеров»."""
+    from build_base import domain
+    for e in rows.values():
+        if re.search(NOT_VILLAGE_SITE, e.get("сайт посёлка", ""), re.I):  # страница студии/агрегатора, не сайт посёлка
+            e["сайт посёлка"] = e["телефоны посёлка"] = e["почты посёлка"] = ""
+            e["УК / сайт посёлка"] = ""
+        doms = {domain(e.get(c, "")) for c in ("сайт застройщика", "сайт посёлка")} - {""}
+        for c in CC:
+            vals = [x for x in re.split(r",\s*", str(e.get(c, ""))) if x and not re.search(JUNK, x, re.I)]
+            if c.startswith("почты"):
+                vals = [x for x in vals if re.search(FREE, x, re.I) or any(x.lower().split("@")[-1].endswith(d.split(".", 1)[-1] if d.count(".") > 1 else d) for d in doms)]
+            e[c] = ", ".join(vals[:4])
+    seen = defaultdict(set)
+    for e in rows.values():
+        for c in CC:
+            for x in filter(None, re.split(r",\s*", e[c])):
+                seen[x.lower()].add(e.get("застройщик", "") or e["посёлок"])
+    broker = {x for x, devs in seen.items() if len(devs) >= 3}
+    for e in rows.values():
+        moved = []
+        for c in CC:
+            vals = [x for x in filter(None, re.split(r",\s*", e[c]))]
+            moved += [x for x in vals if x.lower() in broker]
+            e[c] = ", ".join(x for x in vals if x.lower() not in broker)
+        e["контакты брокеров"] = ", ".join(dict.fromkeys(moved))
+
+
 def main():
     kat, cv, sb, pdr = read("poselki_katalog.tsv"), read("cian_poselki.tsv"), read("soobshchestva_poselkov.tsv"), read("podryadchiki_poselkov.tsv")
     # её список: посёлок из списка берём даже с другого шоссе (Пирогово, Завидово, Трувиль, Лапино…) и по вхождению названия
@@ -73,6 +109,7 @@ def main():
             continue
         for v in r["посёлки"].split(", "):
             pod[k8(v)].append(r["сайт"])
+    clean_contacts(rows)
     for k, e in rows.items():
         e["групп ВК"], e["ВК"] = len(vk[k]), ", ".join(vk[k][:3])
         e["веток FORUMHOUSE"], e["FORUMHOUSE"] = len(fh[k]), ", ".join(fh[k][:3])

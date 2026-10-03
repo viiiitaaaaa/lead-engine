@@ -266,7 +266,8 @@ def main():
     pd_ = pd.read_csv(pdp, sep="	", dtype=str).fillna("") if pdp.exists() else pd.DataFrame()
     pd_rows = [{"site": r["сайт"], "n": int(r["посёлков"]), "where": r["посёлки"], "title": r["заголовок"], "snip": r["сниппет"][:220],
                 "url": r["пример страницы"], "phone": r["телефоны"], "mail": r["почты"], "inbase": r["уже в базе"] == "True",
-                "kind": r.get("вид", ""), "doubt": r.get("сомнительно", "") == "True"} for _, r in pd_.iterrows()]
+                "kind": r.get("вид", ""), "doubt": r.get("сомнительно", "") == "True",
+                "obj": int(float(r.get("посёлков с объектом") or 0))} for _, r in pd_.iterrows()]
     skp = ROOT / "data" / "lists" / "spisok_kontakty.tsv"  # все контакты по её списку: parsers/list_contacts.py
     sk = pd.read_csv(skp, sep="	", dtype=str).fillna("") if skp.exists() else pd.DataFrame()
     sk_rows = []
@@ -293,7 +294,7 @@ def main():
         r = rev[rev["карточка"].isin(set(g["ссылка"]))]
         c = compl[compl["организация"].isin(set(g["название"]))]
         th = pd.Series([t for x in c["темы (по-русски)"] for t in str(x).split("; ") if t]).value_counts().head(4)
-        ds_rows.append({"name": name, "grp": grp, "vid": d["вид"], "vil": d.get("посёлки", ""), "legal": d.get("юрлицо") or {},
+        ds_rows.append({"name": name, "grp": grp, "vid": d["вид"], "vil": d.get("посёлки", ""), "legal": d.get("юрлицо") or {}, "cand": d.get("юрлицо-кандидат") or {},
                         "ln": d.get("юрлицо: как найдено", ""), "twins": len(d.get("тёзки ЕГРЮЛ") or []),
                         "sites": d.get("сайты") or [], "rev": d.get("отзывы") or [], "art": d.get("статьи") or [],
                         "q": d.get("вопросы") or [], "cl": d.get("клиенты") or [], "money": d.get("выручка кратко", ""),

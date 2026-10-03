@@ -54,6 +54,9 @@ def text(h: str) -> str:
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<(script|style|noscript)[^>]*>.*?</\1>|<[^>]+>", " ", h, flags=re.S | re.I))).strip()
 
 
+SOC_JUNK = r"vk\.(com|ru)/(js|rtrg|video_ext\.php|video|share\.php|group|privacy|widget\w*|app\d+_?|away|wall|photo|feed)\b|t\.me/(share|joinchat|\+)|dzen\.ru/(id|embed|a)/?$|vk\.(com|ru)/?$"
+
+
 def site_info(site: str) -> dict:
     root = (re.match(r"https?://[^/]+", site if "://" in site else "https://" + site) or [None])[0]
     if not root:
@@ -72,7 +75,8 @@ def site_info(site: str) -> dict:
     places = sorted(set(m.lower() for m in re.findall(PLACES, t, re.I)))
     kp = sorted(set(re.findall(r"(?:КП|коттеджн\w* пос[её]лк\w*)\s*[«\"]([^»\"]{3,40})[»\"]", t)))[:25]
     proj = len({u for u in links if re.search(r"project|proekt|portfolio|objects|works|cases|кейс", u, re.I)})
-    soc = {k: sorted(set(m.rstrip("/.,") for m in re.findall(p, raw)))[:3] for k, p in SOC.items()}
+    # служебные ссылки (счётчики, виджеты, «поделиться») — не соцсети компании (проверка 03.10)
+    soc = {k: sorted(set(m.rstrip("/.,") for m in re.findall(p, raw) if not re.search(SOC_JUNK, m, re.I)))[:3] for k, p in SOC.items()}
     return {"сайт": root, "ответ": "ок", "заголовок": title[:150], "описание": desc[:300], "ИНН с сайта": sorted(set(inns))[:3],
             "упоминает наши места": places, "КП в тексте": kp, "страниц проектов": proj,
             "соцсети": {k: v for k, v in soc.items() if v}, "страниц прочитано": len(hs)}
@@ -152,14 +156,16 @@ def one(it: dict, token: str) -> dict:
     inn = next((i for s in si for i in s.get("ИНН с сайта", [])), "")
     eg = egrul(inn) if inn else (egrul(re.sub(r"^группа компаний\s+", "", it["пункт"], flags=re.I)) if it["вид"] == "компания" else [])
     eg_active = [e for e in eg if not e["ликвидировано"]]
-    legal = eg_active[0] if inn and eg_active else (eg_active[0] if len(eg_active) == 1 else {})
-    note = "по ИНН с сайта" if inn and legal else ("единственное действующее совпадение по названию — проверить" if legal
-                                                 else (f"тёзки: {len(eg_active)} действующих" if eg_active else ""))
+    # юрлицо — только по ИНН с сайта; одно совпадение по названию часто тёзка (АО «Конти» кондитер, ГСК №54 — проверка 03.10) → кандидат
+    legal = eg_active[0] if inn and eg_active else {}
+    cand = eg_active[0] if not inn and len(eg_active) == 1 else {}
+    note = "по ИНН с сайта" if legal else ("по названию нашлось одно юрлицо — НЕ подтверждено (часто тёзка), нужен ИНН с сайта или договора" if cand
+                                          else (f"тёзки: {len(eg_active)} действующих" if eg_active else ""))
     alt = next((re.split(r"\s[-–—|]\s|:", x["заголовок"])[0].strip() for x in si if x.get("заголовок")), "")
     # --no-search: без поиска Яндекса (Bright Data без денег) — сайт, ЕГРЮЛ; поиск потом добирает --research
     s = {} if "--no-search" in sys.argv else search(it["пункт"], it["вид"], legal.get("ИНН", "") or inn, token,
                                                    brand_keys(it["пункт"], si, legal), alt[:40])
-    return {"пункт": it["пункт"], "вид": it["вид"], "посёлки": it["посёлки"], "сайты": si, "юрлицо": legal, "юрлицо: как найдено": note,
+    return {"пункт": it["пункт"], "вид": it["вид"], "посёлки": it["посёлки"], "сайты": si, "юрлицо": legal, "юрлицо-кандидат": cand, "юрлицо: как найдено": note,
             "тёзки ЕГРЮЛ": eg_active[:5] if not legal else [], **s}
 
 
