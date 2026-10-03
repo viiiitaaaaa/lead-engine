@@ -86,11 +86,15 @@ def collect():
                 print(f"сделано {n} из {len(todo)}", flush=True)
 
 
+# проверено глазами 03.10: карточка 2ГИС другого вида, чем место в базе (ресторан → рынок, школа → медцентр и т.п.)
+WRONG = {"Hamlet", "Ветерок", "Семья", "Луна и Лотос", "Сосны", "Уколов-центр"}
+
+
 def reparse():
     res = json.loads(OUT.read_text(encoding="utf-8"))
     rows, total, neg_total = [], 0, 0
     for v in res.values():
-        if re.search(r"автосалон|автоцентр|car dealer", v["вид"], re.I):  # «ремонт» там — ремонт машин
+        if re.search(r"автосалон|автоцентр|car dealer", v["вид"], re.I) or v["название"] in WRONG:  # «ремонт» там — ремонт машин
             continue
         for r in v["отзывы"]:
             total += 1

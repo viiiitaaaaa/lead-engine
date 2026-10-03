@@ -32,25 +32,44 @@ def j(u: str):
     return {}
 
 
-def find(name: str, keys: set, sites: list, vid: str) -> list:
+# проверено глазами 03.10: карточки-тёзки, которые проходят по названию и рубрике
+NOT_CARDS = {"М9development": r"^Rdi", "Группа Самолет": r"Самолет Плюс", "Ландшафт": r"ландшафтная компания", "Велес Строй": r"Велесстрой"}
+OURS = (r"строительн|строительств|ремонт|отделк|дизайн|архитект|проектирован|инженер|климат|вентиляц|кондицион|сантехн|мебел|коттедж"
+        r"|посёл|посел|недвижим|загородн|застройщик|девелоп|земельн")
+DEV = r"застройщик|девелоп|строительств\w* (дач|коттедж|дом)|продажа (коттедж|загородн|земельн)|земельн|коттеджн\w* посёл|коттеджн\w* посел"
+
+
+def find(name: str, keys: set, sites: list, vid: str, dev: bool = False) -> list:
+    """Проверка карточки (перепроверено 03.10 после ошибки «Велес Строй» — тёзка-нефтегаз по названию):
+    совпал сайт → наша; у карточки свой сайт, отличный от сайта компании → тёзка; иначе название + профильная рубрика.
+    У посёлков сайт брокерский, у застройщиков (dev) в базе сайт посёлка — для них сайт не сравниваем, рубрика строже (DEV)."""
     q = name + (" коттеджный посёлок" if vid == "посёлок" else "")
     out = []
     for reg in REGIONS:
         r = j(f"https://catalog.api.2gis.com/3.0/items?q={urllib.parse.quote(q)}&region_id={reg}&page_size=10"
               f"&fields=items.reviews,items.contact_groups,items.address,items.rubrics&key={SEARCH_KEY}")
         for it in (r.get("result") or {}).get("items") or []:
-            web = " ".join(c.get("value", "") for g in it.get("contact_groups") or [] for c in g.get("contacts") or [] if c.get("type") == "website")
-            same_site = any(domain(s) and domain(s) in web for s in sites)
+            card_sites = {domain(c.get("url") or c.get("text") or "") for g in it.get("contact_groups") or [] for c in g.get("contacts") or []
+                          if c.get("type") == "website"} - {""}
+            our = {domain(s) for s in sites} - {""}
+            same_site = bool(card_sites & our)
             same_name = any(k in key(it.get("name", "")) for k in keys)
             n = (it.get("reviews") or {}).get("general_review_count") or 0
-            rub = " ".join(x.get("name", "") for x in it.get("rubrics") or [])
-            ours = re.search(r"строит|ремонт|отделк|дизайн|архитект|проект|инженер|климат|вентиляц|кондицион|сантехн|мебел|коттедж|посёл|посел|недвижим|загородн|дом",
-                             rub + " " + it.get("name", ""), re.I)
-            if vid == "посёлок":  # у посёлков общий брокерский сайт — только по названию
-                same_site = False
-            if (same_site or (same_name and ours)) and n:  # тёзки (туроператор «Спектрум», ТРЦ «Калита») отсекаются по рубрике
+            rub = " ".join(x.get("name", "") for x in it.get("rubrics") or []) + " " + it.get("name", "")
+            if not n:
+                continue
+            if vid == "посёлок" or dev:
+                ok = same_site or (same_name and re.search(DEV if dev else OURS, rub, re.I))
+            elif same_site:
+                ok = True
+            elif card_sites and our:  # у обоих свои сайты, и они разные — тёзка
+                ok = False
+            else:
+                ok = same_name and re.search(OURS, rub, re.I)
+            if ok and not re.search(NOT_CARDS.get(name, r"$^"), it.get("name", ""), re.I):
                 out.append({"название": it.get("name", ""), "id": str(it.get("id", "")).split("_")[0], "отзывов": n,
                             "рейтинг": (it.get("reviews") or {}).get("general_rating"), "адрес": it.get("address_name", ""),
+                            "сайт карточки": ", ".join(sorted(card_sites)), "рубрика": rub[:120],
                             "совпало": "сайт" if same_site else "название", "ссылка": f"https://2gis.ru/moscow/firm/{str(it.get('id', '')).split('_')[0]}"})
     return sorted({x["id"]: x for x in out}.values(), key=lambda x: (x["совпало"] != "сайт", -x["отзывов"]))[:3]
 
@@ -80,7 +99,7 @@ def main():
 
     def one(v):
         sites = [s["сайт"] for s in v["сайты"] if s.get("сайт")]
-        cards = find(v["пункт"], brand_keys(v["пункт"], v["сайты"], v.get("юрлицо") or {}), sites, v["вид"])
+        cards = find(v["пункт"], brand_keys(v["пункт"], v["сайты"], v.get("юрлицо") or {}), sites, v["вид"], dev=grp == "developers")
         rv = [dict(r, карточка=c["название"]) for c in cards for r in reviews(c["id"])]
         return v["пункт"], {"карточки": cards, "отзывы": rv}
     with ThreadPoolExecutor(4) as pool:
