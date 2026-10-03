@@ -99,6 +99,9 @@ details[open] summary{margin-bottom:12px}
     <div class="card"><h2>Каналы схемы воронки</h2><div class="ch" id="channels"></div></div>
   </section>
 
+  <div class="card" style="margin-bottom:16px"><h2>Что делать с данными — по блокам <span class="sub">· куда применять по схеме воронки</span></h2>
+    <div class="tbl"><table><thead><tr><th>Блок данных</th><th>Что с ним делать</th><th>Куда по схеме</th><th>Первый шаг</th></tr></thead><tbody id="userows"></tbody></table></div></div>
+
   <div class="card" style="margin-bottom:16px">
     <h2>Боли клиентов из отзывов <span class="sub" id="painsub"></span></h2>
     <section class="grid pains" id="pains" style="margin:0"></section>
@@ -226,6 +229,7 @@ Object.entries(D.segments).forEach(([k,v]) => {
   $("segs").insertAdjacentHTML("beforeend", `<div class="bar ${k==="Нерелевантное"||k==="Прочее"?"dim":""}"><span>${esc(k)}</span><i style="width:${v/segMax*100}%"></i><em>${v}</em></div>`);
   $("seg").insertAdjacentHTML("beforeend", `<option>${esc(k)}</option>`);
 });
+(D.use||[]).forEach(([n,w,to,f]) => $("userows").insertAdjacentHTML("beforeend", `<tr><td><b>${esc(n)}</b></td><td>${esc(w)}</td><td class="k">${esc(to)}</td><td>${esc(f)}</td></tr>`));
 D.channels.forEach(([n,st,d]) => $("channels").insertAdjacentHTML("beforeend",
   `<div class="chi st-${st}"><b>${esc(n)}<span class="tag t-${st}">${st}</span></b><small>${esc(d)}</small></div>`));
 
