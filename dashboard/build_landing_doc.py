@@ -5,6 +5,7 @@ import re
 import shutil
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import markdown
@@ -35,6 +36,15 @@ td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}
 tr:hover td{background:#fbf9f5}
 td:first-child{font-weight:600}
 .src{font-size:13px;color:var(--muted)}
+.intro{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;margin:0 0 8px}
+.card{background:var(--soft);border-radius:10px;padding:18px 20px}
+.card h3{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.card p,.card li{font-size:14.5px;max-width:none}.card ul{margin:8px 0}.card table{font-size:13.5px;margin:0}
+.card td{padding:6px 8px}.card td:first-child{font-weight:500}.card tr:hover td{background:none}
+.card.note{grid-column:1/-1;background:none;border:1px solid var(--line);color:var(--muted)}
+.card.note p{margin:4px 0}
+.upd{display:inline-block;background:var(--soft);color:var(--accent);font-weight:600;border-radius:6px;padding:2px 8px;margin-right:6px}
+@media (max-width:720px){.intro{grid-template-columns:1fr}}
 .bar{display:inline-block;height:8px;width:var(--w);background:var(--accent);border-radius:4px;margin-right:6px;vertical-align:middle}
 td:has(.bar){white-space:nowrap}
 @media (max-width:720px){main{margin:0;border-radius:0;padding:24px 16px}table{display:block;overflow-x:auto}h1{font-size:24px}}
@@ -48,7 +58,18 @@ def main():
     title = title.lstrip("# ").strip()
     m = re.match(r"(.*?)\s*\((\d{2}\.\d{2}\.\d{4})\)", title)
     name, date = (m.group(1), m.group(2)) if m else (title, "")
-    html = markdown.markdown(body.strip(), extensions=["tables"])
+    # вводный блок — три карточки: что продаём, откуда данные, насколько точно
+    intro = ""
+    mi = re.search(r"<!-- intro -->(.*?)<!-- /intro -->", body, re.S)
+    if mi:
+        cards = re.split(r"^### ", mi.group(1).strip(), flags=re.M)
+        for c in [c for c in cards if c.strip()]:
+            h, txt = c.split("\n", 1)
+            cls = "card note" if h.startswith("Насколько") else "card"
+            intro += f'<div class="{cls}"><h3>{h.strip()}</h3>{markdown.markdown(txt.strip(), extensions=["tables"])}</div>'
+        intro = f'<section class="intro">{intro}</section>'
+        body = body.replace(mi.group(0), "")
+    html = intro + markdown.markdown(body.strip(), extensions=["tables"])
     # первый абзац — источник данных, мельче; основной запрос — выделенной плашкой
     html = html.replace("<p>Источник:", '<p class="src">Источник:', 1)
     html = re.sub(r"(<h2>2\. [^<]*</h2>\s*)<p>(.*?)</p>", r'\1<div class="lead"><p>\2</p></div>', html, count=1, flags=re.S)
@@ -57,7 +78,7 @@ def main():
 <title>Основа лендинга</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>{CSS}</style></head>
-<body><main><h1>{name}</h1><p class="sub">{date} · поставщик технического оборудования для премиальных загородных домов и коттеджей · Новая Рига, Рублёвка, Ильинское ш.</p>
+<body><main><h1>{name}</h1><p class="sub"><span class="upd">Обновлено {datetime.now():%d.%m.%Y, %H:%M}</span> · поставщик технического оборудования для премиальных загородных домов и коттеджей · Новая Рига, Рублёвка, Ильинское ш.</p>
 {html}</main></body></html>"""
     OUT.write_text(page, encoding="utf-8")
     drive_copy = DRIVE.parent / OUT.name
