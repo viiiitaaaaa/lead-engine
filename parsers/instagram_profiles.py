@@ -14,7 +14,7 @@ import pandas as pd
 from apify_run import ROOT, run
 from build_base import DRIVE
 
-SKIP = {"p", "explore", "reel", "reels", "stories", "accounts", "direct", "tv", "instagram", "share"}
+SKIP = {"p", "explore", "reel", "reels", "stories", "accounts", "direct", "tv", "instagram", "share", "favicon.ico", "whitewilllestate"}  # +мусор и брокер (проверка 03.10)
 H = r"instagram\.com/([A-Za-z0-9_.]+)"
 
 
