@@ -205,9 +205,27 @@ details[open] summary{margin-bottom:12px}
       <label><input type="checkbox" id="pdn" checked> только новые (нет в базе)</label><label><input type="checkbox" id="pd2"> в 2+ посёлках</label><label><input type="checkbox" id="pdd"> показать сомнительные</label><span class="sub" id="pdcount"></span></div>
     <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Компания</th><th>Посёлков</th><th>Где работает</th><th>Вид</th><th>Телефон</th><th>Почта</th></tr></thead><tbody id="pdrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h2>Коммерция — клиенты на территории <span class="sub" id="kcsub"></span></h2>
-    <p class="sub">Её сегменты 04.10: общепит (вытяжки кухонь + приток в залы), ТЦ и магазины, медицина (фильтрация, стерильность), фитнес и спорт. 2ГИС, Одинцовский, Красногорский и Истринский округа. Сети закупают централизованно — отдельно от одиночных объектов.</p>
+    <p class="sub">Её сегменты 04.10: общепит (вытяжки кухонь + приток в залы), ТЦ и магазины, медицина (фильтрация, стерильность), фитнес и спорт, промышленность (заводы, НИИ, лаборатории, электроника), отели, СПА, уникальные объекты (музеи, концертные залы, храмы, стадионы), агрессивные среды (покраска, химчистки, гальваника). 2ГИС, Одинцовский, Красногорский и Истринский округа. Сети закупают централизованно — отдельно от одиночных объектов.</p>
     <div class="tools"><input type="search" id="kcq" placeholder="Поиск"><select id="kcc"><option value="">Все категории</option></select><select id="kco"><option value="">Все округа</option></select><select id="kcn"><option value="">Сети и одиночные</option><option value="0">Только одиночные</option><option value="1">Только сети</option></select><span class="sub" id="kccount"></span></div>
     <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Объект</th><th>Категория</th><th>Округ</th><th>Сайт</th><th>Телефон</th><th>Почта</th><th>Отзывов</th></tr></thead><tbody id="kcrows"></tbody></table></div></div>
+  <div class="card" style="margin-top:16px"><h2>Дома от 1 000 м² на продаже <span class="sub" id="hbsub"></span></h2>
+    <p class="sub">Её сегмент 04.10 «премиум ИЖС от 1000 м²». Циан: Новорижское, Рублёво-Успенское, Ильинское шоссе. Дом такого размера — центральная вентиляция, бассейн, СПА, котельная, умный дом; новый владелец почти всегда переделывает инженерию. Продают агентства — через них выходим на нового владельца.</p>
+    <div class="tools"><input type="search" id="hbq" placeholder="Поиск: посёлок, продавец"><select id="hbh"><option value="">Все шоссе</option></select><span class="sub" id="hbcount"></span></div>
+    <div class="tbl" style="max-height:560px;overflow-y:auto"><table><thead><tr><th>Посёлок</th><th>Дом, м²</th><th>Участок, сот.</th><th>Цена, млн ₽</th><th>Год</th><th>Продавец</th><th>Циан</th></tr></thead><tbody id="hbrows"></tbody></table></div></div>
+  <div class="card" style="margin-top:16px"><h2>Культурное наследие на территории <span class="sub" id="oksub"></span></h2>
+    <p class="sub">Её сегмент 04.10. Реестр Минкультуры (через Викигид): только здания, комплекс считается один раз, парки и утраченные убраны. Реставрация = вентиляция и климат под музейные условия без вмешательства в фасады.</p>
+    <div class="tools"><input type="search" id="okq" placeholder="Поиск"><select id="okv"><option value="">Все виды</option></select><select id="okr"><option value="">Все районы</option></select><span class="sub" id="okcount"></span></div>
+    <div class="tbl" style="max-height:520px;overflow-y:auto"><table><thead><tr><th>Объект</th><th>Вид</th><th>Район</th><th>Адрес</th><th>Год</th><th>Охрана</th></tr></thead><tbody id="okrows"></tbody></table></div></div>
+  <div class="card" style="margin-top:16px"><h2>Конкуренты — европейские производители <span class="sub" id="eusub"></span></h2>
+    <p class="sub">Её список 04.10: Systemair, York, Menerga, Swegon, Euroclima, PRIME. Российские бризеры, дилеры и магазины — не конкуренты. Главное: York и Menerga ушли, их оборудование в элитных домах осталось без поддержки — это наш сервис, запчасти и замена.</p>
+    <div class="tbl"><table><thead><tr><th>Марка</th><th>Страна</th><th>В России сейчас</th><th>Для домов и бассейнов</th><th>Цены и сроки</th><th>Мнений (+/−)</th></tr></thead><tbody id="eurows"></tbody></table></div>
+    <div class="tools" style="margin-top:14px"><select id="eob"><option value="">Мнения: все марки</option></select><select id="eor"><option value="">Плюсы и минусы</option><option value="plus">Только плюсы</option><option value="minus">Только минусы</option></select><span class="sub" id="eocount"></span></div>
+    <div class="tbl" style="max-height:480px;overflow-y:auto"><table><thead><tr><th>Марка</th><th>Оценка</th><th>Тема</th><th>Что пишут</th><th>Где</th></tr></thead><tbody id="eorows"></tbody></table></div></div>
+  <div class="card" style="margin-top:16px"><h2>Премиум-сегменты — что ищет очень богатый клиент <span class="sub" id="pssub"></span></h2>
+    <p class="sub">Вордстат, Москва и область, в месяц. Вывод: богатый клиент сам почти не ищет — за него ищут архитекторы, дизайнеры, помощники; ключевые слова нужны для страниц сайта, а не ради трафика.</p>
+    <div class="tbl"><table><thead><tr><th>Сегмент</th><th>Что в нём наше</th><th>Спрос в поиске</th><th>Как выходить</th></tr></thead><tbody id="psseg"></tbody></table></div>
+    <div class="tools" style="margin-top:14px"><select id="psg"><option value="">Все темы запросов</option></select><span class="sub" id="pscount"></span></div>
+    <div class="tbl" style="max-height:480px;overflow-y:auto"><table><thead><tr><th>Запрос</th><th>В месяц</th><th>Самые частые</th><th>Пометка</th></tr></thead><tbody id="psrows"></tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h2>Редакции, СМИ и блогеры территории <span class="sub" id="mdsub"></span></h2>
     <div class="sub" style="margin-bottom:10px">Для PR и размещения кейсов. Только находки про Рублёвку, Новую Ригу, Ильинское ш. или загородную жизнь.</div>
     <div class="tools"><input type="search" id="mdq" placeholder="Поиск"><select id="mdk"><option value="">Все виды</option><option>сайт / СМИ</option><option>Telegram</option><option>ВК</option><option>YouTube</option><option>Дзен</option></select><span class="sub" id="mdcount"></span></div>
@@ -476,6 +494,37 @@ function kcrender(){ const q=$("kcq").value.toLowerCase(), c=$("kcc").value, o=$
   $("kcrows").innerHTML=r.slice(0,600).map(x=>`<tr><td><b>${esc(x.name)}</b>${x.net?` <span class="k">· сеть, ${x.br} филиалов</span>`:""}<div class="k">${esc(x.rub)}</div><div class="k">${esc(x.adr)}</div></td><td class="k">${esc(x.cat)}</td><td class="k">${esc(x.okr)}</td><td class="lk">${x.site?`<a href="${esc(x.site.startsWith("http")?x.site:"https://"+x.site)}" target="_blank">${esc(x.site.slice(0,30))}</a>`:"—"}</td><td class="k">${esc(x.ph)}</td><td class="k">${esc(x.ml)}</td><td>${x.n}${x.rt?` · ${x.rt}`:""}</td></tr>`).join(""); }
 ["kcq","kcc","kco","kcn"].forEach(id=>$(id).addEventListener("input",kcrender)); kcrender();
 $("kcsub").textContent = KC.length?`· ${KC.length} объектов`:"· ещё не собрано";
+// дома от 1000 м² (Циан), культурное наследие, европейские конкуренты, премиум-сегменты — её задачи 04.10
+const HB = D.hb || [], OK = D.okn || [], EU = D.eu || [], EO = D.euop || [], PS = D.ps || [], PSG = D.psseg || [];
+const opts = (id, arr) => [...new Set(arr)].filter(Boolean).sort().forEach(c=>$(id).insertAdjacentHTML("beforeend",`<option>${esc(c)}</option>`));
+opts("hbh", HB.map(x=>x.hw)); opts("okv", OK.map(x=>x.v)); opts("okr", OK.map(x=>x.d)); opts("eob", EO.map(x=>x.b));
+[...new Set(PS.map(x=>x.g))].forEach(c=>$("psg").insertAdjacentHTML("beforeend",`<option>${esc(c)}</option>`));
+function hbrender(){ const q=$("hbq").value.toLowerCase(), h=$("hbh").value;
+  const r=HB.filter(x=>(!h||x.hw===h)&&(!q||(x.v+" "+x.s+" "+x.a).toLowerCase().includes(q))).sort((a,b)=>b.m2-a.m2);
+  $("hbcount").textContent=`${r.length} из ${HB.length}`;
+  $("hbrows").innerHTML=r.slice(0,600).map(x=>`<tr><td><b>${esc(x.v)}</b><div class="k">${esc(x.hw)} · ${esc(x.a)}</div></td><td class="num">${fmt(x.m2)}</td><td class="num">${x.land??"—"}</td><td class="num">${x.p?fmt(x.p):"—"}</td><td class="num">${x.y||"—"}</td><td class="k">${esc(x.s)}</td><td class="lk"><a href="${esc(x.u)}" target="_blank">открыть</a></td></tr>`).join(""); }
+["hbq","hbh"].forEach(id=>$(id).addEventListener("input",hbrender)); hbrender();
+$("hbsub").textContent = HB.length?`· ${HB.length} домов`:"· ещё не собрано";
+function okrender(){ const q=$("okq").value.toLowerCase(), v=$("okv").value, d=$("okr").value;
+  const r=OK.filter(x=>(!v||x.v===v)&&(!d||x.d===d)&&(!q||(x.n+" "+x.p+" "+x.a).toLowerCase().includes(q)));
+  $("okcount").textContent=`${r.length} из ${OK.length}`;
+  $("okrows").innerHTML=r.map(x=>`<tr><td><b>${esc(x.n)}</b><div class="k">${esc(x.p)}</div></td><td class="k">${esc(x.v)}</td><td class="k">${esc(x.d)}</td><td class="k">${esc(x.a)}</td><td class="k">${esc(x.y)}</td><td class="k">${esc(x.o)}</td></tr>`).join(""); }
+["okq","okv","okr"].forEach(id=>$(id).addEventListener("input",okrender)); okrender();
+$("oksub").textContent = OK.length?`· ${OK.length} зданий`:"· ещё не собрано";
+$("eurows").innerHTML = EU.map(x=>`<tr><td><b>${x.site?`<a href="${esc(x.site)}" target="_blank">${esc(x.b)}</a>`:esc(x.b)}</b></td><td class="k">${esc(x.c)}</td><td class="k">${esc(x.ru).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>")}</td><td class="k">${esc(x.home)}</td><td class="k">${esc(x.price)}</td><td class="num">${x.n} (${x.pl}/${x.mn})</td></tr>`).join("");
+$("eusub").textContent = EU.length?`· ${EU.length} марок, ${EO.length} проверенных мнений`:"· ещё не собрано";
+const RT = {plus:"плюс", minus:"минус", neutral:"нейтрально"};
+function eorender(){ const b=$("eob").value, rt=$("eor").value;
+  const r=EO.filter(x=>(!b||x.b===b)&&(!rt||x.r===rt));
+  $("eocount").textContent=`${r.length} из ${EO.length}`;
+  $("eorows").innerHTML=r.map(x=>`<tr><td><b>${esc(x.b)}</b></td><td class="k">${RT[x.r]||esc(x.r)}</td><td class="k">${esc(x.t)}</td><td>${esc(x.q)}</td><td class="lk">${x.u?`<a href="${esc(x.u)}" target="_blank">${esc(x.w||"ссылка")}</a>`:esc(x.w)}</td></tr>`).join(""); }
+["eob","eor"].forEach(id=>$(id).addEventListener("input",eorender)); eorender();
+$("psseg").innerHTML = PSG.map(x=>`<tr><td><b>${esc(x[0])}</b></td><td class="k">${esc(x[1])}</td><td class="k">${esc(x[2])}</td><td class="k">${esc(x[3])}</td></tr>`).join("");
+function psrender(){ const g=$("psg").value; const r=PS.filter(x=>!g||x.g===g);
+  $("pscount").textContent=`${r.length} запросов`;
+  $("psrows").innerHTML=r.map(x=>`<tr><td><b>${esc(x.q)}</b><div class="k">${esc(x.g)}</div></td><td class="num">${fmt(x.n)}</td><td class="k">${esc(x.top)}</td><td class="k">${esc(x.note)}</td></tr>`).join(""); }
+$("psg").addEventListener("input",psrender); psrender();
+$("pssub").textContent = PS.length?`· ${PSG.length} сегментов, ${PS.length} запросов`:"· ещё не собрано";
 ["mdq","mdk"].forEach(id=>$(id).addEventListener("input",mdrender)); mdrender();
 const cpm = Math.max(1,...Object.values(D.cplaces));
 $("csub").textContent = `· ${fmt(D.chouses)} домов · ${D.cs.length} продавцов`;

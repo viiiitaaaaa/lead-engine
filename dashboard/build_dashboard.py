@@ -334,6 +334,36 @@ def main():
     kc_rows = [{"cat": r["категория"], "name": r["название"], "rub": r["рубрики"][:90], "adr": r["адрес"], "okr": r["округ"].split()[0],
                 "site": r["сайт"], "ph": r["телефоны"], "ml": r["почты"], "n": int(r["отзывов"] or 0), "rt": r["рейтинг"],
                 "net": r["сеть"] == "True", "br": int(r["филиалов у сети"] or 1)} for _, r in kc.iterrows()]
+    # её задачи 04.10: дома от 1000 м² (cian_doma_1000.py), культурное наследие (okn_territoriya.py),
+    # европейские конкуренты (досье помощников + проверка мнений FIX и выжимка SHORT в razdel10.py), премиум-сегменты (premium_segmenty.py)
+    sys.path.insert(0, str(ROOT / "parsers"))
+    import razdel10, premium_segmenty
+    hbp = ROOT / "data" / "lists" / "doma_1000.tsv"
+    hb = pd.read_csv(hbp, sep="\t").fillna("") if hbp.exists() else pd.DataFrame()
+    hb_rows = [{"hw": r["шоссе"], "v": str(r["посёлок"]), "a": str(r["адрес"]), "m2": float(r["площадь дома, м²"] or 0), "land": r["участок, сот."] or None,
+                "p": float(r["цена, млн ₽"] or 0), "y": int(r["год постройки"]) if r["год постройки"] != "" else "", "s": str(r["продавец"]), "u": r["ссылка"]}
+               for _, r in hb.iterrows()]
+    okp = ROOT / "data" / "lists" / "okn_territoriya.tsv"
+    ok = pd.read_csv(okp, sep="\t", dtype=str).fillna("") if okp.exists() else pd.DataFrame()
+    ok_rows = [{"n": r["название"], "v": r["вид"], "d": r["район"], "p": r["населённый пункт"], "a": r["адрес"], "y": r["год"], "o": r["охрана"]} for _, r in ok.iterrows()]
+    eu_rows, eo_rows = [], []
+    for slug in razdel10.EU:
+        f = ROOT / "data" / "raw" / "konkurenty_evropa" / f"{slug}.json"
+        if not f.exists():
+            continue
+        v = json.loads(f.read_text(encoding="utf-8"))
+        b = "PRIME" if slug == "prime" else slug.capitalize()
+        ops = []
+        for i, o in enumerate(v.get("opinions") or []):
+            r = razdel10.FIX.get(slug, {}).get(i, o.get("rating"))
+            if r is not None:
+                ops.append({"b": b, "r": r, "t": o.get("topic", ""), "q": o.get("quote", "") + (" (пересказ)" if slug == "swegon" else ""), "w": o.get("where", ""), "u": o.get("url", "")})
+        c, ru, home, price = razdel10.SHORT[slug]
+        eu_rows.append({"b": b, "site": (re.search(r"https?://[^\s;,()]+", v.get("site", "")) or [""])[0], "c": c, "ru": ru, "home": home, "price": price,
+                        "n": len(ops), "pl": sum(o["r"] == "plus" for o in ops), "mn": sum(o["r"] == "minus" for o in ops)})
+        eo_rows += ops
+    psp = ROOT / "data" / "raw" / "wordstat_premium.json"
+    ps_rows = [{"g": g, "q": q, "n": n, "top": top, "note": note} for g, q, n, top, note in json.loads(psp.read_text(encoding="utf-8"))["rows"]] if psp.exists() else []
     md_rows = [{"kind": m["вид"], "grp": m["группа"], "title": m["название"], "url": m["ссылка"], "snip": m["сниппет"][:220],
                 "n": m.get("людей"), "mail": m.get("почты", ""), "phone": m.get("телефоны", "")} for m in media]
     av_rows = [{"title": s(r.get("title")), "phone": s(r.get("phone")), "url": s(r.get("url")),
@@ -369,6 +399,7 @@ def main():
         "segments": base["сегмент"].value_counts().to_dict(),
         "sources_n": base["источник"].value_counts().to_dict(),
         "pains": pains, "cover": cover, "channels": CHANNELS, "use": USE, "landing": landing, "rows": rows, "tg": tg_rows, "tgo": tgo_rows, "md": md_rows, "kc": kc_rows, "kat": kat_rows, "cv": cv_rows, "sv": sv_rows, "sk": sk_rows, "ds": ds_rows, "vd": vd_rows, "td": td_rows, "ig": ig_rows, "ad": ad_rows, "pdr": pd_rows, "sb": sb_rows, "db": db_rows, "cs": cs_rows, "ch": ch_rows, "cplaces": cian_places, "chouses": len(cian), "ov": ov_rows, "ovres": ov_res, "avito": av_rows,
+        "hb": hb_rows, "okn": ok_rows, "eu": eu_rows, "euop": eo_rows, "ps": ps_rows, "psseg": premium_segmenty.SEGMENTS,
         "spend": [("Apify", "≈18.5 из 19 $ (Starter, до 29.10)"), ("Apify: Циан", "≈1.7 $ за 616 домов"), ("Apify: Instagram", "0.16 $ за 70 профилей"),
                   ("Apify: Telegram 02.10", "2.18 $ за 3 чата (переплата: потолок был на каждый чат)"),
                   ("Bright Data", "≈3 $ (Карты, отзывы, поиск Яндекса: УК, подрядчики, ВК, бюро, застройщики)")],
