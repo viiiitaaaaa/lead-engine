@@ -38,6 +38,8 @@ td:first-child{font-weight:600}
 .tbl{overflow-x:auto;margin:12px 0 4px}.tbl table{margin:0}
 table.wide{font-size:13px}table.wide th{font-size:11px;letter-spacing:0;padding:6px}table.wide td{padding:7px 6px}
 td.num{white-space:nowrap}
+tr.imp td,tr.imp:hover td{background:#fde8dc}tr.imp td:first-child{box-shadow:inset 4px 0 #c2410c}
+.imp-tag{display:inline-block;background:#c2410c;color:#fff;font-size:11px;font-weight:600;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:1px}
 .src{font-size:13px;color:var(--muted)}
 .intro{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;margin:0 0 8px}
 .card{background:var(--soft);border-radius:10px;padding:18px 20px}
@@ -65,8 +67,16 @@ def fix_tables(html):
             t = t.replace("<table>", '<table class="wide">', 1)
         t = re.sub(r"<td>([\d+()\s·.,%−–-]{1,24})</td>", r'<td class="num">\1</td>', t)
         t = re.sub(r"(<td>[^<]*?)@", r"\1@<wbr>", t)
+        t = re.sub(r"<tr>((?:(?!</tr>).)*?<td>(?:«)?(?:%s)(?:»)?</td>.*?</tr>)" % "|".join(map(re.escape, IMPORTANT)),
+                   r'<tr class="imp">\1', t, flags=re.S)
+        t = re.sub(r'(<tr class="imp">.*?<td>[^<]*?(?:%s)»?)' % "|".join(map(re.escape, IMPORTANT)),
+                   r'\1<span class="imp-tag">важно</span>', t, flags=re.S)
         return f'<div class="tbl">{t}</div>'
     return re.sub(r"<table>.*?</table>", table, html, flags=re.S)
+
+
+# её пометка 04.10: самые важные боли — строки выделены цветом и плашкой «важно»
+IMPORTANT = ["Сломается — некому чинить", "Пропадут после оплаты", "Обещают и не делают", "Гарантия только на бумаге"]
 
 
 def main():
