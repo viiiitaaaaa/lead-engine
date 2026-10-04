@@ -105,18 +105,38 @@ def razdel():
     t = pd.read_csv(ROOT / "data/lists/klyuchevye_slova.tsv", sep="\t", dtype=str).fillna("")
     for c in ("сайтов всего", "у конкурентов", "у монтажников", "у Frivent"):
         t[c] = t[c].astype(int)
-    md = ("## 11. Ключевые слова — язык рынка\n"
-          f"Фразы из заголовков, разделов и описаний страниц {t['сайтов всего'].max() and 235} сайтов конкурентов, монтажников-партнёров и Frivent. "
-          "Считается, на скольких сайтах фраза встречается (а не сколько раз): так видно, какими словами рынок называет то, что мы продаём. "
-          "Падежи сведены вместе. Полный список — data/lists/klyuchevye_slova.tsv "
-          f"({len(t)} фраз). «Возможность» — фраза есть у 5+ конкурентов и монтажников, а на сайте Frivent её нет: тема для страницы, статьи или рекламы.\n\n")
+    fq = "запросов в месяц (Мск+МО)"
+    has_ws = fq in t.columns and (t[fq] != "").any()
+    t["q"] = pd.to_numeric(t[fq], errors="coerce").fillna(-1) if has_ws else -1
+    md = ("## 11. Ключевые слова — язык рынка и что реально ищут\n"
+          "Фразы из заголовков, разделов и описаний страниц 235 сайтов конкурентов, монтажников-партнёров и Frivent: на скольких сайтах встречается "
+          "(так видно, какими словами рынок называет то, что мы продаём; падежи сведены вместе)"
+          + (" и сколько раз в месяц её ищут в Яндексе по Москве и области (Вордстат, все устройства)" if has_ws else "") + ". "
+          f"Полный список — data/lists/klyuchevye_slova.tsv ({len(t)} фраз). «Возможность» — фраза есть у 5+ конкурентов и монтажников, "
+          "а на сайте Frivent её нет: тема для страницы, статьи или рекламы (монтаж, ремонт и строительство — не наше, не отмечены).\n\n")
+    wt = ROOT / "data/lists/wordstat_temy.tsv"
+    if wt.exists():
+        w = pd.read_csv(wt, sep="\t", dtype=str).fillna("")
+        w["n"] = pd.to_numeric(w["запросов в месяц (Мск+МО)"], errors="coerce").fillna(0).astype(int)
+        md += ("### Что реально ищут по темам Frivent (Вордстат, Москва и область, в месяц)\n"
+               "Первое число — все запросы с этими словами; дальше — самые частые конкретные запросы людей.\n\n"
+               "| Тема | Всего | Самые частые запросы |\n|---|---|---|\n")
+        tot = []
+        for seed, g in w[w["вид"] == "запрос со словами"].groupby("тема Frivent", sort=False):
+            g = g.sort_values("n", ascending=False)
+            tot.append((seed, int(g["n"].iloc[0]) if len(g) else 0, g))
+        for seed, n, g in sorted(tot, key=lambda x: -x[1]):
+            md += f"| {seed} | **{n:,}** | ".replace(",", " ") + "; ".join(f"{r['запрос']} ({r['n']:,})".replace(",", " ") for _, r in g.iloc[1:9].iterrows()) + " |\n"
+        md += "\n"
     for th, g in t[t["тема"] != ""].groupby("тема"):
-        g = g.sort_values("сайтов всего", ascending=False).head(15)
-        md += (f"**{th}**\n\n| Фраза | Сайтов | У конкурентов | У монтажников | У Frivent | Возможность |\n|---|---|---|---|---|---|\n"
-               + "".join(f"| {r['фраза']} | {r['сайтов всего']} | {r['у конкурентов']} | {r['у монтажников']} | {'есть' if r['у Frivent'] else '—'} | "
-                         f"{'да' if r['у Frivent нет — возможность'] else ''} |\n" for _, r in g.iterrows()) + "\n")
-    gap = t[t["у Frivent нет — возможность"] == "да"].sort_values("сайтов всего", ascending=False).head(30)
-    md += "**Чего нет на сайте Frivent, а у рынка есть (первые 30):** " + ", ".join(f"{r['фраза']} ({r['сайтов всего']})" for _, r in gap.iterrows()) + ".\n"
+        g = g.sort_values(["q", "сайтов всего"] if has_ws else ["сайтов всего"], ascending=False).head(15)
+        md += (f"**{th}**\n\n| Фраза | {'Ищут в месяц | ' if has_ws else ''}Сайтов | У конкурентов | У монтажников | У Frivent | Возможность |\n"
+               f"|---|{'---|' if has_ws else ''}---|---|---|---|---|\n"
+               + "".join(f"| {r['фраза']} | {(str(int(r['q'])) if r['q'] >= 0 else '') + ' | ' if has_ws else ''}{r['сайтов всего']} | {r['у конкурентов']} | "
+                         f"{r['у монтажников']} | {'есть' if r['у Frivent'] else '—'} | {'да' if r['у Frivent нет — возможность'] else ''} |\n" for _, r in g.iterrows()) + "\n")
+    gap = t[t["у Frivent нет — возможность"] == "да"].sort_values(["q", "сайтов всего"], ascending=False).head(30)
+    md += ("**Чего нет на сайте Frivent, а у рынка есть (первые 30" + (", по частоте запросов" if has_ws else "") + "):** "
+           + ", ".join(f"{r['фраза']} ({int(r['q']) if has_ws and r['q'] >= 0 else r['сайтов всего']})" for _, r in gap.iterrows()) + ".\n")
     MD = ROOT / "docs/лендинг_основа.md"
     s = MD.read_text(encoding="utf-8")
     s = re.sub(r"\n*<!-- r11 -->.*?<!-- /r11 -->\n?", "\n", s, flags=re.S).rstrip() + f"\n\n<!-- r11 -->\n{md}<!-- /r11 -->\n"
@@ -125,5 +145,7 @@ def razdel():
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    if "--razdel" not in sys.argv:
+        main()
     razdel()
