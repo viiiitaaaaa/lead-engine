@@ -66,6 +66,13 @@ def main():
             if s:
                 jobs[s] = {"группа": grp, "пункт": n, "партнёр?": bool(v.get("партнёр?"))}
     jobs.setdefault("https://frivent.ru", {"группа": "мы", "пункт": "Frivent", "партнёр?": False})
+    # с 04.10 конкуренты — только европейские марки (data/lists/konkurenty.tsv) и их русские сайты представителей;
+    # старые 26 (бризеры, дилеры, магазины) — «игроки рынка», в «у конкурентов» не считаются
+    for s, v in res.items():
+        if s in jobs:
+            v.update(jobs[s])
+        elif v.get("группа") == "конкуренты":
+            v["группа"] = "игроки рынка"
     todo = [s for s in jobs if s not in res]
     print(f"сайтов {len(jobs)}, осталось {len(todo)}", flush=True)
     with ThreadPoolExecutor(8) as pool:
