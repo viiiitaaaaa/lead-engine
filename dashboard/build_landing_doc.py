@@ -21,7 +21,7 @@ CSS = """
 :root{--bg:#f6f4ef;--paper:#fff;--ink:#1d1d1b;--muted:#6b6862;--line:#e4e0d6;--accent:#8a5a2b;--soft:#f3ece2}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{max-width:980px;margin:32px auto;background:var(--paper);padding:48px 56px;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+main{max-width:1180px;margin:32px auto;background:var(--paper);padding:48px 56px;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 h1{font-size:30px;line-height:1.2;margin:0 0 6px}
 .sub{color:var(--muted);font-size:14px;margin:0 0 28px;padding-bottom:20px;border-bottom:1px solid var(--line)}
 h2{font-size:21px;margin:40px 0 14px;padding-top:6px;color:var(--accent)}
@@ -35,6 +35,9 @@ th{text-align:left;font-weight:600;color:var(--muted);font-size:12.5px;text-tran
 td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}
 tr:hover td{background:#fbf9f5}
 td:first-child{font-weight:600}
+.tbl{overflow-x:auto;margin:12px 0 4px}.tbl table{margin:0}
+table.wide{font-size:13px}table.wide th{font-size:11px;letter-spacing:0;padding:6px}table.wide td{padding:7px 6px}
+td.num{white-space:nowrap}
 .src{font-size:13px;color:var(--muted)}
 .intro{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;margin:0 0 8px}
 .card{background:var(--soft);border-radius:10px;padding:18px 20px}
@@ -50,6 +53,20 @@ td:has(.bar){white-space:nowrap}
 @media (max-width:720px){main{margin:0;border-radius:0;padding:24px 16px}table{display:block;overflow-x:auto}h1{font-size:24px}}
 @media print{body{background:#fff}main{box-shadow:none;margin:0;padding:0;max-width:none}h2{break-after:avoid}tr{break-inside:avoid}tr:hover td{background:none}}
 """
+
+
+def fix_tables(html):
+    """Таблицы не вылезают за лист: обёртка с прокруткой, широкие (7+ столбцов) мельче,
+    телефоны/ИНН/цифры не рвутся, почта переносится только после @."""
+    def table(m):
+        t = m.group(0)
+        head = re.search(r"<tr>(.*?)</tr>", t, re.S)
+        if head and head.group(1).count("<th") >= 7:
+            t = t.replace("<table>", '<table class="wide">', 1)
+        t = re.sub(r"<td>([\d+()\s·.,%−–-]{1,24})</td>", r'<td class="num">\1</td>', t)
+        t = re.sub(r"(<td>[^<]*?)@", r"\1@<wbr>", t)
+        return f'<div class="tbl">{t}</div>'
+    return re.sub(r"<table>.*?</table>", table, html, flags=re.S)
 
 
 def main():
@@ -71,6 +88,7 @@ def main():
         body = body.replace(mi.group(0), "")
     html = intro + markdown.markdown(body.strip(), extensions=["tables"])
     # первый абзац — источник данных, мельче; основной запрос — выделенной плашкой
+    html = fix_tables(html)
     html = html.replace("<p>Источник:", '<p class="src">Источник:', 1)
     html = re.sub(r"(<h2>2\. [^<]*</h2>\s*)<p>(.*?)</p>", r'\1<div class="lead"><p>\2</p></div>', html, count=1, flags=re.S)
     page = f"""<!doctype html>
