@@ -300,7 +300,7 @@ def main():
                         "sites": d.get("сайты") or [], "rev": d.get("отзывы") or [], "art": d.get("статьи") or [],
                         "q": d.get("вопросы") or [], "cl": d.get("клиенты") or [], "money": d.get("выручка кратко", ""),
                         "staff": d.get("сотрудников", ""), "vleg": d.get("юрлица посёлка") or [], "rtx": (d.get("отзывы: тексты") or [])[:40],
-                        "aud": d.get("соцсети: аудитория") or [], "seg": d.get("сегмент", ""), "segw": d.get("сегмент: почему", ""), "rub": d.get("рубрики", ""),
+                        "aud": d.get("соцсети: аудитория") or [], "seg": d.get("сегмент", ""), "segw": d.get("сегмент: почему", ""), "rub": d.get("рубрики", ""), "st": d.get("ставит чужое", ""), "marks": d.get("марки") or {}, "phs": d.get("телефоны") or [], "mls": d.get("почты") or [], "inn2": d.get("ИНН", ""),
                         "gis": {"cards": gv["карточки"], "n": len(grev), "neg": len(gneg),
                                 "items": sorted(grev, key=lambda x: (x.get("оценка") or 5, x.get("дата") or ""))[:40]}, "ym": {"n": len(r), "neg": int(r["neg"].sum()) if len(r) else 0,
                         "rating": None if g["рейтинг"].dropna().empty else float(pd.to_numeric(g["рейтинг"], errors="coerce").max()),

@@ -38,23 +38,34 @@ def main():
            f"Сами оборудование не производят, ставят чужое — мы можем стать их постоянным поставщиком. Отобраны из {len(m)} компаний Москвы и области (2ГИС) по их сайтам; "
            "производители, магазины, септики и газ исключены. «Элитные дома» — на сайте наши посёлки, коттеджи, бассейны, премиальные объекты; "
            "«коммерция» — вентиляция и климат для бизнеса и квартир.\n\n")
+    st = lambda v: v.get("ставит чужое", "")
+    good = {n: v for n, v in parts.items() if st(v).startswith("ставит чужое")}
+    md += (f"**Проверка «ставят чужое»** (по сайтам: марки чужого оборудования и признаки своего производства): "
+           f"ставят чужое — {sum(st(v) == 'ставит чужое' for v in parts.values())}, ставят чужое и что-то производят сами — "
+           f"{sum(st(v).startswith('ставит чужое и') for v in parts.values())}, производят сами (не партнёры, скорее конкуренты) — "
+           f"{sum(st(v).startswith('сам производит') for v in parts.values())}, проверить звонком — {sum(st(v).startswith(('неясно', 'сайт не')) for v in parts.values())}. "
+           f"У подходящих ({len(good)}): ИНН — у {sum(bool(v.get('ИНН')) for v in good.values())}, телефон — у {sum(bool(v.get('телефоны')) for v in good.values())}, "
+           f"почта — у {sum(bool(v.get('почты')) for v in good.values())}.\n\n")
+    mk = lambda v: "; ".join(", ".join(m[:6]) for m in (v.get("марки") or {}).values())
     for who in ("элитные дома", "коммерция и квартиры"):
-        rows = sorted([(n, v) for n, v in parts.items() if v.get("кому партнёр") == who],
+        rows = sorted([(n, v) for n, v in good.items() if v.get("кому партнёр") == who],
                       key=lambda kv: (kv[1]["профиль"], -len(gis.get(kv[0], {}).get("отзывы", []))))
         md += (f"**{'Работают на элитных домах' if who == 'элитные дома' else 'Вентиляция и климат для коммерции'} — {len(rows)}**\n\n"
-               "| Компания | Профиль | Чем подтверждено | Юрлицо | Отзывов 2ГИС | Где ещё о них пишут |\n|---|---|---|---|---|---|\n")
+               "| Компания | Профиль | Ставит (марки) | ИНН | Телефон | Почта | Наши посёлки на сайте | Отзывов 2ГИС | Где ещё о них пишут |\n|---|---|---|---|---|---|---|---|---|\n")
         for n, v in rows:
-            s = site_of(v)
+            s_ = site_of(v)
             g = gis.get(n, {}).get("отзывы", [])
             avg = sum(x["оценка"] for x in g if x.get("оценка")) / max(1, sum(1 for x in g if x.get("оценка")))
-            proof = "; ".join(x for x in (", ".join((s.get("упоминает наши места") or [])[:3]), ", ".join((s.get("КП в тексте") or [])[:2])) if x)
-            L = v.get("юрлицо") or {}
-            legal = f"ИНН {L['ИНН']}, с {L.get('регистрация', '')[-4:]}" if L.get("ИНН") else ""
-            site = s.get("сайт", "")
+            places = ", ".join((s_.get("упоминает наши места") or [])[:3] + (s_.get("КП в тексте") or [])[:2])
+            site = s_.get("сайт", "")
             name = f"[{n}]({site})" if site else n
-            md += (f"| {name} | {v['профиль']} | {proof or ('премиальных слов на сайте: ' + str(s.get('премиум-слова', 0)))} | {legal} | "
-                   f"{len(g)}{f' · {avg:.1f}'.replace('.', ',') if g else ''} | {links(v.get('отзывы'), 2)}{'; форум: ' + links(v.get('вопросы'), 1) if links(v.get('вопросы'), 1) else ''} |\n")
+            note = " (и своё производство — уточнить)" if st(v).startswith("ставит чужое и") else ""
+            md += (f"| {name}{note} | {v['профиль']} | {mk(v)} | {v.get('ИНН', '')} | {(v.get('телефоны') or [''])[0]} | {(v.get('почты') or [''])[0]} | {places} | "
+                   f"{len(g)}{f' · {avg:.1f}'.replace('.', ',') if g else ''} | {links(v.get('отзывы'), 2)} |\n")
         md += "\n"
+    chk = [(n, v) for n, v in parts.items() if not st(v).startswith("ставит чужое")]
+    md += ("**Не подтвердилось или нужен звонок**\n\n| Компания | Статус | Телефон | Сайт |\n|---|---|---|---|\n"
+           + "".join(f"| {n} | {st(v)} | {(v.get('телефоны') or [''])[0]} | {site_of(v).get('сайт', '')} |\n" for n, v in sorted(chk, key=lambda kv: st(kv[1]))) + "\n")
 
     md += (f"### Конкуренты ({len(k)})\n"
            "Производители вентиляции, осушения бассейнов и водоподготовки и крупные дилеры — те, у кого монтажник покупает вместо нас.\n\n"
@@ -66,6 +77,36 @@ def main():
         site = s.get("сайт", "")
         md += (f"| {f'[{n}]({site})' if site else n} | {v.get('рубрики', '')} | {legal} | {links(v.get('отзывы'))} | "
                f"{links(v.get('статьи'))} | {links(v.get('клиенты'))} |\n")
+
+    # что о конкурентах пишут на форумах (её задача 04.10, «очень важно»): parsers/konkurenty_forumy.py → разметка по смыслу (…_checked.tsv)
+    fc = ROOT / "data/lists/konkurenty_otzyvy_forumy_checked.tsv"
+    fa = ROOT / "data/lists/konkurenty_otzyvy_forumy.tsv"
+    if fc.exists() or fa.exists():
+        o = pd.read_csv(fc if fc.exists() else fa, sep="\t", dtype=str).fillna("")
+        checked = fc.exists()
+        if checked:
+            o = o[(o["о бренде?"] == "да") & (o["оценка (проверено)"] != "нейтрально")]
+            o["оц"], o["тм"] = o["оценка (проверено)"], o["тема (проверено)"]
+        else:
+            o["оц"], o["тм"] = o["оценка"], o["тема"]
+        md += (f"\n### Что о конкурентах пишут на форумах и в отзывах ({len(o)} мнений)\n"
+               "ForumHouse, Мастерград, АВОК, iXBT, iRecommend, отзывы Яндекса и магазинов; Отзовик — только отрывки из выдачи (сайт закрыт проверкой «Вы робот?»). "
+               + ("Каждая фраза размечена по смыслу: плюс, минус, о том ли бренде речь, тема; вопросы и реклама продавцов убраны. " if checked else
+                  "Разметка автоматическая по словам (примерно 2 из 3 верно) — цитаты читать глазами. ")
+               + "Полный список с цитатами и ссылками — data/lists/konkurenty_otzyvy_forumy" + ("_checked" if checked else "") + ".tsv.\n\n"
+               "| Конкурент | Мнений | Плюсов | Минусов | За что ругают (темы) | За что хвалят (темы) | Пример минуса | Пример плюса |\n|---|---|---|---|---|---|---|---|\n")
+        def top(g):
+            c = pd.Series([t.strip() for x in g["тм"] for t in x.split(",") if t.strip()]).value_counts().head(3)
+            return ", ".join(f"{k} ({v})" for k, v in c.items())
+        def ex(g):
+            g = g.assign(l=g["фраза"].str.len()).sort_values("l")
+            g = g[g["l"].between(40, 260)]
+            return f"«{g.iloc[len(g) // 2]['фраза']}» ([{g.iloc[len(g) // 2]['где']}]({g.iloc[len(g) // 2]['ссылка']}))" if len(g) else ""
+        for b, g in sorted(o.groupby("конкурент"), key=lambda kv: -len(kv[1])):
+            mn, pl = g[g["оц"].str.contains("минус")], g[g["оц"].str.startswith("плюс")]
+            md += f"| {b} | {len(g)} | {len(pl)} | {len(mn)} | {top(mn)} | {top(pl)} | {ex(mn)} | {ex(pl)} |\n"
+        allm = o[o["оц"].str.contains("минус")]
+        md += f"\n**Главное, за что ругают всех вместе:** {top(allm)}. Это то, что Frivent должен закрыть в обещании и доказательствах.\n"
 
     t = kc
     md += (f"\n### Клиенты-коммерция на территории ({len(t)})\n"
