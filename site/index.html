@@ -143,8 +143,13 @@ a{color:inherit}
   .hero > .slides .ph figcaption{display:none} /* на телефоне подпись слайда мешает заголовку; разделы — ниже */
 }
 .hero > .slides .ph::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(90deg,rgb(var(--shade)/.78) 0%,rgb(var(--shade)/.4) 55%,rgb(var(--shade)/.1) 100%),
-             linear-gradient(0deg,rgb(var(--shade)/.6) 0%,transparent 50%)}
+  /* затемнение только под текстом слева; справа фото открыто (её замечание 05.10 «картинку плохо видно») */
+  background:linear-gradient(90deg,rgb(var(--shade)/.6) 0%,rgb(var(--shade)/.3) 38%,transparent 62%),
+             linear-gradient(0deg,rgb(var(--shade)/.35) 0%,transparent 30%)}
+.hero h1,.hero .lead,.hero .eyebrow,.hero .dirs{text-shadow:0 1px 18px rgb(var(--shade)/.55),0 1px 3px rgb(var(--shade)/.35)}
+.slides .ph.has-photo img{filter:none}
+@media (max-width:860px){ /* на телефоне текст во всю ширину — ровное затемнение */
+  .hero > .slides .ph::after{background:linear-gradient(180deg,rgb(var(--shade)/.55) 0%,rgb(var(--shade)/.45) 60%,rgb(var(--shade)/.7) 100%)}}
 .hero > .slides .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:24px;text-align:right;z-index:1}
 .hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(48px,8vh,120px)}
 .hero-text{display:grid;gap:28px;max-width:1120px;min-width:0}
