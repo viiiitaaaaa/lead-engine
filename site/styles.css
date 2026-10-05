@@ -1,5 +1,9 @@
 /* шрифты — её выбор 06.10: Theano Didot (крупные заголовки), Erewhon (мелкие заголовки — чёткость), Geist (текст);
    Шрифтотека myskotom.ru / Google Fonts, бесплатные для коммерции; woff2 в site/fonts/ */
+@font-face{font-family:"Vela Sans";src:url(fonts/vela-light.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Vela Sans";src:url(fonts/vela-regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Vela Sans";src:url(fonts/vela-medium.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Vela Sans";src:url(fonts/vela-semibold.woff2) format("woff2");font-weight:600 700;font-display:swap}
 @font-face{font-family:"Theano Didot";src:url(fonts/theano-regular.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Erewhon";src:url(fonts/erewhon-regular.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Erewhon";src:url(fonts/erewhon-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
@@ -395,3 +399,16 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 
 /* мелкие заголовки — Erewhon: у Дидо тонкие линии пропадают в мелком размере (её «нравится чёткость») */
 h3,.who-title,.pain,.quote p,.faq-item summary,.contacts b,.steps h3,.steps .n,.road h3,.cat-card h3,.pain-card h3,.serv h3,.marquee-track{font-family:var(--display-s)}
+
+/* варианты шрифтов на выбор — временно, пока она выбирает (её «не то, поставь переключатель», 06.10) */
+:root[data-font="2"]{--display-s:var(--display)}
+:root[data-font="3"]{--display-s:var(--display);--body:"Vela Sans","Segoe UI",Arial,sans-serif}
+:root[data-font="4"]{--display:"Erewhon","Times New Roman",Georgia,serif;--display-s:var(--display)}
+:root[data-font="5"]{--display:"Vela Sans","Segoe UI",Arial,sans-serif;--display-s:var(--display);--body:"Vela Sans","Segoe UI",Arial,sans-serif}
+:root[data-font="5"] :is(h1,h2){letter-spacing:-.03em}
+/* переключатель */
+.fsw{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 10px;
+  max-width:calc(100% - 32px);background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:0 6px 24px rgb(var(--shade)/.18);font:500 13px/1 var(--body)}
+.fsw button{border:1px solid var(--line);background:var(--sand);border-radius:99px;padding:7px 12px;cursor:pointer;font:500 13px/1 var(--body)}
+.fsw button[aria-pressed="true"]{background:var(--deep);color:var(--paper);border-color:var(--deep)}
+@media (max-width:860px){.fsw{left:12px;right:12px;justify-content:center;gap:4px;padding:6px}.fsw span{display:none}.fsw button{padding:6px 8px;font-size:12px}}

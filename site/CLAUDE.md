@@ -58,7 +58,8 @@
   Белый #fff фоном не использовать.
 - Шрифты (её просьба 05.10: «другой, читабельнее, побольше; текущий выдаёт Клода»; источник — fonts.uprock.ru,
   только лицензия «для коммерции»): файлы woff2 в site/fonts/, подключены @font-face (Google Fonts больше не используем).
-  ВЫБРАНО 06.10 (её слова: «симпатичны заголовки Theano Didot, нравится чёткость Erewhon + Geist»):
+  НЕ ВЫБРАНО — её «не то, поставь переключатель» (06.10): 5 вариантов в переключателе (CONFIG.fontSwitch, data-font 1–5):
+  1 Didot+Erewhon+Geist (по умолчанию), 2 Didot+Geist, 3 Didot+Vela Sans, 4 Erewhon+Geist, 5 Vela Sans везде. Вариант 1:
   --display Theano Didot — крупные заголовки (h1, h2, цифры, логотип); --display-s Erewhon — мелкие заголовки (h3, карточки,
   вопросы, цитаты, этапы, бегущая строка) — у Дидо в мелком размере пропадают тонкие линии; --body Geist — весь текст.
   Отвергнуты: LT Remark, Tilda Sans, Gatchina, Ysabeau, Tenor Sans, Manrope, ZT Neue Ralewe, Vela Sans, Montserrat,

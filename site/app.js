@@ -6,20 +6,21 @@ const CONFIG = {
   leadEndpoint: "",
   defaultWho: "sobstvennik",
   phone: "8 (495) 266-05-24",
-  fontSwitch: false, // переключатель шрифтов выключен: выбрано 06.10 — Theano Didot + Erewhon + Geist
+  fontSwitch: true, // временно: переключатель 5 вариантов шрифтов (её «не то, поставь переключатель» 06.10)
 };
 
 /* переключатель пар шрифтов — на всех страницах, выбор запоминается */
 if (CONFIG.fontSwitch) {
   const box = document.createElement("div");
   box.className = "fsw"; box.setAttribute("role", "group"); box.setAttribute("aria-label", "Шрифт");
-  box.innerHTML = '<span>Шрифт:</span><button type="button" data-f="1">Как у Шрифтотеки</button>' +
-    '<button type="button" data-f="2">Как у Приоритета</button><button type="button" data-f="3">Как у Резникова</button>';
+  box.innerHTML = '<span>Шрифт:</span><button type="button" data-f="1">Didot + Erewhon + Geist</button>' +
+    '<button type="button" data-f="2">Didot + Geist</button><button type="button" data-f="3">Didot + Vela Sans</button>' +
+    '<button type="button" data-f="4">Erewhon + Geist</button><button type="button" data-f="5">Как у Шрифтотеки</button>';
   document.body.appendChild(box);
   const setF = n => { if (n === "1") document.documentElement.removeAttribute("data-font"); else document.documentElement.dataset.font = n;
     box.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === n));
-    try { localStorage.setItem("font3", n); } catch (e) {} };
-  let f0 = "1"; try { f0 = localStorage.getItem("font3") || "1"; } catch (e) {}
+    try { localStorage.setItem("font4", n); } catch (e) {} };
+  let f0 = "1"; try { f0 = localStorage.getItem("font4") || "1"; } catch (e) {}
   setF(f0); box.addEventListener("click", e => { const b = e.target.closest("button"); if (b) setF(b.dataset.f); });
 }
 
