@@ -124,12 +124,16 @@ ITEMS = {
 
 CATALOGS = {
  # владелец — только прямые интересы, без инженерии (её правка 06.10)
+ # разделы = пункты выпадающего списка в шапке (её правка 06.10: пункт списка открывает каталог на своём разделе)
  "sobstvennik": [
-  ("Дом под ключ", ["turnkey", "arch", "interior_full"]),
-  ("Отдых и развлечения", ["spa", "cinema", "wine"]),
-  ("Стекло и сад", ["winter_garden", "garden", "pergola"]),
-  ("Интерьер", ["furniture_home", "furniture_out", "lights", "curtains", "carpets", "home_textile"]),
-  ("Комфорт", ["smart_home"]),
+  ("Дом под ключ", ["turnkey", "arch", "build"]),
+  ("Бассейн, СПА и хамам", ["spa"]),
+  ("Домашний кинотеатр", ["cinema"]),
+  ("Винная комната", ["wine"]),
+  ("Зимний сад и панорамное остекление", ["winter_garden", "pergola"]),
+  ("Интерьер и мебель", ["interior_full", "furniture_home", "furniture_out", "lights", "curtains", "carpets", "home_textile"]),
+  ("Сад и территория", ["garden"]),
+  ("Умный дом", ["smart_home"]),
  ],
  "pomoshchnik": [
   ("Обслуживание дома", ["diag", "service_contract", "euro_service"]),

@@ -6,7 +6,22 @@ const CONFIG = {
   leadEndpoint: "",
   defaultWho: "sobstvennik",
   phone: "8 (495) 266-05-24",
+  fontSwitch: true, // временно: переключатель трёх пар шрифтов (06.10); после её выбора — false и пара в :root styles.css
 };
+
+/* переключатель пар шрифтов — на всех страницах, выбор запоминается */
+if (CONFIG.fontSwitch) {
+  const box = document.createElement("div");
+  box.className = "fsw"; box.setAttribute("role", "group"); box.setAttribute("aria-label", "Шрифт");
+  box.innerHTML = '<span>Шрифт:</span><button type="button" data-f="1">Theano Didot + Vela Sans</button>' +
+    '<button type="button" data-f="2">ZT Neue Ralewe + Vela Sans</button><button type="button" data-f="3">Erewhon + Geist</button>';
+  document.body.appendChild(box);
+  const setF = n => { if (n === "1") document.documentElement.removeAttribute("data-font"); else document.documentElement.dataset.font = n;
+    box.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === n));
+    try { localStorage.setItem("font2", n); } catch (e) {} };
+  let f0 = "1"; try { f0 = localStorage.getItem("font2") || "1"; } catch (e) {}
+  setF(f0); box.addEventListener("click", e => { const b = e.target.closest("button"); if (b) setF(b.dataset.f); });
+}
 
 /* слайдер первого экрана: смена каждые 6 с, пауза при наведении и когда вкладка скрыта, свайп на телефоне */
 (() => {
@@ -103,6 +118,20 @@ if (tabs.length) {
 }
 document.querySelectorAll("[data-who]").forEach(b => b.addEventListener("click", () => { if (whoSelect) whoSelect.value = b.dataset.who; }));
 if (pageWho && whoSelect) whoSelect.value = pageWho;
+
+/* каталог: адрес #k-N показывает только этот раздел (пункт из выпадающего списка шапки), #vse или без адреса — весь */
+const catSecs = [...document.querySelectorAll(".cat-sec")];
+if (catSecs.length) {
+  const chips = [...document.querySelectorAll(".chips .chip")];
+  const applyCat = scroll => {
+    const h = location.hash.slice(1), one = catSecs.some(s => s.id === h);
+    catSecs.forEach(s => { s.hidden = one && s.id !== h; });
+    chips.forEach(c => c.classList.toggle("on", one ? c.getAttribute("href") === "#" + h : c.getAttribute("href") === "#vse"));
+    if (scroll) window.scrollTo(0, 0); // наверху — кнопки разделов, сразу под ними выбранный раздел
+  };
+  applyCat(true);
+  window.addEventListener("hashchange", () => applyCat(true));
+}
 
 /* форма заявки */
 const form = document.getElementById("lead-form");

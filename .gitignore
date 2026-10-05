@@ -12,3 +12,4 @@ site/img/obrazcy/
 
 # исходники шрифтов-кандидатов (zip/ttf) — на сайт идут только woff2 в site/fonts/
 site/fonts/_kandidaty/
+site/fonts/_kandidaty2/

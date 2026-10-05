@@ -28,20 +28,19 @@ WHO_OPTIONS = [
 
 
 def header(active=""):
-    # пункт шапки + выпадающий список услуг/товаров этого клиента (её просьба 06.10), ссылки — на блоки «Что делаем»
-    by_file = {p["file"]: p for p in PAGES}
+    # пункт шапки + выпадающий список = разделы каталога этого клиента (её правка 06.10: пункт списка сразу
+    # открывает каталог на своём разделе; строки «Каталог →» в шапке нет)
     items = []
-    for k, (href, _, label) in enumerate(NAV):
+    for k, (href, who, label) in enumerate(NAV):
         on = ' on" aria-current="page' if href == active else ""
-        sub = "\n".join(f'          <li><a href="{href}#s-{i}">{escape(t, quote=False)}</a></li>'
-                        for i, (t, _) in enumerate(by_file[href]["services"], 1))
+        sub = "\n".join(f'          <li><a href="katalog-{href}#k-{i}">{escape(t, quote=False)}</a></li>'
+                        for i, (t, _) in enumerate(CATALOGS[who], 1))
         items.append(f'''      <div class="nav-item">
         <a class="nav-link{on}" href="{href}">{label}</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="dd-{k}" aria-label="{label}: что предлагаем"></button>
         <div class="dd" id="dd-{k}"><ul>
 {sub}
-          <li class="dd-all"><a href="katalog-{href}">Каталог →</a></li>
-          <li class="dd-all dd-page"><a href="{href}">Вся страница →</a></li>
+          <li class="dd-all"><a href="{href}">Вся страница →</a></li>
         </ul></div>
       </div>''')
     links = "\n".join(items)
@@ -427,8 +426,8 @@ HEAD = '''<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<link rel="preload" href="fonts/ltremark-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/tildasans-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/theano-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="{page}" data-who="{who}">
@@ -543,7 +542,8 @@ def catalog_html(p):
     """Каталог клиента: разделы → карточки (Товар/Услуга, описание, особенности, марка, «Запросить цену»)."""
     e = lambda t: escape(t, quote=False)
     cats = CATALOGS[p["who"]]
-    chips = "\n".join(f'      <a class="chip" href="#k-{i}">{e(name)}</a>' for i, (name, _) in enumerate(cats, 1))
+    chips = '      <a class="chip" href="#vse">Весь каталог</a>\n' + \
+        "\n".join(f'      <a class="chip" href="#k-{i}">{e(name)}</a>' for i, (name, _) in enumerate(cats, 1))
     blocks = []
     for i, (name, keys) in enumerate(cats, 1):
         cards = []
