@@ -426,8 +426,8 @@ HEAD = '''<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<link rel="preload" href="fonts/theano-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/geist-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="{page}" data-who="{who}">

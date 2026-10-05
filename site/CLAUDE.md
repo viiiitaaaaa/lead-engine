@@ -58,12 +58,9 @@
   Белый #fff фоном не использовать.
 - Шрифты (её просьба 05.10: «другой, читабельнее, побольше; текущий выдаёт Клода»; источник — fonts.uprock.ru,
   только лицензия «для коммерции»): файлы woff2 в site/fonts/, подключены @font-face (Google Fonts больше не используем).
-  НЕ ВЫБРАНО — её «не то, поставь переключатель» (06.10): 5 вариантов в переключателе (CONFIG.fontSwitch, data-font 1–5):
-  1 Didot+Erewhon+Geist (по умолчанию), 2 Didot+Geist, 3 Didot+Vela Sans, 4 Erewhon+Geist, 5 Vela Sans везде. Вариант 1:
-  --display Theano Didot — крупные заголовки (h1, h2, цифры, логотип); --display-s Erewhon — мелкие заголовки (h3, карточки,
-  вопросы, цитаты, этапы, бегущая строка) — у Дидо в мелком размере пропадают тонкие линии; --body Geist — весь текст.
-  Отвергнуты: LT Remark, Tilda Sans, Gatchina, Ysabeau, Tenor Sans, Manrope, ZT Neue Ralewe, Vela Sans, Montserrat,
-  Playfair, Golos; Nyght Serif — нет «э ы ё». Источник шрифтов — Шрифтотека myskotom.ru.
+  ВЫБРАНО 06.10 (её «как у шрифтотеки», после переключателя из 5 вариантов): Vela Sans ВЕЗДЕ — заголовки, текст, меню
+  (как на myskotom.ru); крупные заголовки плотные (letter-spacing -.03em). Отвергнуты: Theano Didot, Erewhon, Geist,
+  LT Remark, Tilda Sans, Gatchina, Ysabeau, Tenor Sans, Manrope, ZT Neue Ralewe, Montserrat, Playfair, Golos, Nyght Serif.
 - Размеры текста — ТОЛЬКО шкала из :root. 06.10 вечер — её выбор «как у конкурентов» (Резников, Приоритет; заменил
   прежнюю крупную шкалу 16/18/20), затем «чуть поменьше, на 10–15%»: --fs-xs 11.5 (подписи, кнопки), --fs-s 13 (пояснения,
   меню), --fs-m 15 (основной, вес 400), --fs-l 17 (вводный, цитаты), --fs-h3 22, --fs-h2 до 48, первый экран до 84;
