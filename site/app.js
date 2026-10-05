@@ -51,6 +51,20 @@ if (burger) {
   }));
 }
 
+/* выпадающие списки в шапке: стрелка открывает/закрывает (мышью — открываются и наведением), Esc и клик мимо закрывают */
+const navItems = [...document.querySelectorAll(".nav-item")];
+const closeDd = except => navItems.forEach(it => { if (it !== except) { it.classList.remove("open"); it.querySelector(".nav-toggle").setAttribute("aria-expanded", "false"); } });
+navItems.forEach(it => {
+  const t = it.querySelector(".nav-toggle");
+  t.addEventListener("click", e => {
+    e.stopPropagation();
+    const open = !it.classList.contains("open");
+    closeDd(it); it.classList.toggle("open", open); t.setAttribute("aria-expanded", open);
+  });
+});
+document.addEventListener("click", e => { if (!e.target.closest(".nav-item")) closeDd(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDd(); });
+
 const params = new URLSearchParams(location.search);
 const whoSelect = document.getElementById("f-who");
 const pageWho = document.body.dataset.who; // на странице клиента — кто этот клиент

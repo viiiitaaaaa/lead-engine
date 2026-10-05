@@ -27,9 +27,22 @@ WHO_OPTIONS = [
 
 
 def header(active=""):
-    links = "\n".join(
-        f'      <a href="{href}"{" class=\"on\" aria-current=\"page\"" if href == active else ""}>{label}</a>'
-        for href, _, label in NAV)
+    # пункт шапки + выпадающий список услуг/товаров этого клиента (её просьба 06.10), ссылки — на блоки «Что делаем»
+    by_file = {p["file"]: p for p in PAGES}
+    items = []
+    for k, (href, _, label) in enumerate(NAV):
+        on = ' on" aria-current="page' if href == active else ""
+        sub = "\n".join(f'          <li><a href="{href}#s-{i}">{escape(t, quote=False)}</a></li>'
+                        for i, (t, _) in enumerate(by_file[href]["services"], 1))
+        items.append(f'''      <div class="nav-item">
+        <a class="nav-link{on}" href="{href}">{label}</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="dd-{k}" aria-label="{label}: что предлагаем"></button>
+        <div class="dd" id="dd-{k}"><ul>
+{sub}
+          <li class="dd-all"><a href="{href}">Вся страница →</a></li>
+        </ul></div>
+      </div>''')
+    links = "\n".join(items)
     return f'''<header class="top" id="top">
   <div class="wrap">
     <a class="logo" href="index.html">Frivent<small>Загородный дом под ключ</small></a>
@@ -418,7 +431,7 @@ def page_html(p):
     e = lambda t: escape(t, quote=False)
     light = " light" if p.get("light") else ""
     pains = "\n".join(f'      <div class="pain-card"><h3>{e(t)}</h3><p>{e(x)}</p></div>' for t, x in p["pains"])
-    serv = "\n".join(f'      <div class="serv"><h3>{e(t)}</h3><p>{e(x)}</p></div>' for t, x in p["services"])
+    serv = "\n".join(f'      <div class="serv" id="s-{i}"><h3>{e(t)}</h3><p>{e(x)}</p></div>' for i, (t, x) in enumerate(p["services"], 1))
     steps = "\n".join(f'      <li><span class="n">{i:02d}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for i, (t, x) in enumerate(p["steps"], 1))
     terms = "\n".join(f"        <li>{e(t)}</li>" for t in p["terms"])
     faq = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in p["faq"])
