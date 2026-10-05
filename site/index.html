@@ -100,9 +100,11 @@ a{color:inherit}
 .logo{font:400 22px/1 var(--display);letter-spacing:.28em;text-decoration:none;text-transform:uppercase}
 .logo small{display:block;font:500 12px/1.2 var(--body);letter-spacing:.14em;color:var(--ink-soft);margin-top:6px}
 .nav{display:flex;gap:26px;margin-left:auto}
-.nav a{font-size:var(--fs-s);text-decoration:none;color:var(--ink-soft);transition:color .2s;white-space:nowrap}
+.nav a{font-size:var(--fs-s);text-decoration:none;color:var(--ink-soft);transition:color .2s,box-shadow .2s;white-space:nowrap;padding-block:6px}
+.nav a.on{color:var(--ink);box-shadow:inset 0 -2px 0 var(--wine)} /* выбранный раздел */
 .logo small{white-space:nowrap}
-@media (max-width:1360px) and (min-width:1181px){.nav{gap:16px}.nav a{font-size:var(--fs-xs)}}
+@media (max-width:1760px) and (min-width:1281px){.nav{gap:18px}.nav a{font-size:var(--fs-xs)}}
+@media (max-width:1540px) and (min-width:1281px){.top .phone{display:none}} /* телефон есть в форме и в меню телефона */
 .nav a:hover{color:var(--ink)}
 .top-contacts{display:flex;align-items:center;gap:18px}
 .phone{font-weight:600;text-decoration:none;white-space:nowrap}
@@ -113,7 +115,7 @@ a{color:inherit}
 .burger[aria-expanded="true"] span{background:transparent}
 .burger[aria-expanded="true"] span::before{transform:translateY(7px) rotate(45deg)}
 .burger[aria-expanded="true"] span::after{transform:translateY(-7px) rotate(-45deg)}
-@media (max-width:1180px){ /* меню под гамбургер раньше: крупный шрифт не влезает */
+@media (max-width:1280px){ /* меню под гамбургер: шесть разделов крупным шрифтом не влезают */
   .nav,.top-contacts{display:none}
   .burger{display:block}
   .top.open .nav,.top.open .top-contacts{display:flex}
@@ -237,7 +239,7 @@ a{color:inherit}
 @media (max-width:520px){.who{grid-template-columns:1fr}.who button{min-height:0}}
 
 /* раздел аудитории */
-.panel{padding-top:clamp(48px,6vw,80px)}
+.panel{padding-top:clamp(48px,6vw,80px);scroll-margin-top:72px} /* не прятать начало раздела под шапку */
 .panel-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,80px)}
 .panel-side{display:grid;gap:22px;align-content:start;min-width:0}
 .panel-side .ph{aspect-ratio:4/3}
@@ -319,12 +321,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 <header class="top" id="top">
   <div class="wrap">
     <a class="logo" href="#">Frivent<small>Загородный дом под ключ</small></a>
-    <nav class="nav" aria-label="Главное меню">
-      <a href="#dlya-kogo">Для кого</a>
-      <a href="#etapy">Как работаем</a>
-      <a href="#territoriya">Территория</a>
-      <a href="#o-nas">О компании</a>
-      <a href="#zayavka">Контакты</a>
+    <!-- шапка = разделы по клиентам (её решение 06.10), открывают те же разделы, что карточки «Я — …» -->
+    <nav class="nav" aria-label="Разделы для клиентов">
+      <a href="#sobstvennik" data-go="sobstvennik">Владельцу</a>
+      <a href="#dizayner" data-go="dizayner">Дизайнеру</a>
+      <a href="#pomoshchnik" data-go="pomoshchnik">Ассистенту</a>
+      <a href="#montazh" data-go="montazh">Монтажной компании</a>
+      <a href="#zastroyshchik" data-go="zastroyshchik">Застройщику</a>
+      <a href="#kommerciya" data-go="kommerciya">Коммерция</a>
     </nav>
     <div class="top-contacts">
       <a class="phone num" href="tel:+74952660524" data-contact="phone">8 (495) 266-05-24</a>
@@ -779,6 +783,10 @@ function choose(id, scroll) {
     document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
   });
   whoSelect.value = id;
+  document.querySelectorAll(".nav [data-go]").forEach(a => {
+    const on = a.dataset.go === id; a.classList.toggle("on", on);
+    if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+  });
   try { localStorage.setItem("who", id); } catch (e) {}
   if (scroll) document.getElementById(id).scrollIntoView({behavior: "smooth", block: "start"});
 }
