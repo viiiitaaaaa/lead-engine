@@ -117,7 +117,8 @@ a{color:inherit}
 .slides .ph:nth-child(4){background:linear-gradient(20deg,var(--ph3) 0%,var(--ph2) 45%,var(--ph1) 100%)}
 .slides .ph img{animation:zoom 9s ease-out both}
 @keyframes zoom{from{transform:scale(1.06)}to{transform:scale(1)}}
-.slider-ui{position:absolute;z-index:2;right:var(--gut);bottom:clamp(48px,8vh,120px);display:flex;align-items:center;gap:16px;color:var(--paper)}
+.slider-ui{position:absolute;z-index:2;right:var(--gut);bottom:clamp(48px,8vh,120px);display:flex;align-items:center;gap:16px;color:var(--paper);
+  padding:8px;border-radius:99px;background:rgb(var(--shade)/.38);backdrop-filter:blur(6px)} /* видно на любом фото, и на светлом */
 .slider-ui button{width:48px;height:48px;border:1px solid rgb(255 255 255/.45);border-radius:50%;background:transparent;color:var(--paper);
   cursor:pointer;font-size:18px;transition:background .25s,color .25s}
 .slider-ui button:hover{background:var(--paper);color:var(--ink)}
@@ -138,6 +139,9 @@ a{color:inherit}
              linear-gradient(0deg,rgb(var(--shade)/.2) 0%,transparent 25%)}
 .hero h1,.hero .lead,.hero .eyebrow,.hero .dirs{text-shadow:0 2px 24px rgb(var(--shade)/.75),0 1px 4px rgb(var(--shade)/.6)}
 .slides .ph.has-photo img{filter:none}
+/* светлые кадры: под текстом слева чуть плотнее, справа фото открыто */
+.hero > .slides .ph.light::after{background:linear-gradient(90deg,rgb(var(--shade)/.62) 0%,rgb(var(--shade)/.3) 42%,transparent 62%),
+  linear-gradient(0deg,rgb(var(--shade)/.25) 0%,transparent 25%)}
 @media (max-width:860px){ /* на телефоне текст во всю ширину — ровное затемнение */
   .hero > .slides .ph::after{background:linear-gradient(180deg,rgb(var(--shade)/.38) 0%,rgb(var(--shade)/.28) 60%,rgb(var(--shade)/.5) 100%)}}
 .hero > .slides .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:24px;text-align:right;z-index:1}
@@ -302,7 +306,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
     <figure class="ph slide has-photo" data-photo="kondicionery-dom" aria-roledescription="слайд" aria-label="2 из 6"><img src="img/obrazcy/pin_02.jpg" alt="Гостиная с роялем и скрытыми решётками климата в потолке" style="object-position:50% 40%" loading="lazy"><figcaption><a href="#pomoshchnik" data-go="pomoshchnik">Помощнику владельца →</a></figcaption></figure>
     <!-- своя генерация Recraft v4 (её файл 05.10), 1536×768 -->
     <figure class="ph slide has-photo" data-photo="shtory" aria-roledescription="слайд" aria-label="3 из 6"><picture><source srcset="img/slides/dizayner.webp" type="image/webp"><img src="img/slides/dizayner.jpg" alt="Светлая гостиная с камином, креслами и лёгкими шторами" style="object-position:50% 50%" loading="lazy"></picture><figcaption><a href="#dizayner" data-go="dizayner">Дизайнеру →</a></figcaption></figure>
-    <figure class="ph slide" data-photo="konvektory" aria-roledescription="слайд" aria-label="4 из 6"><figcaption><a href="#montazh" data-go="montazh">Монтажнику →</a><br>Фото: внутрипольные конвекторы у панорамного окна</figcaption></figure>
+    <!-- ОБРАЗЕЦ с Pinterest (тёплый пол в разрезе), 800×600 — мутно и старомодно; перерисовать -->
+    <figure class="ph slide has-photo light" data-photo="teplyy-pol" aria-roledescription="слайд" aria-label="4 из 6"><img src="img/obrazcy/pin_03.jpg" alt="Гостиная с тёплым полом в разрезе: трубы отопления под покрытием" style="object-position:50% 85%" loading="lazy"><figcaption><a href="#montazh" data-go="montazh">Монтажнику →</a></figcaption></figure>
     <figure class="ph slide" data-photo="okna" aria-roledescription="слайд" aria-label="5 из 6"><figcaption><a href="#zastroyshchik" data-go="zastroyshchik">Застройщику →</a><br>Фото: дома посёлка с панорамными окнами</figcaption></figure>
     <figure class="ph slide" data-photo="kondicionery-zal" aria-roledescription="слайд" aria-label="6 из 6"><figcaption><a href="#kommerciya" data-go="kommerciya">Коммерческому объекту →</a><br>Фото: зал ресторана или фитнес-клуба, кондиционирование</figcaption></figure>
   </div>
