@@ -10,19 +10,23 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
 /* Сетка: во всю ширину, светлые разделы чередуются с тёмными (тёмные — плавный переход двух оттенков).
-   Цвет — нейтральный «люкс» (её решение 05.10): чёрный, графит, серые, слоновая кость; цветного акцента нет. */
+   Цвет — по её мудборду 05.10 «без зелёного»: тёплый беж и серый, букле, акценты бордовый и синий, латунь и мрамор. */
 :root{
-  --paper:#f5f4f1;   /* базовый фон — слоновая кость, не белый */
-  --sand:#e8e7e3;    /* плашки и второй фон — светло-серый */
-  --ink:#141414;     /* текст и тёмный раздел — почти чёрный */
-  --ink-2:#2c2c2b;   /* второй оттенок тёмных разделов (переход в графит) */
-  --ink-soft:#5f5e5b;/* второстепенный текст — тёплый серый */
-  --line:#d6d5d1;    /* тонкие линии */
-  --accent:#9b9994;  /* акцент: линии, точки, детали — серебристо-серый */
-  --accent-ink:#3d3c3a; /* акцент для мелкого текста и цифр на светлом — графит */
-  --on-dark-soft:#cfcdc8; --on-dark-mute:#9b9994; --on-dark-accent:#dcd9d2; /* на тёмном: светлое серебро */
-  --shade:12 12 12;  /* затемнение фото на первом экране (r g b) */
-  --ph1:#d7d6d2; --ph2:#b3b1ac; --ph3:#7f7d79; /* место под фото */
+  --paper:#efebe6;   /* базовый фон — светлый беж */
+  --sand:#ddd5cb;    /* плашки и второй фон — беж с мудборда */
+  --ink:#1d1b19;     /* текст — тёплый почти чёрный */
+  --ink-2:#3b3732;   /* тёплый графит */
+  --deep:#222947;    /* тёмные разделы — глубокий синий (кресло с мудборда) */
+  --deep-2:#394172;  /* переход в тёмных разделах — синий образца */
+  --wine:#6b1a24;    /* кнопки заявки — бордовый образца */
+  --wine-2:#82232f;  /* бордовый при наведении */
+  --ink-soft:#6d665e;/* второстепенный текст — серо-беж */
+  --line:#d3cbc0;    /* тонкие линии */
+  --accent:#8a2a35;  /* акцент: тонкие линии и точки — бордовый */
+  --accent-ink:#394172; /* мелкий акцентный текст и цифры на светлом — синий */
+  --on-dark-soft:#d6cec3; --on-dark-mute:#a39a8e; --on-dark-accent:#e3d6bd; /* на тёмном: светлое шампанское */
+  --shade:24 21 18;  /* затемнение фото на первом экране (r g b) */
+  --ph1:#d6ccc2; --ph2:#b8ab9c; --ph3:#8c7f71; /* место под фото */
   --error:#a3361f;
   --display:"Tenor Sans","Helvetica Neue",Arial,sans-serif;
   --body:"Manrope","Segoe UI",Arial,sans-serif;
@@ -60,13 +64,13 @@ a{color:inherit}
 .num{font-variant-numeric:tabular-nums}
 
 /* кнопки */
-.btn{display:inline-flex;align-items:center;gap:12px;padding:16px 26px;border:1px solid var(--ink);border-radius:2px;
-  background:var(--ink);color:var(--paper);font:600 15px/1 var(--body);letter-spacing:.02em;text-decoration:none;cursor:pointer;
+.btn{display:inline-flex;align-items:center;gap:12px;padding:16px 26px;border:1px solid var(--wine);border-radius:2px;
+  background:var(--wine);color:var(--paper);font:600 15px/1 var(--body);letter-spacing:.02em;text-decoration:none;cursor:pointer;
   transition:background .25s,color .25s,box-shadow .25s}
 .btn::after{content:"→";transition:transform .25s}
-.btn:hover{background:transparent;color:var(--ink)}
+.btn:hover{background:var(--wine-2);border-color:var(--wine-2);color:var(--paper)}
 .btn:hover::after{transform:translateX(4px)}
-.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
 .btn.ghost:hover{background:var(--ink);color:var(--paper)}
 .dark .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 .dark .btn:hover{background:transparent;color:var(--paper)}
@@ -206,7 +210,7 @@ a{color:inherit}
 .who button{display:grid;gap:10px;align-content:start;text-align:left;padding:28px 26px 30px;border:0;background:var(--paper);cursor:pointer;
   transition:background .25s;min-height:170px}
 .who button:hover{background:var(--sand)}
-.who button[aria-selected="true"]{background:linear-gradient(135deg,var(--ink),var(--ink-2));color:var(--paper);box-shadow:inset 0 -3px 0 var(--accent)}
+.who button[aria-selected="true"]{background:linear-gradient(135deg,var(--deep),var(--deep-2));color:var(--paper);box-shadow:inset 0 -3px 0 var(--accent)}
 .who button[aria-selected="true"] .who-note{color:var(--on-dark-soft)}
 .who-title{font:400 22px/1.2 var(--display)}
 .who-note{font-size:15px;color:var(--ink-soft);line-height:1.5}
@@ -231,7 +235,7 @@ a{color:inherit}
 @media (max-width:860px){.panel-grid,.proofs{grid-template-columns:1fr}}
 
 /* этапы */
-.dark{background:linear-gradient(135deg,var(--ink) 0%,var(--ink) 40%,var(--ink-2) 100%);color:var(--paper)}
+.dark{background:linear-gradient(135deg,var(--deep) 0%,var(--deep) 40%,var(--deep-2) 100%);color:var(--paper)}
 .dark .eyebrow{color:var(--on-dark-accent)}
 .dark .lead{color:var(--on-dark-soft)}
 .steps{list-style:none;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;border-top:1px solid rgba(243,245,248,.25)}
