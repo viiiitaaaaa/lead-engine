@@ -3,22 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Frivent — инженерия загородного дома</title>
-<meta name="description" content="Инженерная компания полного цикла для загородных резиденций на Новой Риге, Рублёвке и Ильинском шоссе: проект, стройка, вся инженерия дома и сервис. Своё производство климатического оборудования Frivent.">
+<title>Frivent — загородный дом под ключ</title>
+<meta name="description" content="Компания полного цикла для загородных резиденций на Новой Риге, Рублёвке и Ильинском шоссе: архитектура и дизайн, стройка, вся инженерия, остекление, текстиль, мебель, ландшафт и сервис. Своё производство климатического оборудования Frivent.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
-/* Сетка: одна колонка 1200px, светлые разделы чередуются с одним тёмным; цвет — только акцентом.
-   Палитра «как у Приоритета»: 1 базовый + 2 поддерживающих + 1 акцент (правило из site/CLAUDE.md). */
+/* Сетка: во всю ширину, светлые разделы чередуются с тёмными (тёмные — плавный переход двух оттенков).
+   Основа «как у Приоритета» — глубокий синий; три варианта акцента на выбор (data-palette), правило в site/CLAUDE.md. */
 :root{
-  --paper:#f3f5f8;   /* базовый фон, светло-серый, не белый */
-  --sand:#e4e9f0;    /* плашки и второй фон */
-  --ink:#1b2b47;     /* текст и тёмный раздел — тёмно-синий */
-  --ink-soft:#56637a;/* второстепенный текст */
-  --line:#d2d9e3;    /* тонкие линии */
-  --accent:#8ea9cc;  /* акцент: линии, точки, детали (сталь-голубой) */
-  --accent-ink:#2f5486; /* акцент для мелкого текста и цифр на светлом */
+  /* вариант 1 «Синий и стекло» — по умолчанию */
+  --paper:#f1f4f7;   /* базовый фон, светлый холодный, не белый */
+  --sand:#dfe7ee;    /* плашки и второй фон */
+  --ink:#13233f;     /* текст и тёмный раздел — глубокий синий */
+  --ink-2:#0d3a52;   /* второй оттенок тёмных разделов (переход) */
+  --ink-soft:#52607a;/* второстепенный текст */
+  --line:#cfd8e2;    /* тонкие линии */
+  --accent:#5fa8c4;  /* акцент: линии, точки, детали — цвет стекла и воды */
+  --accent-ink:#1f6f8f; /* акцент для мелкого текста и цифр на светлом */
+  --on-dark-soft:#c3d0de; --on-dark-mute:#93a6bd; --on-dark-accent:#8fd0e2;
+  --shade:11 24 44;  /* затемнение фото на первом экране (r g b) */
+  --ph1:#c4d3df; --ph2:#9fb6c8; --ph3:#6f8ba3; /* место под фото */
   --error:#a3361f;
   --display:"Tenor Sans","Helvetica Neue",Arial,sans-serif;
   --body:"Manrope","Segoe UI",Arial,sans-serif;
@@ -27,6 +32,15 @@
   --sec:clamp(72px,10vw,136px);
   color-scheme:light;
 }
+
+/* вариант 2 «Синий и шалфей» */
+:root[data-palette="2"]{--paper:#f2f4f1;--sand:#e1e7e0;--ink:#1a2a40;--ink-2:#1f3d3a;--ink-soft:#56616f;--line:#d3dad2;
+  --accent:#8fb39a;--accent-ink:#3d6b4f;--on-dark-soft:#c9d4cc;--on-dark-mute:#9aab9f;--on-dark-accent:#b5d3bd;
+  --shade:18 30 40;--ph1:#cdd8cf;--ph2:#a9bcae;--ph3:#7d9584}
+/* вариант 3 «Петроль и лёд» */
+:root[data-palette="3"]{--paper:#eef3f3;--sand:#dbe6e6;--ink:#0e3440;--ink-2:#0a2730;--ink-soft:#4c6168;--line:#cddcdc;
+  --accent:#4fb3b8;--accent-ink:#16727a;--on-dark-soft:#bfd6d8;--on-dark-mute:#8fb0b4;--on-dark-accent:#92dde0;
+  --shade:8 36 44;--ph1:#c5d9da;--ph2:#98b9bc;--ph3:#6b9196}
 
 /* reset (по мотивам Josh W. Comeau) */
 *,*::before,*::after{box-sizing:border-box}
@@ -98,22 +112,58 @@ a{color:inherit}
 
 /* первый экран — на всю высоту и ширину окна, фото фоном (её решение 05.10) */
 .hero{position:relative;min-height:calc(100svh - 72px);display:grid;align-items:end;color:var(--paper);overflow:hidden}
-.hero > .ph{position:absolute;inset:0;aspect-ratio:auto;border-radius:0}
-.hero > .ph::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(90deg,rgba(14,26,46,.72) 0%,rgba(14,26,46,.35) 55%,rgba(14,26,46,.1) 100%),
-             linear-gradient(0deg,rgba(14,26,46,.55) 0%,transparent 50%)}
-.hero > .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:24px;text-align:right;z-index:1}
+/* слайдер фото первого экрана: плавная смена, текст стоит на месте */
+.slides{position:absolute;inset:0}
+.slides .ph{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;opacity:0;transition:opacity 1.2s ease}
+.slides .ph.is-on{opacity:1}
+.slides .ph:nth-child(2){background:linear-gradient(200deg,var(--ph1) 0%,var(--ph2) 50%,var(--ph3) 100%)}
+.slides .ph:nth-child(3){background:linear-gradient(120deg,var(--ph2) 0%,var(--ph1) 60%,var(--ph3) 100%)}
+.slides .ph:nth-child(5){background:linear-gradient(240deg,var(--ph2) 0%,var(--ph3) 70%)}
+.slides .ph:nth-child(6){background:linear-gradient(60deg,var(--ph3) 0%,var(--ph1) 100%)}
+.hero > .slides .ph figcaption a{font-size:14px;color:var(--paper);text-decoration:none;border-bottom:1px solid var(--on-dark-accent);pointer-events:auto}
+.slides .ph:not(.is-on) figcaption{visibility:hidden}
+.slides .ph:nth-child(4){background:linear-gradient(20deg,var(--ph3) 0%,var(--ph2) 45%,var(--ph1) 100%)}
+.slides .ph img{animation:zoom 9s ease-out both}
+@keyframes zoom{from{transform:scale(1.06)}to{transform:scale(1)}}
+.slider-ui{position:absolute;z-index:2;right:var(--gut);bottom:clamp(48px,8vh,120px);display:flex;align-items:center;gap:16px;color:var(--paper)}
+.slider-ui button{width:48px;height:48px;border:1px solid rgb(255 255 255/.45);border-radius:50%;background:transparent;color:var(--paper);
+  cursor:pointer;font-size:18px;transition:background .25s,color .25s}
+.slider-ui button:hover{background:var(--paper);color:var(--ink)}
+.sl-count{font-size:14px;letter-spacing:.08em;color:var(--on-dark-soft)}
+.sl-count b{color:var(--paper);font-weight:600}
+.sl-dots{display:flex;gap:6px}
+.sl-dots i{display:block;width:22px;height:2px;background:rgb(255 255 255/.35);transition:background .3s,width .3s}
+.sl-dots i.on{width:40px;background:var(--on-dark-accent)}
+@media (max-width:860px){
+  .slider-ui{right:var(--gut);bottom:18px}
+  .slider-ui button,.sl-count{display:none} /* на телефоне листаем свайпом, видны только полоски */
+  .hero .wrap{padding-bottom:56px}
+  .hero > .slides .ph figcaption{display:none} /* на телефоне подпись слайда мешает заголовку; разделы — ниже */
+}
+.hero > .slides .ph::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgb(var(--shade)/.78) 0%,rgb(var(--shade)/.4) 55%,rgb(var(--shade)/.1) 100%),
+             linear-gradient(0deg,rgb(var(--shade)/.6) 0%,transparent 50%)}
+.hero > .slides .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:24px;text-align:right;z-index:1}
 .hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(48px,8vh,120px)}
-.hero-text{display:grid;gap:28px;max-width:860px;min-width:0}
-.hero .eyebrow{color:#c5d4e8}
-.hero .lead{color:#e3e9f2}
-.hero h1{font-size:clamp(44px,7.5vw,120px)}
-.hero h1 em{font-style:normal;color:#a9c3e3}
+.hero-text{display:grid;gap:28px;max-width:1120px;min-width:0}
+.hero-text .lead{max-width:62ch}
+.hero .eyebrow{color:var(--on-dark-accent)}
+.hero .lead{color:var(--on-dark-soft)}
+.hero h1{font-size:clamp(40px,5.4vw,92px)}
+.hero h1 em{font-style:normal;color:var(--on-dark-accent)}
 .hero .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 .hero .btn:hover{background:transparent;color:var(--paper)}
 .hero .btn.ghost{background:transparent;color:var(--paper)}
 .hero .btn.ghost:hover{background:var(--paper);color:var(--ink)}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.dirs{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px 0;font-size:14px;color:var(--on-dark-soft);max-width:760px}
+.dirs li+li::before{content:"·";margin-inline:12px;color:var(--on-dark-accent)}
+/* переключатель гаммы — временно, пока выбираем цвет (CONFIG.paletteSwitch) */
+.pal{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:6px;align-items:center;padding:8px 10px;background:var(--paper);border:1px solid var(--line);border-radius:99px;box-shadow:0 6px 24px rgb(var(--shade)/.18);font-size:13px}
+.pal button{border:1px solid var(--line);background:var(--sand);border-radius:99px;padding:6px 12px;cursor:pointer;font-size:13px}
+.pal button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+@media (max-width:860px){.pal{left:12px;right:12px;justify-content:center;gap:4px;padding:6px}.pal span{display:none}
+  .pal button{padding:6px 8px;font-size:12px;white-space:nowrap}}
 .facts-band{padding-block:clamp(32px,4vw,56px)}
 .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
 .facts b{display:block;font:400 clamp(32px,3.6vw,56px)/1 var(--display);color:var(--accent-ink);margin-bottom:10px}
@@ -122,13 +172,13 @@ a{color:inherit}
 
 /* место под фото: пока фото нет, показываем тонированную плашку с подписью, что здесь будет */
 .ph{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:2px;overflow:hidden;
-  background:linear-gradient(160deg,#c9d3df 0%,#a9b7c9 55%,#8396ad 100%)}
+  background:linear-gradient(160deg,var(--ph1) 0%,var(--ph2) 55%,var(--ph3) 100%)}
 .ph.wide{aspect-ratio:16/9}
 .ph::before{content:"";position:absolute;inset:0;background:
-  repeating-linear-gradient(90deg,transparent 0 23%,rgba(27,43,71,.07) 23% 23.4%),
-  linear-gradient(0deg,rgba(27,43,71,.18),transparent 45%)}
+  repeating-linear-gradient(90deg,transparent 0 23%,rgb(var(--shade)/.07) 23% 23.4%),
+  linear-gradient(0deg,rgb(var(--shade)/.2),transparent 45%)}
 .ph figcaption{position:absolute;left:18px;bottom:16px;right:18px;font:500 12px/1.4 var(--body);letter-spacing:.12em;
-  text-transform:uppercase;color:#f3f5f8}
+  text-transform:uppercase;color:#f3f5f8;text-shadow:0 1px 2px rgb(0 0 0/.25)}
 .ph img{width:100%;height:100%;object-fit:cover;filter:saturate(.85);transition:filter .5s,transform .8s}
 .ph:hover img{filter:saturate(1);transform:scale(1.02)}
 
@@ -146,8 +196,8 @@ a{color:inherit}
 .who button{display:grid;gap:10px;align-content:start;text-align:left;padding:28px 26px 30px;border:0;background:var(--paper);cursor:pointer;
   transition:background .25s;min-height:170px}
 .who button:hover{background:var(--sand)}
-.who button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
-.who button[aria-selected="true"] .who-note{color:#c3cedd}
+.who button[aria-selected="true"]{background:linear-gradient(135deg,var(--ink),var(--ink-2));color:var(--paper);box-shadow:inset 0 -3px 0 var(--accent)}
+.who button[aria-selected="true"] .who-note{color:var(--on-dark-soft)}
 .who-title{font:400 22px/1.2 var(--display)}
 .who-note{font-size:15px;color:var(--ink-soft);line-height:1.5}
 @media (max-width:860px){.who{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -171,15 +221,15 @@ a{color:inherit}
 @media (max-width:860px){.panel-grid,.proofs{grid-template-columns:1fr}}
 
 /* этапы */
-.dark{background:var(--ink);color:var(--paper)}
-.dark .eyebrow{color:var(--accent)}
-.dark .lead{color:#c3cedd}
+.dark{background:linear-gradient(135deg,var(--ink) 0%,var(--ink) 40%,var(--ink-2) 100%);color:var(--paper)}
+.dark .eyebrow{color:var(--on-dark-accent)}
+.dark .lead{color:var(--on-dark-soft)}
 .steps{list-style:none;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;border-top:1px solid rgba(243,245,248,.25)}
 .steps li{padding:26px 22px 0 0;display:grid;gap:12px;align-content:start;position:relative}
 .steps li::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;background:var(--accent)}
-.steps .n{font:400 14px/1 var(--display);color:var(--accent);letter-spacing:.1em}
+.steps .n{font:400 14px/1 var(--display);color:var(--on-dark-accent);letter-spacing:.1em}
 .steps h3{font-size:21px}
-.steps p{font-size:15px;color:#c3cedd;line-height:1.55}
+.steps p{font-size:15px;color:var(--on-dark-soft);line-height:1.55}
 @media (max-width:1000px){.steps{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:36px}}
 @media (max-width:560px){.steps{grid-template-columns:1fr;border-top:0;border-left:1px solid rgba(243,245,248,.25)}
   .steps li{padding:0 0 0 26px}.steps li::before{top:6px;left:-4px}}
@@ -213,11 +263,11 @@ label .req{color:var(--accent)}
   background:rgba(243,245,248,.06);color:var(--paper);outline:2px solid transparent;transition:border-color .2s,box-shadow .2s}
 .dark select option{color:var(--ink)}
 .dark input:focus,.dark select:focus,.dark textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(142,169,204,.3)}
-.dark input::placeholder,.dark textarea::placeholder{color:#8e9cb2}
+.dark input::placeholder,.dark textarea::placeholder{color:var(--on-dark-mute)}
 .dark [aria-invalid="true"]{border-color:#e08a6f}
-.hint{font-size:13px;color:#9fb0c7;line-height:1.45}
+.hint{font-size:13px;color:var(--on-dark-mute);line-height:1.45}
 .err{font-size:13px;color:#f0a68c}
-.consent{grid-column:1/-1;display:flex;gap:12px;align-items:flex-start;font-size:14px;color:#c3cedd}
+.consent{grid-column:1/-1;display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--on-dark-soft)}
 .consent input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--accent)}
 .form-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
 .form-status{font-size:15px}
@@ -227,7 +277,7 @@ label .req{color:var(--accent)}
 .contacts a{text-decoration:none}
 .contacts b{display:block;font:400 26px/1.2 var(--display)}
 
-footer{padding-block:40px;border-top:1px solid rgba(243,245,248,.2);font-size:14px;color:#9fb0c7}
+footer{padding-block:40px;border-top:1px solid rgba(243,245,248,.2);font-size:14px;color:var(--on-dark-mute)}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
 </style>
 </head>
@@ -235,7 +285,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 
 <header class="top" id="top">
   <div class="wrap">
-    <a class="logo" href="#">Frivent<small>Инженерия загородного дома</small></a>
+    <a class="logo" href="#">Frivent<small>Загородный дом под ключ</small></a>
     <nav class="nav" aria-label="Главное меню">
       <a href="#dlya-kogo">Для кого</a>
       <a href="#etapy">Как работаем</a>
@@ -253,18 +303,31 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 
 <main>
 <section class="hero">
-  <figure class="ph" data-photo="okna">
-    <figcaption>Фото: панорамные окна частного дома</figcaption>
-  </figure>
+  <div class="slides" id="slides" aria-roledescription="слайдер" aria-label="Фото объектов">
+    <!-- по слайду на каждого клиента; подпись ведёт в его раздел. Фото: 2560×1440, слева спокойно (там текст) -->
+    <figure class="ph slide is-on" data-photo="fasad" aria-roledescription="слайд" aria-label="1 из 6"><figcaption><a href="#sobstvennik" data-go="sobstvennik">Владельцу дома →</a><br>Фото: стеклянный фасад резиденции вечером</figcaption></figure>
+    <figure class="ph slide" data-photo="kondicionery-dom" aria-roledescription="слайд" aria-label="2 из 6"><figcaption><a href="#pomoshchnik" data-go="pomoshchnik">Помощнику владельца →</a><br>Фото: спальня, скрытый кондиционер</figcaption></figure>
+    <figure class="ph slide" data-photo="shtory" aria-roledescription="слайд" aria-label="3 из 6"><figcaption><a href="#dizayner" data-go="dizayner">Дизайнеру →</a><br>Фото: шторы в гостиной с панорамными окнами</figcaption></figure>
+    <figure class="ph slide" data-photo="konvektory" aria-roledescription="слайд" aria-label="4 из 6"><figcaption><a href="#montazh" data-go="montazh">Монтажнику →</a><br>Фото: внутрипольные конвекторы у панорамного окна</figcaption></figure>
+    <figure class="ph slide" data-photo="okna" aria-roledescription="слайд" aria-label="5 из 6"><figcaption><a href="#zastroyshchik" data-go="zastroyshchik">Застройщику →</a><br>Фото: дома посёлка с панорамными окнами</figcaption></figure>
+    <figure class="ph slide" data-photo="kondicionery-zal" aria-roledescription="слайд" aria-label="6 из 6"><figcaption><a href="#kommerciya" data-go="kommerciya">Коммерческому объекту →</a><br>Фото: зал ресторана или фитнес-клуба, кондиционирование</figcaption></figure>
+  </div>
+  <div class="slider-ui" aria-label="Листать фото">
+    <button type="button" class="sl-prev" aria-label="Предыдущее фото">←</button>
+    <span class="sl-count num"><b id="sl-n">01</b> / 06</span>
+    <span class="sl-dots" id="sl-dots"></span>
+    <button type="button" class="sl-next" aria-label="Следующее фото">→</button>
+  </div>
   <div class="wrap">
     <div class="hero-text">
       <span class="eyebrow">Новая Рига · Рублёвка · Ильинское шоссе</span>
-      <h1>Тихо, сухо, свежо. <em>Круглый год.</em></h1>
-      <p class="lead">Инженерная компания полного цикла для загородных резиденций: архитектура и проект, стройка, вся инженерия дома, монтаж своими бригадами и сервис. Климатическое оборудование производим сами — это Frivent.</p>
+      <h1>Дом под ключ. <em>От эскиза до сервиса.</em></h1>
+      <p class="lead">Компания полного цикла для загородных резиденций. Один подрядчик на весь дом: архитектура и дизайн, стройка, вся инженерия, остекление, текстиль, мебель и ландшафт — и сервис после сдачи. Климатическое оборудование производим сами: в доме тихо, сухо и свежо круглый год.</p>
       <div class="hero-actions">
         <a class="btn" href="#zayavka">Записаться на встречу</a>
         <a class="btn ghost" href="#dlya-kogo">Выбрать свой раздел</a>
       </div>
+      <ul class="dirs" aria-label="Что делаем"><li>Архитектура</li><li>Дизайн</li><li>Стройка</li><li>Инженерия</li><li>Климат Frivent</li><li>Остекление</li><li>Текстиль</li><li>Мебель</li><li>Ландшафт</li><li>Сервис</li></ul>
     </div>
   </div>
 </section>
@@ -512,9 +575,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
     </div>
     <ol class="steps">
       <li><span class="n">01</span><h3>Встреча на объекте</h3><p>Смотрим дом или участок, слушаем, как вы живёте и что мешает.</p></li>
-      <li><span class="n">02</span><h3>Проект и расчёт</h3><p>Считаем воздух, тепло, влажность и шум под каждую комнату.</p></li>
-      <li><span class="n">03</span><h3>Поставка</h3><p>Оригинал с документами производителя, дата в договоре.</p></li>
-      <li><span class="n">04</span><h3>Монтаж</h3><p>Своими бригадами, по графику стройки.</p></li>
+      <li><span class="n">02</span><h3>Проект</h3><p>Архитектура, дизайн и инженерия в одном проекте: каждая комната рассчитана по воздуху, теплу и свету.</p></li>
+      <li><span class="n">03</span><h3>Поставка</h3><p>Оборудование, материалы, стекло, текстиль и мебель — оригинал с документами, даты в договоре.</p></li>
+      <li><span class="n">04</span><h3>Стройка и монтаж</h3><p>Своими бригадами, по одному графику для всех работ.</p></li>
       <li><span class="n">05</span><h3>Пусконаладка</h3><p>Делает производитель. Замеряем шум и воздух, оформляем акт.</p></li>
       <li><span class="n">06</span><h3>Сервис</h3><p>Гарантия, обслуживание по сезонам и запчасти со склада в России.</p></li>
     </ol>
@@ -613,12 +676,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
   </div>
   <footer>
     <div class="wrap">
-      <span>Frivent — инженерия загородного дома. Новая Рига, Рублёвка, Ильинское шоссе</span>
+      <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
     </div>
   </footer>
 </section>
 </main>
+
+<div class="pal" id="pal" role="group" aria-label="Вариант цвета" hidden><span>Цвет:</span><button type="button" data-p="1">Синий и стекло</button><button type="button" data-p="2">Синий и шалфей</button><button type="button" data-p="3">Петроль и лёд</button></div>
 
 <script>
 /* ===== Настройки сайта — меняются здесь ===== */
@@ -626,7 +691,46 @@ const CONFIG = {
   // Адрес приёма заявок (серверный обработчик, который передаёт заявку в Bitrix24). Пусто — форма в тестовом режиме.
   leadEndpoint: "",
   defaultWho: "sobstvennik",
+  paletteSwitch: true, // временно: переключатель трёх вариантов цвета; после её выбора — false и нужный вариант в :root
 };
+
+/* переключатель гаммы */
+if (CONFIG.paletteSwitch) {
+  const pal = document.getElementById("pal"); pal.hidden = false;
+  const setP = n => { if (n === "1") document.documentElement.removeAttribute("data-palette"); else document.documentElement.dataset.palette = n;
+    pal.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.p === n));
+    try { localStorage.setItem("palette", n); } catch (e) {} };
+  let saved = "1"; try { saved = localStorage.getItem("palette") || "1"; } catch (e) {}
+  setP(saved); pal.addEventListener("click", e => { const b = e.target.closest("button"); if (b) setP(b.dataset.p); });
+}
+
+/* слайдер первого экрана: смена каждые 6 с, пауза при наведении и когда вкладка скрыта, свайп на телефоне */
+(() => {
+  const box = document.getElementById("slides"), hero = box.parentElement;
+  const sl = [...box.children], dots = document.getElementById("sl-dots"), num = document.getElementById("sl-n");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  sl.forEach(() => dots.appendChild(document.createElement("i")));
+  let i = 0, timer = null;
+  const show = k => {
+    i = (k + sl.length) % sl.length;
+    sl.forEach((s, j) => { s.classList.toggle("is-on", j === i); s.setAttribute("aria-hidden", j !== i); });
+    [...dots.children].forEach((d, j) => d.classList.toggle("on", j === i));
+    num.textContent = String(i + 1).padStart(2, "0");
+  };
+  const play = () => { stop(); if (!still) timer = setInterval(() => show(i + 1), 6000); };
+  const stop = () => { clearInterval(timer); timer = null; };
+  hero.querySelector(".sl-prev").addEventListener("click", () => { show(i - 1); play(); });
+  hero.querySelector(".sl-next").addEventListener("click", () => { show(i + 1); play(); });
+  hero.addEventListener("mouseenter", stop); hero.addEventListener("mouseleave", play);
+  document.addEventListener("visibilitychange", () => document.hidden ? stop() : play());
+  let x0 = null;
+  hero.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive: true});
+  hero.addEventListener("touchend", e => {
+    if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 50) { show(i + (dx < 0 ? 1 : -1)); play(); }
+  });
+  show(0); play();
+})();
 
 /* меню на телефоне */
 const top_ = document.getElementById("top"), burger = top_.querySelector(".burger");
@@ -665,6 +769,7 @@ tabs.forEach((t, i) => {
     n.focus(); choose(n.getAttribute("aria-controls"), false);
   });
 });
+document.querySelectorAll("[data-go]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); choose(a.dataset.go, true); }));
 document.querySelectorAll("[data-who]").forEach(b => b.addEventListener("click", () => { whoSelect.value = b.dataset.who; }));
 
 /* раздел по ссылке: #montazh или ?for=montazh (партнёрские ссылки с UTM) */
