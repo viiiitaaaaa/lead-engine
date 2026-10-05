@@ -6,3 +6,6 @@ __pycache__/
 .venv/
 dashboard/*.html
 !dashboard/template.html
+
+# образцы картинок из интернета (Pinterest) — не наши права, в git не кладём
+site/img/obrazcy/

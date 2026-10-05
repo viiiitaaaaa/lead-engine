@@ -116,6 +116,8 @@ a{color:inherit}
 .slides{position:absolute;inset:0}
 .slides .ph{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;opacity:0;transition:opacity 1.2s ease}
 .slides .ph.is-on{opacity:1}
+.ph.has-photo::before{display:none} /* полосы-заглушка только там, где фото ещё нет */
+.slides .ph img{position:absolute;inset:0}
 .slides .ph:nth-child(2){background:linear-gradient(200deg,var(--ph1) 0%,var(--ph2) 50%,var(--ph3) 100%)}
 .slides .ph:nth-child(3){background:linear-gradient(120deg,var(--ph2) 0%,var(--ph1) 60%,var(--ph3) 100%)}
 .slides .ph:nth-child(5){background:linear-gradient(240deg,var(--ph2) 0%,var(--ph3) 70%)}
@@ -305,7 +307,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 <section class="hero">
   <div class="slides" id="slides" aria-roledescription="слайдер" aria-label="Фото объектов">
     <!-- по слайду на каждого клиента; подпись ведёт в его раздел. Фото: 2560×1440, слева спокойно (там текст) -->
-    <figure class="ph slide is-on" data-photo="fasad" aria-roledescription="слайд" aria-label="1 из 6"><figcaption><a href="#sobstvennik" data-go="sobstvennik">Владельцу дома →</a><br>Фото: стеклянный фасад резиденции вечером</figcaption></figure>
+    <!-- ОБРАЗЕЦ с Pinterest (её выбор 05.10): на запуск заменить на перерисованное/своё фото -->
+    <figure class="ph slide is-on has-photo" data-photo="fasad" aria-roledescription="слайд" aria-label="1 из 6"><img src="img/obrazcy/pin_01.jpg" alt="Резиденция в классическом стиле с бассейном и садом вечером" style="object-position:50% 66%" fetchpriority="high"><figcaption><a href="#sobstvennik" data-go="sobstvennik">Владельцу дома →</a></figcaption></figure>
     <figure class="ph slide" data-photo="kondicionery-dom" aria-roledescription="слайд" aria-label="2 из 6"><figcaption><a href="#pomoshchnik" data-go="pomoshchnik">Помощнику владельца →</a><br>Фото: спальня, скрытый кондиционер</figcaption></figure>
     <figure class="ph slide" data-photo="shtory" aria-roledescription="слайд" aria-label="3 из 6"><figcaption><a href="#dizayner" data-go="dizayner">Дизайнеру →</a><br>Фото: шторы в гостиной с панорамными окнами</figcaption></figure>
     <figure class="ph slide" data-photo="konvektory" aria-roledescription="слайд" aria-label="4 из 6"><figcaption><a href="#montazh" data-go="montazh">Монтажнику →</a><br>Фото: внутрипольные конвекторы у панорамного окна</figcaption></figure>
