@@ -141,16 +141,17 @@ a{color:inherit}
   .hero > .slides .ph figcaption{display:none} /* на телефоне подпись слайда мешает заголовку; разделы — ниже */
 }
 .hero > .slides .ph::after{content:"";position:absolute;inset:0;
-  /* затемнение только под текстом слева; справа фото открыто (её замечание 05.10 «картинку плохо видно») */
-  background:linear-gradient(90deg,rgb(var(--shade)/.38) 0%,rgb(var(--shade)/.14) 40%,transparent 60%),
-             linear-gradient(0deg,rgb(var(--shade)/.2) 0%,transparent 25%)}
+  /* градиент под текстом слева (её просьба 05.10 «чтобы было лучше видно текст»); справа фото открыто
+     (раньше: «картинку плохо видно») — поэтому плотно только у текста и плавно сходит на нет к середине */
+  background:linear-gradient(90deg,rgb(var(--shade)/.66) 0%,rgb(var(--shade)/.5) 28%,rgb(var(--shade)/.2) 48%,transparent 66%),
+             linear-gradient(0deg,rgb(var(--shade)/.3) 0%,transparent 30%)}
 .hero h1,.hero .lead,.hero .eyebrow,.hero .dirs{text-shadow:0 2px 24px rgb(var(--shade)/.75),0 1px 4px rgb(var(--shade)/.6)}
 .slides .ph.has-photo img{filter:none}
 /* светлые кадры: под текстом слева чуть плотнее, справа фото открыто */
-.hero > .slides .ph.light::after{background:linear-gradient(90deg,rgb(var(--shade)/.62) 0%,rgb(var(--shade)/.3) 42%,transparent 62%),
-  linear-gradient(0deg,rgb(var(--shade)/.25) 0%,transparent 25%)}
+.hero > .slides .ph.light::after{background:linear-gradient(90deg,rgb(var(--shade)/.74) 0%,rgb(var(--shade)/.58) 30%,rgb(var(--shade)/.25) 50%,transparent 68%),
+  linear-gradient(0deg,rgb(var(--shade)/.32) 0%,transparent 30%)}
 @media (max-width:860px){ /* на телефоне текст во всю ширину — ровное затемнение */
-  .hero > .slides .ph::after{background:linear-gradient(180deg,rgb(var(--shade)/.38) 0%,rgb(var(--shade)/.28) 60%,rgb(var(--shade)/.5) 100%)}}
+  .hero > .slides .ph::after,.hero > .slides .ph.light::after{background:linear-gradient(180deg,rgb(var(--shade)/.5) 0%,rgb(var(--shade)/.42) 60%,rgb(var(--shade)/.62) 100%)}}
 .hero > .slides .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:24px;text-align:right;z-index:1}
 .hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(28px,3cqi,56px);padding-inline:var(--gut)}
 .hero-text{display:grid;gap:28px;max-width:1120px;min-width:0}
