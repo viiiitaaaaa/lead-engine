@@ -125,14 +125,15 @@ def form_section(who="sobstvennik", title="Записаться на встре�
 </section>'''
 
 
-def proof(extra=""):
+def proof(extra="", title="Своё производство климата",
+          lead="Вентиляцию, осушение бассейнов и кондиционирование делаем на своём заводе в Переславле-Залесском. Расчёт, пусконаладку, сервис и запчасти даёт сам производитель."):
     ex = f'<p class="lead" style="margin-top:8px">{extra}</p>' if extra else ""
     return f'''<section class="section" id="o-nas">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Почему нам доверяют</span>
-      <h2>Своё производство климата</h2>
-      <p class="lead">Вентиляцию, осушение бассейнов и кондиционирование делаем на своём заводе в Переславле-Залесском. Расчёт, пусконаладку, сервис и запчасти даёт сам производитель.</p>{ex}
+      <h2>{title}</h2>
+      <p class="lead">{lead}</p>{ex}
     </div>
     <div class="facts">
       <div><b class="num">1961</b><span>австрийский бренд климатического оборудования Frivent</span></div>
@@ -196,6 +197,8 @@ PAGES = [
    ("Вы работаете с готовыми домами?", "Да: перепланируем зоны, обустраиваем СПА, кинозал или винную комнату, обновляем интерьер и сад."),
    ("С какими домами вы работаете?", "С загородными резиденциями премиум-класса на Новой Риге, Рублёвке и Ильинском шоссе."),
   ],
+  # владельцу — без техники (её правка 06.10)
+  proof=dict(title="Нам доверяют свой дом", lead="Бренд с 1961 года, в Москве с 1997-го и свой завод. За качество дома отвечаем сами, а не перекладываем на поставщиков."),
   form=dict(title="Записаться на встречу", button="Записаться на встречу")),
 
  dict(file="assistentu.html", who="pomoshchnik", img="s2", pos="50% 60%", light=True,
@@ -513,7 +516,7 @@ def page_html(p):
   </div>
 </section>
 
-{proof(p.get("proof_extra", ""))}
+{proof(p.get("proof_extra", ""), **p.get("proof", {}))}
 
 <section class="section alt" id="voprosy">
   <div class="wrap faq-wrap">

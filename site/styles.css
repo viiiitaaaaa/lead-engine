@@ -25,13 +25,13 @@
   --ph1:#d6ccc2; --ph2:#b8ab9c; --ph3:#8c7f71; /* место под фото */
   --error:#a3361f;
   /* шрифты — её выбор 06.10: LT Remark — заголовки, Tilda Sans — текст */
-  /* шкала размеров текста — 5 ступеней, только их и использовать (её замечание 06.10 «мелко и прыгает») */
-  --fs-xs:16px;   /* подписи: надписи заглавными, подписи полей, подвал, кнопки */
-  --fs-s:18px;    /* второстепенный: пояснения, этапы, меню, карточки */
-  --fs-m:20px;    /* основной текст */
-  --fs-l:23px;    /* крупный: вводный текст, цитаты, названия в карточках */
-  --fs-h3:30px;   /* подзаголовки */
-  --fs-h2:clamp(34px,3.4vw,48px); /* заголовки разделов */
+  /* шкала размеров текста — её выбор 06.10 «как у конкурентов» (Резников, Приоритет); только эти ступени */
+  --fs-xs:13px;   /* подписи: надписи заглавными, подписи полей, подвал, кнопки */
+  --fs-s:15px;    /* второстепенный: пояснения, этапы, меню, карточки */
+  --fs-m:17px;    /* основной текст */
+  --fs-l:19px;    /* крупный: вводный текст, цитаты, названия в карточках */
+  --fs-h3:26px;   /* подзаголовки */
+  --fs-h2:clamp(34px,3.8vw,56px); /* заголовки разделов */
   --display:"LT Remark","Times New Roman",Georgia,serif;
   --body:"Tilda Sans","Segoe UI",Arial,sans-serif;
   --wrap:none;       /* сайт во всю ширину экрана (её решение 05.10); длину строк держат max-width в ch у текстов */
@@ -41,7 +41,7 @@
 }
 
 
-@media (max-width:860px){:root{--fs-xs:15px;--fs-s:17px;--fs-m:18px;--fs-l:20px;--fs-h3:26px;--fs-h2:34px}}
+@media (max-width:860px){:root{--fs-xs:13px;--fs-s:15px;--fs-m:16px;--fs-l:18px;--fs-h3:22px;--fs-h2:30px}}
 
 /* reset (по мотивам Josh W. Comeau) */
 *,*::before,*::after{box-sizing:border-box}
@@ -55,7 +55,7 @@ p,h1,h2,h3,h4{overflow-wrap:break-word}
 [hidden]{display:none!important}
 
 body{
-  background:var(--paper);color:var(--ink);font:500 var(--fs-m)/1.65 var(--body);
+  background:var(--paper);color:var(--ink);font:400 var(--fs-m)/1.65 var(--body);
   /* едва заметное зерно */
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .17 0 0 0 0 .28 0 0 0 .04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -92,7 +92,7 @@ a{color:inherit}
 .nav .nav-link{font-size:var(--fs-s);text-decoration:none;color:var(--ink-soft);transition:color .2s,box-shadow .2s;white-space:nowrap;padding-block:6px}
 .nav .nav-link.on{color:var(--ink);box-shadow:inset 0 -2px 0 var(--wine)} /* выбранный раздел */
 .logo small{white-space:nowrap}
-@media (max-width:1760px) and (min-width:1281px){.nav{gap:14px}.nav .nav-link{font-size:var(--fs-xs)}}
+@media (max-width:1760px) and (min-width:1281px){.nav{gap:14px}.nav .nav-link{font-size:var(--fs-s)}}
 @media (max-width:1540px) and (min-width:1281px){.top .phone{display:none}} /* телефон есть в форме и в меню телефона */
 .nav .nav-link:hover{color:var(--ink)}
 .top-contacts{display:flex;align-items:center;gap:18px}
