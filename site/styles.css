@@ -26,12 +26,12 @@
   --error:#a3361f;
   /* шрифты — её выбор 06.10: LT Remark — заголовки, Tilda Sans — текст */
   /* шкала размеров текста — её выбор 06.10 «как у конкурентов» (Резников, Приоритет); только эти ступени */
-  --fs-xs:13px;   /* подписи: надписи заглавными, подписи полей, подвал, кнопки */
-  --fs-s:15px;    /* второстепенный: пояснения, этапы, меню, карточки */
-  --fs-m:17px;    /* основной текст */
-  --fs-l:19px;    /* крупный: вводный текст, цитаты, названия в карточках */
-  --fs-h3:26px;   /* подзаголовки */
-  --fs-h2:clamp(34px,3.8vw,56px); /* заголовки разделов */
+  --fs-xs:11.5px;   /* подписи: надписи заглавными, подписи полей, подвал, кнопки */
+  --fs-s:13px;    /* второстепенный: пояснения, этапы, меню, карточки */
+  --fs-m:15px;    /* основной текст */
+  --fs-l:17px;    /* крупный: вводный текст, цитаты, названия в карточках */
+  --fs-h3:22px;   /* подзаголовки */
+  --fs-h2:clamp(30px,3.3vw,48px); /* заголовки разделов */
   --display:"LT Remark","Times New Roman",Georgia,serif;
   --body:"Tilda Sans","Segoe UI",Arial,sans-serif;
   --wrap:none;       /* сайт во всю ширину экрана (её решение 05.10); длину строк держат max-width в ch у текстов */
@@ -41,7 +41,7 @@
 }
 
 
-@media (max-width:860px){:root{--fs-xs:13px;--fs-s:15px;--fs-m:16px;--fs-l:18px;--fs-h3:22px;--fs-h2:30px}}
+@media (max-width:860px){:root{--fs-xs:11.5px;--fs-s:13px;--fs-m:14px;--fs-l:16px;--fs-h3:19px;--fs-h2:26px}}
 
 /* reset (по мотивам Josh W. Comeau) */
 *,*::before,*::after{box-sizing:border-box}
@@ -167,7 +167,7 @@ a{color:inherit}
 .hero-text .lead{max-width:62ch}
 .hero .eyebrow{color:var(--on-dark-accent)}
 .hero .lead{color:var(--on-dark-soft)}
-.hero h1{font-size:clamp(40px,min(5cqi,10svh),96px);line-height:1.05}
+.hero h1{font-size:clamp(34px,min(4.4cqi,8.8svh),84px);line-height:1.05}
 .hero-text{gap:clamp(14px,1.4cqi,24px)}
 .hero .lead{font-size:var(--fs-l)}
 .hero .dirs{font-size:var(--fs-xs);max-width:min(760px,56cqi)} /* не заезжать под стрелки слайдера */
@@ -177,7 +177,7 @@ a{color:inherit}
 @media (max-width:860px){
   .hero{height:auto;min-height:calc(100svh - 72px)}
   .hero .wrap{padding-inline:var(--gut);padding-block:48px 56px}
-  .hero h1{font-size:clamp(34px,10vw,52px)}
+  .hero h1{font-size:clamp(30px,9vw,46px)}
   .hero .lead{font-size:var(--fs-m)}
 }
 .hero h1 em{font-style:normal;color:var(--on-dark-accent)}
