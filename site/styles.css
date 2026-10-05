@@ -396,3 +396,11 @@ h3,.who-title,.pain,.quote p,.faq-item summary,.contacts b,.steps h3,.steps .n,.
 
 /* как у Шрифтотеки: крупные заголовки плотные */
 h1,h2,.facts b{letter-spacing:-.03em}
+
+/* полоса прокрутки как у myskotom.ru (её просьба 06.10): широкая, квадратный ползунок, в цветах сайта */
+html{scrollbar-color:#c9c0b5 var(--paper);scrollbar-width:auto} /* Firefox */
+::-webkit-scrollbar{width:16px;height:16px}
+::-webkit-scrollbar-track{background:var(--paper)}
+::-webkit-scrollbar-thumb{background:#c9c0b5;border:0;border-radius:0}
+::-webkit-scrollbar-thumb:hover{background:#a99f93}
+::-webkit-scrollbar-corner{background:var(--paper)}
