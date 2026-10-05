@@ -1,0 +1,244 @@
+<title>Сайты конкурентов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Golos+Text:wght@400;500;600&display=swap">
+<style>
+/* Рабочий разбор: сводка «что берём» сверху, ниже группы сайтов, у каждого скрины ПК+телефон и три колонки выводов */
+:root{
+  --bg:#eef0ee; --surface:#fbfbfa; --ink:#1d2321; --muted:#5d6763; --line:#d5dad7;
+  --accent:#8a6a3d; --good:#2f6b4f; --bad:#a1462f; --take:#8a6a3d;
+  --chip-good:#dfece4; --chip-bad:#f3e1db; --chip-take:#efe6d8;
+  --display:"Onest",system-ui,sans-serif; --body:"Golos Text",system-ui,sans-serif;
+  --gut:clamp(16px,4vw,48px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161a19; --surface:#1e2321; --ink:#e7ebe9; --muted:#9aa5a0; --line:#323a37;
+  --accent:#c9a46e; --good:#7cc4a0; --bad:#e58e75; --take:#c9a46e;
+  --chip-good:#1f3a2e; --chip-bad:#45251d; --chip-take:#3d3220; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#161a19; --surface:#1e2321; --ink:#e7ebe9; --muted:#9aa5a0; --line:#323a37;
+  --accent:#c9a46e; --good:#7cc4a0; --bad:#e58e75; --take:#c9a46e;
+  --chip-good:#1f3a2e; --chip-bad:#45251d; --chip-take:#3d3220; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-inline:var(--gut);padding-block:32px 80px}
+main{max-width:1180px;margin:0 auto;display:grid;gap:56px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(30px,5vw,48px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(22px,3vw,30px);font-weight:600}
+h3{font-size:20px;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow{font:600 12px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lead{max-width:68ch;color:var(--muted);font-size:17px}
+header{display:grid;gap:14px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--muted);font-size:14px}
+
+/* сводка */
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px;display:grid;gap:14px;align-content:start;min-width:0}
+.box ol,.box ul{margin:0;padding-left:1.3em;display:grid;gap:10px}
+.box li::marker{color:var(--muted);font-family:var(--display)}
+.box.take h2{color:var(--take)} .box.avoid h2{color:var(--bad)}
+.src{color:var(--muted);font-size:13px}
+
+/* группы и карточки */
+.group{display:grid;gap:28px}
+.group > header{border-top:2px solid var(--ink);padding-top:16px}
+.site{display:grid;gap:18px;padding-bottom:36px;border-bottom:1px solid var(--line)}
+.site:last-child{border-bottom:0}
+.site-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
+.chip{font:600 12px/1 var(--display);padding:6px 10px;border-radius:99px;letter-spacing:.02em}
+.chip.good{background:var(--chip-good);color:var(--good)}
+.chip.bad{background:var(--chip-bad);color:var(--bad)}
+.chip.take{background:var(--chip-take);color:var(--take)}
+.shots{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,190px);gap:14px;align-items:start}
+.shots figure{margin:0;display:grid;gap:6px;min-width:0}
+.shots img{width:100%;height:auto;border:1px solid var(--line);border-radius:6px;display:block;background:var(--surface)}
+.shots figcaption{font-size:13px;color:var(--muted)}
+.notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.notes > div{display:grid;gap:8px;align-content:start;min-width:0}
+.notes h4{margin:0;font:600 13px/1 var(--display);letter-spacing:.08em;text-transform:uppercase}
+.notes .g h4{color:var(--good)} .notes .b h4{color:var(--bad)} .notes .t h4{color:var(--take)}
+.notes ul{margin:0;padding-left:1.1em;display:grid;gap:6px;font-size:15px}
+.facts{font-size:14px;color:var(--muted)}
+.inspo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:24px}
+.inspo figure{margin:0;display:grid;gap:8px}
+.inspo img{width:100%;border-radius:6px;border:1px solid var(--line)}
+.inspo figcaption{font-size:15px} .inspo b{font-family:var(--display)}
+@media (max-width:760px){
+  .notes{grid-template-columns:1fr}
+  .shots{grid-template-columns:minmax(0,1fr) minmax(0,110px)}
+}
+</style>
+
+<main>
+<header>
+  <span class="eyebrow">lead-engine · сайт · шаг 0</span>
+  <h1>Сайты конкурентов: что берём, чего не делаем</h1>
+  <p class="lead">16 сайтов в трёх группах плюс 4 образца из архива Inspo. У каждого сайта первый экран на компьютере и на телефоне. По клику открывается страница целиком (до 7 000 пикселей). Ниже по каждому: что хорошо, что плохо и что берём себе.</p>
+  <div class="meta"><span>Снято 05.10.2026</span><span>Скрипт: parsers/sayty_konkurentov.py</span><span>Menerga — снимок первого прохода, с плашкой cookie</span></div>
+</header>
+
+<section class="summary" aria-label="Сводка">
+  <div class="box take">
+    <h2>Берём себе</h2>
+    <ol>
+      <li><b>Первый экран про ощущение, а не про железо.</b> Swegon пишет «Feel good inside», Menerga ставит установку в интерьер СПА. У нас: «тихо, сухо, свежо» и фото дома, а не установки. <span class="src">Swegon, Menerga, Louis Poulsen</span></li>
+      <li><b>Цифры масштаба в первом абзаце</b>: площадь домов, территория, год основания. «Резиденции 500–7 000 м², Рублёвка, с 1992». <span class="src">Резников, Приоритет</span></li>
+      <li><b>Разделы по аудиториям.</b> У Fedorova отдельно «Для заказчиков» и «Для поставщиков», у Fisch &amp; Tisch целая страница для профессионалов. Это совпадает с нашим «Я — …». <span class="src">Fedorova, Fisch &amp; Tisch</span></li>
+      <li><b>«Посёлки, где стоят наши дома»</b>: список или карта с названиями. Владелец узнаёт соседей, ассистент видит территорию. <span class="src">Резников, Приоритет, Монолит, Усов</span></li>
+      <li><b>«Все этапы — один подрядчик»</b>: шкала этапов от обследования до сервиса. <span class="src">Резников, Акварай</span></li>
+      <li><b>Строка с марками оборудования, которое обслуживаем.</b> Сразу видно, что сервис чужого европейского оборудования — к нам. <span class="src">АВГ, Теплосервис</span></li>
+      <li><b>Кнопка «Записаться на встречу» вместо «Заказать звонок».</b> В форме: имя, телефон, адрес объекта, площадь, «участок, пожелания, сроки — коротко». <span class="src">Резников</span></li>
+      <li><b>Мессенджеры в шапке</b>: Telegram, WhatsApp, MAX. Они есть у всех российских сайтов, кроме Frivent. <span class="src">все RU-сайты</span></li>
+    </ol>
+  </div>
+  <div class="box avoid">
+    <h2>Не делаем</h2>
+    <ul>
+      <li><b>Яркие цвета, много кнопок, калькуляторы, акции, квизы.</b> Так выглядит «сервис по вызову» и массовая стройка, а не премиум. <span class="src">АВГ, Монолит, Hotwell, Акварай</span></li>
+      <li><b>Стоковые фото с вклеенной установкой</b> (город, ледовая арена, теплица). <span class="src">Frivent</span></li>
+      <li><b>Пустой первый экран</b>, пока грузится слайдер или видео: белое поле у Усова, пустой верх у Frivent на телефоне. <span class="src">Усов, Frivent, Euroclima</span></li>
+      <li><b>Сайт без текста</b>: только видео и фото. Яндекс и ИИ-поисковики такой сайт не прочитают. <span class="src">Fedorova (213 слов), Euroclima (97)</span></li>
+      <li><b>Кнопка «Play» поверх заголовка на телефоне</b>: закрывает главную фразу. <span class="src">Резников</span></li>
+      <li><b>Тёмный фон с золотом.</b> Это уже стиль Резникова, главного конкурента по концепции. Наша светлая бежево-бронзовая гамма будет отличаться.</li>
+      <li><b>Рендеры вместо фото и тонкий капс в заголовках</b>: выглядит как шаблон. <span class="src">Приоритет</span></li>
+      <li><b>Плашка cookie на половину экрана.</b> Нужна одна тонкая строка внизу. <span class="src">York, Swegon</span></li>
+    </ul>
+  </div>
+</section>
+
+<div id="groups"></div>
+
+<section class="group" aria-labelledby="inspo-h">
+  <header><span class="eyebrow">Не конкуренты · образцы настроения</span><h2 id="inspo-h">Inspo: 4 образца «тихой роскоши»</h2></header>
+  <div class="inspo">
+    <figure><img src="img/inspo_louispoulsen-com.webp" alt="Louis Poulsen: лампа в руке человека в тёплом вечернем свете" loading="lazy"><figcaption><b>Louis Poulsen.</b> Продукт показан в руке человека, в тёплом свете. Так можно показать и климат: через человека в доме, а не через железо.</figcaption></figure>
+    <figure><img src="img/inspo_fischundtisch-de--en-professionals.webp" alt="Fisch &amp; Tisch: страница для профессионалов, стол на фото с плавной нижней кромкой" loading="lazy"><figcaption><b>Fisch &amp; Tisch · Professionals.</b> Отдельная страница для архитекторов и дизайнеров. Это образец нашего раздела «Я — дизайнер».</figcaption></figure>
+    <figure><img src="img/inspo_snohetta-com.webp" alt="Snøhetta: одно предложение о себе крупным шрифтом, ниже список дисциплин" loading="lazy"><figcaption><b>Snøhetta.</b> Одно крупное предложение о себе, ниже направления простым списком. Без кнопок и слайдеров.</figcaption></figure>
+    <figure><img src="img/inspo_kkaa-co-jp.webp" alt="Kengo Kuma: фото объекта на весь экран, меню текстом справа" loading="lazy"><figcaption><b>Kengo Kuma (KKAA).</b> Фото на весь экран и меню текстом. Самая тихая подача из всех.</figcaption></figure>
+  </div>
+</section>
+</main>
+
+<script>
+const G = [
+ {id:"g1", eyebrow:"Группа 1 · 7 сайтов", title:"Производители оборудования: Frivent и европейские марки",
+  intro:"Сайты для инженеров и проектировщиков: каталог, подборщики, документы, почти всё по-английски. Частному клиенту они ничего не объясняют. Для нас это не образец лендинга, а фон: показывают, как марки сами себя подают.",
+  sites:[
+  {s:"frivent",n:"Frivent (мы)",u:"https://frivent.ru",chip:["bad","как сейчас — не годится для лендинга"],
+   f:"382 слова · ни одного подзаголовка · одна кнопка «Обратный звонок» · мессенджеров нет",
+   g:["Сразу видно все направления: жильё, бассейны, ледовые арены, музеи","Телефон и почта в шапке"],
+   b:["Заголовок капсом на красно-синей полосе","Стоковые фото с вклеенной установкой: город, теплица, склад","На телефоне первый экран пустой, плитки начинаются ниже","Частный дом стоит в одном ряду с агрокомплексом и складом"],
+   t:["Frivent на нашем сайте — только доказательство «свой завод с 1961 года», а не образец","Направление «осушение бассейна» — у нас фото бассейна в доме, без установки"]},
+  {s:"systemair",n:"Systemair",u:"https://www.systemair.com",chip:["take","берём один приём"],
+   f:"810 слов · 7 смысловых блоков · подборщики оборудования · форм на главной нет",
+   g:["Разрез установки с потоками воздуха: техника выглядит понятно","Блок «Certified performance» — сертификаты отдельным разделом"],
+   b:["Заголовок про хладагент R290 — частному клиенту непонятно","Синий корпоративный стиль, всё для инженеров"],
+   t:["Для раздела «Монтажнику»: схема-разрез вместо фото коробки","Сертификаты и документы — отдельным коротким блоком"]},
+  {s:"swegon",n:"Swegon",u:"https://www.swegon.com",chip:["take","берём слоган-ощущение"],
+   f:"Слоган «Feel good inside» («хорошо внутри») · меню из 6 разделов · кнопка «Contact»",
+   g:["Главная фраза про ощущение человека, а не про технику","Раздел «Why Swegon?» — прямой ответ «почему мы»"],
+   b:["Первый экран снова занят установкой","Плашка cookie закрывает полэкрана"],
+   t:["Наш первый экран: ощущение («тихо, сухо, свежо, без сквозняков») вместо названия техники","Блок «Почему мы» короткими пунктами"]},
+  {s:"menerga",n:"Menerga",u:"https://www.menerga.com",chip:["take","берём подачу"],
+   f:"1 010 слов · запчасти и техсервис в главном меню · магазин запчастей",
+   g:["Установка стоит в интерьере дорогого СПА с бассейном: техника показана в жизни владельца","«Spare parts» и «Technical Service» — пункты главного меню"],
+   b:["Оранжевая установка спорит с интерьером","Текст на полупрозрачной плашке читается плохо"],
+   t:["Если показываем оборудование — только в интерьере дома, тёплый свет, бассейн","Сервис и запчасти — в главное меню, а не в подвал сайта"]},
+  {s:"euroclima",n:"Euroclima",u:"https://www.euroclima.com",chip:["bad","контрпример"],
+   f:"97 слов на главной · только слайдер новостей · 5 языков",
+   g:["Строгий логотип с подписью «We care for better air»"],
+   b:["Главная — один слайдер с новостью про увлажнители","Ни слова о том, кому и зачем это нужно"],
+   t:["Ничего не берём: так делать нельзя"]},
+  {s:"prime",n:"PRIME",u:"https://prime-t.com",chip:["take","берём сегменты объектов"],
+   f:"442 слова · сегменты: жилая недвижимость, ЦОД, фарма, промышленность · Telegram и WhatsApp",
+   g:["Тёмный строгий стиль, крупный спокойный шрифт","Объекты разбиты по типам: культурные центры, жильё, фарма, ЦОД"],
+   b:["Правый блок слайдера пустой, пока не загрузится","Логотипа на первом экране не видно"],
+   t:["Для раздела «Коммерция»: объекты по типам (общепит, клиники, фитнес, ЦОД)"]},
+  {s:"york",n:"York",u:"https://www.york.com",chip:["bad","контрпример"],
+   f:"Сайт Johnson Controls · окно cookie на весь экран · открывается дольше 45 секунд",
+   g:["Фраза про 150 лет и «самые престижные здания»"],
+   b:["Огромное окно согласия закрывает весь первый экран","Грузится очень долго"],
+   t:["Возраст бренда одной строкой: «Frivent — с 1961 года»"]}
+ ]},
+ {id:"g2", eyebrow:"Группа 2 · 7 сайтов из нашей базы", title:"Инженерные и строительные компании «под ключ»",
+  intro:"Это те, кто уже работает в наших посёлках. Подача почти у всех массовая. Ближе всех к премиуму «Приоритет». Hotwell и «Монолит» — массовая стройка, они здесь для сравнения.",
+  sites:[
+  {s:"avgis",n:"АВГ инженерный сервис",u:"https://avgis.ru",chip:["take","берём строку марок и районы"],
+   f:"1 012 слов · 57 кейсов · рейтинг Яндекса в шапке · аварийный выезд 24/7 · Telegram",
+   g:["На первом экране марки, с которыми работают (Vaillant, Buderus, Viessmann…), и районы (Нахабино, Истра, Одинцово)","Счётчик «57 опубликованных кейсов», вопросы и ответы","Плашка «Аварийный выезд 24/7»"],
+   b:["Синий фон, оранжевые слова, сварка на фото: выглядит как срочный ремонт","Много кнопок и плашек сразу"],
+   t:["Строка марок европейского оборудования, которое обслуживаем","Районы работы одной строкой","Раздел вопросов и ответов"]},
+  {s:"teploservis",n:"Теплосервис (Viessmann)",u:"https://viessmann-profi.ru",chip:["take","берём адрес"],
+   f:"543 слова · адрес на Рублёво-Успенском шоссе в шапке · Telegram, WhatsApp, MAX, чат Jivo",
+   g:["Адрес на Рублёвке в шапке — сразу «свои, местные»","Мессенджеры рядом с телефоном","Портфолио котельных в домах"],
+   b:["Красная полоса меню и слайдер с котлами — стиль каталога запчастей","Котельные сняты на телефон"],
+   t:["Если будет адрес на нашей территории — в шапку","Три мессенджера рядом с телефоном"]},
+  {s:"superspa",n:"Superspa",u:"https://superspa.ru",chip:["bad","контрпример"],
+   f:"1 427 слов · корзина и каталог мебели на главной · 4 мессенджера",
+   g:["Понятно разделены: строительство, обслуживание, проекты","Есть раздел «Как мы делаем»"],
+   b:["Жёлтый цвет и капс на кнопках","Корзина и «скамейка из липы» рядом с хаммамом под ключ"],
+   t:["Хаммам, сауна, СПА — отдельной строкой в нашем «Образ жизни»"]},
+  {s:"aquarai",n:"Акварай",u:"https://aquarai.ru",chip:["take","берём этапы и вопросы"],
+   f:"3 289 слов · «7 шагов к собственному бассейну» · цены · вопросы и ответы · длинная форма расчёта",
+   g:["Этапы работы списком","Блок вопросов и ответов","Две заявки: быстрая и полная"],
+   b:["«От недорогого дачного варианта» — сразу не премиум","Оранжевая и голубая кнопки, зелёная плашка звонка","Форма на 15 полей"],
+   t:["Этапы бассейна в нашей шкале «от обследования до сервиса»","Короткая и полная форма — оставить только короткую"]},
+  {s:"prioritet",n:"Приоритет Luxury",u:"https://prioritet-luxury.ru",chip:["take","ближе всех к нам"],
+   f:"365 слов · карточки объектов с площадью и бюджетом · «Где мы строим дома» — список посёлков",
+   g:["«Не просто строим загородные дома, мы обустраиваем жизнь»","Карточки: «Коттедж 1 200 м² · 500 млн ₽», «Особняк 2 360 м² · 1,5 млрд ₽»","Услуги: генподряд, технический заказчик, отделка","Посёлки списком: Завидово, Ренессанс Парк, Березки River Village…"],
+   b:["Рендеры вместо фото построенных домов","Тонкий капс в заголовке читается тяжело","Только «Оставить заявку», без встречи и выезда"],
+   t:["Карточки объектов с площадью (бюджет — по её решению)","Список посёлков","Услуга «технический заказчик» — подходит ассистентам владельца"]},
+  {s:"hotwell",n:"Hotwell",u:"https://www.hotwell.com",chip:["bad","массовая стройка"],
+   f:"3 153 слова · дома из СИП-панелей · счётчик «Построено 4 147» · каталог бань и гаражей",
+   g:["Живые цифры: построено, объекты 2026, строим сейчас","Цитата клиента прямо на фото"],
+   b:["«Добро пожаловать на сайт» — пустая фраза","Каталог бань, беседок и хозблоков"],
+   t:["Цитату клиента на фото — если будут настоящие отзывы"]},
+  {s:"monolithome",n:"Монолит Домстрой",u:"https://monolithome.ru",chip:["bad","массовая стройка"],
+   f:"4 340 слов · калькулятор · квиз · избранное и сравнение · «Акции» · карта построенных объектов",
+   g:["Раздел «Посёлки» и карта построенных объектов"],
+   b:["«Наша работа — ваша выгода», «от 42 т.р./м²» — разговор о дешевизне","Жёлтые кнопки, калькулятор, квиз, плашки"],
+   t:["Карту объектов по посёлкам — но тихо, без цен"]}
+ ]},
+ {id:"g3", eyebrow:"Группа 3 · 3 сайта", title:"Архитектурные бюро загородного премиума",
+  intro:"Самые сильные сайты выборки. Резников — главный конкурент по концепции: «полный цикл, один подрядчик», в меню у него есть «Оснащение».",
+  sites:[
+  {s:"reznikov",n:"Reznikov Studio",u:"https://reznikov-studio.ru",chip:["take","лучший в выборке · главный конкурент"],
+   f:"948 слов · резиденции 500–7 000 м² · с 1992 · «Двенадцать этапов — один подрядчик» · «Посёлки, где стоят наши дома» · запись на встречу",
+   g:["Заголовок «Архитектура, которая переживает моду» и сразу цифры: площадь, Рублёвка, с 1992","Обращение основателя в начале страницы","Крупные фото построенных домов с названиями","Форма: как обращаться, телефон, направление, площадь, «Участок, пожелания, сроки — коротко»","Кнопка «Записаться на встречу», меню «Оснащение»"],
+   b:["Страница очень длинная, 22 000 пикселей","На телефоне кнопка «Play» закрывает заголовок","Только собственник: монтажнику и дизайнеру тут нечего делать"],
+   t:["Цифры масштаба в первом абзаце","«Все этапы — один подрядчик»","«Посёлки, где стоят наши дома»","Форму с площадью и коротким полем «пожелания»","«Записаться на встречу» вместо «Заказать звонок»"]},
+  {s:"fedorova",n:"Fedorova Architects",u:"https://fedorova.ru",chip:["take","берём разделы по аудиториям"],
+   f:"213 слов · сайт из одного экрана с видео · разделы «Для заказчиков» и «Для поставщиков» · публикации в СМИ",
+   g:["Видео на весь экран: камень, вход, человек — дорого без слов","Меню по типам: архитектура, виллы, интерьеры","Отдельно «Для заказчиков» и «Для поставщиков», «Признание»"],
+   b:["Текста почти нет: поисковики ничего не увидят","Всё спрятано в меню-гамбургер"],
+   t:["Разделы по аудиториям в меню","Блок «Признание»: публикации и награды, если будут"]},
+  {s:"usov",n:"Бюро Михаила Усова",u:"https://usov.archi",chip:["bad","берём только названия"],
+   f:"405 слов · слайдер на 110 проектов · названия с посёлками: Agalarov Estate, Forest Stone Club, Барвиха",
+   g:["Проекты названы с посёлком: «Вилла в посёлке Agalarov Estate», «Резиденция Barvikha»"],
+   b:["Первый экран белый, пока грузится слайдер","Нет ни одного предложения о том, что делает бюро"],
+   t:["Называть объекты с посёлком: «Дом в Жуковке, 1 400 м²»"]}
+ ]}
+];
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const li = a => a.map(x=>`<li>${esc(x)}</li>`).join("");
+document.getElementById("groups").outerHTML = G.map(g=>`
+<section class="group" aria-labelledby="${g.id}">
+  <header><span class="eyebrow">${g.eyebrow}</span><h2 id="${g.id}">${g.title}</h2><p class="lead" style="margin-top:8px">${g.intro}</p></header>
+  ${g.sites.map(x=>`
+  <article class="site" id="${x.s}">
+    <div class="site-head"><h3>${esc(x.n)}</h3><a href="${x.u}" target="_blank" rel="noopener">${x.u.replace(/^https?:\/\/(www\.)?/,"")}</a><span class="chip ${x.chip[0]}">${x.chip[1]}</span></div>
+    <p class="facts">${esc(x.f)}</p>
+    <div class="shots">
+      <figure><a href="img/${x.s}_full.jpg" target="_blank" rel="noopener"><img src="img/${x.s}_pc.jpg" alt="${esc(x.n)}: первый экран на компьютере" loading="lazy"></a><figcaption>Компьютер · по клику страница целиком</figcaption></figure>
+      <figure><img src="img/${x.s}_mob.jpg" alt="${esc(x.n)}: первый экран на телефоне" loading="lazy"><figcaption>Телефон</figcaption></figure>
+    </div>
+    <div class="notes">
+      <div class="g"><h4>Хорошо</h4><ul>${li(x.g)}</ul></div>
+      <div class="b"><h4>Плохо</h4><ul>${li(x.b)}</ul></div>
+      <div class="t"><h4>Берём себе</h4><ul>${li(x.t)}</ul></div>
+    </div>
+  </article>`).join("")}
+</section>`).join("");
+</script>
