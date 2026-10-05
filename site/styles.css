@@ -1,13 +1,8 @@
-/* шрифты — Шрифтотека myskotom.ru (её выбор источника 06.10), бесплатные для коммерции; woff2 в site/fonts/ */
+/* шрифты — её выбор 06.10: Theano Didot (крупные заголовки), Erewhon (мелкие заголовки — чёткость), Geist (текст);
+   Шрифтотека myskotom.ru / Google Fonts, бесплатные для коммерции; woff2 в site/fonts/ */
 @font-face{font-family:"Theano Didot";src:url(fonts/theano-regular.woff2) format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"ZT Neue Ralewe";src:url(fonts/ralewe-regular.woff2) format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"ZT Neue Ralewe";src:url(fonts/ralewe-medium.woff2) format("woff2");font-weight:500;font-display:swap}
 @font-face{font-family:"Erewhon";src:url(fonts/erewhon-regular.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Erewhon";src:url(fonts/erewhon-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
-@font-face{font-family:"Vela Sans";src:url(fonts/vela-light.woff2) format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"Vela Sans";src:url(fonts/vela-regular.woff2) format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"Vela Sans";src:url(fonts/vela-medium.woff2) format("woff2");font-weight:500;font-display:swap}
-@font-face{font-family:"Vela Sans";src:url(fonts/vela-semibold.woff2) format("woff2");font-weight:600 700;font-display:swap}
 @font-face{font-family:"Geist";src:url(fonts/geist-regular.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Geist";src:url(fonts/geist-medium.woff2) format("woff2");font-weight:500;font-display:swap}
 @font-face{font-family:"Geist";src:url(fonts/geist-semibold.woff2) format("woff2");font-weight:600 700;font-display:swap}
@@ -30,7 +25,7 @@
   --shade:24 21 18;  /* затемнение фото на первом экране (r g b) */
   --ph1:#d6ccc2; --ph2:#b8ab9c; --ph3:#8c7f71; /* место под фото */
   --error:#a3361f;
-  /* шрифты — пара 1 по умолчанию: Theano Didot (заголовки) + Vela Sans (текст); пары 2 и 3 — data-font (Шрифтотека, 06.10) */
+  /* шрифты — её выбор 06.10: Theano Didot + Erewhon + Geist */
   /* шкала размеров текста — её выбор 06.10 «как у конкурентов» (Резников, Приоритет); только эти ступени */
   --fs-xs:11.5px;   /* подписи: надписи заглавными, подписи полей, подвал, кнопки */
   --fs-s:13px;    /* второстепенный: пояснения, этапы, меню, карточки */
@@ -38,8 +33,9 @@
   --fs-l:17px;    /* крупный: вводный текст, цитаты, названия в карточках */
   --fs-h3:22px;   /* подзаголовки */
   --fs-h2:clamp(30px,3.3vw,48px); /* заголовки разделов */
-  --display:"Theano Didot","Times New Roman",Georgia,serif;
-  --body:"Vela Sans","Segoe UI",Arial,sans-serif;
+  --display:"Theano Didot","Times New Roman",Georgia,serif;  /* крупные заголовки */
+  --display-s:"Erewhon","Times New Roman",Georgia,serif;    /* мелкие заголовки, карточки, вопросы */
+  --body:"Geist","Segoe UI",Arial,sans-serif;              /* текст */
   --wrap:none;       /* сайт во всю ширину экрана (её решение 05.10); длину строк держат max-width в ch у текстов */
   --gut:clamp(16px,5vw,96px);
   --sec:clamp(72px,10vw,136px);
@@ -47,9 +43,7 @@
 }
 
 
-/* пары шрифтов на выбор (временно, пока она выбирает) */
-:root[data-font="2"]{--display:"ZT Neue Ralewe","Times New Roman",Georgia,serif}
-:root[data-font="3"]{--display:"Erewhon","Times New Roman",Georgia,serif;--body:"Geist","Segoe UI",Arial,sans-serif}
+
 @media (max-width:860px){:root{--fs-xs:11.5px;--fs-s:13px;--fs-m:14px;--fs-l:16px;--fs-h3:19px;--fs-h2:26px}}
 
 /* reset (по мотивам Josh W. Comeau) */
@@ -398,9 +392,6 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 
 .chip.on{background:var(--deep);color:var(--paper);border-color:var(--deep)} /* выбранный раздел каталога */
 
-/* переключатель шрифтов — временно, пока она выбирает (CONFIG.fontSwitch в app.js) */
-.fsw{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;gap:6px;align-items:center;padding:8px 10px;
-  background:var(--paper);border:1px solid var(--line);border-radius:99px;box-shadow:0 6px 24px rgb(var(--shade)/.18);font:500 13px/1 var(--body)}
-.fsw button{border:1px solid var(--line);background:var(--sand);border-radius:99px;padding:7px 12px;cursor:pointer;font:500 13px/1 var(--body)}
-.fsw button[aria-pressed="true"]{background:var(--deep);color:var(--paper);border-color:var(--deep)}
-@media (max-width:860px){.fsw{left:12px;right:12px;justify-content:center;gap:4px;padding:6px}.fsw span{display:none}.fsw button{padding:6px 8px;font-size:12px}}
+
+/* мелкие заголовки — Erewhon: у Дидо тонкие линии пропадают в мелком размере (её «нравится чёткость») */
+h3,.who-title,.pain,.quote p,.faq-item summary,.contacts b,.steps h3,.steps .n,.road h3,.cat-card h3,.pain-card h3,.serv h3,.marquee-track{font-family:var(--display-s)}
