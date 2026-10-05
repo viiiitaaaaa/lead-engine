@@ -106,6 +106,15 @@ if (pageWho && whoSelect) whoSelect.value = pageWho;
 
 /* форма заявки */
 const form = document.getElementById("lead-form");
+/* каталог: «Запросить цену» вписывает позицию в заявку и ведёт к форме */
+document.querySelectorAll("[data-ask]").forEach(b => b.addEventListener("click", e => {
+  if (!form) return;
+  e.preventDefault();
+  const note = form.elements.note, line = "Запрос цены: " + b.dataset.ask;
+  if (!note.value.includes(line)) note.value = (note.value ? note.value + "\n" : "") + line;
+  document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
+  setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);
+}));
 if (form) {
   /* метки UTM: из адреса, а если человек ушёл по ссылкам внутри сайта — из памяти вкладки */
   ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => {
