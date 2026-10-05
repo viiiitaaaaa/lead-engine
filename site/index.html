@@ -10,20 +10,19 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
 /* Сетка: во всю ширину, светлые разделы чередуются с тёмными (тёмные — плавный переход двух оттенков).
-   Основа «как у Приоритета» — глубокий синий; три варианта акцента на выбор (data-palette), правило в site/CLAUDE.md. */
+   Цвет — «Синий и шалфей» (её выбор 05.10): глубокий синий + шалфейный зелёный акцент, правило в site/CLAUDE.md. */
 :root{
-  /* вариант 1 «Синий и стекло» — по умолчанию */
-  --paper:#f1f4f7;   /* базовый фон, светлый холодный, не белый */
-  --sand:#dfe7ee;    /* плашки и второй фон */
-  --ink:#13233f;     /* текст и тёмный раздел — глубокий синий */
-  --ink-2:#0d3a52;   /* второй оттенок тёмных разделов (переход) */
-  --ink-soft:#52607a;/* второстепенный текст */
-  --line:#cfd8e2;    /* тонкие линии */
-  --accent:#5fa8c4;  /* акцент: линии, точки, детали — цвет стекла и воды */
-  --accent-ink:#1f6f8f; /* акцент для мелкого текста и цифр на светлом */
-  --on-dark-soft:#c3d0de; --on-dark-mute:#93a6bd; --on-dark-accent:#8fd0e2;
-  --shade:11 24 44;  /* затемнение фото на первом экране (r g b) */
-  --ph1:#c4d3df; --ph2:#9fb6c8; --ph3:#6f8ba3; /* место под фото */
+  --paper:#f2f4f1;   /* базовый фон, светлый с зеленцой, не белый */
+  --sand:#e1e7e0;    /* плашки и второй фон */
+  --ink:#1a2a40;     /* текст и тёмный раздел — глубокий синий */
+  --ink-2:#1f3d3a;   /* второй оттенок тёмных разделов (переход в сине-зелёный) */
+  --ink-soft:#56616f;/* второстепенный текст */
+  --line:#d3dad2;    /* тонкие линии */
+  --accent:#8fb39a;  /* акцент: линии, точки, детали — шалфей */
+  --accent-ink:#3d6b4f; /* акцент для мелкого текста и цифр на светлом */
+  --on-dark-soft:#c9d4cc; --on-dark-mute:#9aab9f; --on-dark-accent:#b5d3bd;
+  --shade:18 30 40;  /* затемнение фото на первом экране (r g b) */
+  --ph1:#cdd8cf; --ph2:#a9bcae; --ph3:#7d9584; /* место под фото */
   --error:#a3361f;
   --display:"Tenor Sans","Helvetica Neue",Arial,sans-serif;
   --body:"Manrope","Segoe UI",Arial,sans-serif;
@@ -32,15 +31,6 @@
   --sec:clamp(72px,10vw,136px);
   color-scheme:light;
 }
-
-/* вариант 2 «Синий и шалфей» */
-:root[data-palette="2"]{--paper:#f2f4f1;--sand:#e1e7e0;--ink:#1a2a40;--ink-2:#1f3d3a;--ink-soft:#56616f;--line:#d3dad2;
-  --accent:#8fb39a;--accent-ink:#3d6b4f;--on-dark-soft:#c9d4cc;--on-dark-mute:#9aab9f;--on-dark-accent:#b5d3bd;
-  --shade:18 30 40;--ph1:#cdd8cf;--ph2:#a9bcae;--ph3:#7d9584}
-/* вариант 3 «Петроль и лёд» */
-:root[data-palette="3"]{--paper:#eef3f3;--sand:#dbe6e6;--ink:#0e3440;--ink-2:#0a2730;--ink-soft:#4c6168;--line:#cddcdc;
-  --accent:#4fb3b8;--accent-ink:#16727a;--on-dark-soft:#bfd6d8;--on-dark-mute:#8fb0b4;--on-dark-accent:#92dde0;
-  --shade:8 36 44;--ph1:#c5d9da;--ph2:#98b9bc;--ph3:#6b9196}
 
 /* reset (по мотивам Josh W. Comeau) */
 *,*::before,*::after{box-sizing:border-box}
@@ -144,12 +134,12 @@ a{color:inherit}
 }
 .hero > .slides .ph::after{content:"";position:absolute;inset:0;
   /* затемнение только под текстом слева; справа фото открыто (её замечание 05.10 «картинку плохо видно») */
-  background:linear-gradient(90deg,rgb(var(--shade)/.6) 0%,rgb(var(--shade)/.3) 38%,transparent 62%),
-             linear-gradient(0deg,rgb(var(--shade)/.35) 0%,transparent 30%)}
-.hero h1,.hero .lead,.hero .eyebrow,.hero .dirs{text-shadow:0 1px 18px rgb(var(--shade)/.55),0 1px 3px rgb(var(--shade)/.35)}
+  background:linear-gradient(90deg,rgb(var(--shade)/.38) 0%,rgb(var(--shade)/.14) 40%,transparent 60%),
+             linear-gradient(0deg,rgb(var(--shade)/.2) 0%,transparent 25%)}
+.hero h1,.hero .lead,.hero .eyebrow,.hero .dirs{text-shadow:0 2px 24px rgb(var(--shade)/.75),0 1px 4px rgb(var(--shade)/.6)}
 .slides .ph.has-photo img{filter:none}
 @media (max-width:860px){ /* на телефоне текст во всю ширину — ровное затемнение */
-  .hero > .slides .ph::after{background:linear-gradient(180deg,rgb(var(--shade)/.55) 0%,rgb(var(--shade)/.45) 60%,rgb(var(--shade)/.7) 100%)}}
+  .hero > .slides .ph::after{background:linear-gradient(180deg,rgb(var(--shade)/.38) 0%,rgb(var(--shade)/.28) 60%,rgb(var(--shade)/.5) 100%)}}
 .hero > .slides .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:24px;text-align:right;z-index:1}
 .hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(48px,8vh,120px)}
 .hero-text{display:grid;gap:28px;max-width:1120px;min-width:0}
@@ -165,12 +155,6 @@ a{color:inherit}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .dirs{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px 0;font-size:14px;color:var(--on-dark-soft);max-width:760px}
 .dirs li+li::before{content:"·";margin-inline:12px;color:var(--on-dark-accent)}
-/* переключатель гаммы — временно, пока выбираем цвет (CONFIG.paletteSwitch) */
-.pal{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:6px;align-items:center;padding:8px 10px;background:var(--paper);border:1px solid var(--line);border-radius:99px;box-shadow:0 6px 24px rgb(var(--shade)/.18);font-size:13px}
-.pal button{border:1px solid var(--line);background:var(--sand);border-radius:99px;padding:6px 12px;cursor:pointer;font-size:13px}
-.pal button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-@media (max-width:860px){.pal{left:12px;right:12px;justify-content:center;gap:4px;padding:6px}.pal span{display:none}
-  .pal button{padding:6px 8px;font-size:12px;white-space:nowrap}}
 .facts-band{padding-block:clamp(32px,4vw,56px)}
 .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
 .facts b{display:block;font:400 clamp(32px,3.6vw,56px)/1 var(--display);color:var(--accent-ink);margin-bottom:10px}
@@ -314,8 +298,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
     <!-- по слайду на каждого клиента; подпись ведёт в его раздел. Фото: 2560×1440, слева спокойно (там текст) -->
     <!-- ОБРАЗЕЦ с Pinterest (её выбор 05.10): на запуск заменить на перерисованное/своё фото -->
     <figure class="ph slide is-on has-photo" data-photo="fasad" aria-roledescription="слайд" aria-label="1 из 6"><img src="img/obrazcy/pin_01.jpg" alt="Резиденция в классическом стиле с бассейном и садом вечером" style="object-position:50% 66%" fetchpriority="high"><figcaption><a href="#sobstvennik" data-go="sobstvennik">Владельцу дома →</a></figcaption></figure>
-    <figure class="ph slide" data-photo="kondicionery-dom" aria-roledescription="слайд" aria-label="2 из 6"><figcaption><a href="#pomoshchnik" data-go="pomoshchnik">Помощнику владельца →</a><br>Фото: спальня, скрытый кондиционер</figcaption></figure>
-    <figure class="ph slide" data-photo="shtory" aria-roledescription="слайд" aria-label="3 из 6"><figcaption><a href="#dizayner" data-go="dizayner">Дизайнеру →</a><br>Фото: шторы в гостиной с панорамными окнами</figcaption></figure>
+    <!-- ОБРАЗЕЦ с Pinterest, 564×705 — мутно на весь экран; на запуск заменить -->
+    <figure class="ph slide has-photo" data-photo="kondicionery-dom" aria-roledescription="слайд" aria-label="2 из 6"><img src="img/obrazcy/pin_02.jpg" alt="Гостиная с роялем и скрытыми решётками климата в потолке" style="object-position:50% 40%" loading="lazy"><figcaption><a href="#pomoshchnik" data-go="pomoshchnik">Помощнику владельца →</a></figcaption></figure>
+    <!-- своя генерация Recraft v4 (её файл 05.10), 1536×768 -->
+    <figure class="ph slide has-photo" data-photo="shtory" aria-roledescription="слайд" aria-label="3 из 6"><picture><source srcset="img/slides/dizayner.webp" type="image/webp"><img src="img/slides/dizayner.jpg" alt="Светлая гостиная с камином, креслами и лёгкими шторами" style="object-position:50% 50%" loading="lazy"></picture><figcaption><a href="#dizayner" data-go="dizayner">Дизайнеру →</a></figcaption></figure>
     <figure class="ph slide" data-photo="konvektory" aria-roledescription="слайд" aria-label="4 из 6"><figcaption><a href="#montazh" data-go="montazh">Монтажнику →</a><br>Фото: внутрипольные конвекторы у панорамного окна</figcaption></figure>
     <figure class="ph slide" data-photo="okna" aria-roledescription="слайд" aria-label="5 из 6"><figcaption><a href="#zastroyshchik" data-go="zastroyshchik">Застройщику →</a><br>Фото: дома посёлка с панорамными окнами</figcaption></figure>
     <figure class="ph slide" data-photo="kondicionery-zal" aria-roledescription="слайд" aria-label="6 из 6"><figcaption><a href="#kommerciya" data-go="kommerciya">Коммерческому объекту →</a><br>Фото: зал ресторана или фитнес-клуба, кондиционирование</figcaption></figure>
@@ -691,26 +677,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 </section>
 </main>
 
-<div class="pal" id="pal" role="group" aria-label="Вариант цвета" hidden><span>Цвет:</span><button type="button" data-p="1">Синий и стекло</button><button type="button" data-p="2">Синий и шалфей</button><button type="button" data-p="3">Петроль и лёд</button></div>
-
 <script>
 /* ===== Настройки сайта — меняются здесь ===== */
 const CONFIG = {
   // Адрес приёма заявок (серверный обработчик, который передаёт заявку в Bitrix24). Пусто — форма в тестовом режиме.
   leadEndpoint: "",
   defaultWho: "sobstvennik",
-  paletteSwitch: true, // временно: переключатель трёх вариантов цвета; после её выбора — false и нужный вариант в :root
 };
 
-/* переключатель гаммы */
-if (CONFIG.paletteSwitch) {
-  const pal = document.getElementById("pal"); pal.hidden = false;
-  const setP = n => { if (n === "1") document.documentElement.removeAttribute("data-palette"); else document.documentElement.dataset.palette = n;
-    pal.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.p === n));
-    try { localStorage.setItem("palette", n); } catch (e) {} };
-  let saved = "1"; try { saved = localStorage.getItem("palette") || "1"; } catch (e) {}
-  setP(saved); pal.addEventListener("click", e => { const b = e.target.closest("button"); if (b) setP(b.dataset.p); });
-}
 
 /* слайдер первого экрана: смена каждые 6 с, пауза при наведении и когда вкладка скрыта, свайп на телефоне */
 (() => {
