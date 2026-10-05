@@ -22,8 +22,8 @@
   --error:#a3361f;
   --display:"Tenor Sans","Helvetica Neue",Arial,sans-serif;
   --body:"Manrope","Segoe UI",Arial,sans-serif;
-  --wrap:1200px;
-  --gut:clamp(16px,4vw,48px);
+  --wrap:none;       /* сайт во всю ширину экрана (её решение 05.10); длину строк держат max-width в ch у текстов */
+  --gut:clamp(16px,5vw,96px);
   --sec:clamp(72px,10vw,136px);
   color-scheme:light;
 }
@@ -96,17 +96,29 @@ a{color:inherit}
   .top.open .top-contacts{order:4;flex-direction:column;align-items:flex-start;width:100%}
 }
 
-/* первый экран */
-.hero{padding-block:clamp(48px,7vw,96px) var(--sec)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(32px,5vw,72px);align-items:end}
-.hero-text{display:grid;gap:28px;min-width:0}
-.hero h1 em{font-style:normal;color:var(--bronze-ink)}
+/* первый экран — на всю высоту и ширину окна, фото фоном (её решение 05.10) */
+.hero{position:relative;min-height:calc(100svh - 72px);display:grid;align-items:end;color:var(--paper);overflow:hidden}
+.hero > .ph{position:absolute;inset:0;aspect-ratio:auto;border-radius:0}
+.hero > .ph::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(40,24,16,.72) 0%,rgba(40,24,16,.35) 55%,rgba(40,24,16,.1) 100%),
+             linear-gradient(0deg,rgba(40,24,16,.55) 0%,transparent 50%)}
+.hero > .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:24px;text-align:right;z-index:1}
+.hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(48px,8vh,120px)}
+.hero-text{display:grid;gap:28px;max-width:860px;min-width:0}
+.hero .eyebrow{color:#e2cfae}
+.hero .lead{color:#eadfd0}
+.hero h1{font-size:clamp(44px,7.5vw,120px)}
+.hero h1 em{font-style:normal;color:#d9bc8c}
+.hero .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.hero .btn:hover{background:transparent;color:var(--paper)}
+.hero .btn.ghost{background:transparent;color:var(--paper)}
+.hero .btn.ghost:hover{background:var(--paper);color:var(--ink)}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
-.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:clamp(48px,6vw,80px);
-  border-top:1px solid var(--line);padding-top:24px}
-.facts b{display:block;font:400 clamp(28px,3vw,40px)/1 var(--display);color:var(--bronze-ink);margin-bottom:8px}
-.facts span{font-size:14px;color:var(--ink-soft);line-height:1.45;display:block}
-@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.facts-band{padding-block:clamp(32px,4vw,56px)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.facts b{display:block;font:400 clamp(32px,3.6vw,56px)/1 var(--display);color:var(--bronze-ink);margin-bottom:10px}
+.facts span{font-size:15px;color:var(--ink-soft);line-height:1.45;display:block;max-width:28ch}
+@media (max-width:860px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* место под фото: пока фото нет, показываем тонированную плашку с подписью, что здесь будет */
 .ph{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:2px;overflow:hidden;
@@ -145,6 +157,7 @@ a{color:inherit}
 .panel{padding-top:clamp(48px,6vw,80px)}
 .panel-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,80px)}
 .panel-side{display:grid;gap:22px;align-content:start;min-width:0}
+.panel-side .ph{aspect-ratio:4/3}
 .pain{font:400 clamp(21px,2vw,26px)/1.4 var(--display);border-left:2px solid var(--bronze);padding-left:20px}
 .panel-main{display:grid;gap:40px;min-width:0}
 .block h4{font:600 12px/1.4 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--bronze-ink);margin-bottom:16px}
@@ -240,6 +253,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 
 <main>
 <section class="hero">
+  <figure class="ph" data-photo="okna">
+    <figcaption>Фото: панорамные окна частного дома</figcaption>
+  </figure>
   <div class="wrap">
     <div class="hero-text">
       <span class="eyebrow">Новая Рига · Рублёвка · Ильинское шоссе</span>
@@ -250,10 +266,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
         <a class="btn ghost" href="#dlya-kogo">Выбрать свой раздел</a>
       </div>
     </div>
-    <figure class="ph" data-photo="okna">
-      <figcaption>Фото: панорамные окна частного дома</figcaption>
-    </figure>
   </div>
+</section>
+
+<section class="facts-band" aria-label="Frivent в цифрах">
   <div class="wrap">
     <div class="facts">
       <div><b class="num">1961</b><span>австрийский бренд климатического оборудования Frivent</span></div>
