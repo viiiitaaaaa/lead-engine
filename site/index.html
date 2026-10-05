@@ -101,12 +101,10 @@ a{color:inherit}
 }
 
 /* первый экран — на всю высоту и ширину окна, фото фоном (её решение 05.10) */
-/* блок первого экрана: уже и ниже (её правка 05.10 по скриншоту) — по центру с отступами, пропорции 2:1 как у картинок,
-   целиком помещается в окно; ширина = меньшее из «экран минус поля» и «высота окна × 2» */
+/* блок первого экрана: во всю ширину, БЕЗ полей по бокам (её «зачем рамки сбоку»), но ниже окна —
+   ~3/4 высоты экрана (её «блок поуже»); картинки заполняют блок по ширине */
 .hero{position:relative;display:grid;align-items:end;color:var(--paper);overflow:hidden;container-type:inline-size;
-  --hero-gap:clamp(16px,2vw,32px);
-  width:min(calc(100% - 2 * var(--gut)), calc((100svh - 72px - 2 * var(--hero-gap)) * 2));
-  aspect-ratio:2/1;margin:var(--hero-gap) auto;border-radius:6px}
+  width:100%;height:clamp(500px,min(76svh,48vw),920px)}
 /* слайдер фото первого экрана: плавная смена, текст стоит на месте */
 .slides{position:absolute;inset:0}
 .slides .ph{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;opacity:0;transition:opacity 1.2s ease}
@@ -122,7 +120,7 @@ a{color:inherit}
 .slides .ph:nth-child(4){background:linear-gradient(20deg,var(--ph3) 0%,var(--ph2) 45%,var(--ph1) 100%)}
 .slides .ph img{animation:zoom 9s ease-out both}
 @keyframes zoom{from{transform:scale(1.06)}to{transform:scale(1)}}
-.slider-ui{position:absolute;z-index:2;right:clamp(24px,5cqi,80px);bottom:clamp(28px,4cqi,64px);display:flex;align-items:center;gap:16px;color:var(--paper);
+.slider-ui{position:absolute;z-index:2;right:var(--gut);bottom:clamp(28px,3cqi,56px);display:flex;align-items:center;gap:16px;color:var(--paper);
   padding:8px;border-radius:99px;background:rgb(var(--shade)/.38);backdrop-filter:blur(6px)} /* видно на любом фото, и на светлом */
 .slider-ui button{width:48px;height:48px;border:1px solid rgb(255 255 255/.45);border-radius:50%;background:transparent;color:var(--paper);
   cursor:pointer;font-size:18px;transition:background .25s,color .25s}
@@ -150,20 +148,20 @@ a{color:inherit}
 @media (max-width:860px){ /* на телефоне текст во всю ширину — ровное затемнение */
   .hero > .slides .ph::after{background:linear-gradient(180deg,rgb(var(--shade)/.38) 0%,rgb(var(--shade)/.28) 60%,rgb(var(--shade)/.5) 100%)}}
 .hero > .slides .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:24px;text-align:right;z-index:1}
-.hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(28px,4cqi,64px);padding-inline:clamp(24px,5cqi,80px)}
+.hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(28px,3cqi,56px);padding-inline:var(--gut)}
 .hero-text{display:grid;gap:28px;max-width:1120px;min-width:0}
 .hero-text .lead{max-width:62ch}
 .hero .eyebrow{color:var(--on-dark-accent)}
 .hero .lead{color:var(--on-dark-soft)}
-.hero h1{font-size:clamp(34px,5cqi,80px)}
-.hero-text{gap:clamp(14px,1.8cqi,26px)}
-.hero .lead{font-size:clamp(15px,1.25cqi,19px)}
+.hero h1{font-size:clamp(34px,min(4cqi,8svh),76px)}
+.hero-text{gap:clamp(14px,1.4cqi,24px)}
+.hero .lead{font-size:clamp(15px,1cqi,19px)}
 .hero .dirs{font-size:clamp(12px,.95cqi,14px);max-width:min(760px,56cqi)} /* не заезжать под стрелки слайдера */
 /* в небольшом блоке строку направлений прячем: те же направления уже есть в тексте над кнопками */
-@container (max-width:1360px){.hero .dirs{display:none}}
+@container (max-width:1500px){.hero .dirs{display:none}}
 /* телефон и узкие окна: блок снова на весь экран, иначе текст не влезет */
 @media (max-width:860px){
-  .hero{width:100%;aspect-ratio:auto;min-height:calc(100svh - 72px);margin:0;border-radius:0}
+  .hero{height:auto;min-height:calc(100svh - 72px)}
   .hero .wrap{padding-inline:var(--gut);padding-block:48px 56px}
   .hero h1{font-size:clamp(34px,10vw,52px)}
   .hero .lead{font-size:16px}
@@ -319,8 +317,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
     <!-- по слайду на каждого клиента; подпись ведёт в его раздел. Фото: 2560×1440, слева спокойно (там текст) -->
     <!-- ОБРАЗЕЦ с Pinterest (её выбор 05.10): на запуск заменить на перерисованное/своё фото -->
     <figure class="ph slide is-on has-photo" data-photo="fasad" aria-roledescription="слайд" aria-label="1 из 6"><img src="img/obrazcy/pin_01.jpg" alt="Резиденция в классическом стиле с бассейном и садом вечером" style="object-position:50% 66%" fetchpriority="high"><figcaption><a href="#sobstvennik" data-go="sobstvennik">Владельцу дома →</a></figcaption></figure>
-    <!-- своя генерация Gemini по образцу (её файл 05.10), 1376×768 -->
-    <figure class="ph slide has-photo light" data-photo="kondicionery-dom" aria-roledescription="слайд" aria-label="2 из 6"><picture><source srcset="img/slides/pomoshchnik.webp" type="image/webp"><img src="img/slides/pomoshchnik.jpg" alt="Гостиная с роялем и скрытыми решётками климата в потолке" style="object-position:60% 50%" loading="lazy"></picture><figcaption><a href="#pomoshchnik" data-go="pomoshchnik">Помощнику владельца →</a></figcaption></figure>
+    <!-- своя генерация Gemini по образцу (её файл 05.10, вторая версия), 1455×736 -->
+    <figure class="ph slide has-photo light" data-photo="kondicionery-dom" aria-roledescription="слайд" aria-label="2 из 6"><picture><source srcset="img/slides/pomoshchnik.webp" type="image/webp"><img src="img/slides/pomoshchnik.jpg" alt="Гостиная с роялем и скрытыми решётками климата в потолке" style="object-position:60% 78%" loading="lazy"></picture><figcaption><a href="#pomoshchnik" data-go="pomoshchnik">Помощнику владельца →</a></figcaption></figure>
     <!-- своя генерация Recraft v4 (её файл 05.10), 1536×768 -->
     <figure class="ph slide has-photo" data-photo="shtory" aria-roledescription="слайд" aria-label="3 из 6"><picture><source srcset="img/slides/dizayner.webp" type="image/webp"><img src="img/slides/dizayner.jpg" alt="Светлая гостиная с камином, креслами и лёгкими шторами" style="object-position:50% 50%" loading="lazy"></picture><figcaption><a href="#dizayner" data-go="dizayner">Дизайнеру →</a></figcaption></figure>
     <!-- ОБРАЗЕЦ с Pinterest (тёплый пол в разрезе), 800×600 — мутно и старомодно; перерисовать -->
