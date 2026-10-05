@@ -5,10 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Frivent — загородный дом под ключ</title>
 <meta name="description" content="Компания полного цикла для загородных резиденций на Новой Риге, Рублёвке и Ильинском шоссе: архитектура и дизайн, стройка, вся инженерия, остекление, текстиль, мебель, ландшафт и сервис. Своё производство климатического оборудования Frivent.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="preload" href="fonts/gatchina-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/tildasans-regular.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+
+/* шрифты — fonts.uprock.ru, лицензия «для коммерции»; файлы в site/fonts/ (woff2) */
+@font-face{font-family:"Gatchina";src:url(fonts/gatchina-regular.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Gatchina";src:url(fonts/gatchina-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"LT Remark";src:url(fonts/ltremark-regular.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"LT Remark";src:url(fonts/ltremark-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Tilda Sans";src:url(fonts/tildasans-light.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Tilda Sans";src:url(fonts/tildasans-regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Tilda Sans";src:url(fonts/tildasans-medium.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Tilda Sans";src:url(fonts/tildasans-semibold.woff2) format("woff2");font-weight:600 700;font-display:swap}
+@font-face{font-family:"Ysabeau Office";src:url(fonts/ysabeau-light.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Ysabeau Office";src:url(fonts/ysabeau-regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Ysabeau Office";src:url(fonts/ysabeau-medium.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Ysabeau Office";src:url(fonts/ysabeau-semibold.woff2) format("woff2");font-weight:600 700;font-display:swap}
 /* Сетка: во всю ширину, светлые разделы чередуются с тёмными (тёмные — плавный переход двух оттенков).
    Цвет — по её мудборду 05.10 «без зелёного»: тёплый беж и серый, букле, акценты бордовый и синий, латунь и мрамор. */
 :root{
@@ -28,13 +41,18 @@
   --shade:24 21 18;  /* затемнение фото на первом экране (r g b) */
   --ph1:#d6ccc2; --ph2:#b8ab9c; --ph3:#8c7f71; /* место под фото */
   --error:#a3361f;
-  --display:"Tenor Sans","Helvetica Neue",Arial,sans-serif;
-  --body:"Manrope","Segoe UI",Arial,sans-serif;
+  /* пара 1 (по умолчанию): Gatchina — заголовки, Tilda Sans — текст */
+  --display:"Gatchina","Times New Roman",Georgia,serif;
+  --body:"Tilda Sans","Segoe UI",Arial,sans-serif;
   --wrap:none;       /* сайт во всю ширину экрана (её решение 05.10); длину строк держат max-width в ch у текстов */
   --gut:clamp(16px,5vw,96px);
   --sec:clamp(72px,10vw,136px);
   color-scheme:light;
 }
+
+/* пара 2: LT Remark + Tilda Sans; пара 3: Ysabeau Office везде (временно, пока она выбирает) */
+:root[data-font="2"]{--display:"LT Remark","Times New Roman",Georgia,serif}
+:root[data-font="3"]{--display:"Ysabeau Office","Segoe UI",Arial,sans-serif;--body:"Ysabeau Office","Segoe UI",Arial,sans-serif}
 
 /* reset (по мотивам Josh W. Comeau) */
 *,*::before,*::after{box-sizing:border-box}
@@ -48,7 +66,7 @@ p,h1,h2,h3,h4{overflow-wrap:break-word}
 [hidden]{display:none!important}
 
 body{
-  background:var(--paper);color:var(--ink);font:400 17px/1.65 var(--body);
+  background:var(--paper);color:var(--ink);font:400 18px/1.65 var(--body);
   /* едва заметное зерно */
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .17 0 0 0 0 .28 0 0 0 .04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -58,7 +76,7 @@ h1{font-size:clamp(40px,6.4vw,84px)}
 h2{font-size:clamp(30px,4vw,52px)}
 h3{font-size:clamp(22px,2.2vw,28px)}
 .eyebrow{font:600 12px/1.4 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink)}
-.lead{font-size:clamp(17px,1.5vw,20px);max-width:58ch;color:var(--ink-soft)}
+.lead{font-size:clamp(18px,1.6vw,22px);max-width:58ch;color:var(--ink-soft)}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px}
 .num{font-variant-numeric:tabular-nums}
@@ -82,13 +100,13 @@ a{color:inherit}
 .logo{font:400 22px/1 var(--display);letter-spacing:.28em;text-decoration:none;text-transform:uppercase}
 .logo small{display:block;font:500 10px/1.2 var(--body);letter-spacing:.14em;color:var(--ink-soft);margin-top:6px}
 .nav{display:flex;gap:26px;margin-left:auto}
-.nav a{font-size:15px;text-decoration:none;color:var(--ink-soft);transition:color .2s;white-space:nowrap}
+.nav a{font-size:16px;text-decoration:none;color:var(--ink-soft);transition:color .2s;white-space:nowrap}
 .logo small{white-space:nowrap}
 @media (max-width:1180px) and (min-width:961px){.nav{gap:18px}.nav a{font-size:14px}}
 .nav a:hover{color:var(--ink)}
 .top-contacts{display:flex;align-items:center;gap:18px}
 .phone{font-weight:600;text-decoration:none;white-space:nowrap}
-.top .btn{padding:12px 18px;font-size:14px}
+.top .btn{padding:12px 18px;font-size:15px}
 .burger{display:none;margin-left:auto;width:44px;height:44px;border:0;background:none;cursor:pointer;position:relative}
 .burger span,.burger span::before,.burger span::after{position:absolute;left:10px;right:10px;height:1.5px;background:var(--ink);content:"";transition:transform .3s,opacity .3s}
 .burger span{top:50%}.burger span::before{top:-7px;left:0;right:0}.burger span::after{top:7px;left:0;right:0}
@@ -158,9 +176,9 @@ a{color:inherit}
 .hero-text .lead{max-width:62ch}
 .hero .eyebrow{color:var(--on-dark-accent)}
 .hero .lead{color:var(--on-dark-soft)}
-.hero h1{font-size:clamp(34px,min(4cqi,8svh),76px)}
+.hero h1{font-size:clamp(40px,min(5cqi,10svh),96px);line-height:1.05}
 .hero-text{gap:clamp(14px,1.4cqi,24px)}
-.hero .lead{font-size:clamp(15px,1cqi,19px)}
+.hero .lead{font-size:clamp(17px,1.15cqi,21px)}
 .hero .dirs{font-size:clamp(12px,.95cqi,14px);max-width:min(760px,56cqi)} /* не заезжать под стрелки слайдера */
 /* в небольшом блоке строку направлений прячем: те же направления уже есть в тексте над кнопками */
 @container (max-width:1500px){.hero .dirs{display:none}}
@@ -169,7 +187,7 @@ a{color:inherit}
   .hero{height:auto;min-height:calc(100svh - 72px)}
   .hero .wrap{padding-inline:var(--gut);padding-block:48px 56px}
   .hero h1{font-size:clamp(34px,10vw,52px)}
-  .hero .lead{font-size:16px}
+  .hero .lead{font-size:17px}
 }
 .hero h1 em{font-style:normal;color:var(--on-dark-accent)}
 .hero .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
@@ -177,12 +195,12 @@ a{color:inherit}
 .hero .btn.ghost{background:transparent;color:var(--paper)}
 .hero .btn.ghost:hover{background:var(--paper);color:var(--ink)}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
-.dirs{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px 0;font-size:14px;color:var(--on-dark-soft);max-width:760px}
+.dirs{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px 0;font-size:15px;color:var(--on-dark-soft);max-width:760px}
 .dirs li+li::before{content:"·";margin-inline:12px;color:var(--on-dark-accent)}
 .facts-band{padding-block:clamp(32px,4vw,56px)}
 .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
 .facts b{display:block;font:400 clamp(32px,3.6vw,56px)/1 var(--display);color:var(--accent-ink);margin-bottom:10px}
-.facts span{font-size:15px;color:var(--ink-soft);line-height:1.45;display:block;max-width:28ch}
+.facts span{font-size:16px;color:var(--ink-soft);line-height:1.45;display:block;max-width:28ch}
 @media (max-width:860px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* место под фото: пока фото нет, показываем тонированную плашку с подписью, что здесь будет */
@@ -214,7 +232,7 @@ a{color:inherit}
 .who button[aria-selected="true"]{background:linear-gradient(135deg,var(--deep),var(--deep-2));color:var(--paper);box-shadow:inset 0 -3px 0 var(--accent)}
 .who button[aria-selected="true"] .who-note{color:var(--on-dark-soft)}
 .who-title{font:400 22px/1.2 var(--display)}
-.who-note{font-size:15px;color:var(--ink-soft);line-height:1.5}
+.who-note{font-size:16px;color:var(--ink-soft);line-height:1.5}
 @media (max-width:860px){.who{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.who{grid-template-columns:1fr}.who button{min-height:0}}
 
@@ -229,7 +247,7 @@ a{color:inherit}
 .list{list-style:none;padding:0;display:grid;border-top:1px solid var(--line)}
 .list li{padding-block:14px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
 .list li b{font-weight:600}
-.list li span{color:var(--ink-soft);font-size:16px}
+.list li span{color:var(--ink-soft);font-size:17px}
 .proofs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px;list-style:none;padding:0}
 .proofs li{position:relative;padding-left:28px}
 .proofs li::before{content:"";position:absolute;left:0;top:.7em;width:16px;height:1px;background:var(--accent)}
@@ -244,7 +262,7 @@ a{color:inherit}
 .steps li::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;background:var(--accent)}
 .steps .n{font:400 14px/1 var(--display);color:var(--on-dark-accent);letter-spacing:.1em}
 .steps h3{font-size:21px}
-.steps p{font-size:15px;color:var(--on-dark-soft);line-height:1.55}
+.steps p{font-size:16px;color:var(--on-dark-soft);line-height:1.55}
 @media (max-width:1000px){.steps{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:36px}}
 @media (max-width:560px){.steps{grid-template-columns:1fr;border-top:0;border-left:1px solid rgba(243,245,248,.25)}
   .steps li{padding:0 0 0 26px}.steps li::before{top:6px;left:-4px}}
@@ -261,7 +279,7 @@ a{color:inherit}
 .proof-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,40px)}
 .quote{display:grid;gap:14px;align-content:start;padding-top:22px;border-top:1px solid var(--line)}
 .quote p{font:400 22px/1.35 var(--display)}
-.quote span{font-size:14px;color:var(--ink-soft)}
+.quote span{font-size:15px;color:var(--ink-soft)}
 .price{margin-top:clamp(48px,6vw,80px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);
   background:var(--sand);padding:clamp(28px,4vw,48px)}
 .price p{color:var(--ink-soft)}
@@ -272,7 +290,7 @@ a{color:inherit}
 form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px}
 .field{display:grid;gap:8px;min-width:0}
 .field.full{grid-column:1/-1}
-label{font-size:14px;font-weight:600}
+label{font-size:15px;font-weight:600}
 label .req{color:var(--accent)}
 .dark input,.dark select,.dark textarea{width:100%;padding:15px 16px;border:1px solid rgba(243,245,248,.35);border-radius:2px;
   background:rgba(243,245,248,.06);color:var(--paper);outline:2px solid transparent;transition:border-color .2s,box-shadow .2s}
@@ -282,18 +300,24 @@ label .req{color:var(--accent)}
 .dark [aria-invalid="true"]{border-color:#e08a6f}
 .hint{font-size:13px;color:var(--on-dark-mute);line-height:1.45}
 .err{font-size:13px;color:#f0a68c}
-.consent{grid-column:1/-1;display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--on-dark-soft)}
+.consent{grid-column:1/-1;display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--on-dark-soft)}
 .consent input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--accent)}
 .form-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
-.form-status{font-size:15px}
+.form-status{font-size:16px}
 @media (max-width:860px){.form-wrap{grid-template-columns:1fr}}
 @media (max-width:560px){form{grid-template-columns:1fr}}
 .contacts{display:grid;gap:18px;margin-top:8px}
 .contacts a{text-decoration:none}
 .contacts b{display:block;font:400 26px/1.2 var(--display)}
 
-footer{padding-block:40px;border-top:1px solid rgba(243,245,248,.2);font-size:14px;color:var(--on-dark-mute)}
+footer{padding-block:40px;border-top:1px solid rgba(243,245,248,.2);font-size:15px;color:var(--on-dark-mute)}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
+/* переключатель шрифтов — временно, пока она выбирает (CONFIG.fontSwitch) */
+.fsw{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:6px;align-items:center;padding:8px 10px;
+  background:var(--paper);border:1px solid var(--line);border-radius:99px;box-shadow:0 6px 24px rgb(var(--shade)/.18);font:500 13px/1 var(--body)}
+.fsw button{border:1px solid var(--line);background:var(--sand);border-radius:99px;padding:7px 12px;cursor:pointer;font:500 13px/1 var(--body)}
+.fsw button[aria-pressed="true"]{background:var(--deep);color:var(--paper);border-color:var(--deep)}
+@media (max-width:860px){.fsw{left:12px;right:12px;justify-content:center;gap:4px;padding:6px}.fsw span{display:none}.fsw button{padding:6px 8px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -698,13 +722,26 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 </section>
 </main>
 
+<div class="fsw" id="fsw" role="group" aria-label="Шрифт"><span>Шрифт:</span><button type="button" data-f="1">Gatchina + Tilda Sans</button><button type="button" data-f="2">LT Remark + Tilda Sans</button><button type="button" data-f="3">Ysabeau</button></div>
+
 <script>
 /* ===== Настройки сайта — меняются здесь ===== */
 const CONFIG = {
   // Адрес приёма заявок (серверный обработчик, который передаёт заявку в Bitrix24). Пусто — форма в тестовом режиме.
   leadEndpoint: "",
   defaultWho: "sobstvennik",
+  fontSwitch: true, // временно: переключатель трёх пар шрифтов; после её выбора — false и пара в :root
 };
+
+/* переключатель шрифтов */
+if (CONFIG.fontSwitch) {
+  const fsw = document.getElementById("fsw");
+  const setF = n => { if (n === "1") document.documentElement.removeAttribute("data-font"); else document.documentElement.dataset.font = n;
+    fsw.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === n));
+    try { localStorage.setItem("font", n); } catch (e) {} };
+  let f0 = "1"; try { f0 = localStorage.getItem("font") || "1"; } catch (e) {}
+  setF(f0); fsw.addEventListener("click", e => { const b = e.target.closest("button"); if (b) setF(b.dataset.f); });
+} else document.getElementById("fsw").hidden = true;
 
 
 /* слайдер первого экрана: смена каждые 6 с, пауза при наведении и когда вкладка скрыта, свайп на телефоне */
