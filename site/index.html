@@ -101,7 +101,12 @@ a{color:inherit}
 }
 
 /* первый экран — на всю высоту и ширину окна, фото фоном (её решение 05.10) */
-.hero{position:relative;min-height:calc(100svh - 72px);display:grid;align-items:end;color:var(--paper);overflow:hidden}
+/* блок первого экрана: уже и ниже (её правка 05.10 по скриншоту) — по центру с отступами, пропорции 2:1 как у картинок,
+   целиком помещается в окно; ширина = меньшее из «экран минус поля» и «высота окна × 2» */
+.hero{position:relative;display:grid;align-items:end;color:var(--paper);overflow:hidden;container-type:inline-size;
+  --hero-gap:clamp(16px,2vw,32px);
+  width:min(calc(100% - 2 * var(--gut)), calc((100svh - 72px - 2 * var(--hero-gap)) * 2));
+  aspect-ratio:2/1;margin:var(--hero-gap) auto;border-radius:6px}
 /* слайдер фото первого экрана: плавная смена, текст стоит на месте */
 .slides{position:absolute;inset:0}
 .slides .ph{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;opacity:0;transition:opacity 1.2s ease}
@@ -117,7 +122,7 @@ a{color:inherit}
 .slides .ph:nth-child(4){background:linear-gradient(20deg,var(--ph3) 0%,var(--ph2) 45%,var(--ph1) 100%)}
 .slides .ph img{animation:zoom 9s ease-out both}
 @keyframes zoom{from{transform:scale(1.06)}to{transform:scale(1)}}
-.slider-ui{position:absolute;z-index:2;right:var(--gut);bottom:clamp(48px,8vh,120px);display:flex;align-items:center;gap:16px;color:var(--paper);
+.slider-ui{position:absolute;z-index:2;right:clamp(24px,5cqi,80px);bottom:clamp(28px,4cqi,64px);display:flex;align-items:center;gap:16px;color:var(--paper);
   padding:8px;border-radius:99px;background:rgb(var(--shade)/.38);backdrop-filter:blur(6px)} /* видно на любом фото, и на светлом */
 .slider-ui button{width:48px;height:48px;border:1px solid rgb(255 255 255/.45);border-radius:50%;background:transparent;color:var(--paper);
   cursor:pointer;font-size:18px;transition:background .25s,color .25s}
@@ -145,12 +150,24 @@ a{color:inherit}
 @media (max-width:860px){ /* на телефоне текст во всю ширину — ровное затемнение */
   .hero > .slides .ph::after{background:linear-gradient(180deg,rgb(var(--shade)/.38) 0%,rgb(var(--shade)/.28) 60%,rgb(var(--shade)/.5) 100%)}}
 .hero > .slides .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:24px;text-align:right;z-index:1}
-.hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(48px,8vh,120px)}
+.hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(28px,4cqi,64px);padding-inline:clamp(24px,5cqi,80px)}
 .hero-text{display:grid;gap:28px;max-width:1120px;min-width:0}
 .hero-text .lead{max-width:62ch}
 .hero .eyebrow{color:var(--on-dark-accent)}
 .hero .lead{color:var(--on-dark-soft)}
-.hero h1{font-size:clamp(40px,5.4vw,92px)}
+.hero h1{font-size:clamp(34px,5cqi,80px)}
+.hero-text{gap:clamp(14px,1.8cqi,26px)}
+.hero .lead{font-size:clamp(15px,1.25cqi,19px)}
+.hero .dirs{font-size:clamp(12px,.95cqi,14px);max-width:min(760px,56cqi)} /* не заезжать под стрелки слайдера */
+/* в небольшом блоке строку направлений прячем: те же направления уже есть в тексте над кнопками */
+@container (max-width:1360px){.hero .dirs{display:none}}
+/* телефон и узкие окна: блок снова на весь экран, иначе текст не влезет */
+@media (max-width:860px){
+  .hero{width:100%;aspect-ratio:auto;min-height:calc(100svh - 72px);margin:0;border-radius:0}
+  .hero .wrap{padding-inline:var(--gut);padding-block:48px 56px}
+  .hero h1{font-size:clamp(34px,10vw,52px)}
+  .hero .lead{font-size:16px}
+}
 .hero h1 em{font-style:normal;color:var(--on-dark-accent)}
 .hero .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 .hero .btn:hover{background:transparent;color:var(--paper)}
