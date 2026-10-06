@@ -463,10 +463,10 @@ h1,h2,.facts b{letter-spacing:-.03em}
 /* «Наши работы» (её правка 06.10): 6 прямоугольников во всю ширину, наклонный разделитель по центру:
    слева фото объекта, справа фото того, что мы там сделали */
 .wks{display:grid;gap:clamp(21px,2.1vw,33px);padding-inline:clamp(12px,1.6vw,28px)}
-.wk{position:relative;height:clamp(200px,22.7vw,348px);background:var(--accent);overflow:hidden}
+.wk{position:relative;height:clamp(200px,22.7vw,348px);background:var(--deep);overflow:hidden}
 .wk-half{position:absolute;inset:0;color:var(--paper)}
-.wk-obj{clip-path:polygon(0 0,calc(56% - 2px) 0,calc(44% - 2px) 100%,0 100%)}
-.wk-job{clip-path:polygon(calc(56% + 2px) 0,100% 0,100% 100%,calc(44% + 2px) 100%)}
+.wk-obj{clip-path:polygon(0 0,56% 0,44% 100%,0 100%)}
+.wk-job{clip-path:polygon(56% 0,100% 0,100% 100%,44% 100%)}
 .wk-img,.wk-img img,.wk-ph{position:absolute;inset:0;width:100%;max-width:none;height:100%;object-fit:cover;display:block}
 .wk-ph{background:linear-gradient(135deg,var(--deep),var(--deep-2))}
 .wk-ph-job{background:linear-gradient(135deg,var(--deep-2),var(--deep));display:grid;place-items:center end;padding-right:clamp(20px,4vw,64px)}
