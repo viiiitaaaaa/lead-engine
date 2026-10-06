@@ -7,6 +7,7 @@
 from html import escape
 from pathlib import Path
 from catalog_data import ITEMS, CATALOGS
+from help_content import HELP
 
 SITE = Path(__file__).resolve().parent
 
@@ -491,6 +492,10 @@ def page_html(p):
                      for i, (t, x) in enumerate(p["services"], 1))
     steps = "\n".join(f'      <li><span class="n">{i:02d}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for i, (t, x) in enumerate(p["steps"], 1))
     terms = "\n".join(f"        <li>{e(t)}</li>" for t in p["terms"])
+    # подробный блок «Чем поможем» + все боли с решением (её просьба 06.10) — тексты в help_content.py
+    h = HELP[p["who"]]
+    help_text = "\n".join(f"      <p>{e(t)}</p>" for t in h["text"])
+    solve = "\n".join(f"      <div class=\"solve-row\"><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in h["solve"])
     faq = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in p["faq"])
     return HEAD.format(css_v=ver("styles.css"), title=e(p["title"]), desc=e(p["desc"]), page=p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
@@ -535,6 +540,22 @@ def page_html(p):
 {serv}
     </div>
     <p class="to-catalog"><a class="btn ghost" href="katalog-{p["file"]}">Весь каталог товаров и услуг</a></p>
+  </div>
+</section>
+
+<section class="section" id="pomozhem">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Подробно</span>
+      <h2>Чем мы можем помочь</h2>
+    </div>
+    <div class="help-text">
+{help_text}
+    </div>
+    <h3 class="solve-title">Что болит — и что мы с этим делаем</h3>
+    <dl class="solve">
+{solve}
+    </dl>
   </div>
 </section>
 

@@ -495,3 +495,15 @@ h1,h2,.facts b{letter-spacing:-.03em}
 
 /* её правка 06.10: фото объекта не растягивать на всю полосу — только на видимую левую половину (масштаб меньше, чётче) */
 .wk-obj .wk-img{width:58%;right:auto}
+/* фото «что сделали» — на видимую правую часть полосы, главное у правого края */
+.wk-job .wk-img{left:42%;width:58%;right:auto}
+
+/* «Чем поможем» на страницах клиентов (её просьба 06.10): подробный текст + все боли с решением */
+.help-text{display:grid;gap:14px;max-width:80ch;margin-bottom:clamp(28px,3vw,44px)}
+.help-text p{font-size:var(--fs-l);line-height:1.55}
+.solve-title{font-size:var(--fs-h3);margin-bottom:clamp(16px,2vw,24px)}
+.solve{margin:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.solve-row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:clamp(16px,3vw,48px);padding:16px 0;border-bottom:1px solid var(--line);align-items:start}
+.solve dt{font:500 var(--fs-m)/1.35 var(--body);color:var(--wine)}
+.solve dd{margin:0;font-size:var(--fs-m);line-height:1.5;color:var(--ink-soft)}
+@media (max-width:640px){.solve-row{grid-template-columns:1fr;gap:6px}}
