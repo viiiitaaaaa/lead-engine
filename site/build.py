@@ -9,6 +9,12 @@ from pathlib import Path
 from catalog_data import ITEMS, CATALOGS
 
 SITE = Path(__file__).resolve().parent
+
+
+def ver(name):
+    """метка версии файла — браузер скачивает styles.css/app.js заново после каждого изменения"""
+    import hashlib
+    return hashlib.md5((SITE / name).read_bytes()).hexdigest()[:8]
 PHONE, PHONE_TEL = "8 (495) 266-05-24", "+74952660524"
 
 # порядок — её сообщение 06.10: Владельцу · Ассистенту · Дизайнеру · Монтажной компании · Застройщику · Коммерция
@@ -428,7 +434,7 @@ HEAD = '''<!doctype html>
 <meta name="description" content="{desc}">
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v={css_v}">
 </head>
 <body data-page="{page}" data-who="{who}">
 '''
@@ -442,7 +448,7 @@ def page_html(p):
     steps = "\n".join(f'      <li><span class="n">{i:02d}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for i, (t, x) in enumerate(p["steps"], 1))
     terms = "\n".join(f"        <li>{e(t)}</li>" for t in p["terms"])
     faq = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in p["faq"])
-    return HEAD.format(title=e(p["title"]), desc=e(p["desc"]), page=p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
+    return HEAD.format(css_v=ver("styles.css"), title=e(p["title"]), desc=e(p["desc"]), page=p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
 <section class="hero page-hero">
@@ -532,7 +538,7 @@ def page_html(p):
 {form_section(p["who"], p["form"]["title"], button=p["form"]["button"])}
 </main>
 
-<script src="app.js" defer></script>
+<script src="app.js?v={ver('app.js')}" defer></script>
 </body>
 </html>
 '''
@@ -569,7 +575,7 @@ def catalog_html(p):
 </section>''')
     title = f"Каталог — {p['eyebrow'].lower()} — Frivent"
     desc = f"Каталог товаров и услуг Frivent: {', '.join(n for n, _ in cats).lower()}. Цена — по запросу."
-    return HEAD.format(title=e(title), desc=e(desc), page="katalog-" + p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
+    return HEAD.format(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="katalog-" + p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
 <section class="cat-hero">
@@ -588,7 +594,7 @@ def catalog_html(p):
 {form_section(p["who"], "Запросить цену", lead="Оставьте телефон и адрес объекта. Менеджер уточнит задачу и пришлёт расчёт.", button="Запросить цену")}
 </main>
 
-<script src="app.js" defer></script>
+<script src="app.js?v={ver('app.js')}" defer></script>
 </body>
 </html>
 '''
@@ -608,5 +614,8 @@ if __name__ == "__main__":
     s = idx.read_text("utf-8")
     s = replace_between(s, "<!--HEADER-->", "<!--/HEADER-->", header())
     s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section())
+    import re as _re
+    s = _re.sub(r'href="styles\.css(\?v=\w+)?"', f'href="styles.css?v={ver("styles.css")}"', s)
+    s = _re.sub(r'src="app\.js(\?v=\w+)?"', f'src="app.js?v={ver("app.js")}"', s)
     idx.write_text(s, "utf-8")
     print("главная: шапка и форма обновлены")
