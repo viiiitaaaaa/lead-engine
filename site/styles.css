@@ -457,8 +457,8 @@ h1,h2,.facts b{letter-spacing:-.03em}
 
 /* логотип — рукописный wordmark (её файл 06.10), прозрачный PNG в цвете --wine */
 .logo{display:block;line-height:0}
-.logo img{height:34px;width:auto;display:block}
-@media (max-width:860px){.logo img{height:28px}}
+.logo img{height:40px;width:auto;display:block}
+@media (max-width:860px){.logo img{height:32px}}
 
 /* «Наши работы» (её правка 06.10): 6 прямоугольников во всю ширину, наклонный разделитель по центру:
    слева фото объекта, справа фото того, что мы там сделали */
