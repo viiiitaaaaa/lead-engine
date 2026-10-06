@@ -467,7 +467,7 @@ h1,h2,.facts b{letter-spacing:-.03em}
 .wk-half{position:absolute;inset:0;color:var(--paper)}
 .wk-obj{clip-path:polygon(0 0,calc(56% - 2px) 0,calc(44% - 2px) 100%,0 100%)}
 .wk-job{clip-path:polygon(calc(56% + 2px) 0,100% 0,100% 100%,calc(44% + 2px) 100%)}
-.wk-img,.wk-img img,.wk-ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.wk-img,.wk-img img,.wk-ph{position:absolute;inset:0;width:100%;max-width:none;height:100%;object-fit:cover;display:block}
 .wk-ph{background:linear-gradient(135deg,var(--deep),var(--deep-2))}
 .wk-ph-job{background:linear-gradient(135deg,var(--deep-2),var(--deep));display:grid;place-items:center end;padding-right:clamp(20px,4vw,64px)}
 .wk-ph-job span{font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--on-dark-soft)}
@@ -481,3 +481,14 @@ h1,h2,.facts b{letter-spacing:-.03em}
 .wks + .wrap .works-more{margin-top:clamp(24px,3vw,40px)}
 #raboty .sec-head{margin-bottom:clamp(24px,3vw,44px)}
 @media (max-width:640px){.wk{height:300px}.wk-cap{max-width:44%}.wk h3{font-size:var(--fs-l)}.wk p{display:none}.wk-ph-job span{display:none}}
+
+/* «Что делаем» на страницах клиентов (её правка 06.10): карточки-кнопки как «Я — …» на главной —
+   синие с красной полосой, при наведении светлые; ведут в каталог клиента на свой раздел */
+.serv-grid{gap:1px;background:var(--line);border:1px solid var(--line)}
+.serv{padding:28px 26px 30px;border:0;text-decoration:none;cursor:pointer;background:linear-gradient(135deg,var(--deep),var(--deep-2));color:var(--paper);box-shadow:inset 0 -3px 0 var(--accent);transition:background .25s,color .25s}
+.serv h3{color:inherit}
+.serv p{color:var(--on-dark-soft)}
+.serv-go{font:600 var(--fs-xs)/1 var(--body);color:var(--on-dark-accent);margin-top:6px}
+.serv:hover,.serv:focus-visible{background:var(--paper);color:var(--ink);box-shadow:none}
+.serv:hover p,.serv:focus-visible p{color:var(--ink-soft)}
+.serv:hover .serv-go,.serv:focus-visible .serv-go{color:var(--accent-ink)}

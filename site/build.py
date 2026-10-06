@@ -470,11 +470,25 @@ HEAD = '''<!doctype html>
 '''
 
 
+# услуга страницы → раздел каталога (katalog-*.html#k-N); у владельца и монтажников первые совпадают 1:1
+SERV_CAT = {
+    "pomoshchnik": [1, 1, 2, 1, 4, 1],
+    "dizayner": [1, 2, 3, 4, 4, 5],
+    "montazh": [1, 2, 3, 4, 5, 5],
+    "zastroyshchik": [1, 2, 2, 3, 4, 4],
+    "kommerciya": [1, 1, 1, 2, 1, 1],
+}
+
+
 def page_html(p):
     e = lambda t: escape(t, quote=False)
     light = " light" if p.get("light") else ""
     pains = "\n".join(f'      <div class="pain-card"><h3>{e(t)}</h3><p>{e(x)}</p></div>' for t, x in p["pains"])
-    serv = "\n".join(f'      <div class="serv" id="s-{i}"><h3>{e(t)}</h3><p>{e(x)}</p></div>' for i, (t, x) in enumerate(p["services"], 1))
+    # её правка 06.10: карточки «Что делаем» = сине-красные кнопки (как «Я — …» на главной), каждая ведёт в каталог
+    # этого клиента на свой раздел; номер раздела — SERV_CAT (по умолчанию = номер услуги)
+    cat_idx = SERV_CAT.get(p["who"], list(range(1, len(p["services"]) + 1)))
+    serv = "\n".join(f'      <a class="serv" id="s-{i}" href="katalog-{p["file"]}#k-{cat_idx[i-1]}"><h3>{e(t)}</h3><p>{e(x)}</p><span class="serv-go">В каталог →</span></a>'
+                     for i, (t, x) in enumerate(p["services"], 1))
     steps = "\n".join(f'      <li><span class="n">{i:02d}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for i, (t, x) in enumerate(p["steps"], 1))
     terms = "\n".join(f"        <li>{e(t)}</li>" for t in p["terms"])
     faq = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in p["faq"])
