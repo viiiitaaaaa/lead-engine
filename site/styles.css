@@ -405,3 +405,44 @@ h1,h2,.facts b{letter-spacing:-.03em}
 ::-webkit-scrollbar-thumb{background:#c9c0b5;border:0;border-radius:0}
 ::-webkit-scrollbar-thumb:hover{background:#a99f93}
 ::-webkit-scrollbar-corner{background:var(--paper)}
+
+/* текст под заголовком первого экрана — на полупрозрачной плашке (её просьба 06.10, картинка 999: «чтобы текст был читабелен») */
+.hero .hero-text .lead{background:rgb(var(--shade)/.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  padding:16px 22px;border-left:2px solid var(--on-dark-accent);max-width:62ch;text-shadow:none;color:var(--paper)}
+@media (max-width:860px){.hero .hero-text .lead{padding:12px 14px}}
+
+/* ===== слайдер отзывов (её просьба 06.10): карточка на полупрозрачном фоне с рамкой, медленная смена ===== */
+.reviews{display:grid;gap:20px}
+.rv-viewport{overflow:hidden}
+.rv-track{display:flex;gap:24px;transition:transform 1.4s cubic-bezier(.4,0,.2,1);will-change:transform}
+.rv{flex:0 0 calc((100% - 48px)/3);display:flex;flex-direction:column;gap:14px;padding:clamp(22px,2vw,32px);
+  background:rgb(255 255 255/.42);border:1px solid var(--line);min-width:0}
+.section.alt .rv{background:rgb(255 255 255/.5)}
+.rv-stars{color:var(--wine);letter-spacing:.15em;font-size:var(--fs-s)}
+.rv p{font:400 var(--fs-l)/1.45 var(--display-s);color:var(--ink)}
+.rv-meta{margin-top:auto;display:grid;gap:8px;padding-top:14px;border-top:1px solid var(--line);font-size:var(--fs-xs);color:var(--ink-soft)}
+.rv-meta a{color:var(--accent-ink);text-decoration:none;font-weight:600}
+.rv-meta a:hover{text-decoration:underline}
+.rv-nav{display:flex;align-items:center;gap:16px}
+.rv-nav button{width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--ink);cursor:pointer;font-size:16px;transition:background .2s,color .2s}
+.rv-nav button:hover{background:var(--deep);color:var(--paper);border-color:var(--deep)}
+.rv-note{font-size:var(--fs-xs);color:var(--ink-soft)}
+@media (max-width:1100px){.rv{flex-basis:calc((100% - 24px)/2)}}
+@media (max-width:640px){.rv{flex-basis:100%}}
+@media (prefers-reduced-motion:reduce){.rv-track{transition:none}}
+
+/* отзывы — заметная полупрозрачная квадратная плашка с рамкой (её «фон полупрозрачный квадратный подставлять») */
+.rv{background:rgb(255 255 255/.62);border:1px solid rgb(var(--shade)/.22);border-radius:0;box-shadow:0 10px 30px rgb(var(--shade)/.08)}
+.section.alt .rv{background:rgb(255 255 255/.7)}
+
+/* ===== «Наши работы» на главной: по объекту для каждого клиента (портфолио Frivent) ===== */
+.works{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2vw,32px)}
+.work{display:flex;flex-direction:column;background:rgb(255 255 255/.55);border:1px solid rgb(var(--shade)/.18);min-width:0}
+.work img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.work-body{display:grid;gap:8px;padding:clamp(18px,1.8vw,26px)}
+.work-for{font:600 var(--fs-xs)/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--wine)}
+.work h3{font-size:var(--fs-l);line-height:1.25}
+.work p{font-size:var(--fs-s);color:var(--ink-soft)}
+.works-more{margin-top:clamp(24px,3vw,40px);color:var(--ink-soft);font-size:var(--fs-s);max-width:80ch}
+@media (max-width:1100px){.works{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.works{grid-template-columns:1fr}}

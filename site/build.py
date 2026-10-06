@@ -130,6 +130,40 @@ def form_section(who="sobstvennik", title="Записаться на встре�
 </section>'''
 
 
+
+# ===== Отзывы (её просьба 06.10: все отзывы на 5 с текстом, медленный слайдер, под каждым прямая ссылка) =====
+# Источник: Яндекс Карты, карточки «Фривент» (14071920427) и «Фривент Рус» (1006369129), собрано 06.10.2026.
+# Текст — дословно. Ссылка на отзыв: ...reviews/?reviews%5BpublicId%5D=<автор>&utm_source=review (открывает отзыв первым).
+Y1 = "https://yandex.ru/maps/org/frivent/14071920427/reviews/"
+Y2 = "https://yandex.ru/maps/org/frivent_rus/1006369129/reviews/"
+yl = lambda base, pid: f"{base}?reviews%5BpublicId%5D={pid}&utm_source=review" if pid else base
+REVIEWS = [
+ ("Надежные поставщики; оборудование высокого европейского уровня; поставку произвели точно в срок. Закупил австрийское оборудование у компании, смонтировал и запустил — всё работает тихо и полностью соответствует заявленным показателям.", "март 2024", yl(Y1, "xu56u3cu9vgjdu1kc65e5nx554")),
+ ("Подобрали установку, всё сделано в обещанные сроки и качественно. Принимались во внимание даже мелкие нюансы. Рекомендую за грамотный подход и серьёзное отношение к работе.", "май 2023", Y1),
+ ("Установили установку для бассейна. Отлично поддерживает микроклимат с заданными параметрами по температуре и влажности. Спасибо ребятам за проведённые пусконаладочные работы и техподдержку.", "март 2023", yl(Y1, "t5yqgp585adum4bt56u70cezmg")),
+ ("Очередной раз заказ вентустановки — выполнено в сроки, пусконаладочные работы произведены. Спасибо за ваш высокий уровень профессионализма.", "март 2024", yl(Y1, "z42dyj46chd4fmkh6b6ya16hhm")),
+ ("Ребята профи, знают своё дело, сильная сторона — вентиляция бассейнов.", "февраль 2024", yl(Y2, "xucwze5yyqx8ybmf5d8wnje310")),
+ ("Отличная компания. Технически грамотный персонал.", "май 2021", yl(Y1, "gknb5ud13fz7wyu2xfer8j3cp0")),
+ ("Хорошее оборудование.", "ноябрь 2025", yl(Y1, "v1px1qr5ak2adwr4hf85fw0uu8")),
+]
+
+
+def reviews_html():
+    cards = "\n".join(
+        f'''      <article class="rv"><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div>
+        <p>«{escape(t, quote=False)}»</p>
+        <div class="rv-meta"><span>Отзыв о Frivent · Яндекс Карты · {d}</span>
+        <a href="{u}" target="_blank" rel="noopener">Читать отзыв на Яндекс Картах →</a></div></article>''' for t, d, u in REVIEWS)
+    return f'''<div class="reviews" aria-roledescription="слайдер" aria-label="Отзывы о Frivent">
+    <div class="rv-viewport"><div class="rv-track">
+{cards}
+    </div></div>
+    <div class="rv-nav"><button type="button" class="rv-prev" aria-label="Предыдущие отзывы">←</button>
+      <span class="rv-note">Все отзывы на 5 звёзд с Яндекс Карт</span>
+      <button type="button" class="rv-next" aria-label="Следующие отзывы">→</button></div>
+  </div>'''
+
+
 def proof(extra="", title="Своё производство климата",
           lead="Вентиляцию, осушение бассейнов и кондиционирование делаем на своём заводе в Переславле-Залесском. Расчёт, пусконаладку, сервис и запчасти даёт сам производитель."):
     ex = f'<p class="lead" style="margin-top:8px">{extra}</p>' if extra else ""
@@ -146,11 +180,7 @@ def proof(extra="", title="Своё производство климата",
       <div><b class="num">2022</b><span>свой завод в Переславле-Залесском</span></div>
       <div><b class="num">4,5</b><span>рейтинг Frivent на Яндекс Картах</span></div>
     </div>
-    <div class="proof-grid" style="margin-top:clamp(40px,5vw,64px)">
-      <div class="quote"><p>«Поставку произвели точно в срок»</p><span>Отзыв о Frivent, Яндекс Карты</span></div>
-      <div class="quote"><p>«Всё работает тихо»</p><span>Отзыв о Frivent, Яндекс Карты</span></div>
-      <div class="quote"><p>«Подобрали установку… принимались во внимание даже мелкие нюансы»</p><span>Отзыв о Frivent, Яндекс Карты</span></div>
-    </div>
+    <div style="margin-top:clamp(40px,5vw,64px)">{reviews_html()}</div>
   </div>
 </section>'''
 
@@ -614,6 +644,8 @@ if __name__ == "__main__":
     s = idx.read_text("utf-8")
     s = replace_between(s, "<!--HEADER-->", "<!--/HEADER-->", header())
     s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section())
+    if "<!--REVIEWS-->" in s:
+        s = replace_between(s, "<!--REVIEWS-->", "<!--/REVIEWS-->", reviews_html())
     import re as _re
     s = _re.sub(r'href="styles\.css(\?v=\w+)?"', f'href="styles.css?v={ver("styles.css")}"', s)
     s = _re.sub(r'src="app\.js(\?v=\w+)?"', f'src="app.js?v={ver("app.js")}"', s)

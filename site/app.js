@@ -54,6 +54,29 @@ if (CONFIG.fontSwitch) {
   show(0); play();
 })();
 
+
+/* слайдер отзывов: медленно, по одному шагу каждые 7 с, пауза при наведении, стрелки, по кругу */
+document.querySelectorAll(".reviews").forEach(box => {
+  const track = box.querySelector(".rv-track"), cards = [...track.children];
+  if (!cards.length) return;
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let i = 0, timer = null;
+  const perView = () => Math.max(1, Math.round(track.parentElement.clientWidth / cards[0].getBoundingClientRect().width));
+  const go = k => {
+    const max = Math.max(0, cards.length - perView());
+    i = k > max ? 0 : k < 0 ? max : k;
+    const step = cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 24);
+    track.style.transform = `translateX(${-i * step}px)`;
+  };
+  const stop = () => { clearInterval(timer); timer = null; };
+  const play = () => { stop(); if (!still) timer = setInterval(() => go(i + 1), 7000); };
+  box.querySelector(".rv-prev").addEventListener("click", () => { go(i - 1); play(); });
+  box.querySelector(".rv-next").addEventListener("click", () => { go(i + 1); play(); });
+  box.addEventListener("mouseenter", stop); box.addEventListener("mouseleave", play);
+  addEventListener("resize", () => go(i));
+  go(0); play();
+});
+
 /* меню на телефоне */
 const top_ = document.getElementById("top"), burger = top_ && top_.querySelector(".burger");
 if (burger) {
