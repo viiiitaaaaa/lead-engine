@@ -451,3 +451,8 @@ h1,h2,.facts b{letter-spacing:-.03em}
   background:linear-gradient(135deg,var(--deep),var(--deep-2))}
 .work-ph b{font:400 clamp(28px,2.6vw,40px)/1 var(--display);letter-spacing:-.02em}
 .work-ph span{font-size:var(--fs-s);color:var(--on-dark-soft)}
+
+/* логотип — рукописный wordmark (её файл 06.10), прозрачный PNG в цвете --wine */
+.logo{display:block;line-height:0}
+.logo img{height:56px;width:auto;display:block}
+@media (max-width:860px){.logo img{height:44px}}

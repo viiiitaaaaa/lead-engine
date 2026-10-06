@@ -52,7 +52,7 @@ def header(active=""):
     links = "\n".join(items)
     return f'''<header class="top" id="top">
   <div class="wrap">
-    <a class="logo" href="index.html">Frivent</a>
+    <a class="logo" href="index.html"><img src="img/logo-frivent.png" alt="Frivent" width="479" height="223"></a>
     <!-- шапка = страницы по клиентам (её решение 06.10) -->
     <nav class="nav" aria-label="Разделы для клиентов">
 {links}
