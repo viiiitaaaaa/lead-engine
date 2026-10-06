@@ -446,3 +446,8 @@ h1,h2,.facts b{letter-spacing:-.03em}
 .works-more{margin-top:clamp(24px,3vw,40px);color:var(--ink-soft);font-size:var(--fs-s);max-width:80ch}
 @media (max-width:1100px){.works{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:640px){.works{grid-template-columns:1fr}}
+/* карточка работы без фото (настоящих фото объекта нет — не подменяем чужими) */
+.work-ph{aspect-ratio:4/3;display:grid;align-content:end;gap:6px;padding:clamp(20px,2vw,28px);color:var(--paper);
+  background:linear-gradient(135deg,var(--deep),var(--deep-2))}
+.work-ph b{font:400 clamp(28px,2.6vw,40px)/1 var(--display);letter-spacing:-.02em}
+.work-ph span{font-size:var(--fs-s);color:var(--on-dark-soft)}

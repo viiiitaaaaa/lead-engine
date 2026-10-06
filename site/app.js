@@ -55,26 +55,26 @@ if (CONFIG.fontSwitch) {
 })();
 
 
-/* слайдер отзывов: медленно, по одному шагу каждые 7 с, пауза при наведении, стрелки, по кругу */
+/* слайдер отзывов: бесконечная лента (её просьба 06.10) — после последнего сразу первый, без отката назад.
+   За отзывами стоит копия; дойдя до копии, лента незаметно перескакивает на тот же отзыв в начале. */
 document.querySelectorAll(".reviews").forEach(box => {
-  const track = box.querySelector(".rv-track"), cards = [...track.children];
-  if (!cards.length) return;
+  const track = box.querySelector(".rv-track"), orig = [...track.children], n = orig.length;
+  if (!n) return;
+  orig.forEach(c => { const k = c.cloneNode(true); k.setAttribute("aria-hidden", "true"); k.querySelectorAll("a").forEach(a => a.tabIndex = -1); track.appendChild(k); });
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let i = 0, timer = null;
-  const perView = () => Math.max(1, Math.round(track.parentElement.clientWidth / cards[0].getBoundingClientRect().width));
-  const go = k => {
-    const max = Math.max(0, cards.length - perView());
-    i = k > max ? 0 : k < 0 ? max : k;
-    const step = cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 24);
-    track.style.transform = `translateX(${-i * step}px)`;
-  };
+  let i = 0, timer = null, busy = false;
+  const step = () => orig[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 24);
+  const place = (anim) => { track.style.transition = anim ? "" : "none"; track.style.transform = `translateX(${-i * step()}px)`; if (!anim) track.offsetHeight; };
+  const next = () => { if (busy) return; busy = true; i++; place(true); };
+  const prev = () => { if (busy) return; busy = true; if (i === 0) { i = n; place(false); } i--; requestAnimationFrame(() => place(true)); };
+  track.addEventListener("transitionend", () => { busy = false; if (i >= n) { i -= n; place(false); } });
   const stop = () => { clearInterval(timer); timer = null; };
-  const play = () => { stop(); if (!still) timer = setInterval(() => go(i + 1), 7000); };
-  box.querySelector(".rv-prev").addEventListener("click", () => { go(i - 1); play(); });
-  box.querySelector(".rv-next").addEventListener("click", () => { go(i + 1); play(); });
+  const play = () => { stop(); if (!still) timer = setInterval(next, 7000); };
+  box.querySelector(".rv-prev").addEventListener("click", () => { prev(); play(); });
+  box.querySelector(".rv-next").addEventListener("click", () => { next(); play(); });
   box.addEventListener("mouseenter", stop); box.addEventListener("mouseleave", play);
-  addEventListener("resize", () => go(i));
-  go(0); play();
+  addEventListener("resize", () => place(false));
+  place(false); play();
 });
 
 /* меню на телефоне */
