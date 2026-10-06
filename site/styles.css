@@ -222,10 +222,13 @@ a{color:inherit}
 .who-title{font:400 var(--fs-l)/1.2 var(--display)}
 .who-note{font-size:var(--fs-s);color:var(--ink-soft);line-height:1.5}
 /* карточки — ссылки на страницы клиентов (её просьба 06.10): при наведении тёмно-синие, «Подробнее →» */
-.who .who-card:hover,.who .who-card:focus-visible{background:linear-gradient(135deg,var(--deep),var(--deep-2));color:var(--paper);box-shadow:inset 0 -3px 0 var(--accent)}
-.who .who-card:hover .who-note,.who .who-card:focus-visible .who-note{color:var(--on-dark-soft)}
-.who-go{font:600 var(--fs-xs)/1 var(--body);color:var(--accent-ink);margin-top:6px}
-.who .who-card:hover .who-go,.who .who-card:focus-visible .who-go{color:var(--on-dark-accent)}
+.who .who-card{background:linear-gradient(135deg,var(--deep),var(--deep-2));color:var(--paper);box-shadow:inset 0 -3px 0 var(--accent)}
+.who .who-card .who-note{color:var(--on-dark-soft)}
+.who-go{font:600 var(--fs-xs)/1 var(--body);color:var(--on-dark-accent);margin-top:6px}
+/* её правка 06.10: инверсия — исходно синие с красной полосой, при наведении светлые */
+.who .who-card:hover,.who .who-card:focus-visible{background:var(--paper);color:var(--ink);box-shadow:none}
+.who .who-card:hover .who-note,.who .who-card:focus-visible .who-note{color:var(--ink-soft)}
+.who .who-card:hover .who-go,.who .who-card:focus-visible .who-go{color:var(--accent-ink)}
 @media (max-width:860px){.who{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.who{grid-template-columns:1fr}.who .who-card{min-height:0}}
 
