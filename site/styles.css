@@ -398,7 +398,8 @@ h3,.who-title,.pain,.quote p,.faq-item summary,.contacts b,.steps h3,.steps .n,.
 h1,h2,.facts b{letter-spacing:-.03em}
 
 /* полоса прокрутки как у myskotom.ru (её просьба 06.10): широкая, квадратный ползунок, в цветах сайта */
-html{scrollbar-color:#c9c0b5 var(--paper);scrollbar-width:auto} /* Firefox */
+/* стандартный scrollbar-color только для Firefox: в Chrome он отключает ::-webkit-scrollbar (ширину и квадратный ползунок) */
+@supports (-moz-appearance:none){html{scrollbar-color:#c9c0b5 var(--paper)}}
 ::-webkit-scrollbar{width:16px;height:16px}
 ::-webkit-scrollbar-track{background:var(--paper)}
 ::-webkit-scrollbar-thumb{background:#c9c0b5;border:0;border-radius:0}
