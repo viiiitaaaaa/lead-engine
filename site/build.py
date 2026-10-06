@@ -694,6 +694,33 @@ def replace_between(s, a, b, new):
     return s[:i] + new + s[j:]
 
 
+# ===== «Подарки» на главной (её просьба 06.10): памятка-PDF для каждого специалиста, в конце перед формой =====
+def gifts_html():
+    e = lambda x: escape(x, quote=False)
+    cards = []
+    for href, who, label in NAV:
+        g = GIFT[who]
+        cards.append(f'''      <article class="gift-card">
+        <span class="eyebrow">{e(label)}</span>
+        <h3>{e(g["title"])}</h3>
+        <p>{e(g["subtitle"])}</p>
+        <span class="fname">PDF · {len(g["items"])} ситуаций</span>
+        <a class="btn" href="#zayavka" data-gift="{g["file"]}" data-gift-title="{e(g["title"])}" data-gift-who="{who}">Получить памятку</a>
+      </article>''')
+    return '''<section class="section alt" id="podarki">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Подарок</span>
+      <h2>Памятка для каждого — бесплатно после заявки</h2>
+      <p class="lead">Что делать в типовых ситуациях: 12 коротких ответов для вашей роли. Выберите свою, оставьте контакты — и получите PDF.</p>
+    </div>
+    <div class="gift-grid">
+''' + "\n".join(cards) + '''
+    </div>
+  </div>
+</section><!--/GIFTS-->'''
+
+
 if __name__ == "__main__":
     for p in PAGES:
         (SITE / p["file"]).write_text(page_html(p), "utf-8")
@@ -702,6 +729,8 @@ if __name__ == "__main__":
     idx = SITE / "index.html"
     s = idx.read_text("utf-8")
     s = replace_between(s, "<!--HEADER-->", "<!--/HEADER-->", header())
+    if "<!--GIFTS-->" in s:
+        s = replace_between(s, "<!--GIFTS-->", "<!--/GIFTS-->", gifts_html())
     s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section())
     if "<!--REVIEWS-->" in s:
         s = replace_between(s, "<!--REVIEWS-->", "<!--/REVIEWS-->", reviews_html())

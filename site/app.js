@@ -177,6 +177,7 @@ document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click"
   const note = form.elements.note, line = "Хочу получить памятку «" + gift.title + "»";
   if (!note.value.includes(line)) note.value = (note.value ? note.value + "\n" : "") + line;
   if (form.elements.gift) form.elements.gift.value = b.dataset.gift;
+  if (b.dataset.giftWho && whoSelect) whoSelect.value = b.dataset.giftWho;
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
   setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);
 }));

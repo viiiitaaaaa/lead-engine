@@ -521,3 +521,14 @@ h1,h2,.facts b{letter-spacing:-.03em}
 .gift-doc .fname b{color:var(--ink);font-weight:500}
 .form-status a{color:var(--on-dark-accent);text-decoration:underline;text-underline-offset:3px}
 @media (max-width:860px){.gift{grid-template-columns:1fr}}
+
+/* памятки на главной — карточка на каждого специалиста */
+.gift-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
+.gift-card{display:grid;gap:10px;align-content:start;justify-items:start;padding:clamp(20px,2.4vw,30px);background:rgb(255 255 255/.55);border:1px solid rgb(var(--shade)/.22);border-top:3px solid var(--wine);min-width:0}
+.gift-card .eyebrow{color:var(--wine)}
+.gift-card h3{font-size:var(--fs-l);line-height:1.25}
+.gift-card p{font-size:var(--fs-s);color:var(--ink-soft);line-height:1.5}
+.gift-card .fname{font-size:var(--fs-xs);color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase}
+.gift-card .btn{margin-top:4px}
+@media (max-width:1100px){.gift-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.gift-grid{grid-template-columns:1fr}}
