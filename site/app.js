@@ -168,6 +168,19 @@ document.querySelectorAll("[data-ask]").forEach(b => b.addEventListener("click",
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
   setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);
 }));
+/* «Подарок»: кнопка «Получить памятку» вписывает памятку в заявку; ссылка на PDF показывается после отправки */
+let gift = null;
+document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click", e => {
+  if (!form) return;
+  e.preventDefault();
+  gift = {file: "pdf/" + b.dataset.gift, title: b.dataset.giftTitle};
+  const note = form.elements.note, line = "Хочу получить памятку «" + gift.title + "»";
+  if (!note.value.includes(line)) note.value = (note.value ? note.value + "\n" : "") + line;
+  if (form.elements.gift) form.elements.gift.value = b.dataset.gift;
+  document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
+  setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);
+}));
+const giftLink = () => gift ? ' Ваша памятка: <a href="' + gift.file + '" target="_blank" rel="noopener">скачать PDF</a>.' : "";
 if (form) {
   /* метки UTM: из адреса, а если человек ушёл по ссылкам внутри сайта — из памяти вкладки */
   ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => {
@@ -191,7 +204,7 @@ if (form) {
     if (!consent.checked) { status.textContent = "Отметьте согласие на обработку данных"; return consent.focus(); }
     const data = Object.fromEntries(new FormData(form));
     if (!CONFIG.leadEndpoint) {
-      status.textContent = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена.";
+      status.innerHTML = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink();
       console.log("Заявка (тест):", data);
       return;
     }
@@ -200,7 +213,7 @@ if (form) {
       const r = await fetch(CONFIG.leadEndpoint, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)});
       if (!r.ok) throw new Error(r.status);
       form.reset(); if (whoSelect) whoSelect.value = data.who;
-      status.textContent = "Заявка принята. Менеджер позвонит вам в рабочее время.";
+      status.innerHTML = "Заявка принята. Менеджер позвонит вам в рабочее время." + giftLink();
     } catch (err) {
       status.textContent = "Не получилось отправить. Позвоните нам: " + CONFIG.phone;
     } finally { submit.disabled = false; }

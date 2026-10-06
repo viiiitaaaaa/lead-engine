@@ -507,3 +507,17 @@ h1,h2,.facts b{letter-spacing:-.03em}
 .solve dt{font:500 var(--fs-m)/1.35 var(--body);color:var(--wine)}
 .solve dd{margin:0;font-size:var(--fs-m);line-height:1.5;color:var(--ink-soft)}
 @media (max-width:640px){.solve-row{grid-template-columns:1fr;gap:6px}}
+
+/* «Подарок» — памятка-PDF за контакты (её просьба 06.10), блок перед формой на страницах клиентов */
+.gift{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;background:var(--sand);padding:clamp(28px,3.5vw,56px);border-left:4px solid var(--wine)}
+.gift h2{margin-bottom:12px}
+.gift .gift-lead{font-size:var(--fs-l);line-height:1.5;max-width:60ch;color:var(--ink)}
+.gift ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.gift li{position:relative;padding-left:22px;font-size:var(--fs-m);line-height:1.45}
+.gift li::before{content:"";position:absolute;left:0;top:.55em;width:10px;height:10px;background:var(--wine)}
+.gift-doc{display:grid;gap:14px;justify-items:start;padding:clamp(20px,2.4vw,32px);background:rgb(255 255 255/.55);border:1px solid rgb(var(--shade)/.22)}
+.gift-doc .eyebrow{color:var(--wine)}
+.gift-doc .fname{font-size:var(--fs-s);color:var(--ink-soft)}
+.gift-doc .fname b{color:var(--ink);font-weight:500}
+.form-status a{color:var(--on-dark-accent);text-decoration:underline;text-underline-offset:3px}
+@media (max-width:860px){.gift{grid-template-columns:1fr}}

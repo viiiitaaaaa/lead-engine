@@ -8,6 +8,7 @@ from html import escape
 from pathlib import Path
 from catalog_data import ITEMS, CATALOGS
 from help_content import HELP
+from gift_content import GIFT
 
 SITE = Path(__file__).resolve().parent
 
@@ -114,7 +115,7 @@ def form_section(who="sobstvennik", title="Записаться на встре�
       </div>
       <!-- метки UTM: заполняются скриптом из адреса страницы -->
       <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
-      <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page">
+      <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page"><input type="hidden" name="gift">
       <label class="consent" for="f-consent"><input id="f-consent" name="consent" type="checkbox" required> Согласен на обработку персональных данных</label>
       <div class="form-actions">
         <button class="btn" type="submit" id="f-submit">{button}</button>
@@ -493,6 +494,9 @@ def page_html(p):
     steps = "\n".join(f'      <li><span class="n">{i:02d}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for i, (t, x) in enumerate(p["steps"], 1))
     terms = "\n".join(f"        <li>{e(t)}</li>" for t in p["terms"])
     # подробный блок «Чем поможем» + все боли с решением (её просьба 06.10) — тексты в help_content.py
+    # «Подарок» — памятка-PDF этого клиента, выдаётся после заявки (её просьба 06.10); тексты — gift_content.py
+    g = GIFT[p["who"]]
+    inside = "\n".join(f"          <li>{e(t)}</li>" for t in g["inside"])
     h = HELP[p["who"]]
     help_text = "\n".join(f"      <p>{e(t)}</p>" for t in h["text"])
     solve = "\n".join(f"      <div class=\"solve-row\"><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in h["solve"])
@@ -596,6 +600,26 @@ def page_html(p):
     </div>
     <div class="faq">
 {faq}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="podarok">
+  <div class="wrap">
+    <div class="gift">
+      <div>
+        <span class="eyebrow">Подарок</span>
+        <h2>{e(g["title"])}</h2>
+        <p class="gift-lead">{e(g["intro"])}</p>
+      </div>
+      <div class="gift-doc">
+        <span class="eyebrow">Что внутри</span>
+        <ul>
+{inside}
+        </ul>
+        <span class="fname">PDF, {len(g["items"])} ситуаций · <b>бесплатно после заявки</b></span>
+        <a class="btn" href="#zayavka" data-gift="{g["file"]}" data-gift-title="{e(g["title"])}">Получить памятку</a>
+      </div>
     </div>
   </div>
 </section>
