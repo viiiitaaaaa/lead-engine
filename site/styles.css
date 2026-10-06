@@ -555,7 +555,9 @@ h1,h2,.facts b{letter-spacing:-.03em}
 @media (max-width:640px){.members{grid-template-columns:1fr}}
 
 /* фото завода в блоке «Своё производство климата» (её просьба 06.10) */
-.onas-photo{margin:clamp(24px,3vw,40px) 0 0}
-.onas-photo img{width:100%;aspect-ratio:21/9;object-fit:cover;object-position:50% 60%;display:block;border:1px solid rgb(var(--shade)/.22)}
+.onas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center}
+.onas-photo{margin:0}
+.onas-photo img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:50% 60%;display:block;border:1px solid rgb(var(--shade)/.22)}
+@media (max-width:860px){.onas{grid-template-columns:1fr}}
 .onas-photo figcaption{margin-top:10px;font-size:var(--fs-xs);color:var(--ink-soft);letter-spacing:.04em}
 @media (max-width:640px){.onas-photo img{aspect-ratio:4/3}}
