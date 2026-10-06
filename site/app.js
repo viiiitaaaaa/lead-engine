@@ -181,7 +181,13 @@ document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click"
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
   setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);
 }));
-const giftLink = () => gift ? ' Ваша памятка: <a href="' + gift.file + '" target="_blank" rel="noopener">скачать PDF</a>.' : "";
+const giftLink = (test) => {
+  if (!gift) return "";
+  const em = form.elements.email && form.elements.email.value.trim();
+  let s = em ? " Памятка «" + gift.title + "» придёт на " + em + "." : " Памятка «" + gift.title + "» придёт на почту, которую вы укажете менеджеру.";
+  if (test) s += ' <a href="' + gift.file + '" target="_blank" rel="noopener">Открыть PDF</a>.';
+  return s;
+};
 if (form) {
   /* метки UTM: из адреса, а если человек ушёл по ссылкам внутри сайта — из памяти вкладки */
   ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => {
@@ -205,7 +211,7 @@ if (form) {
     if (!consent.checked) { status.textContent = "Отметьте согласие на обработку данных"; return consent.focus(); }
     const data = Object.fromEntries(new FormData(form));
     if (!CONFIG.leadEndpoint) {
-      status.innerHTML = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink();
+      status.innerHTML = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink(true);
       console.log("Заявка (тест):", data);
       return;
     }
@@ -214,7 +220,7 @@ if (form) {
       const r = await fetch(CONFIG.leadEndpoint, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)});
       if (!r.ok) throw new Error(r.status);
       form.reset(); if (whoSelect) whoSelect.value = data.who;
-      status.innerHTML = "Заявка принята. Менеджер позвонит вам в рабочее время." + giftLink();
+      status.innerHTML = "Заявка принята. Менеджер позвонит вам в рабочее время." + giftLink(false);
     } catch (err) {
       status.textContent = "Не получилось отправить. Позвоните нам: " + CONFIG.phone;
     } finally { submit.disabled = false; }

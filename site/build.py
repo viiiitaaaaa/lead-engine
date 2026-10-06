@@ -93,6 +93,10 @@ def form_section(who="sobstvennik", title="Записаться на встре�
         <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="e-phone">
         <span class="err" id="e-phone" hidden>Укажите телефон: 10 цифр после +7</span>
       </div>
+      <div class="field">
+        <label for="f-email">Почта <span class="hint-inline">для памятки</span></label>
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@mail.ru">
+      </div>
       <div class="field full">
         <label for="f-address">Адрес объекта <span class="req">*</span></label>
         <input id="f-address" name="address" autocomplete="street-address" placeholder="Посёлок, улица, дом или кадастровый номер участка" required aria-describedby="h-address e-address">
@@ -617,7 +621,7 @@ def page_html(p):
         <ul>
 {inside}
         </ul>
-        <span class="fname">PDF, {len(g["items"])} ситуаций · <b>бесплатно после заявки</b></span>
+        <span class="fname">PDF, {len(g["items"])} ситуаций · <b>придёт на почту после заявки</b></span>
         <a class="btn" href="#zayavka" data-gift="{g["file"]}" data-gift-title="{e(g["title"])}">Получить памятку</a>
       </div>
     </div>
@@ -711,8 +715,8 @@ def gifts_html():
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Подарок</span>
-      <h2>Памятка для каждого — бесплатно после заявки</h2>
-      <p class="lead">Что делать в типовых ситуациях: 12 коротких ответов для вашей роли. Выберите свою, оставьте контакты — и получите PDF.</p>
+      <h2>Мы приготовили для вас подарок</h2>
+      <p class="lead">Памятка «Что делать в типовых ситуациях» — 12 коротких ответов именно для вашей роли. Выберите свою и оставьте контакты: PDF придёт вам на почту.</p>
     </div>
     <div class="gift-grid">
 ''' + "\n".join(cards) + '''
