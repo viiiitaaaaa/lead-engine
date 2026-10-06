@@ -534,3 +534,6 @@ h1,h2,.facts b{letter-spacing:-.03em}
 @media (max-width:640px){.gift-grid{grid-template-columns:1fr}}
 
 .hint-inline{font-weight:400;color:var(--on-dark-soft);font-size:var(--fs-xs);margin-left:4px}
+/* кнопки «Получить памятку» на одной линии: описание растягивается, кнопка прижата к низу карточки */
+.gift-card{grid-template-rows:auto auto 1fr auto auto;align-content:stretch}
+.gift-card .btn{align-self:end}
