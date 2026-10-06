@@ -408,7 +408,7 @@ h1,h2,.facts b{letter-spacing:-.03em}
 
 /* текст под заголовком первого экрана — на полупрозрачной плашке (её просьба 06.10, картинка 999: «чтобы текст был читабелен») */
 .hero .hero-text .lead{background:rgb(var(--shade)/.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  padding:16px 22px;border-left:2px solid var(--on-dark-accent);max-width:62ch;text-shadow:none;color:var(--paper)}
+  padding:16px 22px;max-width:62ch;text-shadow:none;color:var(--paper)}
 @media (max-width:860px){.hero .hero-text .lead{padding:12px 14px}}
 
 /* ===== слайдер отзывов (её просьба 06.10): карточка на полупрозрачном фоне с рамкой, медленная смена ===== */
