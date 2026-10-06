@@ -492,3 +492,6 @@ h1,h2,.facts b{letter-spacing:-.03em}
 .serv:hover,.serv:focus-visible{background:var(--paper);color:var(--ink);box-shadow:none}
 .serv:hover p,.serv:focus-visible p{color:var(--ink-soft)}
 .serv:hover .serv-go,.serv:focus-visible .serv-go{color:var(--accent-ink)}
+
+/* её правка 06.10: фото объекта не растягивать на всю полосу — только на видимую левую половину (масштаб меньше, чётче) */
+.wk-obj .wk-img{width:58%;right:auto}
