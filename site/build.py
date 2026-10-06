@@ -61,16 +61,16 @@ def header(active=""):
     </nav>
     <div class="top-contacts">
       <a class="phone num" href="tel:{PHONE_TEL}" data-contact="phone">{PHONE}</a>
-      <a class="btn" href="#zayavka">Записаться на встречу</a>
+      <a class="btn" href="#zayavka">Оставить заявку</a>
     </div>
     <button class="burger" type="button" aria-expanded="false" aria-controls="top" aria-label="Открыть меню"><span></span></button>
   </div>
 </header>'''
 
 
-def form_section(who="sobstvennik", title="Записаться на встречу",
+def form_section(who="sobstvennik", title="Оставить заявку",
                  lead="Оставьте телефон и адрес объекта. Менеджер перезвонит, уточнит задачу и договорится о встрече на объекте.",
-                 button="Записаться на встречу"):
+                 button="Оставить заявку"):
     opts = "\n".join(f'          <option value="{v}"{" selected" if v == who else ""}>{t}</option>' for v, t in WHO_OPTIONS)
     return f'''<section class="section dark" id="zayavka">
   <div class="wrap form-wrap">
@@ -199,7 +199,7 @@ PAGES = [
   eyebrow="Владельцу дома",
   h1="Ваш дом под ключ. Один ответственный за всё.",
   lead="Архитектура, стройка и интерьер одной командой — от эскиза до ключей. СПА, кинозал, винная комната и сад — по одному проекту и с одним менеджером. В доме тихо, тепло и свежо круглый год.",
-  cta="Записаться на встречу",
+  cta="Оставить заявку",
   pains_title="Почему строить дом так утомительно",
   pains_intro="Мы разобрали 313 жалоб на подрядчиков загородных домов. Владельцы устают не от стройки, а от того, что ею приходится управлять.",
   pains=[
@@ -240,7 +240,7 @@ PAGES = [
   ],
   # владельцу — без техники (её правка 06.10)
   proof=dict(title="Нам доверяют свой дом", lead="Бренд с 1961 года, в Москве с 1997-го и свой завод. За качество дома отвечаем сами, а не перекладываем на поставщиков."),
-  form=dict(title="Записаться на встречу", button="Записаться на встречу")),
+  form=dict(title="Оставить заявку", button="Оставить заявку")),
 
  dict(file="assistentu.html", who="pomoshchnik", img="s2", pos="50% 60%", light=True,
   title="Обслуживание дома для ассистента владельца — Frivent",
