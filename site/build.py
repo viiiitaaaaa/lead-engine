@@ -722,7 +722,7 @@ def gifts_html():
 ''' + "\n".join(cards) + '''
     </div>
   </div>
-</section><!--/GIFTS-->'''
+</section>'''
 
 
 if __name__ == "__main__":
