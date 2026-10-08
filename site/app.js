@@ -163,7 +163,7 @@ const form = document.getElementById("lead-form");
 document.querySelectorAll("[data-ask]").forEach(b => b.addEventListener("click", e => {
   if (!form) return;
   e.preventDefault();
-  const note = form.elements.note, line = "Запрос цены: " + b.dataset.ask;
+  const note = form.elements.note, line = (b.dataset.askPrefix || "Запрос цены: ") + b.dataset.ask;
   if (!note.value.includes(line)) note.value = (note.value ? note.value + "\n" : "") + line;
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
   setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);

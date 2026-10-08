@@ -9,6 +9,8 @@ from pathlib import Path
 from catalog_data import ITEMS, CATALOGS
 from help_content import HELP
 from gift_content import GIFT
+from objects_content import OBJECTS
+import service_content as SC
 
 SITE = Path(__file__).resolve().parent
 
@@ -607,7 +609,7 @@ def page_html(p):
     </div>
   </div>
 </section>
-
+{plans_html() if p["who"] in ("sobstvennik", "pomoshchnik") else ""}
 <section class="section" id="podarok">
   <div class="wrap">
     <div class="gift">
@@ -725,7 +727,154 @@ def gifts_html():
 </section>'''
 
 
+# ===== Пакеты сервиса без цен (выжимка, раздел 18 п.3–4) — страницы владельца и ассистента; тексты service_content.py =====
+def plans_html():
+    e = lambda x: escape(x, quote=False)
+    cards = []
+    for pl in SC.PLANS:
+        pts = "\n".join(f"          <li>{e(t)}</li>" for t in pl["points"])
+        cards.append(f'''      <article class="plan{" top" if pl.get("top") else ""}">
+        <span class="eyebrow">Пакет</span>
+        <h3>{e(pl["name"])}</h3>
+        <p class="plan-sub">{e(pl["sub"])}</p>
+        <ul>
+{pts}
+        </ul>
+        <a class="btn{"" if pl.get("top") else " ghost"}" href="#zayavka" data-ask="{escape(pl["name"])}" data-ask-prefix="Сервис дома, пакет: ">Обсудить пакет</a>
+      </article>''')
+    always = "\n".join(f"        <li>{e(t)}</li>" for t in SC.ALWAYS)
+    return f'''<section class="section alt" id="servis">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Сервис</span>
+      <h2>{e(SC.TITLE)}</h2>
+      <p class="lead">{e(SC.LEAD)}</p>
+    </div>
+    <div class="plans">
+{chr(10).join(cards)}
+    </div>
+    <div class="plans-always">
+      <h3>В любом пакете</h3>
+      <ul class="proofs">
+{always}
+      </ul>
+    </div>
+  </div>
+</section>
+'''
+
+
+# ===== «Нам доверяют»: полосы на главной (между <!--WORKS-->) и страница каждого объекта; тексты objects_content.py =====
+def pic(name, alt, pos="", eager=False):
+    st = f' style="object-position:{pos}"' if pos else ""
+    ld = ' fetchpriority="high"' if eager else ' loading="lazy"'
+    return f'<picture class="wk-img"><source srcset="img/raboty/{name}.webp" type="image/webp"><img{st} src="img/raboty/{name}.jpg" alt="{escape(alt)}"{ld}></picture>'
+
+
+def works_html():
+    e = lambda x: escape(x, quote=False)
+    rows = []
+    for o in OBJECTS:
+        city = o["place"].split(",")[0] if "Летний" not in o["name"] else "Летний сад, Санкт-Петербург"
+        rows.append(f'''      <article class="wk">
+        <div class="wk-half wk-obj">{pic(o["img"], o["name"], o["pos"])}<div class="wk-cap"><span class="wk-tag">Объект</span><h3>{e(o["name"])}</h3><p>{e(city)}</p></div></div>
+        <div class="wk-half wk-job">{pic(o["img"] + "-job", o["name"] + ": монтаж оборудования")}<div class="wk-cap"><span class="wk-tag">Что сделали</span><h3>{e(o["job"])}</h3><p>{e(o["job_sub"])}</p></div></div>
+        <a class="wk-link" href="obekt-{o["slug"]}.html"><span>Подробнее об объекте →</span></a>
+      </article>''')
+    return "\n" + "\n".join(rows) + "\n  "
+
+
+def obj_html(i):
+    e = lambda x: escape(x, quote=False)
+    o = OBJECTS[i]
+    prv, nxt = OBJECTS[i - 1], OBJECTS[(i + 1) % len(OBJECTS)]
+    facts = "\n".join(f'      <div><b class="num">{e(n)}</b><span>{e(t)}</span></div>' for n, t in o["facts"])
+    done = "\n".join(f"          <li>{e(t)}</li>" for t in o["done"])
+    eq = "\n".join(f"          <li>{e(t)}</li>" for t in o["equipment"])
+    team = "\n".join(f'      <div class="solve-row"><dt>{e(a)}</dt><dd>{e(b)}</dd></div>' for a, b in o["team"])
+    team_block = f'''
+    <h3 class="solve-title" style="margin-top:clamp(36px,4vw,56px)">Кто работал на объекте</h3>
+    <dl class="solve">
+{team}
+    </dl>''' if team else ""
+    title = f'{o["name"]} — {o["job"].lower()} — Frivent'
+    desc = f'{o["name"]}, {o["place"]}: {o["job"].lower()}. {o["lead"]}'
+    return HEAD.format(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="obekt-" + o["slug"], who="sobstvennik") + header() + f'''
+
+<main>
+<section class="obj-hero">
+  {pic(o["img"], o["name"], o["pos"], eager=True)}
+  <div class="wrap">
+    <span class="eyebrow">{e(o["kind"])}</span>
+    <h1>{e(o["name"])}</h1>
+    <p class="obj-place">{e(o["place"])}</p>
+    <p class="lead">{e(o["lead"])}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="facts obj-facts">
+{facts}
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap obj-cols">
+    <div>
+      <span class="eyebrow">Задача</span>
+      <h2>{e(o["job"])}</h2>
+      <p class="obj-task">{e(o["task"])}</p>
+      <h3 class="solve-title">Что сделали</h3>
+      <ul class="proofs obj-list">
+{done}
+      </ul>
+    </div>
+    <figure class="obj-job">{pic(o["img"] + "-job", o["name"] + ": " + o["job"].lower())}</figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Оборудование Frivent</span>
+      <h2>Что поставили</h2>
+    </div>
+    <ul class="proofs obj-list">
+{eq}
+    </ul>{team_block}
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap obj-you">
+    <div>
+      <span class="eyebrow">Для вашего дома</span>
+      <p class="obj-you-text">{e(o["you"])}</p>
+    </div>
+    <a class="btn" href="#zayavka" data-ask="{escape(o["name"])}" data-ask-prefix="Похожий проект: ">Обсудить похожий проект</a>
+  </div>
+  <nav class="wrap obj-nav" aria-label="Другие объекты">
+    <a href="obekt-{prv["slug"]}.html">← {e(prv["name"])}</a>
+    <a href="index.html#raboty">Все объекты</a>
+    <a href="obekt-{nxt["slug"]}.html">{e(nxt["name"])} →</a>
+  </nav>
+</section>
+
+{form_section("sobstvennik", "Обсудить похожий проект", button="Оставить заявку")}
+</main>
+
+<script src="app.js?v={ver('app.js')}" defer></script>
+</body>
+</html>
+'''
+
+
 if __name__ == "__main__":
+    for i, o in enumerate(OBJECTS):
+        (SITE / f'obekt-{o["slug"]}.html').write_text(obj_html(i), "utf-8")
+    print("страницы объектов:", len(OBJECTS))
     for p in PAGES:
         (SITE / p["file"]).write_text(page_html(p), "utf-8")
         (SITE / ("katalog-" + p["file"])).write_text(catalog_html(p), "utf-8")
@@ -736,6 +885,8 @@ if __name__ == "__main__":
     if "<!--GIFTS-->" in s:
         s = replace_between(s, "<!--GIFTS-->", "<!--/GIFTS-->", gifts_html())
     s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section())
+    if "<!--WORKS-->" in s:
+        s = replace_between(s, "<!--WORKS-->", "<!--/WORKS-->", works_html())
     if "<!--REVIEWS-->" in s:
         s = replace_between(s, "<!--REVIEWS-->", "<!--/REVIEWS-->", reviews_html())
     import re as _re
