@@ -128,7 +128,8 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       </div>
       <div class="field">
         <label for="f-email">Почта <span class="hint-inline">для памятки</span></label>
-        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@mail.ru">
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@mail.ru" aria-describedby="e-email">
+        <span class="err" id="e-email" hidden>Проверьте почту — например, name@mail.ru</span>
       </div>
       <div class="field full">
         <label for="f-address">Адрес объекта <span class="req">*</span></label>
@@ -1260,3 +1261,12 @@ if __name__ == "__main__":
     s = _re.sub(r'src="app\.js(\?v=\w+)?"', f'src="app.js?v={ver("app.js")}"', s)
     idx.write_text(s, "utf-8")
     print("главная: шапка и форма обновлены")
+    # карта сайта для Яндекса и Google (Clarke «SEO 2025»: сайт без CMS — sitemap.xml в корень + отправить в Вебмастер).
+    # Домен ещё не выбран (открытый вопрос) — BASE поменять, когда она решит; служебные _*.html не включаем.
+    BASE = "https://frivent.ru/"
+    pages = sorted(f.name for f in SITE.glob("*.html") if not f.name.startswith("_"))
+    urls = "\n".join(f"  <url><loc>{BASE}{'' if n == 'index.html' else n}</loc></url>" for n in pages)
+    (SITE / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "\n</urlset>\n", "utf-8")
+    (SITE / "robots.txt").write_text(f"User-agent: *\nDisallow: /_\nSitemap: {BASE}sitemap.xml\n", "utf-8")
+    print("карта сайта: страниц", len(pages))

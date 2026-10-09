@@ -316,7 +316,8 @@
       </div>
       <div class="field">
         <label for="f-email">Почта <span class="hint-inline">для памятки</span></label>
-        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@mail.ru">
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@mail.ru" aria-describedby="e-email">
+        <span class="err" id="e-email" hidden>Проверьте почту — например, name@mail.ru</span>
       </div>
       <div class="field full">
         <label for="f-address">Адрес объекта <span class="req">*</span></label>
@@ -367,6 +368,6 @@
 </section>
 </main>
 
-<script src="app.js?v=43c03229" defer></script>
+<script src="app.js?v=8723967e" defer></script>
 </body>
 </html>

@@ -219,8 +219,12 @@ if (form) {
     const digits = phone.value.replace(/\D/g, "");
     const phoneBad = !(digits.length === 11 && /^[78]/.test(digits)) && digits.length !== 10;
     const addrBad = address.value.trim().length < 3;
-    setErr(phone, "e-phone", phoneBad); setErr(address, "e-address", addrBad);
+    /* почта необязательна, но если введена — проверяем (Мукминов: список плохих значений — без @, «user@», «@mail.ru», «user@.com», пробел) */
+    const email = form.elements.email, em = email.value.trim();
+    const emailBad = em !== "" && !/^[^\s@]{1,64}@[^\s@.][^\s@]*\.[^\s@.]{2,}$/.test(em);
+    setErr(phone, "e-phone", phoneBad); setErr(address, "e-address", addrBad); setErr(email, "e-email", emailBad);
     if (phoneBad) return phone.focus();
+    if (emailBad) return email.focus();
     if (addrBad) return address.focus();
     if (!consent.checked) { status.textContent = "Отметьте согласие на обработку данных"; return consent.focus(); }
     const data = Object.fromEntries(new FormData(form));
@@ -244,7 +248,7 @@ if (form) {
       status.textContent = "Не получилось отправить. Позвоните нам: " + CONFIG.phone;
     } finally { submit.disabled = false; }
   });
-  ["phone", "address"].forEach(n => form.elements[n].addEventListener("input", () => {
+  ["phone", "address", "email"].forEach(n => form.elements[n].addEventListener("input", () => {
     form.elements[n].setAttribute("aria-invalid", "false"); document.getElementById("e-" + n).hidden = true;
   }));
 }
