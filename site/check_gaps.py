@@ -1,5 +1,5 @@
 """Проверка вертикальных отступов между блоками на всех страницах (её правило 09.10: везде одинаково).
-Запуск: python site/check_gaps.py site — норма: 128 между блоками, 64 от края фото/линии; всё другое — править.
+Запуск: python site/check_gaps.py site — норма: 138 между блоками, 69 от края фото/линии; всё другое — править.
 """
 import sys, glob, os, json
 from playwright.sync_api import sync_playwright
