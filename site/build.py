@@ -86,7 +86,7 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
     <button type="button" class="exit-x" id="exit-x" aria-label="Закрыть">×</button>
     <b>Пока вы здесь — заберите памятку</b>
     <p>«Что делать в типовых ситуациях»: 12 коротких ответов именно для вашей роли. PDF придёт на почту.</p>
-    <a class="btn" id="exit-go" href="#zayavka">Получить памятку</a>
+    <a class="btn" id="exit-go" href="index.html#podarki">Получить памятку</a>
   </div>'''
 EMAIL = "order@frivent.msk.ru"
 
@@ -768,7 +768,7 @@ def politika_html():
     body = "\n".join(f"      <h2>{h}</h2>\n" + "\n".join(f"      <p>{p}</p>" for p in ps) for h, ps in parts)
     return head(css_v=ver("styles.css"), title="Политика обработки персональных данных | Frivent",
                 desc="Как Frivent обрабатывает персональные данные из формы заявки: что получаем, зачем, как храним и как отозвать согласие.",
-                page="politika", who="sobstvennik") + header() + f'''
+                page="politika", who="sobstvennik") + header().replace('href="#zayavka"', 'href="index.html#zayavka"') + f'''
 
 <main>
 <section class="cat-hero">
@@ -1106,7 +1106,7 @@ def catalog_html(p):
     return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="katalog-" + p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
-<section class="cat-hero">
+<section class="cat-hero" id="vse">
   <div class="wrap">
     <span class="eyebrow">Каталог · {e(p["eyebrow"])}</span>
     <h1>Товары и услуги</h1>
@@ -1266,6 +1266,11 @@ def docs_html():
 def pic(name, alt, pos="", eager=False):
     st = f' style="object-position:{pos}"' if pos else ""
     ld = ' fetchpriority="high"' if eager else ' loading="lazy"'
+    # телефон берёт версию 1200 px (-m), компьютер — полную 2400 (проверка скорости 10.10, Clarke: LCP ≤2,5 с)
+    if (SITE / "img" / "raboty" / f"{name}-m.webp").exists():
+        sz = "100vw" if eager else "(max-width: 860px) 100vw, 60vw"
+        return (f'<picture class="wk-img"><source srcset="img/raboty/{name}-m.webp 1200w, img/raboty/{name}.webp 2400w" sizes="{sz}" type="image/webp">'
+                f'<img{st} src="img/raboty/{name}.jpg" srcset="img/raboty/{name}-m.jpg 1200w, img/raboty/{name}.jpg 2400w" sizes="{sz}" alt="{escape(alt)}"{ld}></picture>')
     return f'<picture class="wk-img"><source srcset="img/raboty/{name}.webp" type="image/webp"><img{st} src="img/raboty/{name}.jpg" alt="{escape(alt)}"{ld}></picture>'
 
 
