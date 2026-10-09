@@ -188,7 +188,7 @@ a{color:inherit}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .dirs{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px 0;font-size:var(--fs-xs);color:var(--on-dark-soft);max-width:760px}
 .dirs li+li::before{content:"·";margin-inline:12px;color:var(--on-dark-accent)}
-.facts-band{padding-block:var(--sec)}
+.facts-band{padding-block:clamp(16px,1.5vw,22px) clamp(26px,2.7vw,39px)} /* её замер 09.10: фото→цифры 22, цифры→марки 39 */
 .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
 .facts b{display:block;font:400 clamp(32px,3.6vw,56px)/1 var(--display);color:var(--accent-ink);margin-bottom:10px}
 .facts span{font-size:var(--fs-s);color:var(--ink-soft);line-height:1.45;display:block;max-width:28ch}
@@ -215,7 +215,7 @@ a{color:inherit}
 
 /* выбор «Я — …» */
 .section{padding-block:var(--sec)}
-.sec-head{display:grid;gap:18px;margin-bottom:clamp(24px,3vw,40px);max-width:760px}
+.sec-head{display:grid;gap:18px;margin-bottom:clamp(20px,1.8vw,26px);max-width:760px}
 .who{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
 .who .who-card{text-decoration:none;color:var(--ink);transition:background .25s,color .25s;display:grid;gap:10px;align-content:start;text-align:left;padding:28px 26px 30px;border:0;background:var(--paper);cursor:pointer;
   transition:background .25s;min-height:170px}
