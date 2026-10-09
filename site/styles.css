@@ -876,3 +876,18 @@ footer{margin-top:clamp(40px,5vw,72px)}
 .exit-x{position:absolute;top:8px;right:10px;width:32px;height:32px;border:0;background:none;font-size:22px;line-height:1;color:var(--ink-soft);cursor:pointer}
 
 .section.dark > footer:first-child{margin-top:0} /* политика: подвал без формы над ним (check_gaps 223 → 151) */
+
+/* 10.10: схема «как работает» (SVG в странице) и отзыв владельца на странице объекта — примеры */
+.scheme-wrap{overflow-x:auto;padding:clamp(20px,2.4vw,32px);border-radius:var(--r);background:var(--glass)}
+.scheme{display:block;width:100%;min-width:760px;height:auto}
+.sch-box{fill:var(--paper);stroke:rgb(var(--shade)/.25);stroke-width:1}
+.sch-end{fill:var(--deep);stroke:none}
+.sch-end + .sch-txt{fill:var(--paper)}
+.sch-txt{font:400 14px/1.2 var(--body);fill:var(--ink)}
+.sch-row{font:500 15px/1 var(--body);fill:var(--wine)}
+.sch-arrow{stroke:var(--accent);stroke-width:1.5;fill:none}
+.sch-head{stroke:var(--accent);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.quote-big{margin:0;max-width:62ch;display:grid;gap:18px}
+.quote-big blockquote{margin:0}
+.quote-big p{font:400 clamp(22px,2.4vw,32px)/1.3 var(--display);letter-spacing:-.02em;color:var(--ink)}
+.quote-big figcaption{font-size:var(--fs-s);color:var(--ink-soft)}

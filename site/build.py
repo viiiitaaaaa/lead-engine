@@ -171,6 +171,69 @@ def team_html():
 </section>'''
 
 
+def quote_html(slug):
+    """отзыв владельца/управляющего на странице объекта (пример из demo_content.QUOTES)"""
+    if slug not in DC.QUOTES:
+        return ""
+    t, who = DC.QUOTES[slug]
+    e = lambda x: escape(x, quote=False)
+    return f'''
+<section class="section">
+  <div class="wrap">
+    <figure class="quote-big">
+      <blockquote><p>«{e(t)}»</p></blockquote>
+      <figcaption>{e(who)} {DEMO_TAG if DC.DEMO else ""}</figcaption>
+    </figure>
+  </div>
+</section>'''
+
+
+def scheme_html(slug):
+    """схема «как работает» — простое SVG прямо в странице (без картинок), ряды узлов со стрелками; сверить с инженером"""
+    if slug not in DC.SCHEMES:
+        return ""
+    title, rows = DC.SCHEMES[slug]
+    e = lambda x: escape(x, quote=False)
+    W, RH, LW = 1000, 150, 120             # ширина, высота ряда, ширина подписи ряда
+    parts = []
+    for r, (label, nodes) in enumerate(rows):
+        y = 20 + r * RH
+        n = len(nodes)
+        gap = 44
+        nw = (W - LW - gap * (n - 1)) / n
+        parts.append(f'<text class="sch-row" x="0" y="{y + 58}">{e(label)}</text>')
+        for i, t in enumerate(nodes):
+            x = LW + i * (nw + gap)
+            last = i == n - 1
+            parts.append(f'<rect class="sch-box{" sch-end" if last else ""}" x="{x:.0f}" y="{y}" width="{nw:.0f}" height="96" rx="14"/>')
+            # перенос подписи по словам на 2–3 строки
+            words, lines, cur = t.split(), [], ""
+            for w in words:
+                if len(cur) + len(w) + 1 > max(14, int(nw / 9.5)):
+                    lines.append(cur); cur = w
+                else:
+                    cur = (cur + " " + w).strip()
+            lines.append(cur)
+            ty = y + 48 - (len(lines) - 1) * 10
+            tsp = "".join(f'<tspan x="{x + nw / 2:.0f}" dy="{0 if k == 0 else 20}">{e(s)}</tspan>' for k, s in enumerate(lines))
+            parts.append(f'<text class="sch-txt" x="{x + nw / 2:.0f}" y="{ty:.0f}" text-anchor="middle">{tsp}</text>')
+            if not last:
+                ax = x + nw + 6
+                parts.append(f'<path class="sch-arrow" d="M{ax:.0f} {y + 48} h{gap - 14}"/><path class="sch-head" d="M{ax + gap - 14:.0f} {y + 42} l8 6 l-8 6"/>')
+    H = 20 + len(rows) * RH
+    svg = f'<svg class="scheme" viewBox="0 0 {W} {H}" role="img" aria-label="{escape(title)}">' + "".join(parts) + "</svg>"
+    return f'''
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Схема {DEMO_TAG if DC.DEMO else ""}</span>
+      <h2>{e(title)}</h2>
+    </div>
+    <div class="scheme-wrap">{svg}</div>
+  </div>
+</section>'''
+
+
 def results_html():
     """«Результат в цифрах» на странице объекта — было → стало (кейсы с цифрами, Котлер ММ, SaaS)"""
     if not DC.RESULTS:
@@ -823,12 +886,7 @@ COMPARE = [
 
 # «Как мы работаем в вашем доме» (Котлер 10 грехов: всё, что видит клиент, — одно впечатление; Ритц-Карлтон).
 # Правила Frivent ещё не подтверждены — на сайте со значком «пример» (её решение 10.10 про примеры).
-HOUSE_RULES = [
-    ("Бережём отделку", "Полы, лестницы и мебель закрываем плёнкой и картоном до конца работ."),
-    ("Чисто каждый день", "Убираем за собой в конце каждого дня, мусор вывозим сами."),
-    ("Тихие часы", "Шумные работы — только в согласованное с вами время."),
-    ("Один бригадир на связи", "Знаете, кто в доме и что сегодня делают."),
-]
+HOUSE_RULES = DC.HOUSE_RULES  # примеры — в demo_content.py
 
 
 def compare_html():
@@ -891,6 +949,8 @@ def page_html(p):
     help_text = "\n".join(f"      <p>{e(t)}</p>" for t in h["text"])
     solve = "\n".join(f"      <div class=\"solve-row\"><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in h["solve"])
     faq = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in p["faq"])
+    if DC.DEMO and p["who"] in ("sobstvennik", "pomoshchnik"):  # вопросы «про жизнь» — примеры, в разметку не идут
+        faq += "\n" + "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)} {DEMO_TAG}</p></details>' for q, a in DC.FAQ)
     return head(css_v=ver("styles.css"), title=e(p["title"]), desc=e(p["desc"]), page=p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
@@ -1251,7 +1311,7 @@ def obj_html(i):
     </div>
   </div>
 </section>
-{results_html()}
+{results_html()}{quote_html(o["slug"])}
 
 <section class="section alt">
   <div class="wrap obj-cols">
@@ -1355,6 +1415,7 @@ def usl_html(u):
     </div>
   </div>
 </section>
+{scheme_html(u["slug"])}
 
 <section class="section dark" id="etapy">
   <div class="wrap">
