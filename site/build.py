@@ -771,6 +771,38 @@ def plans_html():
 '''
 
 
+# ===== «Договорённости» на главной (раздел 18, п.16): что фиксируем в договоре — только уже данные на сайте обещания =====
+DOGOVOR = [
+ "Цена — в договоре, после оплаты не растёт",
+ "Даты поставки оборудования и этапов работ",
+ "Ваш менеджер: имя и прямой телефон",
+ "Оригинальное оборудование с паспортами и сертификатами",
+ "Приёмка с замерами, фото и актом",
+ "Схемы, паспорта и инструкции к сдаче — в одной папке",
+ "Гарантия, сроки выезда и состав сервиса",
+ "Обслуживание и запчасти, в том числе для европейского оборудования других марок",
+]
+
+
+def dogovor_html():
+    items = "\n".join(f"        <li>{escape(t, quote=False)}</li>" for t in DOGOVOR)
+    return f'''<section class="section alt" id="dogovor">
+  <div class="wrap terms-wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Договорённости</span>
+      <h2>Что мы фиксируем в договоре</h2>
+      <p class="lead">Главные жалобы на подрядчиков — пропадают, растёт смета, срывают сроки. Поэтому всё важное записываем на бумаге до начала работ.</p>
+    </div>
+    <div class="terms-box">
+      <ul class="proofs">
+{items}
+      </ul>
+      <a class="btn" href="#zayavka">Оставить заявку</a>
+    </div>
+  </div>
+</section>'''
+
+
 # ===== Документы для проекта за контакт (раздел 18, п.12) — дизайнеру, монтажнику, застройщику, коммерции =====
 # BIM-модели не обещаем, пока она не подтвердит, что они есть у Frivent
 DOCS = [
@@ -1155,6 +1187,9 @@ if __name__ == "__main__":
     s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section(uslugi=True))
     if "<!--WORKS-->" in s:
         s = replace_between(s, "<!--WORKS-->", "<!--/WORKS-->", works_html())
+    if "<!--DOGOVOR-->" not in s:
+        s = s.replace('<section class="section" id="territoriya">', '<!--DOGOVOR--><!--/DOGOVOR-->\n\n<section class="section" id="territoriya">', 1)
+    s = replace_between(s, "<!--DOGOVOR-->", "<!--/DOGOVOR-->", dogovor_html())
     if "<!--REVIEWS-->" in s:
         s = replace_between(s, "<!--REVIEWS-->", "<!--/REVIEWS-->", reviews_html())
     import re as _re
