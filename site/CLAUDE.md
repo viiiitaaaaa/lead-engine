@@ -53,6 +53,8 @@
 - СТРАНИЦЫ УСЛУГ (09.10): usluga-<slug>.html из site/uslugi_content.py (build.py → usl_html): боли, что делаем, этапы
   «подключаемся на любом этапе» (STAGES), модернизация, объекты, вопросы. Ссылки в подвале (form_section uslugi) — везде,
   кроме страниц владельца. Сроки выезда и гарантии в цифрах не писать, пока их не даст она.
+- ЖУРНАЛ (09.10): zhurnal.html и statya-<slug>.html из site/zhurnal_content.py; у статьи поле usl = страница услуги.
+  Цифры только из наших сборов. ДОКУМЕНТЫ ДЛЯ ПРОЕКТИРОВЩИКА — build.py DOCS/docs_html (BIM не обещать без её слова).
 - Публикация: _preview_index.html = index.html без первых 5 строк (doctype, html, head, charset, viewport); в files — все html, css, js.
 
 ## Оформление

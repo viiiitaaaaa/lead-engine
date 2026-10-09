@@ -314,6 +314,29 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 .foot-links a:hover{color:var(--on-dark-accent)}
 .usl-others{margin-top:clamp(32px,4vw,56px);font-size:var(--fs-s)}
 .usl-others a:hover{color:var(--accent)}
+/* журнал (09.10) */
+.art-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
+.art-card{display:flex;flex-direction:column;gap:12px;padding:clamp(22px,2.4vw,32px);background:var(--sand);color:var(--ink);text-decoration:none;border-top:2px solid var(--accent);transition:background .2s}
+.art-card h3{font-size:var(--fs-h3)}
+.art-card p{font-size:var(--fs-s);line-height:1.55;color:var(--ink-soft);flex:1}
+.art-card:hover{background:#d3c9bd}
+.art-card .serv-go{color:var(--accent);opacity:1}
+.art-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.art-body{max-width:calc(72ch + 2 * var(--gut))}
+.art-body h2{font-size:var(--fs-h3);margin:clamp(28px,3vw,44px) 0 12px}
+.art-body h2:first-child{margin-top:0}
+.art-body p,.art-body li{font-size:var(--fs-l);line-height:1.6}
+.art-body p+p{margin-top:12px}
+.art-body ul{display:grid;gap:10px;padding-left:1.2em}
+.art-body li::marker{color:var(--accent)}
+.art-cta{margin-top:clamp(36px,4vw,56px);padding-top:24px;border-top:1px solid var(--line, rgba(29,27,25,.15));display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center}
+.art-cta p{flex-basis:100%;font-size:var(--fs-m)}
+.cat-hero .eyebrow a{color:inherit}
+.art-more{display:grid;gap:10px;padding-left:1.2em;margin-top:16px}
+.art-more a{color:var(--ink);text-underline-offset:3px;font-size:var(--fs-m)}
+.art-more a:hover{color:var(--accent)}
+@media (max-width:1100px){.art-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.art-grid{grid-template-columns:1fr}}
 
 /* ===== страницы клиентов (06.10) ===== */
 .section.alt{background:var(--sand)}

@@ -12,6 +12,7 @@ from gift_content import GIFT
 from objects_content import OBJECTS
 import service_content as SC
 from uslugi_content import USLUGI, STAGES
+from zhurnal_content import ARTICLES
 
 SITE = Path(__file__).resolve().parent
 
@@ -78,7 +79,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     if uslugi is None:
         uslugi = who != "sobstvennik"
     usl = ('\n      <nav class="foot-links" aria-label="Услуги">' + " · ".join(
-        f'<a href="usluga-{u["slug"]}.html">{u["name"]}</a>' for u in USLUGI) + "</nav>") if uslugi else ""
+        f'<a href="usluga-{u["slug"]}.html">{u["name"]}</a>' for u in USLUGI) + ' · <a href="zhurnal.html">Журнал</a></nav>') if uslugi else ""
     opts ="\n".join(f'          <option value="{v}"{" selected" if v == who else ""}>{t}</option>' for v, t in WHO_OPTIONS)
     return f'''<section class="section dark" id="zayavka">
   <div class="wrap form-wrap">
@@ -615,7 +616,7 @@ def page_html(p):
     </div>
   </div>
 </section>
-{plans_html() if p["who"] in ("sobstvennik", "pomoshchnik") else ""}
+{plans_html() if p["who"] in ("sobstvennik", "pomoshchnik") else ""}{docs_html() if p["who"] in ("dizayner", "montazh", "zastroyshchik", "kommerciya") else ""}
 <section class="section" id="podarok">
   <div class="wrap">
     <div class="gift">
@@ -770,6 +771,39 @@ def plans_html():
 '''
 
 
+# ===== Документы для проекта за контакт (раздел 18, п.12) — дизайнеру, монтажнику, застройщику, коммерции =====
+# BIM-модели не обещаем, пока она не подтвердит, что они есть у Frivent
+DOCS = [
+ "Технические описания и паспорта установок Frivent",
+ "Сертификаты соответствия и декларация ЕАЭС на линейку оборудования",
+ "Подбор установки под ваш объект: расход воздуха, шум, габариты, подключения",
+ "Габаритные чертежи и схемы подключения для проекта",
+ "Образцы договора поставки и акта пусконаладки",
+]
+
+
+def docs_html():
+    e = lambda x: escape(x, quote=False)
+    items = "\n".join(f"        <li>{e(t)}</li>" for t in DOCS)
+    return f'''
+<section class="section alt" id="dokumenty">
+  <div class="wrap terms-wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Для проекта</span>
+      <h2>Документы для проектировщика</h2>
+      <p class="lead">Заложите оборудование в проект сразу правильно. Оставьте контакты и адрес объекта — инженер пришлёт документы под вашу задачу.</p>
+    </div>
+    <div class="terms-box">
+      <ul class="proofs">
+{items}
+      </ul>
+      <a class="btn" href="#zayavka" data-ask="паспорта, сертификаты, подбор и чертежи" data-ask-prefix="Документы для проекта: ">Получить документы</a>
+    </div>
+  </div>
+</section>
+'''
+
+
 # ===== «Нам доверяют»: полосы на главной (между <!--WORKS-->) и страница каждого объекта; тексты objects_content.py =====
 def pic(name, alt, pos="", eager=False):
     st = f' style="object-position:{pos}"' if pos else ""
@@ -888,6 +922,10 @@ def usl_html(u):
     objs = "\n".join(f'      <a class="serv" href="obekt-{s}.html"><h3>{e(by[s]["name"])}</h3><p>{e(by[s]["job"])}. {e(by[s]["job_sub"])}</p><span class="serv-go">Подробнее об объекте →</span></a>'
                      for s in u["objects"])
     others = " · ".join(f'<a href="usluga-{x["slug"]}.html">{e(x["name"])}</a>' for x in USLUGI if x is not u)
+    arts = [a for a in ARTICLES if a["usl"] == u["slug"]]
+    if arts:
+        others += '</p>\n    <p class="usl-others">Статьи по теме: ' + " · ".join(
+            f'<a href="statya-{a["slug"]}.html">{e(a["title"])}</a>' for a in arts)
     faq = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in u["faq"])
     img, pos = u["img"], u["pos"]
     return HEAD.format(css_v=ver("styles.css"), title=e(u["title"]), desc=e(u["desc"]), page="usluga-" + u["slug"], who="pomoshchnik") + header() + f'''
@@ -1000,7 +1038,105 @@ def usl_html(u):
 '''
 
 
+# ===== Журнал статей по болям (раздел 18, п.15) — тексты zhurnal_content.py =====
+def zhurnal_html():
+    e = lambda x: escape(x, quote=False)
+    cards = "\n".join(f'''      <a class="art-card" href="statya-{a["slug"]}.html">
+        <span class="eyebrow">{e(a["tag"])}</span>
+        <h3>{e(a["title"])}</h3>
+        <p>{e(a["lead"])}</p>
+        <span class="serv-go">Читать →</span>
+      </a>''' for a in ARTICLES)
+    return HEAD.format(css_v=ver("styles.css"), title="Журнал — климат и инженерия загородного дома — Frivent",
+                       desc="Статьи о главных проблемах загородного дома: шум вентиляции, сырость и плесень, конденсат у бассейна, духота, обмерзание рекуператора, сервис европейского оборудования.",
+                       page="zhurnal", who="pomoshchnik") + header() + f'''
+
+<main>
+<section class="cat-hero">
+  <div class="wrap">
+    <span class="eyebrow">Журнал</span>
+    <h1>Климат и инженерия загородного дома</h1>
+    <p class="lead">Разбираем то, на что владельцы жалуются чаще всего: мы прочитали тысячи сообщений на форумах и отзывов о подрядчиках. Коротко: почему так бывает и что делать.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="art-grid">
+{cards}
+    </div>
+  </div>
+</section>
+
+{form_section("pomoshchnik", "Задать вопрос инженеру", lead="Оставьте телефон и адрес объекта. Инженер перезвонит и разберёт вашу ситуацию.")}
+</main>
+
+<script src="app.js?v={ver('app.js')}" defer></script>
+</body>
+</html>
+'''
+
+
+def statya_html(i):
+    e = lambda x: escape(x, quote=False)
+    a = ARTICLES[i]
+    u = next(x for x in USLUGI if x["slug"] == a["usl"])
+    body = []
+    for h, paras in a["parts"]:
+        body.append(f"      <h2>{e(h)}</h2>")
+        if len(paras) > 2:
+            body.append("      <ul>" + "".join(f"<li>{e(p)}</li>" for p in paras) + "</ul>")
+        else:
+            body += [f"      <p>{e(p)}</p>" for p in paras]
+    more = "\n".join(f'      <li><a href="statya-{x["slug"]}.html">{e(x["title"])}</a></li>' for x in ARTICLES if x is not a)
+    return HEAD.format(css_v=ver("styles.css"), title=e(a["title"]) + " — журнал Frivent", desc=e(a["lead"]),
+                       page="statya-" + a["slug"], who="pomoshchnik") + header() + f'''
+
+<main>
+<article>
+<section class="cat-hero">
+  <div class="wrap">
+    <span class="eyebrow"><a href="zhurnal.html">Журнал</a> · {e(a["tag"])}</span>
+    <h1>{e(a["title"])}</h1>
+    <p class="lead">{e(a["lead"])}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap art-body">
+{chr(10).join(body)}
+    <div class="art-cta">
+      <p>Это наша работа: {e(u["name"].lower())} — расчёт, монтаж, пусконаладка и сервис, в том числе чужого европейского оборудования.</p>
+      <a class="btn ghost" href="usluga-{u["slug"]}.html">Подробнее об услуге</a>
+      <a class="btn" href="#zayavka" data-ask="{escape(a["title"])}" data-ask-prefix="Вопрос по статье: ">Задать вопрос инженеру</a>
+    </div>
+  </div>
+</section>
+</article>
+
+<section class="section alt">
+  <div class="wrap">
+    <h2 class="solve-title">Ещё в журнале</h2>
+    <ul class="art-more">
+{more}
+    </ul>
+  </div>
+</section>
+
+{form_section("pomoshchnik", "Задать вопрос инженеру", lead="Оставьте телефон и адрес объекта. Инженер перезвонит и разберёт вашу ситуацию.")}
+</main>
+
+<script src="app.js?v={ver('app.js')}" defer></script>
+</body>
+</html>
+'''
+
+
 if __name__ == "__main__":
+    (SITE / "zhurnal.html").write_text(zhurnal_html(), "utf-8")
+    for i, a in enumerate(ARTICLES):
+        (SITE / f'statya-{a["slug"]}.html').write_text(statya_html(i), "utf-8")
+    print("журнал: статей", len(ARTICLES))
     for u in USLUGI:
         (SITE / f'usluga-{u["slug"]}.html').write_text(usl_html(u), "utf-8")
     print("страницы услуг:", len(USLUGI))
