@@ -179,6 +179,38 @@ def results_html():
 </section>'''
 
 
+# «Частые вопросы» на главной (10.10): ответы, удобные для пересказа ИИ-поиском (Котлер 7.0; Clarke «SEO 2025» — FAQPage),
+# и «чего мы не делаем» (Social Media Marketing: узкая фраза отсекает чужие запросы). Только уже данные обещания.
+HOME_FAQ = [
+    ("Можно заказать только один этап — проект, поставку или сервис?",
+     "Да. Подключаемся на любом этапе: от эскиза до обслуживания готового дома. Если проект уже есть — берём поставку, монтаж или сервис."),
+    ("Где вы работаете?", "Новая Рига, Рублёвка и Ильинское шоссе — до 60 км от МКАД."),
+    ("Обслуживаете оборудование, которое ставили другие?",
+     "Да. Обслуживаем, ремонтируем и поставляем запчасти для европейского оборудования других марок."),
+    ("Кто делает монтаж?", "Свои бригады, по одному графику для всех работ. Пусконаладку климата делает производитель — замеры и акт."),
+    ("Работаете с квартирами и небольшими объектами?",
+     "Нет. Мы делаем загородные резиденции премиум-класса и коммерческие объекты: рестораны, клиники, фитнес и СПА, торговые центры, серверные. Бюджетные и типовые решения — не наш профиль."),
+    ("Сколько стоит?", "Зависит от дома и состава работ. После встречи на объекте готовим смету; цена фиксируется в договоре и после оплаты не растёт."),
+]
+
+
+def home_faq_html():
+    e = lambda x: escape(x, quote=False)
+    items = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in HOME_FAQ)
+    return f'''<section class="section" id="voprosy">
+  <div class="wrap faq-wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Вопросы</span>
+      <h2>Частые вопросы</h2>
+    </div>
+    <div class="faq">
+{items}
+    </div>
+  </div>
+  {faq_ld(HOME_FAQ)}
+</section>'''
+
+
 def faq_ld(pairs):
     return ld({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in pairs]})
@@ -607,6 +639,7 @@ HEAD = '''<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{desc}">
+<link rel="canonical" href="https://frivent.ru/{page}.html">
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v={css_v}">
@@ -1290,7 +1323,7 @@ def statya_html(i):
 {chr(10).join(body)}
     <div class="art-cta">
       <p>Это наша работа: {e(u["name"].lower())} — расчёт, монтаж, пусконаладка и сервис, в том числе чужого европейского оборудования.</p>
-      <a class="btn ghost" href="usluga-{u["slug"]}.html">Подробнее об услуге</a>
+      <a class="btn ghost" href="usluga-{u["slug"]}.html">Подробнее: {e(u["name"].lower())}</a>
       <a class="btn" href="#zayavka" data-ask="{escape(a["title"])}" data-ask-prefix="Вопрос по статье: ">Задать вопрос инженеру</a>
     </div>
   </div>
@@ -1350,6 +1383,9 @@ if __name__ == "__main__":
     if "<!--TEAM-->" not in s:
         s = s.replace('<section class="section alt" id="sertifikaty">', '<!--TEAM--><!--/TEAM-->\n\n<section class="section alt" id="sertifikaty">', 1)
     s = replace_between(s, "<!--TEAM-->", "<!--/TEAM-->", team_html())
+    if "<!--HOMEFAQ-->" not in s:
+        s = s.replace("<!--GIFTS-->", "<!--HOMEFAQ--><!--/HOMEFAQ-->\n\n<!--GIFTS-->", 1)
+    s = replace_between(s, "<!--HOMEFAQ-->", "<!--/HOMEFAQ-->", home_faq_html())
     if "<!--REVIEWS-->" in s:
         s = replace_between(s, "<!--REVIEWS-->", "<!--/REVIEWS-->", reviews_html())
     import re as _re

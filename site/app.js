@@ -211,6 +211,18 @@ if (form) {
   });
   form.elements.page.value = location.href;
 
+  /* черновик формы (Fraser «SaaS Playbook»: не терять тех, кто начал и ушёл): поля хранятся только в этом браузере,
+     при возврате подставляются; после отправки черновик стирается */
+  const DRAFT = "lead-draft", keep = ["name", "phone", "email", "address", "area", "note"];
+  try {
+    const d = JSON.parse(localStorage.getItem(DRAFT) || "{}");
+    keep.forEach(k => { if (d[k] && !form.elements[k].value) form.elements[k].value = d[k]; });
+  } catch (e) {}
+  form.addEventListener("input", () => {
+    try { localStorage.setItem(DRAFT, JSON.stringify(Object.fromEntries(keep.map(k => [k, form.elements[k].value])))); } catch (e) {}
+  });
+  const clearDraft = () => { try { localStorage.removeItem(DRAFT); } catch (e) {} };
+
   const status = document.getElementById("f-status"), submit = document.getElementById("f-submit");
   const setErr = (input, errId, bad) => { input.setAttribute("aria-invalid", bad); document.getElementById(errId).hidden = !bad; };
   form.addEventListener("submit", async e => {
@@ -232,7 +244,7 @@ if (form) {
        или форма отправлена быстрее 3 секунд после открытия — делаем вид, что приняли, и ничего не шлём */
     if (data.website || performance.now() < 3000) { status.textContent = "Заявка принята."; return; }
     delete data.website;
-    goal("form_submit");
+    goal("form_submit"); clearDraft();
     if (!CONFIG.leadEndpoint) {
       status.innerHTML = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink(true);
       console.log("Заявка (тест):", data);
