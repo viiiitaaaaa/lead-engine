@@ -845,3 +845,12 @@ footer{margin-top:clamp(40px,5vw,72px)}
 .consent a{color:inherit;text-underline-offset:3px}
 
 .form-wrap > .sec-head{margin-bottom:0} /* было инлайн-стилем в разметке (html-validate) */
+
+/* плашка про cookies (10.10): в углу, не закрывает страницу, один раз */
+.cookie{position:fixed;left:16px;bottom:16px;z-index:50;max-width:min(460px,calc(100vw - 32px));display:flex;gap:16px;align-items:center;
+  padding:14px 16px 14px 20px;border-radius:var(--r);background:var(--paper);box-shadow:0 12px 36px rgb(var(--shade)/.22);color:var(--ink)}
+.cookie[hidden]{display:none}
+.cookie p{font-size:var(--fs-s);line-height:1.45;color:var(--ink-soft)}
+.cookie a{color:var(--accent-ink)}
+.cookie .btn{flex:none;padding:11px 18px;background:var(--wine);color:var(--paper);border-color:var(--wine)}
+.cookie .btn::after{content:none}

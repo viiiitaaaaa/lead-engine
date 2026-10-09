@@ -11,6 +11,20 @@ const CONFIG = {
   metrika: "",
 };
 
+/* плашка про cookies: показываем, пока посетитель не нажал «Хорошо» (её решение 10.10) */
+(() => {
+  const box = document.getElementById("cookie");
+  if (!box) return;
+  let ok = false;
+  try { ok = localStorage.getItem("cookie-ok") === "1"; } catch (e) {}
+  if (ok) return;
+  box.hidden = false;
+  document.getElementById("cookie-ok").addEventListener("click", () => {
+    box.hidden = true;
+    try { localStorage.setItem("cookie-ok", "1"); } catch (e) {}
+  });
+})();
+
 /* цели для Метрики (книги: Clarke «SEO 2025», Davidson — мерить заявки, звонки, памятки, а не просто визиты) */
 const goal = name => {
   try { if (CONFIG.metrika && window.ym) window.ym(Number(CONFIG.metrika), "reachGoal", name); else console.log("цель:", name); } catch (e) {}
@@ -255,7 +269,7 @@ if (form) {
       const r = await fetch(CONFIG.leadEndpoint, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)});
       if (!r.ok) throw new Error(r.status);
       form.reset(); if (whoSelect) whoSelect.value = data.who;
-      status.innerHTML = "Заявка принята. Менеджер позвонит вам в рабочее время." + giftLink(false);
+      status.innerHTML = "Заявка принята. Менеджер позвонит вам в течение 4 часов в рабочее время." + giftLink(false);
     } catch (err) {
       status.textContent = "Не получилось отправить. Позвоните нам: " + CONFIG.phone;
     } finally { submit.disabled = false; }

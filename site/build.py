@@ -76,6 +76,12 @@ def header(active=""):
 # контакты из frivent.ru/contacts (проверено 10.10): офис в Москве, общая почта, производство — Переславль-Залесский.
 # ИНН/ОГРН на сайте нет — дописать, когда она даст (книги: юрлицо и адрес — главные сигналы доверия в B2B и для Яндекса).
 OFFICE = "111020, Москва, ул. 2-я Синичкина, 9А, стр. 3"
+ANSWER_TIME = "в течение 4 часов в рабочее время"  # её слово 10.10; то же — в app.js (сообщение после отправки)
+# плашка про cookies (её решение 10.10: «баннер не запрещала») — один раз, в углу, не закрывает страницу; показывает app.js
+COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" hidden>
+    <p>Сайт использует cookies и сервис статистики посещений, чтобы считать заявки и улучшать страницы. <a href="politika.html">Подробнее</a></p>
+    <button type="button" class="btn" id="cookie-ok">Хорошо</button>
+  </div>'''
 EMAIL = "order@frivent.msk.ru"
 
 
@@ -224,6 +230,8 @@ def form_section(who="sobstvennik", title="Оставить заявку",
         uslugi = who != "sobstvennik"
     usl = ('\n      <nav class="foot-links" aria-label="Услуги">' + " · ".join(
         f'<a href="usluga-{u["slug"]}.html">{u["name"]}</a>' for u in USLUGI) + ' · <a href="zhurnal.html">Журнал</a></nav>') if uslugi else ""
+    # срок ответа на заявку — её цифра 10.10: «4 часа напиши» (Котлер ММ, Трейси: сервис обещать цифрой)
+    lead = lead.replace("перезвонит", f"перезвонит {ANSWER_TIME}", 1) if "перезвонит" in lead else f"{lead} Ответим {ANSWER_TIME}."
     opts ="\n".join(f'          <option value="{v}"{" selected" if v == who else ""}>{t}</option>' for v, t in WHO_OPTIONS)
     return f'''<section class="section dark" id="zayavka">
   <div class="wrap form-wrap">
@@ -276,7 +284,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page"><input type="hidden" name="gift">
       <!-- ловушка для спам-ботов: человек это поле не видит и не заполняет -->
       <div class="hp" aria-hidden="true"><label for="f-website">Сайт</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-      <label class="consent"><input id="f-consent" name="consent" type="checkbox" required> Согласен на обработку персональных данных по <a href="politika.html" target="_blank" rel="noopener">политике конфиденциальности</a></label>
+      <label class="consent"><input id="f-consent" name="consent" type="checkbox" required> <span>Согласен на обработку персональных данных по <a href="politika.html" target="_blank" rel="noopener">политике конфиденциальности</a></span></label>
       <div class="form-actions">
         <button class="btn" type="submit" id="f-submit">{button}</button>
         <span class="form-status" id="f-status" role="status"></span>
@@ -291,6 +299,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     </div>
   </footer>
   {ORG_LD}
+  {COOKIE}
 </section>'''
 
 
@@ -713,6 +722,7 @@ def politika_html():
       <a href="index.html">На главную →</a>
     </div>
   </footer>
+  {COOKIE}
 </section>
 </main>
 

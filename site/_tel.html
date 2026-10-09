@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сайт на телефоне</title>
+<meta name="robots" content="noindex">
+<!-- служебная страница (её просьба 10.10): сайт сразу в рамках телефонов и планшета; в карту сайта не входит (имя с «_») -->
+<style>
+:root{--paper:#efebe6;--ink:#1d1b19;--soft:#5c564f;--wine:#6b1a24;--deep:#222947}
+*{box-sizing:border-box}
+body{margin:0;background:#d9d2c9;color:var(--ink);font:14px/1.4 "Segoe UI",Arial,sans-serif}
+.bar{position:sticky;top:0;z-index:2;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 20px;background:var(--paper);box-shadow:0 2px 12px rgb(0 0 0/.08)}
+.bar b{font-weight:600}
+select,button{font:inherit;padding:8px 12px;border:1px solid #c9c0b5;border-radius:8px;background:#fff;color:var(--ink);cursor:pointer}
+button[aria-pressed="true"]{background:var(--deep);color:#fff;border-color:var(--deep)}
+a.open{color:var(--wine)}
+.stage{display:flex;flex-wrap:wrap;gap:36px;justify-content:center;align-items:flex-start;padding:28px 20px 60px}
+.dev{display:grid;gap:8px;justify-items:center}
+.dev span{font-size:13px;color:var(--soft)}
+.frame{border:12px solid #111;border-radius:38px;background:#111;overflow:hidden;box-shadow:0 20px 50px rgb(0 0 0/.25)}
+.frame.tab{border-radius:22px}
+iframe{display:block;border:0;background:#fff}
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>Сайт на телефоне</b>
+  <label>Страница
+    <select id="page">
+      <option value="index.html">Главная</option>
+      <option value="vladelcu.html">Владельцу</option>
+      <option value="assistentu.html">Ассистенту</option>
+      <option value="dizayneru.html">Дизайнеру</option>
+      <option value="montazhnikam.html">Монтажной компании</option>
+      <option value="zastroyshchikam.html">Застройщику</option>
+      <option value="kommerciya.html">Коммерция</option>
+      <option value="katalog-vladelcu.html">Каталог владельца</option>
+      <option value="usluga-osushenie-basseyna.html">Услуга: осушение бассейна</option>
+      <option value="usluga-ventilyaciya.html">Услуга: вентиляция</option>
+      <option value="obekt-ukraina.html">Объект: «Украина»</option>
+      <option value="zhurnal.html">Журнал</option>
+      <option value="statya-mify-osushenie-basseyna.html">Статья: мифы об осушении</option>
+      <option value="politika.html">Политика конфиденциальности</option>
+    </select>
+  </label>
+  <span>Экраны:</span>
+  <button type="button" data-d="iphone" aria-pressed="true">iPhone 390</button>
+  <button type="button" data-d="android" aria-pressed="true">Android 412</button>
+  <button type="button" data-d="tab" aria-pressed="false">Планшет 768</button>
+  <a class="open" id="open" href="index.html" target="_blank" rel="noopener">Открыть страницу отдельно →</a>
+</div>
+
+<div class="stage">
+  <div class="dev" data-dev="iphone"><div class="frame"><iframe title="iPhone 390×844" width="390" height="844"></iframe></div><span>iPhone · 390 × 844</span></div>
+  <div class="dev" data-dev="android"><div class="frame"><iframe title="Android 412×915" width="412" height="915"></iframe></div><span>Android · 412 × 915</span></div>
+  <div class="dev" data-dev="tab" hidden><div class="frame tab"><iframe title="Планшет 768×1024" width="768" height="1024"></iframe></div><span>Планшет · 768 × 1024</span></div>
+</div>
+
+<script>
+const sel = document.getElementById("page"), open = document.getElementById("open");
+const frames = [...document.querySelectorAll("iframe")];
+const load = () => {
+  frames.forEach(f => { if (!f.closest(".dev").hidden) f.src = sel.value; });
+  open.href = sel.value;
+  try { localStorage.setItem("tel-page", sel.value); } catch (e) {}
+};
+try { const p = localStorage.getItem("tel-page"); if (p && [...sel.options].some(o => o.value === p)) sel.value = p; } catch (e) {}
+sel.addEventListener("change", load);
+document.querySelectorAll("[data-d]").forEach(b => b.addEventListener("click", () => {
+  const on = b.getAttribute("aria-pressed") !== "true";
+  b.setAttribute("aria-pressed", on);
+  const dev = document.querySelector(`[data-dev="${b.dataset.d}"]`);
+  dev.hidden = !on;
+  if (on) dev.querySelector("iframe").src = sel.value;
+}));
+load();
+</script>
+</body>
+</html>
