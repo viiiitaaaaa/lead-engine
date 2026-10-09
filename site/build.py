@@ -22,7 +22,7 @@ def ver(name):
     """метка версии файла — браузер скачивает styles.css/app.js заново после каждого изменения"""
     import hashlib
     return hashlib.md5((SITE / name).read_bytes()).hexdigest()[:8]
-PHONE, PHONE_TEL = "8 (495) 266-05-24", "+74952660524"
+PHONE, PHONE_TEL = "8&nbsp;(495)&nbsp;266&#8209;05&#8209;24", "+74952660524"  # неразрывные — номер не рвётся на две строки (html-validate)
 
 # порядок — её сообщение 06.10: Владельцу · Ассистенту · Дизайнеру · Монтажной компании · Застройщику · Коммерция
 NAV = [
@@ -150,7 +150,7 @@ def team_html():
     <div class="sec-head">
       <span class="eyebrow">Команда {DEMO_TAG if DC.DEMO else ""}</span>
       <h2>Кто отвечает за ваш объект</h2>
-      <p class="lead">У каждого объекта — конкретные люди с именами и прямыми телефонами, а не колл-центр.</p>
+      <p class="lead">У каждого объекта — конкретные люди с именами и прямыми телефонами.</p>
     </div>
     <div class="team-grid">
 {cards}
@@ -227,7 +227,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     opts ="\n".join(f'          <option value="{v}"{" selected" if v == who else ""}>{t}</option>' for v, t in WHO_OPTIONS)
     return f'''<section class="section dark" id="zayavka">
   <div class="wrap form-wrap">
-    <div class="sec-head" style="margin-bottom:0">
+    <div class="sec-head">
       <span class="eyebrow">Заявка</span>
       <h2>{title}</h2>
       <p class="lead">{lead}</p>
@@ -239,7 +239,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     <form id="lead-form" novalidate>
       <div class="field">
         <label for="f-name">Как к вам обращаться</label>
-        <input id="f-name" name="name" autocomplete="name" placeholder="Имя">
+        <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Имя">
       </div>
       <div class="field">
         <label for="f-phone">Телефон <span class="req">*</span></label>
@@ -253,7 +253,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       </div>
       <div class="field full">
         <label for="f-address">Адрес объекта <span class="req">*</span></label>
-        <input id="f-address" name="address" autocomplete="street-address" placeholder="Посёлок, улица, дом или кадастровый номер участка" required aria-describedby="h-address e-address">
+        <input id="f-address" name="address" type="text" autocomplete="address-line1" placeholder="Посёлок, улица, дом или кадастровый номер участка" required aria-describedby="h-address e-address">
         <span class="hint" id="h-address">По адресу закрепляем объект за вашим менеджером</span>
         <span class="err" id="e-address" hidden>Укажите адрес объекта — хотя бы посёлок</span>
       </div>
@@ -265,7 +265,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       </div>
       <div class="field">
         <label for="f-area">Площадь объекта, м²</label>
-        <input id="f-area" name="area" inputmode="numeric" placeholder="Например, 1 200">
+        <input id="f-area" name="area" type="text" inputmode="numeric" placeholder="Например, 1 200">
       </div>
       <div class="field full">
         <label for="f-note">Коротко о задаче</label>
@@ -275,8 +275,8 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page"><input type="hidden" name="gift">
       <!-- ловушка для спам-ботов: человек это поле не видит и не заполняет -->
-      <div class="hp" aria-hidden="true"><label for="f-website">Сайт</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></div>
-      <label class="consent" for="f-consent"><input id="f-consent" name="consent" type="checkbox" required> Согласен на обработку персональных данных</label>
+      <div class="hp" aria-hidden="true"><label for="f-website">Сайт</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="consent"><input id="f-consent" name="consent" type="checkbox" required> Согласен на обработку персональных данных по <a href="politika.html" target="_blank" rel="noopener">политике конфиденциальности</a></label>
       <div class="form-actions">
         <button class="btn" type="submit" id="f-submit">{button}</button>
         <span class="form-status" id="f-status" role="status"></span>
@@ -287,7 +287,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
-      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="tel:{PHONE_TEL}">{PHONE}</a>{req_line()}</address>{usl}
+      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="tel:{PHONE_TEL}">{PHONE}</a>{req_line()} · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
     </div>
   </footer>
   {ORG_LD}
@@ -314,11 +314,11 @@ REVIEWS = [
 
 def reviews_html():
     cards = "\n".join(
-        f'''      <article class="rv"><div class="rv-stars" aria-label="Оценка 5 из 5">★★★★★</div>
+        f'''      <article class="rv"><div class="rv-stars" role="img" aria-label="Оценка 5 из 5">★★★★★</div>
         <p>«{escape(t, quote=False)}»</p>
         <div class="rv-meta"><span>Отзыв о Frivent · Яндекс Карты · {d}</span>
         <a href="{u}" target="_blank" rel="noopener">Читать отзыв на Яндекс Картах →</a></div></article>''' for t, d, u in REVIEWS)
-    return f'''<div class="reviews" aria-roledescription="слайдер" aria-label="Отзывы о Frivent">
+    return f'''<div class="reviews" role="region" aria-roledescription="слайдер" aria-label="Отзывы о Frivent">
     <div class="rv-viewport"><div class="rv-track">
 {cards}
     </div></div>
@@ -640,12 +640,98 @@ HEAD = '''<!doctype html>
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="https://frivent.ru/{page}.html">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Frivent"><meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="{title}"><meta property="og:description" content="{desc}">
+<meta property="og:url" content="https://frivent.ru/{page}.html"><meta property="og:image" content="https://frivent.ru/img/slides/s1.jpg">
+<script type="speculationrules">{{"prefetch":[{{"where":{{"href_matches":"/*"}},"eagerness":"moderate"}}]}}</script>
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v={css_v}">
 </head>
 <body data-page="{page}" data-who="{who}">
 '''
+
+
+def head(**kw):
+    """шапка страницы: описание для поисковиков — до 160 знаков по концу предложения (site-design, SEO-аудит:
+    длинное Google и Яндекс обрезают на полуслове), превью для мессенджеров (Open Graph) и предзагрузка ссылок"""
+    import html as _h
+    d = _h.unescape(kw["desc"])
+    if len(d) > 160:
+        cut = max(d.rfind(". ", 0, 160), d.rfind("! ", 0, 160), d.rfind("? ", 0, 160))
+        d = d[:cut + 1] if cut > 60 else d[:157].rsplit(" ", 1)[0] + "…"
+    kw["desc"] = escape(d)
+    return HEAD.format(**kw)
+
+
+def politika_html():
+    """Политика обработки персональных данных (152-ФЗ) — без неё галочка согласия в форме ничего не стоит
+    (noted-news akuliabuhta/1032; dropship-lessons). Реквизиты оператора — из demo_content.py (пока «пример»).
+    Текст — типовой, перед запуском показать юристу."""
+    r = DC.REQ
+    tag = f" {DEMO_TAG}" if DC.DEMO else ""
+    parts = [
+        ("Кто обрабатывает данные", [f"Оператор — {r['name']}, ИНН {r['inn']}, ОГРН {r['ogrn']}{tag}. Адрес: {OFFICE}. "
+                                     f"Почта для обращений: <a href=\"mailto:{EMAIL}\">{EMAIL}</a>."]),
+        ("Какие данные мы получаем", ["Из формы заявки: имя, телефон, почта, адрес объекта, площадь, текст сообщения. "
+                                      "Технические данные: адрес страницы, метки рекламных кампаний (UTM), данные сервиса статистики посещений."]),
+        ("Зачем", ["Чтобы связаться с вами по заявке, рассчитать и выполнить работы, отправить памятку, которую вы запросили, "
+                   "и понять, какие страницы сайта полезны посетителям."]),
+        ("На каком основании", ["Ваше согласие — галочка в форме заявки. Без согласия заявку отправить нельзя."]),
+        ("Как храним и кому передаём", ["Данные хранятся на серверах в России. Доступ — только у сотрудников, которые работают с заявками. "
+                                        "Третьим лицам не передаём, кроме случаев, которые требует закон."]),
+        ("Сколько храним", ["Пока это нужно для работы по вашей заявке и договору, или до отзыва согласия."]),
+        ("Ваши права", [f"Вы можете узнать, какие данные у нас есть, исправить их или удалить, отозвать согласие. "
+                        f"Напишите на <a href=\"mailto:{EMAIL}\">{EMAIL}</a> — ответим в срок, установленный законом."]),
+        ("Cookies", ["Сайт использует cookies и сервис статистики посещений, чтобы считать заявки и улучшать страницы. "
+                     "Их можно отключить в настройках браузера."]),
+    ]
+    body = "\n".join(f"      <h2>{h}</h2>\n" + "\n".join(f"      <p>{p}</p>" for p in ps) for h, ps in parts)
+    return head(css_v=ver("styles.css"), title="Политика обработки персональных данных | Frivent",
+                desc="Как Frivent обрабатывает персональные данные из формы заявки: что получаем, зачем, как храним и как отозвать согласие.",
+                page="politika", who="sobstvennik") + header() + f'''
+
+<main>
+<section class="cat-hero">
+  <div class="wrap">
+    <span class="eyebrow">Документы</span>
+    <h1>Политика обработки персональных данных</h1>
+    <p class="lead">По закону 152-ФЗ «О персональных данных». Действует для всех страниц сайта и формы заявки.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap art-body">
+{body}
+  </div>
+</section>
+
+<section class="section dark">
+  <footer>
+    <div class="wrap">
+      <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
+      <a href="index.html">На главную →</a>
+    </div>
+  </footer>
+</section>
+</main>
+
+<script src="app.js?v={ver('app.js')}" defer></script>
+</body>
+</html>
+'''
+
+
+def rus_date(iso):
+    y, m, d = iso.split("-")
+    mon = "января февраля марта апреля мая июня июля августа сентября октября ноября декабря".split()[int(m) - 1]
+    return f"{int(d)} {mon} {y}"
+
+
+def crumbs_ld(*items):
+    """«хлебные крошки» для поисковиков (Clarke «SEO 2025», гл. 10): [(название, файл)]"""
+    return ld({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": i, "name": n, "item": "https://frivent.ru/" + f} for i, (n, f) in enumerate(items, 1)]})
 
 
 # услуга страницы → раздел каталога (katalog-*.html#k-N); у владельца и монтажников первые совпадают 1:1
@@ -681,7 +767,7 @@ def cw_hero(eyebrow, h1, lead, actions, media):
 
 
 def slide_media(img, pos, light=""):
-    return f'''<div class="slides" id="slides" aria-label="Фото">
+    return f'''<div class="slides" id="slides" role="group" aria-label="Фото">
       <figure class="ph slide has-photo is-on{light}"><picture><source srcset="img/slides/{img}-m.webp 1280w, img/slides/{img}.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/{img}.jpg" srcset="img/slides/{img}-m.jpg 1280w, img/slides/{img}.jpg 2560w" sizes="100vw" alt="" style="object-position:{pos}" fetchpriority="high"></picture></figure>
     </div>'''
 
@@ -698,7 +784,7 @@ def roles_html(roles):
     <div class="sec-head">
       <span class="eyebrow">Кто принимает решение</span>
       <h2>Каждому в команде&nbsp;— свой ответ</h2>
-      <p class="lead">Решение о климате объекта принимает не один человек. Вот что важно каждому из них — и что мы для этого делаем.</p>
+      <p class="lead">Решение о климате объекта принимают несколько человек, и у каждого свой вопрос к подрядчику.</p>
     </div>
     <div class="pain-grid">
 {cards}
@@ -726,7 +812,7 @@ def page_html(p):
     help_text = "\n".join(f"      <p>{e(t)}</p>" for t in h["text"])
     solve = "\n".join(f"      <div class=\"solve-row\"><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in h["solve"])
     faq = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in p["faq"])
-    return HEAD.format(css_v=ver("styles.css"), title=e(p["title"]), desc=e(p["desc"]), page=p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
+    return head(css_v=ver("styles.css"), title=e(p["title"]), desc=e(p["desc"]), page=p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
 {cw_hero(e(p["eyebrow"]), e(p["h1"]), e(p["lead"]),
@@ -878,7 +964,7 @@ def catalog_html(p):
 </section>''')
     title = f"Каталог — {p['eyebrow'].lower()} — Frivent"
     desc = f"Каталог товаров и услуг Frivent: {', '.join(n for n, _ in cats).lower()}. Цена — по запросу."
-    return HEAD.format(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="katalog-" + p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
+    return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="katalog-" + p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
 <section class="cat-hero">
@@ -1072,7 +1158,7 @@ def obj_html(i):
     </dl>''' if team else ""
     title = f'{o["name"]} — {o["job"].lower()} — Frivent'
     desc = f'{o["name"]}, {o["place"]}: {o["job"].lower()}. {o["lead"]}'
-    return HEAD.format(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="obekt-" + o["slug"], who="sobstvennik") + header() + f'''
+    return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="obekt-" + o["slug"], who="sobstvennik") + header() + f'''
 
 <main>
 {cw_hero(e(o["kind"]) + " · " + e(o["place"]), e(o["name"]), e(o["lead"]),
@@ -1156,7 +1242,7 @@ def usl_html(u):
             f'<a href="statya-{a["slug"]}.html">{e(a["title"])}</a>' for a in arts)
     faq = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in u["faq"])
     img, pos = u["img"], u["pos"]
-    return HEAD.format(css_v=ver("styles.css"), title=e(u["title"]), desc=e(u["desc"]), page="usluga-" + u["slug"], who="pomoshchnik") + header() + f'''
+    return head(css_v=ver("styles.css"), title=e(u["title"]), desc=e(u["desc"]), page="usluga-" + u["slug"], who="pomoshchnik") + header() + f'''
 
 <main>
 {cw_hero(e(u["name"]), e(u["h1"]), e(u["lead"]),
@@ -1243,6 +1329,10 @@ def usl_html(u):
     <p class="usl-others">Другие услуги: {others}</p>
   </div>
   {faq_ld(u["faq"])}
+  {crumbs_ld(("Главная", ""), (u["name"], "usluga-" + u["slug"] + ".html"))}
+  {ld({"@context": "https://schema.org", "@type": "Service", "name": u["name"], "description": u["lead"],
+       "provider": {"@type": "Organization", "name": "Frivent", "url": "https://frivent.ru"},
+       "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]})}
 </section>
 
 {form_section("pomoshchnik", "Обсудить задачу", lead="Оставьте телефон и адрес объекта. Инженер перезвонит, уточнит, что стоит в доме, и договорится об осмотре.")}
@@ -1263,7 +1353,7 @@ def zhurnal_html():
         <p>{e(a["lead"])}</p>
         <span class="serv-go">Читать →</span>
       </a>''' for a in ARTICLES)
-    return HEAD.format(css_v=ver("styles.css"), title="Журнал — климат и инженерия загородного дома — Frivent",
+    return head(css_v=ver("styles.css"), title="Журнал — климат и инженерия загородного дома — Frivent",
                        desc="Статьи о главных проблемах загородного дома: шум вентиляции, сырость и плесень, конденсат у бассейна, духота, обмерзание рекуператора, сервис европейского оборудования.",
                        page="zhurnal", who="pomoshchnik") + header() + f'''
 
@@ -1305,7 +1395,7 @@ def statya_html(i):
         else:
             body += [f"      <p>{e(p)}</p>" for p in paras]
     more = "\n".join(f'      <li><a href="statya-{x["slug"]}.html">{e(x["title"])}</a></li>' for x in ARTICLES if x is not a)
-    return HEAD.format(css_v=ver("styles.css"), title=e(a["title"]) + " — журнал Frivent", desc=e(a["lead"]),
+    return head(css_v=ver("styles.css"), title=e(a["title"]) + " | Frivent", desc=e(a["lead"]),
                        page="statya-" + a["slug"], who="pomoshchnik") + header() + f'''
 
 <main>
@@ -1315,6 +1405,7 @@ def statya_html(i):
     <span class="eyebrow"><a href="zhurnal.html">Журнал</a> · {e(a["tag"])}</span>
     <h1>{e(a["title"])}</h1>
     <p class="lead">{e(a["lead"])}</p>
+    <p class="art-date"><time datetime="{a.get("date", "2026-10-09")}">{rus_date(a.get("date", "2026-10-09"))}</time></p>
   </div>
 </section>
 
@@ -1329,7 +1420,9 @@ def statya_html(i):
   </div>
 </section>
 {ld({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "description": a["lead"], "inLanguage": "ru",
+     "datePublished": a.get("date", "2026-10-09"), "dateModified": a.get("date", "2026-10-09"),
      "publisher": {"@type": "Organization", "name": "Frivent", "url": "https://frivent.ru"}})}
+{crumbs_ld(("Главная", ""), ("Журнал", "zhurnal.html"), (a["title"], "statya-" + a["slug"] + ".html"))}
 </article>
 
 <section class="section alt">
@@ -1352,6 +1445,7 @@ def statya_html(i):
 
 if __name__ == "__main__":
     (SITE / "zhurnal.html").write_text(zhurnal_html(), "utf-8")
+    (SITE / "politika.html").write_text(politika_html(), "utf-8")
     for i, a in enumerate(ARTICLES):
         (SITE / f'statya-{a["slug"]}.html').write_text(statya_html(i), "utf-8")
     print("журнал: статей", len(ARTICLES))

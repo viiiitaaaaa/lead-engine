@@ -840,3 +840,8 @@ footer{margin-top:clamp(40px,5vw,72px)}
 /* первый экран главной — как в v69 (её просьба 10.10 по скрину 1): подпись заглавными, кнопки прежней формы */
 .hero .eyebrow{font:600 var(--fs-xs)/1.4 var(--body);letter-spacing:.12em;text-transform:uppercase}
 .hero .btn{border-radius:2px;padding:16px 26px}
+
+.art-date{font-size:var(--fs-s);color:var(--ink-soft)}
+.consent a{color:inherit;text-underline-offset:3px}
+
+.form-wrap > .sec-head{margin-bottom:0} /* было инлайн-стилем в разметке (html-validate) */
