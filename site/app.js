@@ -80,9 +80,16 @@ if (CONFIG.fontSwitch) {
   const sl = [...box.children], dots = document.getElementById("sl-dots"), num = document.getElementById("sl-n");
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   sl.forEach(() => dots.appendChild(document.createElement("i")));
+  /* кадры 2–6 скачиваем заранее, по одному, а не все сразу (замер 10.10: 6 фото = 2 МБ при открытии главной) */
+  const prime = s => s && s.querySelectorAll("[data-srcset],[data-src]").forEach(el => {
+    if (el.dataset.srcset) { el.srcset = el.dataset.srcset; el.removeAttribute("data-srcset"); }
+    if (el.dataset.src) { el.src = el.dataset.src; el.removeAttribute("data-src"); }
+  });
+  addEventListener("load", () => setTimeout(() => prime(sl[1]), 1500));
   let i = 0, timer = null;
   const show = k => {
     i = (k + sl.length) % sl.length;
+    prime(sl[i]); prime(sl[(i + 1) % sl.length]);
     sl.forEach((s, j) => { s.classList.toggle("is-on", j === i); s.setAttribute("aria-hidden", j !== i); });
     [...dots.children].forEach((d, j) => d.classList.toggle("on", j === i));
     num.textContent = String(i + 1).padStart(2, "0");

@@ -59,7 +59,7 @@ def header(active=""):
     links = "\n".join(items)
     return f'''<header class="top" id="top">
   <div class="wrap">
-    <a class="logo" href="index.html"><img src="img/logo-frivent.png" alt="Frivent" width="1171" height="320"></a>
+    <a class="logo" href="index.html"><picture><source srcset="img/logo-frivent.webp" type="image/webp"><img src="img/logo-frivent.png" alt="Frivent" width="439" height="120"></picture></a>
     <!-- шапка = страницы по клиентам (её решение 06.10) -->
     <nav class="nav" aria-label="Разделы для клиентов">
 {links}
@@ -1267,15 +1267,33 @@ def docs_html():
 
 
 # ===== «Нам доверяют»: полосы на главной (между <!--WORKS-->) и страница каждого объекта; тексты objects_content.py =====
+_LQIP = {}
+
+
+def lqip(path, pos=""):
+    """размытое превью вместо пустоты, пока грузится фото (замер 10.10: фото объектов «появлялись рывком на пустом месте»):
+    крошечная копия 24 px, ~1 КБ, прямо в стиле элемента; анимации нет"""
+    if path not in _LQIP:
+        import base64, io
+        from PIL import Image, ImageFilter
+        im = Image.open(SITE / path).convert("RGB")
+        im = im.resize((24, max(1, round(im.height * 24 / im.width))), Image.LANCZOS).filter(ImageFilter.GaussianBlur(1))
+        buf = io.BytesIO(); im.save(buf, "JPEG", quality=60)
+        _LQIP[path] = "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
+    bp = f";background-position:{pos}" if pos else ""
+    return f' style="background-image:url({_LQIP[path]});background-size:cover{bp}"'
+
+
 def pic(name, alt, pos="", eager=False):
     st = f' style="object-position:{pos}"' if pos else ""
+    ph = lqip(f"img/raboty/{name}.jpg", pos) if (SITE / "img" / "raboty" / f"{name}.jpg").exists() else ""
     ld = ' fetchpriority="high"' if eager else ' loading="lazy"'
     # телефон берёт версию 1200 px (-m), компьютер — полную 2400 (проверка скорости 10.10, Clarke: LCP ≤2,5 с)
     if (SITE / "img" / "raboty" / f"{name}-m.webp").exists():
         sz = "100vw" if eager else "(max-width: 860px) 100vw, 60vw"
-        return (f'<picture class="wk-img"><source srcset="img/raboty/{name}-m.webp 1200w, img/raboty/{name}.webp 2400w" sizes="{sz}" type="image/webp">'
+        return (f'<picture class="wk-img"{ph}><source srcset="img/raboty/{name}-m.webp 1200w, img/raboty/{name}.webp 2400w" sizes="{sz}" type="image/webp">'
                 f'<img{st} src="img/raboty/{name}.jpg" srcset="img/raboty/{name}-m.jpg 1200w, img/raboty/{name}.jpg 2400w" sizes="{sz}" alt="{escape(alt)}"{ld}></picture>')
-    return f'<picture class="wk-img"><source srcset="img/raboty/{name}.webp" type="image/webp"><img{st} src="img/raboty/{name}.jpg" alt="{escape(alt)}"{ld}></picture>'
+    return f'<picture class="wk-img"{ph}><source srcset="img/raboty/{name}.webp" type="image/webp"><img{st} src="img/raboty/{name}.jpg" alt="{escape(alt)}"{ld}></picture>'
 
 
 def works_html():
