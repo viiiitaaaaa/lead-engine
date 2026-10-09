@@ -645,3 +645,161 @@ h1,h2,.facts b{letter-spacing:-.03em}
 .plan.top .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 .plan.top .btn:hover{background:transparent;color:var(--paper)}
 .obj-hero .wrap{width:100%}
+
+/* ======================================================================================================
+   КОМПОЗИЦИЯ ПО ОБРАЗЦУ clearwater.london (её задача 09.10, сделано 10.10; анимацию не переносим).
+   От образца — только сетка, ритм и подача: «таблетка»-меню, крупный заголовок на светлом фоне и фото под ним,
+   заголовок раздела слева + подпись и текст справа, карточки со скруглением и короткой линией под названием,
+   метки-таблетки на этапах, форма с полями-линиями. Цвета, шрифт Vela Sans и шкала размеров — НАШИ (её выбор 10.10).
+   Отступы между блоками (--sec и её замеры) не меняются.
+   ====================================================================================================== */
+:root{--r:14px;--r-s:10px;--glass:rgb(255 255 255/.5)}
+
+/* подписи разделов — как «Our Values» у образца: обычный регистр, без разрядки */
+.eyebrow{font:400 var(--fs-s)/1.4 var(--body);letter-spacing:0;text-transform:none;color:var(--ink-2)}
+.dark .eyebrow{color:var(--on-dark-accent)}
+
+/* кнопки — таблетки */
+.btn{border-radius:99px;padding:15px 26px}
+.top .btn{padding:12px 20px}
+
+/* шапка: логотип слева, меню в светлой таблетке, справа телефон и кнопка */
+.top{background:color-mix(in srgb,var(--paper) 78%,transparent);border-bottom:0}
+.top .wrap{min-height:84px}
+@media (min-width:1281px){
+  .nav{margin-inline:auto;padding:6px 10px 6px 24px;gap:18px;border-radius:99px;background:var(--glass);
+    box-shadow:0 8px 28px rgb(var(--shade)/.08),inset 0 0 0 1px rgb(var(--shade)/.06)}
+  .nav .nav-link{color:var(--ink)}
+  .nav .nav-link.on{box-shadow:none;color:var(--wine)}
+  .dd{border-radius:var(--r);overflow:hidden;border:0;top:calc(100% + 18px)}
+}
+
+/* ---------- первый экран ---------- */
+.cw-hero{position:relative;overflow:hidden;
+  background:radial-gradient(60% 70% at 0% 0%,rgb(57 65 114/.10),transparent 60%),
+             radial-gradient(50% 60% at 100% 100%,rgb(221 213 203/.9),transparent 70%)}
+.cw-type{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(28px,6vw,120px);align-items:end;
+  padding-block:clamp(48px,7vw,112px) clamp(32px,4vw,64px)}
+.cw-title{display:grid;gap:clamp(14px,1.4vw,22px)}
+.cw-hero h1{font:400 clamp(40px,5.8vw,84px)/1.02 var(--display);letter-spacing:-.035em;color:var(--ink);max-width:18ch}
+.cw-side{display:grid;gap:24px;justify-items:start;max-width:52ch}
+.cw-side .lead{color:var(--ink-soft)}
+/* фото — во всю ширину, без полей (её решение 05.10), ниже окна */
+.cw-media{position:relative;height:clamp(340px,min(68svh,44vw),820px);overflow:hidden}
+.cw-media .slides{position:absolute;inset:0}
+.cw-media > .wk-img,.cw-media > .wk-img img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover}
+.cw-media .slides .ph figcaption{left:auto;right:var(--gut);bottom:auto;top:22px;text-align:right;z-index:1}
+.cw-media .slides .ph figcaption a{font-size:var(--fs-xs);color:var(--paper);text-decoration:none;padding:9px 16px;border-radius:99px;
+  background:rgb(var(--shade)/.42);backdrop-filter:blur(6px);letter-spacing:.02em;text-transform:none}
+.cw-media .slides .ph figcaption a:hover{background:var(--wine)}
+.cw-media .slider-ui{bottom:22px}
+
+/* главная: слова лесенкой с мелкими подписями (как «Building / wellness / into / the City») */
+.cw-home .cw-type{grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(4,auto);column-gap:clamp(12px,1.6vw,24px);
+  row-gap:0;align-items:end;padding-block:clamp(40px,5vw,80px) clamp(36px,4.4vw,68px)}
+.cw-stack{grid-column:1/-1;grid-row:1/5;display:grid;grid-template-columns:subgrid;grid-template-rows:subgrid;align-items:end;max-width:none!important;
+  --hs:clamp(44px,6.4vw,84px);font-size:var(--hs)!important;line-height:1!important}
+.cw-stack .w{display:block;position:relative;white-space:nowrap;padding-top:.72em}
+.cw-stack .cap{position:absolute;top:calc(var(--hs) * .6);left:.06em;font:400 var(--fs-s)/1.2 var(--body);letter-spacing:0;color:var(--ink-soft);white-space:nowrap}
+.cw-stack .w1{grid-column:5/-1;grid-row:1}
+.cw-stack .w2{grid-column:2/-1;grid-row:2}
+.cw-stack .w3{grid-column:5/-1;grid-row:3}
+.cw-stack .w4{grid-column:7/-1;grid-row:4;color:var(--accent-ink)}
+.cw-home .cw-side{grid-column:9/-1;grid-row:2/4;align-self:center;gap:20px}
+.cw-home .cw-side .lead{font-size:var(--fs-m)}
+@media (max-width:1100px){
+  .cw-home .cw-side{grid-column:1/-1;grid-row:5;margin-top:28px}
+  .cw-stack .w1{grid-column:3/-1}.cw-stack .w2{grid-column:1/-1}.cw-stack .w3{grid-column:3/-1}.cw-stack .w4{grid-column:5/-1}
+}
+@media (max-width:860px){
+  .cw-type{grid-template-columns:1fr;align-items:start}
+  .cw-media{height:clamp(300px,62svh,560px)}
+  .cw-stack{--hs:clamp(38px,11vw,56px)}
+  .cw-stack .w{padding-top:.9em}
+  .cw-stack .cap{font-size:var(--fs-xs)}
+  .cw-stack .w1{grid-column:1/-1}.cw-stack .w2{grid-column:2/-1}.cw-stack .w3{grid-column:1/-1}.cw-stack .w4{grid-column:3/-1}
+  .cw-media .slides .ph figcaption{display:none}
+}
+.facts-band{padding-top:clamp(16px,1.5vw,22px)}
+
+/* ---------- заголовок раздела: с текстом — заголовок слева, подпись и текст справа; без текста — по центру ---------- */
+/* .one = обычная обёртка раздела (не те, где колонки уже есть: условия, вопросы, форма, территория, объект) */
+.wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:has(.lead){max-width:none;
+  grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:"h e" "h l";column-gap:clamp(32px,8vw,160px);row-gap:14px;align-items:start}
+.wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:has(.lead) > h2{grid-area:h;max-width:16ch}
+.wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:has(.lead) > .eyebrow{grid-area:e;align-self:end}
+.wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:has(.lead) > .lead:first-of-type{grid-area:l}
+.wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:has(.lead) > .lead ~ .lead{grid-column:2}
+.wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:not(:has(.lead)){max-width:none;justify-items:center;text-align:center;gap:14px}
+.wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:not(:has(.lead)) > h2{max-width:22ch}
+.sec-head{margin-bottom:clamp(28px,3vw,48px)}
+@media (max-width:860px){
+  .wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:has(.lead){grid-template-columns:1fr;grid-template-areas:"e" "h" "l"}
+  .wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:has(.lead) > .lead ~ .lead{grid-column:1}
+}
+.sec-head h2,.cat-sec h2,.gift h2{font-weight:500;letter-spacing:-.035em}
+
+/* ---------- карточки как «Discover our projects»: скругление, название, короткая линия, серый текст ---------- */
+.pain-card{border-top:0;padding-top:0;gap:16px}
+.pain-card h3,.gift-card h3,.plan h3,.art-card h3,.cat-card h3{font-size:var(--fs-h3);line-height:1.2;font-weight:400}
+.pain-card h3::after,.gift-card h3::after,.art-card h3::after,.cat-card h3::after{content:"";display:block;width:58%;height:1px;
+  background:rgb(var(--shade)/.35);margin-top:18px}
+.pain-card p{font-size:var(--fs-m)}
+.gift-card,.plan,.cert,.member,.art-card,.cat-card,.rv,.gift-doc{border:0;border-radius:var(--r);background:var(--glass);box-shadow:none}
+.section.alt .gift-card,.section.alt .plan,.section.alt .cert,.section.alt .member,.section.alt .rv,.section.alt .cat-card{background:rgb(255 255 255/.55)}
+.section:not(.alt) .cat-card{background:var(--glass)}
+.gift-card{border-top:0}
+.plan{border-top:0}
+.plan.top{background:linear-gradient(135deg,var(--deep),var(--deep-2))}
+.art-card{border-top:0}
+.art-card:hover{background:rgb(255 255 255/.75)}
+.cert img,.member img{border-radius:var(--r-s);border:0}
+.cert:hover,.cert:focus-visible{box-shadow:inset 0 0 0 1px var(--wine)}
+.gift{border-left:0;border-radius:var(--r)}
+.price,.terms-box{border-radius:var(--r)}
+.onas-photo img,.obj-job,.ph:not(.slide){border-radius:var(--r);border:0}
+.rv-nav button{border-color:rgb(var(--shade)/.25)}
+
+/* «Нам доверяют»: полоса со скруглением и светлым косым зазором между фото — как коллаж образца */
+.wks{padding-inline:clamp(12px,2vw,30px)}
+.wk{background:transparent;border-radius:var(--r)}
+.wk-obj{clip-path:polygon(0 0,calc(56% - 6px) 0,calc(44% - 6px) 100%,0 100%);border-radius:var(--r) 0 0 var(--r);overflow:hidden}
+.wk-job{clip-path:polygon(calc(56% + 6px) 0,100% 0,100% 100%,calc(44% + 6px) 100%);border-radius:0 var(--r) var(--r) 0;overflow:hidden}
+.wk-link span{border-radius:99px;padding:9px 16px;text-transform:none;letter-spacing:.02em}
+
+/* ---------- этапы — карточки с метками-таблетками, как «Our project timeline» ---------- */
+.steps{border-top:0;gap:12px}
+.steps li{padding:22px 22px 26px;border-radius:var(--r);background:rgb(255 255 255/.07);box-shadow:inset 0 0 0 1px rgb(255 255 255/.08)}
+.steps li::before{display:none}
+.steps .n{justify-self:start;padding:7px 14px;border-radius:99px;background:var(--paper);color:var(--ink);font:600 var(--fs-xs)/1 var(--body);letter-spacing:.04em}
+@media (max-width:560px){.steps{border-left:0}.steps li{padding:20px}}
+
+/* ---------- заявка: крупный заголовок, форма в строку, поля-линии (как «Get in touch») ---------- */
+.form-wrap{grid-template-columns:1fr;gap:clamp(28px,3.4vw,52px)}
+.form-wrap > .sec-head{max-width:none;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:"e e" "h l" "h c";column-gap:clamp(32px,8vw,160px);align-items:end}
+.form-wrap > .sec-head > .eyebrow{grid-area:e}
+.form-wrap > .sec-head > h2{grid-area:h;font:400 clamp(40px,5.8vw,84px)/1 var(--display);letter-spacing:-.035em}
+.form-wrap > .sec-head > .lead{grid-area:l}
+.form-wrap > .sec-head > .contacts{grid-area:c}
+form{grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 28px}
+.field.full{grid-column:1/-1}
+.field label{font-weight:400;font-size:var(--fs-s);color:var(--on-dark-soft)}
+.dark input,.dark select,.dark textarea{border:0;border-bottom:1px solid rgb(243 245 248/.35);border-radius:0;background:transparent;padding:10px 0 12px}
+.dark input:focus,.dark select:focus,.dark textarea:focus{border-color:var(--on-dark-accent);box-shadow:0 1px 0 0 var(--on-dark-accent)}
+.dark select{appearance:none;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23d6cec3' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 4px center;padding-right:24px}
+.dark textarea{resize:vertical;min-height:48px;height:48px}
+.field.full:has(textarea){grid-column:auto} /* «Кто вы · Площадь · Коротко о задаче» — одной строкой */
+.dark [aria-invalid="true"]{border-color:#e08a6f}
+.dark input[type="checkbox"]{border:revert;padding:0}
+@media (max-width:1000px){form{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:860px){.form-wrap > .sec-head{grid-template-columns:1fr;grid-template-areas:"e" "h" "l" "c"}}
+@media (max-width:560px){form{grid-template-columns:1fr}}
+footer{margin-top:clamp(40px,5vw,72px)}
+
+/* ---------- каталоги, журнал, статьи: первый экран — крупный заголовок на светлом фоне ---------- */
+.cat-hero{background:radial-gradient(60% 80% at 0% 0%,rgb(57 65 114/.10),transparent 60%),radial-gradient(50% 70% at 100% 100%,rgb(221 213 203/.9),transparent 70%);
+  padding-block:clamp(48px,7vw,112px) var(--sec)}
+.cat-hero h1{font:400 clamp(40px,5.8vw,84px)/1.02 var(--display);letter-spacing:-.035em;max-width:18ch}
+
+/* ---------- меню телефона: без таблетки ---------- */
+@media (max-width:1280px){.top.open{background:var(--paper)}}

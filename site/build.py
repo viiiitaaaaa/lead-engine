@@ -495,6 +495,34 @@ SERV_CAT = {
 }
 
 
+def cw_hero(eyebrow, h1, lead, actions, media):
+    """Первый экран по образцу clearwater.london (её задача 09.10): крупный заголовок слева на светлом фоне,
+    справа вводный текст и кнопки, ниже — фото во всю ширину без полей. Все аргументы — готовый HTML."""
+    return f'''<section class="cw-hero">
+  <div class="wrap cw-type">
+    <div class="cw-title">
+      <span class="eyebrow">{eyebrow}</span>
+      <h1>{h1}</h1>
+    </div>
+    <div class="cw-side">
+      <p class="lead">{lead}</p>
+      <div class="hero-actions">
+        {actions}
+      </div>
+    </div>
+  </div>
+  <div class="cw-media">
+    {media}
+  </div>
+</section>'''
+
+
+def slide_media(img, pos, light=""):
+    return f'''<div class="slides" id="slides" aria-label="Фото">
+      <figure class="ph slide has-photo is-on{light}"><picture><source srcset="img/slides/{img}-m.webp 1280w, img/slides/{img}.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/{img}.jpg" srcset="img/slides/{img}-m.jpg 1280w, img/slides/{img}.jpg 2560w" sizes="100vw" alt="" style="object-position:{pos}" fetchpriority="high"></picture></figure>
+    </div>'''
+
+
 def page_html(p):
     e = lambda t: escape(t, quote=False)
     light = " light" if p.get("light") else ""
@@ -517,22 +545,9 @@ def page_html(p):
     return HEAD.format(css_v=ver("styles.css"), title=e(p["title"]), desc=e(p["desc"]), page=p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
-<section class="hero page-hero">
-  <div class="slides" id="slides" aria-label="Фото">
-    <figure class="ph slide has-photo is-on{light}"><picture><source srcset="img/slides/{p["img"]}-m.webp 1280w, img/slides/{p["img"]}.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/{p["img"]}.jpg" srcset="img/slides/{p["img"]}-m.jpg 1280w, img/slides/{p["img"]}.jpg 2560w" sizes="100vw" alt="" style="object-position:{p["pos"]}" fetchpriority="high"></picture></figure>
-  </div>
-  <div class="wrap">
-    <div class="hero-text">
-      <span class="eyebrow">{e(p["eyebrow"])}</span>
-      <h1>{e(p["h1"])}</h1>
-      <p class="lead">{e(p["lead"])}</p>
-      <div class="hero-actions">
-        <a class="btn" href="#zayavka">{e(p["cta"])}</a>
-        <a class="btn ghost" href="#chto-delaem">Что мы делаем</a>
-      </div>
-    </div>
-  </div>
-</section>
+{cw_hero(e(p["eyebrow"]), e(p["h1"]), e(p["lead"]),
+         f'<a class="btn" href="#zayavka">{e(p["cta"])}</a>\n        <a class="btn ghost" href="#chto-delaem">Что мы делаем</a>',
+         slide_media(p["img"], p["pos"], light))}
 
 <section class="section" id="boli">
   <div class="wrap">
@@ -874,15 +889,9 @@ def obj_html(i):
     return HEAD.format(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="obekt-" + o["slug"], who="sobstvennik") + header() + f'''
 
 <main>
-<section class="obj-hero">
-  {pic(o["img"], o["name"], o["pos"], eager=True)}
-  <div class="wrap">
-    <span class="eyebrow">{e(o["kind"])}</span>
-    <h1>{e(o["name"])}</h1>
-    <p class="obj-place">{e(o["place"])}</p>
-    <p class="lead">{e(o["lead"])}</p>
-  </div>
-</section>
+{cw_hero(e(o["kind"]) + " · " + e(o["place"]), e(o["name"]), e(o["lead"]),
+         f'<a class="btn" href="#zayavka" data-ask="{escape(o["name"])}" data-ask-prefix="Похожий проект: ">Обсудить похожий проект</a>',
+         pic(o["img"], o["name"], o["pos"], eager=True))}
 
 <section class="section">
   <div class="wrap">
@@ -963,22 +972,9 @@ def usl_html(u):
     return HEAD.format(css_v=ver("styles.css"), title=e(u["title"]), desc=e(u["desc"]), page="usluga-" + u["slug"], who="pomoshchnik") + header() + f'''
 
 <main>
-<section class="hero page-hero">
-  <div class="slides" id="slides" aria-label="Фото">
-    <figure class="ph slide has-photo is-on"><picture><source srcset="img/slides/{img}-m.webp 1280w, img/slides/{img}.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/{img}.jpg" srcset="img/slides/{img}-m.jpg 1280w, img/slides/{img}.jpg 2560w" sizes="100vw" alt="" style="object-position:{pos}" fetchpriority="high"></picture></figure>
-  </div>
-  <div class="wrap">
-    <div class="hero-text">
-      <span class="eyebrow">{e(u["name"])}</span>
-      <h1>{e(u["h1"])}</h1>
-      <p class="lead">{e(u["lead"])}</p>
-      <div class="hero-actions">
-        <a class="btn" href="#zayavka" data-ask="{escape(u["name"])}" data-ask-prefix="Услуга: ">Оставить заявку</a>
-        <a class="btn ghost" href="#etapy">На каком вы этапе</a>
-      </div>
-    </div>
-  </div>
-</section>
+{cw_hero(e(u["name"]), e(u["h1"]), e(u["lead"]),
+         f'<a class="btn" href="#zayavka" data-ask="{escape(u["name"])}" data-ask-prefix="Услуга: ">Оставить заявку</a>\n        <a class="btn ghost" href="#etapy">На каком вы этапе</a>',
+         slide_media(img, pos))}
 
 <section class="section" id="boli">
   <div class="wrap">
