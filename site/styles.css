@@ -308,6 +308,12 @@ label .req{color:var(--accent)}
 
 footer{padding-block:40px;border-top:1px solid rgba(243,245,248,.2);font-size:var(--fs-xs);color:var(--on-dark-mute)}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
+/* страницы услуг (09.10): ссылки в подвале и «Другие услуги» под вопросами */
+.foot-links{flex-basis:100%}
+.foot-links a,.usl-others a{color:inherit;text-underline-offset:3px}
+.foot-links a:hover{color:var(--on-dark-accent)}
+.usl-others{margin-top:clamp(32px,4vw,56px);font-size:var(--fs-s)}
+.usl-others a:hover{color:var(--accent)}
 
 /* ===== страницы клиентов (06.10) ===== */
 .section.alt{background:var(--sand)}

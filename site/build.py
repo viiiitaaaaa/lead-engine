@@ -11,6 +11,7 @@ from help_content import HELP
 from gift_content import GIFT
 from objects_content import OBJECTS
 import service_content as SC
+from uslugi_content import USLUGI, STAGES
 
 SITE = Path(__file__).resolve().parent
 
@@ -72,8 +73,13 @@ def header(active=""):
 
 def form_section(who="sobstvennik", title="Оставить заявку",
                  lead="Оставьте телефон и адрес объекта. Менеджер перезвонит, уточнит задачу и договорится о встрече на объекте.",
-                 button="Оставить заявку"):
-    opts = "\n".join(f'          <option value="{v}"{" selected" if v == who else ""}>{t}</option>' for v, t in WHO_OPTIONS)
+                 button="Оставить заявку", uslugi=None):
+    # ссылки на страницы услуг в подвале — везде, кроме страниц владельца (без тех. слов, её правило 06.10)
+    if uslugi is None:
+        uslugi = who != "sobstvennik"
+    usl = ('\n      <nav class="foot-links" aria-label="Услуги">' + " · ".join(
+        f'<a href="usluga-{u["slug"]}.html">{u["name"]}</a>' for u in USLUGI) + "</nav>") if uslugi else ""
+    opts ="\n".join(f'          <option value="{v}"{" selected" if v == who else ""}>{t}</option>' for v, t in WHO_OPTIONS)
     return f'''<section class="section dark" id="zayavka">
   <div class="wrap form-wrap">
     <div class="sec-head" style="margin-bottom:0">
@@ -132,7 +138,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
   <footer>
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
-      <span>Москва · с 1997 года</span>
+      <span>Москва · с 1997 года</span>{usl}
     </div>
   </footer>
 </section>'''
@@ -871,7 +877,133 @@ def obj_html(i):
 '''
 
 
+# ===== Страницы услуг (раздел 18 выжимки, п.10, 14, 15) — тексты uslugi_content.py; со страниц владельца не ссылаемся =====
+def usl_html(u):
+    e = lambda x: escape(x, quote=False)
+    pains = "\n".join(f'      <div class="pain-card"><h3>{e(t)}</h3><p>{e(x)}</p></div>' for t, x in u["pains"])
+    do = "\n".join(f"        <li>{e(t)}</li>" for t in u["do"])
+    stages = "\n".join(f'      <li><span class="n">{i:02d}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for i, (t, x) in enumerate(STAGES, 1))
+    modern = "\n".join(f'      <div class="solve-row"><dt>{e(a)}</dt><dd>{e(b)}</dd></div>' for a, b in u["modern"])
+    by = {o["slug"]: o for o in OBJECTS}
+    objs = "\n".join(f'      <a class="serv" href="obekt-{s}.html"><h3>{e(by[s]["name"])}</h3><p>{e(by[s]["job"])}. {e(by[s]["job_sub"])}</p><span class="serv-go">Подробнее об объекте →</span></a>'
+                     for s in u["objects"])
+    others = " · ".join(f'<a href="usluga-{x["slug"]}.html">{e(x["name"])}</a>' for x in USLUGI if x is not u)
+    faq = "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in u["faq"])
+    img, pos = u["img"], u["pos"]
+    return HEAD.format(css_v=ver("styles.css"), title=e(u["title"]), desc=e(u["desc"]), page="usluga-" + u["slug"], who="pomoshchnik") + header() + f'''
+
+<main>
+<section class="hero page-hero">
+  <div class="slides" id="slides" aria-label="Фото">
+    <figure class="ph slide has-photo is-on"><picture><source srcset="img/slides/{img}-m.webp 1280w, img/slides/{img}.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/{img}.jpg" srcset="img/slides/{img}-m.jpg 1280w, img/slides/{img}.jpg 2560w" sizes="100vw" alt="" style="object-position:{pos}" fetchpriority="high"></picture></figure>
+  </div>
+  <div class="wrap">
+    <div class="hero-text">
+      <span class="eyebrow">{e(u["name"])}</span>
+      <h1>{e(u["h1"])}</h1>
+      <p class="lead">{e(u["lead"])}</p>
+      <div class="hero-actions">
+        <a class="btn" href="#zayavka" data-ask="{escape(u["name"])}" data-ask-prefix="Услуга: ">Оставить заявку</a>
+        <a class="btn ghost" href="#etapy">На каком вы этапе</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="boli">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Что болит</span>
+      <h2>На что жалуются чаще всего</h2>
+      <p class="lead">{e(u["pains_intro"])}</p>
+    </div>
+    <div class="pain-grid">
+{pains}
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="chto-delaem">
+  <div class="wrap terms-wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Наш ответ</span>
+      <h2>Что делаем</h2>
+    </div>
+    <div class="terms-box">
+      <ul class="proofs">
+{do}
+      </ul>
+      <a class="btn" href="#zayavka" data-ask="{escape(u["name"])}" data-ask-prefix="Услуга: ">Оставить заявку</a>
+    </div>
+  </div>
+</section>
+
+<section class="section dark" id="etapy">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Подключаемся на любом этапе</span>
+      <h2>Не важно, на каком этапе ваш дом</h2>
+      <p class="lead">Можно прийти к нам с идеей, с готовым проектом, посреди стройки или в дом, где живут уже много лет.</p>
+    </div>
+    <ol class="steps">
+{stages}
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="modernizaciya">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Модернизация</span>
+      <h2>Если система уже стоит, но работает плохо</h2>
+      <p class="lead">Не всегда нужно менять всё. Сначала обследуем, потом исправляем то, что мешает жить.</p>
+    </div>
+    <dl class="solve">
+{modern}
+    </dl>
+  </div>
+</section>
+
+<section class="section alt" id="obekty">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Нам доверяют</span>
+      <h2>Объекты с оборудованием Frivent</h2>
+    </div>
+    <div class="serv-grid">
+{objs}
+    </div>
+  </div>
+</section>
+
+{proof()}
+
+<section class="section alt" id="voprosy">
+  <div class="wrap faq-wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Вопросы</span>
+      <h2>Частые вопросы</h2>
+    </div>
+    <div class="faq">
+{faq}
+    </div>
+    <p class="usl-others">Другие услуги: {others}</p>
+  </div>
+</section>
+
+{form_section("pomoshchnik", "Обсудить задачу", lead="Оставьте телефон и адрес объекта. Инженер перезвонит, уточнит, что стоит в доме, и договорится об осмотре.")}
+</main>
+
+<script src="app.js?v={ver('app.js')}" defer></script>
+</body>
+</html>
+'''
+
+
 if __name__ == "__main__":
+    for u in USLUGI:
+        (SITE / f'usluga-{u["slug"]}.html').write_text(usl_html(u), "utf-8")
+    print("страницы услуг:", len(USLUGI))
     for i, o in enumerate(OBJECTS):
         (SITE / f'obekt-{o["slug"]}.html').write_text(obj_html(i), "utf-8")
     print("страницы объектов:", len(OBJECTS))
@@ -884,7 +1016,7 @@ if __name__ == "__main__":
     s = replace_between(s, "<!--HEADER-->", "<!--/HEADER-->", header())
     if "<!--GIFTS-->" in s:
         s = replace_between(s, "<!--GIFTS-->", "<!--/GIFTS-->", gifts_html())
-    s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section())
+    s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section(uslugi=True))
     if "<!--WORKS-->" in s:
         s = replace_between(s, "<!--WORKS-->", "<!--/WORKS-->", works_html())
     if "<!--REVIEWS-->" in s:
