@@ -188,7 +188,7 @@ a{color:inherit}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .dirs{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px 0;font-size:var(--fs-xs);color:var(--on-dark-soft);max-width:760px}
 .dirs li+li::before{content:"·";margin-inline:12px;color:var(--on-dark-accent)}
-.facts-band{padding-block:clamp(24px,2.5vw,36px)}
+.facts-band{padding-block:var(--sec)}
 .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
 .facts b{display:block;font:400 clamp(32px,3.6vw,56px)/1 var(--display);color:var(--accent-ink);margin-bottom:10px}
 .facts span{font-size:var(--fs-s);color:var(--ink-soft);line-height:1.45;display:block;max-width:28ch}
@@ -351,6 +351,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 .terms-wrap .sec-head{margin-bottom:0}
 .terms-box{display:grid;gap:32px;justify-items:start;background:var(--sand);padding:clamp(28px,4vw,48px)}
 .terms-box .proofs{width:100%}
+/* 09.10: на бежевом разделе плашка не видна — без своего отступа, иначе пустота между блоками больше общей */
+.section.alt .terms-box{padding:0}
 .faq-wrap{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,80px);align-items:start}
 .faq-wrap .sec-head{margin-bottom:0}
 .faq{display:grid;border-top:1px solid var(--line)}
@@ -394,7 +396,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 }
 
 /* ===== каталоги клиентов (06.10): разделы → карточки, «Запросить цену» ===== */
-.cat-hero{padding-block:clamp(56px,7vw,104px) clamp(36px,4vw,56px);background:var(--sand)}
+.cat-hero{padding-block:clamp(56px,7vw,104px) var(--sec);background:var(--sand)}
 .cat-hero .wrap{display:grid;gap:20px}
 .cat-hero h1{font-size:var(--fs-h2)}
 .cat-hero .lead{max-width:62ch}
