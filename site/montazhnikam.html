@@ -7,7 +7,7 @@
 <meta name="description" content="Постоянный поставщик для монтажных и климатических компаний: вентиляция с рекуперацией, осушение бассейнов, кондиционирование Frivent. Поставка к графику монтажа, документы к сдаче, пусконаладка производителем.">
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=3e92d003">
+<link rel="stylesheet" href="styles.css?v=f167fbf5">
 </head>
 <body data-page="montazhnikam" data-who="montazh">
 <header class="top" id="top">
@@ -178,6 +178,7 @@
   </div>
 </section>
 
+
 <section class="section dark" id="etapy">
   <div class="wrap">
     <div class="sec-head">
@@ -279,6 +280,7 @@
       <details class="faq-item"><summary>Подберёте по чужому проекту?</summary><p>Да, по вашему проекту или техническому заданию. Замены согласуем до заказа.</p></details>
     </div>
   </div>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Какие условия для постоянных партнёров?", "acceptedAnswer": {"@type": "Answer", "text": "Обсуждаем по объёму и регулярности закупок. Условия фиксируем в договоре."}}, {"@type": "Question", "name": "Вы сами монтируете у моих заказчиков?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. Партнёрам поставляем оборудование, расчёт и наладку — монтаж и заказчик остаются за вами."}}, {"@type": "Question", "name": "Есть ли запчасти в наличии?", "acceptedAnswer": {"@type": "Answer", "text": "Запчасти к оборудованию Frivent — со склада в России: завод в Переславле-Залесском."}}, {"@type": "Question", "name": "Подберёте по чужому проекту?", "acceptedAnswer": {"@type": "Answer", "text": "Да, по вашему проекту или техническому заданию. Замены согласуем до заказа."}}]}</script>
 </section>
 
 <section class="section alt" id="dokumenty">
@@ -377,6 +379,8 @@
       <!-- метки UTM: заполняются скриптом из адреса страницы -->
       <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page"><input type="hidden" name="gift">
+      <!-- ловушка для спам-ботов: человек это поле не видит и не заполняет -->
+      <div class="hp" aria-hidden="true"><label for="f-website">Сайт</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></div>
       <label class="consent" for="f-consent"><input id="f-consent" name="consent" type="checkbox" required> Согласен на обработку персональных данных</label>
       <div class="form-actions">
         <button class="btn" type="submit" id="f-submit">Стать партнёром</button>
@@ -388,12 +392,14 @@
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
+      <address class="foot-addr">Офис: 111020, Москва, ул. 2-я Синичкина, 9А, стр. 3 · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:order@frivent.msk.ru">order@frivent.msk.ru</a> · <a href="tel:+74952660524">8 (495) 266-05-24</a></address>
       <nav class="foot-links" aria-label="Услуги"><a href="usluga-ventilyaciya.html">Вентиляция с рекуперацией</a> · <a href="usluga-osushenie-basseyna.html">Осушение бассейна и СПА</a> · <a href="usluga-kondicionirovanie.html">Кондиционирование</a> · <a href="usluga-servis.html">Сервис европейского оборудования</a> · <a href="usluga-proverka-doma.html">Бесплатная проверка дома перед покупкой</a> · <a href="zhurnal.html">Журнал</a></nav>
     </div>
   </footer>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Frivent", "url": "https://frivent.ru", "telephone": "+7 495 266-05-24", "email": "order@frivent.msk.ru", "address": {"@type": "PostalAddress", "postalCode": "111020", "addressLocality": "Москва", "streetAddress": "ул. 2-я Синичкина, 9А, стр. 3", "addressCountry": "RU"}, "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]}</script>
 </section>
 </main>
 
-<script src="app.js?v=96e3b949" defer></script>
+<script src="app.js?v=43c03229" defer></script>
 </body>
 </html>

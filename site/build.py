@@ -72,6 +72,30 @@ def header(active=""):
 </header>'''
 
 
+# контакты из frivent.ru/contacts (проверено 10.10): офис в Москве, общая почта, производство — Переславль-Залесский.
+# ИНН/ОГРН на сайте нет — дописать, когда она даст (книги: юрлицо и адрес — главные сигналы доверия в B2B и для Яндекса).
+OFFICE = "111020, Москва, ул. 2-я Синичкина, 9А, стр. 3"
+EMAIL = "order@frivent.msk.ru"
+
+
+def ld(obj):
+    """разметка schema.org для поисковиков (Clarke «SEO 2025»: Organization, FAQPage, Article)"""
+    import json
+    return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + '</script>'
+
+
+ORG_LD = ld({"@context": "https://schema.org", "@type": "Organization", "name": "Frivent", "url": "https://frivent.ru",
+             "telephone": "+7 495 266-05-24", "email": EMAIL,
+             "address": {"@type": "PostalAddress", "postalCode": "111020", "addressLocality": "Москва",
+                         "streetAddress": "ул. 2-я Синичкина, 9А, стр. 3", "addressCountry": "RU"},
+             "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]})
+
+
+def faq_ld(pairs):
+    return ld({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in pairs]})
+
+
 def form_section(who="sobstvennik", title="Оставить заявку",
                  lead="Оставьте телефон и адрес объекта. Менеджер перезвонит, уточнит задачу и договорится о встрече на объекте.",
                  button="Оставить заявку", uslugi=None):
@@ -129,6 +153,8 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       <!-- метки UTM: заполняются скриптом из адреса страницы -->
       <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page"><input type="hidden" name="gift">
+      <!-- ловушка для спам-ботов: человек это поле не видит и не заполняет -->
+      <div class="hp" aria-hidden="true"><label for="f-website">Сайт</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></div>
       <label class="consent" for="f-consent"><input id="f-consent" name="consent" type="checkbox" required> Согласен на обработку персональных данных</label>
       <div class="form-actions">
         <button class="btn" type="submit" id="f-submit">{button}</button>
@@ -139,9 +165,11 @@ def form_section(who="sobstvennik", title="Оставить заявку",
   <footer>
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
-      <span>Москва · с 1997 года</span>{usl}
+      <span>Москва · с 1997 года</span>
+      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="tel:{PHONE_TEL}">{PHONE}</a></address>{usl}
     </div>
   </footer>
+  {ORG_LD}
 </section>'''
 
 
@@ -423,6 +451,13 @@ PAGES = [
    ("Подойдёт для разных площадей?", "Да, типовое решение рассчитываем под каждую площадь в линейке."),
    ("Сколько это стоит?", "Зависит от площадей и состава инженерии. Рассчитаем после знакомства с проектом."),
   ],
+  # «кому что важно» — закупочный центр по Котлеру (Marketing Management, Маркетинг 7.0): только уже данные обещания
+  roles=[
+   ("Техническому директору", "Одно решение на линейку домов, расчёт под каждую площадь и документы для проектировщика."),
+   ("Отделу продаж", "Довод для покупателя: в каждом доме тихо, сухо и свежо, а сервис есть и после продажи."),
+   ("Закупкам", "Поставки партиями по графику стройки. Цена и даты — в договоре."),
+   ("Службе гарантии", "Меньше жалоб жителей на сырость и духоту. Запчасти и сервис — от производителя в России."),
+  ],
   form=dict(title="Обсудить посёлок", button="Обсудить посёлок")),
 
  dict(file="kommerciya.html", who="kommerciya", img="s6", pos="50% 60%", light=True,
@@ -467,6 +502,12 @@ PAGES = [
    ("Обслуживаете чужое оборудование?", "Да, европейское оборудование других брендов — тоже."),
   ],
   proof_extra="Оборудование Frivent работает в фитнес-клубах World Class и Gio Wellness, отелях, больницах и на ледовых аренах.",
+  roles=[
+   ("Главному инженеру", "Расчёт под тип объекта и нормы, паспорта оборудования и документы для проектировщика."),
+   ("Финансовому директору", "Цена фиксируется в счёте и после оплаты не меняется. Монтаж — без остановки работы объекта."),
+   ("Службе эксплуатации", "Пусконаладка с замерами и актом, сервис по договору и запчасти от производителя — и для оборудования других брендов."),
+   ("Владельцу бизнеса", "Гости, пациенты и сотрудники не жалуются на духоту, запахи и сырость. Документы для проверок готовы."),
+  ],
   form=dict(title="Рассчитать объект", button="Рассчитать объект")),
 ]
 
@@ -521,6 +562,27 @@ def slide_media(img, pos, light=""):
     return f'''<div class="slides" id="slides" aria-label="Фото">
       <figure class="ph slide has-photo is-on{light}"><picture><source srcset="img/slides/{img}-m.webp 1280w, img/slides/{img}.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/{img}.jpg" srcset="img/slides/{img}-m.jpg 1280w, img/slides/{img}.jpg 2560w" sizes="100vw" alt="" style="object-position:{pos}" fetchpriority="high"></picture></figure>
     </div>'''
+
+
+def roles_html(roles):
+    """«Каждому в компании — свой ответ»: в B2B решает не один человек (Котлер MM гл.7, Маркетинг 7.0 — закупочный центр)"""
+    if not roles:
+        return ""
+    e = lambda t: escape(t, quote=False)
+    cards = "\n".join(f'      <div class="pain-card"><h3>{e(t)}</h3><p>{e(x)}</p></div>' for t, x in roles)
+    return f'''
+<section class="section alt" id="kto-reshaet">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Кто принимает решение</span>
+      <h2>Каждому в команде&nbsp;— свой ответ</h2>
+      <p class="lead">Решение о климате объекта принимает не один человек. Вот что важно каждому из них — и что мы для этого делаем.</p>
+    </div>
+    <div class="pain-grid">
+{cards}
+    </div>
+  </div>
+</section>'''
 
 
 def page_html(p):
@@ -590,6 +652,7 @@ def page_html(p):
     </dl>
   </div>
 </section>
+{roles_html(p.get("roles"))}
 
 <section class="section dark" id="etapy">
   <div class="wrap">
@@ -630,6 +693,7 @@ def page_html(p):
 {faq}
     </div>
   </div>
+  {faq_ld(p["faq"])}
 </section>
 {plans_html() if p["who"] in ("sobstvennik", "pomoshchnik") else ""}{docs_html() if p["who"] in ("dizayner", "montazh", "zastroyshchik", "kommerciya") else ""}
 <section class="section" id="podarok">
@@ -1055,6 +1119,7 @@ def usl_html(u):
     </div>
     <p class="usl-others">Другие услуги: {others}</p>
   </div>
+  {faq_ld(u["faq"])}
 </section>
 
 {form_section("pomoshchnik", "Обсудить задачу", lead="Оставьте телефон и адрес объекта. Инженер перезвонит, уточнит, что стоит в доме, и договорится об осмотре.")}
@@ -1140,6 +1205,8 @@ def statya_html(i):
     </div>
   </div>
 </section>
+{ld({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "description": a["lead"], "inLanguage": "ru",
+     "publisher": {"@type": "Organization", "name": "Frivent", "url": "https://frivent.ru"}})}
 </article>
 
 <section class="section alt">

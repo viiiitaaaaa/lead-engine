@@ -7,7 +7,21 @@ const CONFIG = {
   defaultWho: "sobstvennik",
   phone: "8 (495) 266-05-24",
   fontSwitch: false, // шрифт выбран 06.10: «как у Шрифтотеки» — Vela Sans везде
+  // Номер счётчика Яндекс Метрики (даст она). Пусто — цели только пишутся в консоль.
+  metrika: "",
 };
+
+/* цели для Метрики (книги: Clarke «SEO 2025», Davidson — мерить заявки, звонки, памятки, а не просто визиты) */
+const goal = name => {
+  try { if (CONFIG.metrika && window.ym) window.ym(Number(CONFIG.metrika), "reachGoal", name); else console.log("цель:", name); } catch (e) {}
+};
+document.addEventListener("click", e => {
+  const a = e.target.closest("a");
+  if (!a) return;
+  if (a.href.startsWith("tel:")) goal("phone_click");
+  else if (a.dataset.gift) goal("gift_click");
+  else if (a.dataset.ask) goal("ask_price");
+});
 
 /* переключатель пар шрифтов — на всех страницах, выбор запоминается */
 if (CONFIG.fontSwitch) {
@@ -210,6 +224,11 @@ if (form) {
     if (addrBad) return address.focus();
     if (!consent.checked) { status.textContent = "Отметьте согласие на обработку данных"; return consent.focus(); }
     const data = Object.fromEntries(new FormData(form));
+    /* защита от спам-ботов (книга Мукминова: B2B-формы первыми получают ботов): невидимое поле заполнено
+       или форма отправлена быстрее 3 секунд после открытия — делаем вид, что приняли, и ничего не шлём */
+    if (data.website || performance.now() < 3000) { status.textContent = "Заявка принята."; return; }
+    delete data.website;
+    goal("form_submit");
     if (!CONFIG.leadEndpoint) {
       status.innerHTML = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink(true);
       console.log("Заявка (тест):", data);
