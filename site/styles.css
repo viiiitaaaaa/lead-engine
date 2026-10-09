@@ -891,3 +891,29 @@ footer{margin-top:clamp(40px,5vw,72px)}
 .quote-big blockquote{margin:0}
 .quote-big p{font:400 clamp(22px,2.4vw,32px)/1.3 var(--display);letter-spacing:-.02em;color:var(--ink)}
 .quote-big figcaption{font-size:var(--fs-s);color:var(--ink-soft)}
+
+/* ревизия 10.10: телефонный вид таблицы сравнения, схемы, плашки cookies; подпись у ленты марок */
+.sch-list{display:none}
+@media (max-width:860px){
+  .scheme-wrap{display:none}
+  .sch-list{display:grid;gap:14px}
+  .sch-li{padding:18px 20px;border-radius:var(--r);background:var(--glass)}
+  .sch-li b{display:block;margin-bottom:8px;color:var(--wine);font-weight:500}
+  .sch-li ol{margin:0;padding-left:1.2em;display:grid;gap:6px;font-size:var(--fs-m)}
+  .sch-li li:last-child{font-weight:500;color:var(--accent-ink)}
+  .cmp,.cmp tbody,.cmp tr,.cmp th,.cmp td{display:block;min-width:0;width:100%}
+  .cmp thead{display:none}
+  .cmp tr{padding:16px 0;border-bottom:1px solid var(--line)}
+  .cmp th,.cmp td{border:0;padding:4px 0}
+  .cmp tbody th{width:auto;font-size:var(--fs-l);margin-bottom:6px}
+  .cmp td::before{content:attr(data-label) ": ";font-weight:500;color:var(--ink-soft)}
+  .cmp td:last-child{background:none;color:var(--ink)}
+  .cmp td:last-child::before{color:var(--wine)}
+  .cookie{left:8px;right:8px;bottom:8px;max-width:none;padding:10px 12px;gap:10px}
+  .cookie p{font-size:var(--fs-xs)}
+  .cookie .btn{padding:9px 14px}
+}
+.marquee{position:relative}
+.marquee-cap{position:absolute;left:0;top:0;bottom:0;z-index:1;display:flex;align-items:center;padding:0 22px 0 var(--gut);
+  font:600 var(--fs-xs)/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--wine);
+  background:linear-gradient(90deg,var(--paper) 80%,transparent)}
