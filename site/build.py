@@ -13,6 +13,7 @@ from objects_content import OBJECTS
 import service_content as SC
 from uslugi_content import USLUGI, STAGES
 from zhurnal_content import ARTICLES
+import demo_content as DC
 
 SITE = Path(__file__).resolve().parent
 
@@ -91,6 +92,93 @@ ORG_LD = ld({"@context": "https://schema.org", "@type": "Organization", "name": 
              "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]})
 
 
+DEMO_TAG = '<span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span>'
+
+
+def req_line():
+    """реквизиты в подвал: пока примеры из demo_content.py; в разметку schema.org примеры не кладём"""
+    if not DC.DEMO and DC.REQ["inn"].strip("0") == "":
+        return ""
+    r = DC.REQ
+    return f' · {r["name"]} · ИНН {r["inn"]} · ОГРН {r["ogrn"]}' + (f" {DEMO_TAG}" if DC.DEMO else "")
+
+
+# «Чего опасаются заказчики» (Трейси «Marketing», гл. 2: четыре страха покупателя). Её решение 10.10: «пиши как правильно,
+# правки внесу после сдачи заказчикам» — оплата по этапам по актам ещё НЕ подтверждена Frivent.
+FEARS = [
+    ("Переплатить", "Цена фиксируется в договоре и после оплаты не растёт. Все работы и оборудование — в смете заранее."),
+    ("Получить не то", "Каждую систему рассчитывает инженер под ваш объект. При сдаче проверяем результат замерами и фиксируем в акте."),
+    ("Потерять деньги", "Оплата по этапам: вы платите за выполненный этап после того, как подписали акт."),
+    ("Остаться одному после сдачи", "Гарантия, обслуживание по сезонам и запчасти. Ваш менеджер остаётся на связи и после сдачи."),
+]
+
+
+def strahi_html():
+    e = lambda x: escape(x, quote=False)
+    cards = "\n".join(f'      <div class="pain-card"><span class="fear">Страх: «{e(t).lower()}»</span><p>{e(x)}</p></div>' for t, x in FEARS)
+    g = ""
+    if DC.DEMO or DC.GUARANTEES:
+        nums = "\n".join(f'      <div><b class="num">{e(n)}</b><span>{e(t)}</span></div>' for n, t in DC.GUARANTEES)
+        g = f'''
+    <h3 class="solve-title strahi-g">Гарантии в цифрах {DEMO_TAG if DC.DEMO else ""}</h3>
+    <div class="facts">
+{nums}
+    </div>'''
+    return f'''<section class="section" id="strahi">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Без рисков</span>
+      <h2>Чего опасаются заказчики&nbsp;— и&nbsp;что мы с этим делаем</h2>
+      <p class="lead">Четыре главных страха перед большим проектом. На каждый у нас есть ответ, и он записан в договоре.</p>
+    </div>
+    <div class="pain-grid">
+{cards}
+    </div>{g}
+  </div>
+</section>'''
+
+
+def team_html():
+    """«Кто отвечает за ваш объект» — люди с фото (Котлер 7.0, 10 грехов: лица руководителей и инженеров на сайте)"""
+    if not DC.TEAM:
+        return ""
+    e = lambda x: escape(x, quote=False)
+    cards = "\n".join(f'''      <article class="team-card"><figure class="ph team-ph"><figcaption>Фото</figcaption></figure>
+        <h3>{e(n)}</h3><span class="team-role">{e(r)}</span><p>{e(t)}</p></article>''' for n, r, t in DC.TEAM)
+    return f'''<section class="section" id="komanda">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Команда {DEMO_TAG if DC.DEMO else ""}</span>
+      <h2>Кто отвечает за ваш объект</h2>
+      <p class="lead">У каждого объекта — конкретные люди с именами и прямыми телефонами, а не колл-центр.</p>
+    </div>
+    <div class="team-grid">
+{cards}
+    </div>
+  </div>
+</section>'''
+
+
+def results_html():
+    """«Результат в цифрах» на странице объекта — было → стало (кейсы с цифрами, Котлер ММ, SaaS)"""
+    if not DC.RESULTS:
+        return ""
+    e = lambda x: escape(x, quote=False)
+    rows = "\n".join(f'      <div class="res"><span>{e(t)}</span><b class="num"><s>{e(a)}</s> → {e(b)}</b></div>' for t, a, b in DC.RESULTS)
+    return f'''
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Результат {DEMO_TAG if DC.DEMO else ""}</span>
+      <h2>Было → стало</h2>
+    </div>
+    <div class="res-grid">
+{rows}
+    </div>
+  </div>
+</section>'''
+
+
 def faq_ld(pairs):
     return ld({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in pairs]})
@@ -167,7 +255,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
-      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="tel:{PHONE_TEL}">{PHONE}</a></address>{usl}
+      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="tel:{PHONE_TEL}">{PHONE}</a>{req_line()}</address>{usl}
     </div>
   </footer>
   {ORG_LD}
@@ -468,7 +556,7 @@ PAGES = [
   h1="Свежий воздух, который замечают только гости.",
   lead="Рестораны, клиники, фитнес и СПА, торговые центры, серверные. Расчёт под тип объекта и нормы, своё производство Frivent, монтаж и замена без остановки работы.",
   cta="Рассчитать объект",
-  pains_title="На что жалуются посетители",
+  pains_title="Духота уводит гостей из зала раньше десерта",  # «датчик дыма» (Трейси), её решение 10.10 — только климат/монтаж
   pains_intro="Мы разобрали 5 482 отзыва посетителей о 216 коммерческих объектах на нашей территории. 14% негатива — про помещение и инженерию.",
   pains=[
    ("Духота и жар", "В зале ресторана и в фитнес-клубе при полной загрузке."),
@@ -965,6 +1053,7 @@ def obj_html(i):
     </div>
   </div>
 </section>
+{results_html()}
 
 <section class="section alt">
   <div class="wrap obj-cols">
@@ -1254,6 +1343,13 @@ if __name__ == "__main__":
     if "<!--DOGOVOR-->" not in s:
         s = s.replace('<section class="section" id="territoriya">', '<!--DOGOVOR--><!--/DOGOVOR-->\n\n<section class="section" id="territoriya">', 1)
     s = replace_between(s, "<!--DOGOVOR-->", "<!--/DOGOVOR-->", dogovor_html())
+    # 10.10: «Чего опасаются заказчики» — перед договором; «Кто отвечает за ваш объект» — перед сертификатами
+    if "<!--STRAHI-->" not in s:
+        s = s.replace("<!--DOGOVOR-->", "<!--STRAHI--><!--/STRAHI-->\n\n<!--DOGOVOR-->", 1)
+    s = replace_between(s, "<!--STRAHI-->", "<!--/STRAHI-->", strahi_html())
+    if "<!--TEAM-->" not in s:
+        s = s.replace('<section class="section alt" id="sertifikaty">', '<!--TEAM--><!--/TEAM-->\n\n<section class="section alt" id="sertifikaty">', 1)
+    s = replace_between(s, "<!--TEAM-->", "<!--/TEAM-->", team_html())
     if "<!--REVIEWS-->" in s:
         s = replace_between(s, "<!--REVIEWS-->", "<!--/REVIEWS-->", reviews_html())
     import re as _re
