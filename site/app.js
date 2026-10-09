@@ -25,6 +25,26 @@ const CONFIG = {
   });
 })();
 
+/* памятка при уходе со страницы (книги: подписка «при уходе, не перекрывая страницу»; её решение 10.10 — всплывающие
+   можно): карточка в правом нижнем углу, только на компьютере (курсор ушёл к вкладкам), один раз для посетителя */
+(() => {
+  const card = document.getElementById("exit-card");
+  const gift = document.getElementById("podarok") || document.getElementById("podarki");
+  if (!card || !gift || matchMedia("(hover: none)").matches) return;
+  try { if (localStorage.getItem("exit-shown")) return; } catch (e) {}
+  const hide = () => { card.hidden = true; };
+  document.getElementById("exit-x").addEventListener("click", hide);
+  document.getElementById("exit-go").addEventListener("click", e => { e.preventDefault(); hide(); gift.scrollIntoView({behavior: "smooth", block: "start"}); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") hide(); });
+  const onLeave = e => {
+    if (e.clientY > 0 || performance.now() < 15000) return; // не пугать сразу: только после 15 секунд на странице
+    document.removeEventListener("mouseout", onLeave);
+    card.hidden = false;
+    try { localStorage.setItem("exit-shown", "1"); } catch (e) {}
+  };
+  document.addEventListener("mouseout", onLeave);
+})();
+
 /* цели для Метрики (книги: Clarke «SEO 2025», Davidson — мерить заявки, звонки, памятки, а не просто визиты) */
 const goal = name => {
   try { if (CONFIG.metrika && window.ym) window.ym(Number(CONFIG.metrika), "reachGoal", name); else console.log("цель:", name); } catch (e) {}
@@ -185,6 +205,9 @@ if (catSecs.length) {
   window.addEventListener("hashchange", () => applyCat(true));
 }
 
+/* «что дальше» после заявки (Fraser «SaaS Playbook»: сразу сказать, кто и когда свяжется, и дать, чем заняться) */
+const NEXT = ' <span class="next">Что дальше: менеджер позвонит в течение 4 часов в рабочее время, договоримся о встрече на объекте и пришлём смету. Пока ждёте — посмотрите <a href="index.html#raboty">наши объекты</a>.</span>';
+
 /* форма заявки */
 const form = document.getElementById("lead-form");
 /* каталог: «Запросить цену» вписывает позицию в заявку и ведёт к форме */
@@ -260,7 +283,7 @@ if (form) {
     delete data.website;
     goal("form_submit"); clearDraft();
     if (!CONFIG.leadEndpoint) {
-      status.innerHTML = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink(true);
+      status.innerHTML = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink(true) + NEXT;
       console.log("Заявка (тест):", data);
       return;
     }
@@ -269,7 +292,7 @@ if (form) {
       const r = await fetch(CONFIG.leadEndpoint, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)});
       if (!r.ok) throw new Error(r.status);
       form.reset(); if (whoSelect) whoSelect.value = data.who;
-      status.innerHTML = "Заявка принята. Менеджер позвонит вам в течение 4 часов в рабочее время." + giftLink(false);
+      status.innerHTML = "Заявка принята." + giftLink(false) + NEXT;
     } catch (err) {
       status.textContent = "Не получилось отправить. Позвоните нам: " + CONFIG.phone;
     } finally { submit.disabled = false; }

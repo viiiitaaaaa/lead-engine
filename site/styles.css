@@ -854,3 +854,25 @@ footer{margin-top:clamp(40px,5vw,72px)}
 .cookie a{color:var(--accent-ink)}
 .cookie .btn{flex:none;padding:11px 18px;background:var(--wine);color:var(--paper);border-color:var(--wine)}
 .cookie .btn::after{content:none}
+
+/* 10.10: «Один подрядчик или несколько» */
+.cmp-wrap{overflow-x:auto}
+.cmp{width:100%;border-collapse:collapse;min-width:640px}
+.cmp th,.cmp td{padding:16px 18px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);font-size:var(--fs-m);line-height:1.45}
+.cmp thead th{font:500 var(--fs-s)/1.3 var(--body);color:var(--ink-soft);border-bottom:1px solid rgb(var(--shade)/.35)}
+.cmp thead th:last-child{color:var(--wine)}
+.cmp tbody th{font-weight:500;width:22%}
+.cmp td:nth-child(2){color:var(--ink-soft)}
+.cmp td:last-child{background:rgb(255 255 255/.45)}
+/* «что дальше» после заявки */
+.form-status .next{display:block;margin-top:8px;color:var(--on-dark-soft)}
+/* памятка при уходе — правый нижний угол */
+.exit-card{position:fixed;right:16px;bottom:16px;z-index:51;width:min(360px,calc(100vw - 32px));display:grid;gap:10px;justify-items:start;
+  padding:22px 22px 20px;border-radius:var(--r);background:var(--paper);box-shadow:0 16px 44px rgb(var(--shade)/.26);color:var(--ink)}
+.exit-card[hidden]{display:none}
+.exit-card b{font:500 var(--fs-l)/1.3 var(--display);padding-right:24px}
+.exit-card p{font-size:var(--fs-s);color:var(--ink-soft);line-height:1.45}
+.exit-card .btn{background:var(--wine);color:var(--paper);border-color:var(--wine)}
+.exit-x{position:absolute;top:8px;right:10px;width:32px;height:32px;border:0;background:none;font-size:22px;line-height:1;color:var(--ink-soft);cursor:pointer}
+
+.section.dark > footer:first-child{margin-top:0} /* политика: подвал без формы над ним (check_gaps 223 → 151) */

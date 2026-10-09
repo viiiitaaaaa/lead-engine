@@ -13,7 +13,7 @@ JS = r"""
   const contentBox = el => {
     let top=Infinity, bot=-Infinity;
     const walk = n => { for (const k of n.children) {
-        const cs=getComputedStyle(k); if (cs.display==='none'||cs.visibility==='hidden') continue;
+        const cs=getComputedStyle(k); if (cs.display==='none'||cs.visibility==='hidden'||cs.position==='fixed') continue; // плашки cookies/памятки прилипают к экрану — не блок
         const r=k.getBoundingClientRect(); if (r.height===0) continue;
         const boxy = (cs.backgroundColor!=='rgba(0, 0, 0, 0)' && cs.backgroundColor!==getComputedStyle(el).backgroundColor) || parseFloat(cs.borderTopWidth)>0 || parseFloat(cs.borderBottomWidth)>0;
         if (boxy || k.children.length===0 || ['P','H1','H2','H3','IMG','PICTURE','A','BUTTON','LI','SPAN','INPUT','TEXTAREA','SELECT','LABEL','FIGURE','B','DT','DD','SUMMARY'].includes(k.tagName)) {
