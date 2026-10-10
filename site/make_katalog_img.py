@@ -55,7 +55,7 @@ def prompts_page():
         base, scene = PROMPTS[k]
         full = f"{base}\n\n{scene}"
         ready = "✅ на сайте" if (OUT / f"{k}.jpg").exists() else "ждёт картинку"
-        att = "приложить слайд 1 (site/img/slides/s1.jpg)" if base is HOME else "без вложения"
+        att = "приложить слайд 1 (site/img/slides/s1.jpg)" if base is HOME else "без вложения, в НОВОМ чате Gemini (иначе он ставит технику в спальню усадьбы)"
         cards.append(f'''<article class="c"><div class="top"><b>{escape(ITEMS[k][1])}</b><span class="st">{ready}</span></div>
 <p class="m">Где: {escape("; ".join(where[k]))}<br>Сохранить как: <code>site/img/katalog/_src/{k}.png</code> · {att}</p>
 <pre>{escape(full)}</pre><button type="button">Копировать</button></article>''')
