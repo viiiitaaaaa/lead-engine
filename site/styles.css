@@ -545,7 +545,7 @@ h1,h2,.facts b{letter-spacing:-.03em}
 .solve dd{margin:0;font-size:var(--fs-m);line-height:1.5;color:var(--ink-soft)}
 @media (max-width:640px){.solve-row{grid-template-columns:1fr;gap:6px}}
 
-/* «Подарок» — памятка-PDF за контакты (её просьба 06.10), блок перед формой на страницах клиентов */
+/* Памятка-PDF за контакты (её просьба 06.10), блок перед формой на страницах клиентов */
 .gift{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;background:var(--sand);padding:clamp(28px,3.5vw,56px);border-left:4px solid var(--wine)}
 .gift h2{margin-bottom:12px}
 .gift .gift-lead{font-size:var(--fs-l);line-height:1.5;max-width:60ch;color:var(--ink)}

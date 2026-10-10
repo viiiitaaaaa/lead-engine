@@ -7,7 +7,7 @@
 <script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=c56cebd6">
+<link rel="stylesheet" href="styles.css?v=db105d33">
 </head>
 <body data-page="index">
 
@@ -124,6 +124,8 @@
         <a class="btn" href="#raboty">Наши работы</a>
         <a class="btn ghost" href="#dlya-kogo">Выбрать свой раздел</a>
       </div>
+      <!-- вернувшийся посетитель: app.js открывает одну ссылку — раздел, где он был (Dahlström, гл. 13) -->
+      <p class="back-mine" id="back-mine" hidden><a href="vladelcu.html" data-mine="vladelcu" hidden>С возвращением — ваш раздел «Владельцу» →</a><a href="assistentu.html" data-mine="assistentu" hidden>С возвращением — ваш раздел «Ассистенту» →</a><a href="dizayneru.html" data-mine="dizayneru" hidden>С возвращением — ваш раздел «Дизайнеру» →</a><a href="montazhnikam.html" data-mine="montazhnikam" hidden>С возвращением — ваш раздел «Монтажной компании» →</a><a href="zastroyshchikam.html" data-mine="zastroyshchikam" hidden>С возвращением — ваш раздел «Застройщику» →</a><a href="kommerciya.html" data-mine="kommerciya" hidden>С возвращением — ваш раздел «Коммерция» →</a></p>
       <ul class="dirs" aria-label="Что делаем"><li>Архитектура</li><li>Дизайн</li><li>Стройка</li><li>Инженерия</li><li>Климат Frivent</li><li>Остекление</li><li>Текстиль</li><li>Мебель</li><li>Ландшафт</li><li>Сервис</li></ul>
     </div>
   </div>
@@ -239,7 +241,7 @@
     <div class="sec-head">
       <span class="eyebrow">Наши работы</span>
       <h2>Нам доверяют</h2>
-      <p class="lead">Более 80 объектов в России и Европе — пентхаусы, частные дома, отели и курорты (список — frivent.ru/projects).</p>
+      <p class="lead">Более 80 объектов в России и Европе — пентхаусы, частные дома, отели и курорты (список — frivent.ru/projects). Объекты показаны с согласия владельцев; имена владельцев и адреса частных домов мы не раскрываем.</p>
     </div>
   </div>
   <div class="wks"><!--WORKS-->
@@ -324,7 +326,7 @@
     </div>
     <div class="terms-box">
       <ul class="proofs">
-        <li>Цена — в договоре, после оплаты не растёт</li>
+        <li>Цена — в договоре, после оплаты не растёт. Оборудование Frivent от курса не зависит, импорт — по курсу на день оплаты</li>
         <li>Даты поставки оборудования и этапов работ</li>
         <li>Ваш менеджер: имя и прямой телефон</li>
         <li>Оригинальное оборудование с паспортами и сертификатами</li>
@@ -332,6 +334,7 @@
         <li>Схемы, паспорта и инструкции к сдаче — в одной папке</li>
         <li>Гарантия, сроки выезда и состав сервиса</li>
         <li>Обслуживание и запчасти, в том числе для европейского оборудования других марок</li>
+        <li>Гарантия результата: влажность, температура и тишина в доме — цифрами из проекта; при сдаче подтверждаем замером и актом <span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span></li>
       </ul>
       <a class="btn" href="#zayavka">Оставить заявку</a>
     </div>
@@ -358,15 +361,17 @@
     <div class="onas">
       <div class="sec-head" style="margin-bottom:0">
         <span class="eyebrow">О компании</span>
-        <h2>Своё производство климата</h2>
-        <p class="lead">Вентиляцию, осушение бассейнов и кондиционирование делаем на своём заводе в Переславле-Залесском. Поэтому расчёт, пусконаладку, сервис и запчасти даёт сам производитель.</p>
+        <h2>Компания полного цикла</h2>
+        <p class="lead">Frivent — компания полного цикла для загородных резиденций премиум-класса. Берём на себя практически все работы под ключ: архитектуру и дизайн, проектирование, всю инженерию дома, монтаж своими бригадами, остекление, текстиль и ландшафт.</p>
+        <p class="lead" style="margin-top:12px">Наша сильная сторона — собственное климатическое оборудование. Бренд Frivent основан в Австрии в 1961 году, с 1997 года работает в Москве, а с 2022-го выпускает вентиляцию, осушение бассейнов и центральные кондиционеры на своём заводе в Переславле-Залесском. Поэтому расчёт, пусконаладку, сервис и запчасти климата даёт сам производитель.</p>
       </div>
       <figure class="onas-photo"><picture><source srcset="img/o-nas/zavod.webp" type="image/webp"><img src="img/o-nas/zavod.jpg" alt="Производственный цех Frivent" loading="lazy"></picture><figcaption>Производственный цех Frivent</figcaption></figure>
     </div>
 
     <div class="price">
       <h3>Цена одна — у нас и у производителя</h3>
-      <p>Рекомендованная цена производителя одинакова везде. С нами вы получаете сверху подбор из нескольких брендов, монтаж, пусконаладку и сервис — в том числе для европейского оборудования, которое ставили другие. Цена фиксируется в счёте и после оплаты не меняется.</p>
+      <div><p>Рекомендованная цена производителя одинакова везде. С нами вы получаете сверху подбор из нескольких брендов, монтаж, пусконаладку и сервис — в том числе для европейского оборудования, которое ставили другие. Цена фиксируется в счёте и после оплаты не меняется.</p>
+      <p style="margin-top:12px">Оборудование Frivent делает наш завод в России, поэтому его цена от курса валют не зависит. Цена импортного оборудования и материалов в рублях фиксируется в день оплаты: до оплаты она может меняться вместе с курсом, после — не меняется.</p></div>
     </div>
   </div>
 </section>
@@ -426,17 +431,17 @@
       <details class="faq-item"><summary>Обслуживаете оборудование, которое ставили другие?</summary><p>Да. Обслуживаем, ремонтируем и поставляем запчасти для европейского оборудования других марок.</p></details>
       <details class="faq-item"><summary>Кто делает монтаж?</summary><p>Свои бригады, по одному графику для всех работ; пусконаладку климата делает производитель — замеры и акт. На части объектов из портфолио монтаж вели партнёры по нашему проекту — они названы на страницах объектов.</p></details>
       <details class="faq-item"><summary>Работаете с квартирами и небольшими объектами?</summary><p>Только премиум-класса: загородные резиденции, пентхаусы и коммерческие объекты — рестораны, клиники, фитнес и СПА, торговые центры, серверные. Типовые квартиры и бюджетные решения — не наш профиль.</p></details>
-      <details class="faq-item"><summary>Сколько стоит?</summary><p>Зависит от дома и состава работ. После встречи на объекте готовим смету; цена фиксируется в договоре и после оплаты не растёт.</p></details>
+      <details class="faq-item"><summary>Сколько стоит?</summary><p>Зависит от дома и состава работ. После встречи на объекте готовим смету; цена фиксируется в договоре и после оплаты не растёт. Оборудование Frivent делает наш завод в России, поэтому его цена от курса валют не зависит. Цена импортного оборудования и материалов в рублях фиксируется в день оплаты: до оплаты она может меняться вместе с курсом, после — не меняется.</p></details>
     </div>
   </div>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Можно заказать только один этап — проект, поставку или сервис?", "acceptedAnswer": {"@type": "Answer", "text": "Да. Подключаемся на любом этапе: от эскиза до обслуживания готового дома. Если проект уже есть — берём поставку, монтаж или сервис."}}, {"@type": "Question", "name": "Где вы работаете?", "acceptedAnswer": {"@type": "Answer", "text": "Новая Рига, Рублёвка и Ильинское шоссе — до 60 км от МКАД."}}, {"@type": "Question", "name": "Обслуживаете оборудование, которое ставили другие?", "acceptedAnswer": {"@type": "Answer", "text": "Да. Обслуживаем, ремонтируем и поставляем запчасти для европейского оборудования других марок."}}, {"@type": "Question", "name": "Кто делает монтаж?", "acceptedAnswer": {"@type": "Answer", "text": "Свои бригады, по одному графику для всех работ; пусконаладку климата делает производитель — замеры и акт. На части объектов из портфолио монтаж вели партнёры по нашему проекту — они названы на страницах объектов."}}, {"@type": "Question", "name": "Работаете с квартирами и небольшими объектами?", "acceptedAnswer": {"@type": "Answer", "text": "Только премиум-класса: загородные резиденции, пентхаусы и коммерческие объекты — рестораны, клиники, фитнес и СПА, торговые центры, серверные. Типовые квартиры и бюджетные решения — не наш профиль."}}, {"@type": "Question", "name": "Сколько стоит?", "acceptedAnswer": {"@type": "Answer", "text": "Зависит от дома и состава работ. После встречи на объекте готовим смету; цена фиксируется в договоре и после оплаты не растёт."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Можно заказать только один этап — проект, поставку или сервис?", "acceptedAnswer": {"@type": "Answer", "text": "Да. Подключаемся на любом этапе: от эскиза до обслуживания готового дома. Если проект уже есть — берём поставку, монтаж или сервис."}}, {"@type": "Question", "name": "Где вы работаете?", "acceptedAnswer": {"@type": "Answer", "text": "Новая Рига, Рублёвка и Ильинское шоссе — до 60 км от МКАД."}}, {"@type": "Question", "name": "Обслуживаете оборудование, которое ставили другие?", "acceptedAnswer": {"@type": "Answer", "text": "Да. Обслуживаем, ремонтируем и поставляем запчасти для европейского оборудования других марок."}}, {"@type": "Question", "name": "Кто делает монтаж?", "acceptedAnswer": {"@type": "Answer", "text": "Свои бригады, по одному графику для всех работ; пусконаладку климата делает производитель — замеры и акт. На части объектов из портфолио монтаж вели партнёры по нашему проекту — они названы на страницах объектов."}}, {"@type": "Question", "name": "Работаете с квартирами и небольшими объектами?", "acceptedAnswer": {"@type": "Answer", "text": "Только премиум-класса: загородные резиденции, пентхаусы и коммерческие объекты — рестораны, клиники, фитнес и СПА, торговые центры, серверные. Типовые квартиры и бюджетные решения — не наш профиль."}}, {"@type": "Question", "name": "Сколько стоит?", "acceptedAnswer": {"@type": "Answer", "text": "Зависит от дома и состава работ. После встречи на объекте готовим смету; цена фиксируется в договоре и после оплаты не растёт. Оборудование Frivent делает наш завод в России, поэтому его цена от курса валют не зависит. Цена импортного оборудования и материалов в рублях фиксируется в день оплаты: до оплаты она может меняться вместе с курсом, после — не меняется."}}]}</script>
 </section><!--/HOMEFAQ-->
 
 <!--GIFTS--><section class="section alt" id="podarki">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Подарок</span>
-      <h2>Мы приготовили для вас подарок</h2>
+      <span class="eyebrow">Памятка</span>
+      <h2>Мы приготовили для вас памятку</h2>
       <p class="lead">Памятка «Что делать в типовых ситуациях» — 12 коротких ответов именно для вашей роли. Выберите свою и оставьте контакты: PDF придёт вам на почту.</p>
     </div>
     <div class="gift-grid">
@@ -512,11 +517,24 @@
         <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@mail.ru" aria-describedby="e-email">
         <span class="err" id="e-email" hidden>Проверьте почту — например, name@mail.ru</span>
       </div>
-      <div class="field full">
+      <div class="field addr">
         <label for="f-address">Адрес объекта <span class="req">*</span></label>
         <input id="f-address" name="address" type="text" autocomplete="address-line1" placeholder="Посёлок, улица, дом или кадастровый номер участка" required aria-describedby="h-address e-address">
         <span class="hint" id="h-address">По адресу закрепляем объект за вашим менеджером</span>
         <span class="err" id="e-address" hidden>Укажите адрес объекта — хотя бы посёлок</span>
+      </div>
+      <!-- стадия объекта — необязательный вопрос-отсев (книга «How To Market High-Priced Products», гл. 11:
+           квалифицирующая форма; её решение — без бюджета и цен): менеджер сразу понимает, с чем звонить -->
+      <div class="field">
+        <label for="f-stage">Стадия объекта</label>
+        <select id="f-stage" name="stage">
+          <option value="">Не выбрано</option>
+          <option>Идея или участок</option>
+          <option>Есть проект</option>
+          <option>Идёт стройка или ремонт</option>
+          <option>Дом готов, живём</option>
+          <option>Работающий коммерческий объект</option>
+        </select>
       </div>
       <div class="field">
         <label for="f-who">Кто вы</label>
@@ -553,16 +571,16 @@
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
-      <address class="foot-addr">Офис: 111020, Москва, ул. 2-я Синичкина, 9А, стр. 3 · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:order@frivent.msk.ru">order@frivent.msk.ru</a> · <a href="tel:+74952660524">8&nbsp;(495)&nbsp;266&#8209;05&#8209;24</a> · ООО «Фривент» · ИНН 0000000000 · ОГРН 0000000000000 <span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span> · <a href="politika.html">Политика конфиденциальности</a></address>
+      <address class="foot-addr">Офис: 111020, Москва, ул. 2-я Синичкина, 9А, стр. 3 · Производство: Переславль-Залесский, Ярославская область · <a href="tel:+74952660524">8&nbsp;(495)&nbsp;266&#8209;05&#8209;24</a> · ООО «Фривент» · ИНН 0000000000 · ОГРН 0000000000000 <span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span> · <a href="politika.html">Политика конфиденциальности</a></address>
       <nav class="foot-links" aria-label="Услуги"><a href="usluga-ventilyaciya.html">Вентиляция с рекуперацией</a> · <a href="usluga-osushenie-basseyna.html">Осушение бассейна и СПА</a> · <a href="usluga-kondicionirovanie.html">Кондиционирование</a> · <a href="usluga-servis.html">Сервис европейского оборудования</a> · <a href="usluga-proverka-doma.html">Бесплатная проверка дома перед покупкой</a> · <a href="zhurnal.html">Журнал</a></nav>
     </div>
   </footer>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Frivent", "url": "https://frivent.ru", "telephone": "+7 495 266-05-24", "email": "order@frivent.msk.ru", "address": {"@type": "PostalAddress", "postalCode": "111020", "addressLocality": "Москва", "streetAddress": "ул. 2-я Синичкина, 9А, стр. 3", "addressCountry": "RU"}, "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Frivent", "url": "https://frivent.ru", "description": "Frivent — компания полного цикла для загородных резиденций премиум-класса. Берём на себя практически все работы под ключ: архитектуру и дизайн, проектирование, всю инженерию дома, монтаж своими бригадами, остекление, текстиль и ландшафт. Наша сильная сторона — собственное климатическое оборудование: бренд Frivent основан в Австрии в 1961 году, с 1997 года работает в Москве, а с 2022-го выпускает вентиляцию, осушение бассейнов и центральные кондиционеры на своём заводе в Переславле-Залесском.", "foundingDate": "1961", "telephone": "+7 495 266-05-24", "email": "order@frivent.msk.ru", "address": {"@type": "PostalAddress", "postalCode": "111020", "addressLocality": "Москва", "streetAddress": "ул. 2-я Синичкина, 9А, стр. 3", "addressCountry": "RU"}, "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]}</script>
   <div class="cookie" id="cookie" role="region" aria-label="Cookies" hidden>
     <p>Сайт использует cookies и сервис статистики посещений, чтобы считать заявки и улучшать страницы. <a href="politika.html">Подробнее</a></p>
     <button type="button" class="btn" id="cookie-ok">Хорошо</button>
   </div>
-  <div class="exit-card" id="exit-card" role="dialog" aria-label="Памятка в подарок" hidden>
+  <div class="exit-card" id="exit-card" role="dialog" aria-label="Памятка для вас" hidden>
     <button type="button" class="exit-x" id="exit-x" aria-label="Закрыть">×</button>
     <b>Пока вы здесь — заберите памятку</b>
     <p>«Что делать в типовых ситуациях»: 12 коротких ответов именно для вашей роли. PDF придёт на почту.</p>
@@ -572,6 +590,6 @@
 </main>
 
 
-<script src="app.js?v=e6124dd9" defer></script>
+<script src="app.js?v=0b74017a" defer></script>
 </body>
 </html>

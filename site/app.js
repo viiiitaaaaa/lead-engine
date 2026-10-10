@@ -237,7 +237,7 @@ document.querySelectorAll("[data-ask]").forEach(b => b.addEventListener("click",
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
   setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);
 }));
-/* «Подарок»: кнопка «Получить памятку» вписывает памятку в заявку; ссылка на PDF показывается после отправки */
+/* Памятка: кнопка «Получить памятку» вписывает памятку в заявку; ссылка на PDF показывается после отправки */
 let gift = null;
 document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click", e => {
   if (!form) return;

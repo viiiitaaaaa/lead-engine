@@ -82,7 +82,7 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
     <p>Сайт использует cookies и сервис статистики посещений, чтобы считать заявки и улучшать страницы. <a href="politika.html">Подробнее</a></p>
     <button type="button" class="btn" id="cookie-ok">Хорошо</button>
   </div>
-  <div class="exit-card" id="exit-card" role="dialog" aria-label="Памятка в подарок" hidden>
+  <div class="exit-card" id="exit-card" role="dialog" aria-label="Памятка для вас" hidden>
     <button type="button" class="exit-x" id="exit-x" aria-label="Закрыть">×</button>
     <b>Пока вы здесь — заберите памятку</b>
     <p>«Что делать в типовых ситуациях»: 12 коротких ответов именно для вашей роли. PDF придёт на почту.</p>
@@ -394,7 +394,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
-      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="tel:{PHONE_TEL}">{PHONE}</a>{req_line()} · <a href="kontakty.html">Контакты</a> · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
+      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="tel:{PHONE_TEL}">{PHONE}</a>{req_line()} · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
     </div>
   </footer>
   {ORG_LD}
@@ -1110,7 +1110,7 @@ def page_html(p):
     steps = "\n".join(f'      <li><span class="n">{i:02d}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for i, (t, x) in enumerate(p["steps"], 1))
     terms = "\n".join(f"        <li>{e(t)}</li>" for t in p["terms"])
     # подробный блок «Чем поможем» + все боли с решением (её просьба 06.10) — тексты в help_content.py
-    # «Подарок» — памятка-PDF этого клиента, выдаётся после заявки (её просьба 06.10); тексты — gift_content.py
+    # Памятка-PDF (слово «подарок» на сайте не пишем — её решение 10.10) этого клиента, выдаётся после заявки (её просьба 06.10); тексты — gift_content.py
     g = GIFT[p["who"]]
     inside = "\n".join(f"          <li>{e(t)}</li>" for t in g["inside"])
     h = HELP[p["who"]]
@@ -1217,7 +1217,7 @@ def page_html(p):
   <div class="wrap">
     <div class="gift">
       <div>
-        <span class="eyebrow">Подарок</span>
+        <span class="eyebrow">Памятка</span>
         <h2>{e(g["title"])}</h2>
         <p class="gift-lead">{e(g["intro"])}</p>
       </div>
@@ -1307,7 +1307,7 @@ def replace_between(s, a, b, new):
     return s[:i] + new + s[j:]
 
 
-# ===== «Подарки» на главной (её просьба 06.10): памятка-PDF для каждого специалиста, в конце перед формой =====
+# ===== Памятки на главной (без слова «подарок», её решение 10.10) (её просьба 06.10): памятка-PDF для каждого специалиста, в конце перед формой =====
 def gifts_html():
     e = lambda x: escape(x, quote=False)
     cards = []
@@ -1323,8 +1323,8 @@ def gifts_html():
     return '''<section class="section alt" id="podarki">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Подарок</span>
-      <h2>Мы приготовили для вас подарок</h2>
+      <span class="eyebrow">Памятка</span>
+      <h2>Мы приготовили для вас памятку</h2>
       <p class="lead">Памятка «Что делать в типовых ситуациях» — 12 коротких ответов именно для вашей роли. Выберите свою и оставьте контакты: PDF придёт вам на почту.</p>
     </div>
     <div class="gift-grid">
