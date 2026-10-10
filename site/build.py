@@ -1248,10 +1248,15 @@ def catalog_html(p):
     cats = CATALOGS[p["who"]]
     chips = '      <a class="chip" href="#vse">Весь каталог</a>\n' + \
         "\n".join(f'      <a class="chip" href="#k-{i}">{e(name)}</a>' for i, (name, _) in enumerate(cats, 1))
-    blocks = []
+    # её правка 10.10: разделы не делить, без заголовков — все карточки одной компактной сеткой;
+    # ссылки меню #k-N ведут на первую карточку раздела (у неё id раздела вместо i-ключ)
+    cards, seen = [], set()
     for i, (name, keys) in enumerate(cats, 1):
-        cards = []
+        first = True
         for k in keys:
+            if k in seen:
+                continue
+            seen.add(k)
             kind, title, text, points, brand = ITEMS[k]
             pts = "".join(f"<li>{e(x)}</li>" for x in points)
             br = f'<p class="cat-brand">{e(brand)}</p>' if brand else ""
@@ -1259,7 +1264,9 @@ def catalog_html(p):
             im = (f'<picture class="cat-img"{lqip(f"img/katalog/{k}.jpg")}><source srcset="img/katalog/{k}.webp" type="image/webp">'
                   f'<img src="img/katalog/{k}.jpg" alt="{escape(title)}" width="1200" height="900" loading="lazy"></picture>\n        '
                   if (SITE / "img" / "katalog" / f"{k}.jpg").exists() else "")
-            cards.append(f'''      <article class="cat-card" id="i-{k}">
+            aid = f"k-{i}" if first else f"i-{k}"
+            first = False
+            cards.append(f'''      <article class="cat-card" id="{aid}">
         {im}<span class="cat-kind">{kind}</span>
         <h3>{e(title)}</h3>
         <p>{e(text)}</p>
@@ -1267,14 +1274,13 @@ def catalog_html(p):
         {br}
         <a class="btn ghost cat-ask" href="#zayavka" data-ask="{escape(title)}">Запросить цену</a>
       </article>''')
-        blocks.append(f'''<section class="section{" alt" if i % 2 == 0 else ""} cat-sec" id="k-{i}">
+    blocks = [f'''<section class="section cat-sec cat-all">
   <div class="wrap">
-    <h2>{e(name)}</h2>
     <div class="cat-grid">
 {chr(10).join(cards)}
     </div>
   </div>
-</section>''')
+</section>''']
     title = f"Каталог — {p['eyebrow'].lower()} — Frivent"
     desc = f"Каталог товаров и услуг Frivent: {', '.join(n for n, _ in cats).lower()}. Цена — по запросу."
     return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="katalog-" + p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''

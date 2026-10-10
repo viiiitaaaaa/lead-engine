@@ -934,3 +934,4 @@ footer{margin-top:clamp(40px,5vw,72px)}
 
 /* согласие владельцев и конфиденциальность — страницы объектов (её решение 10.10) */
 .obj-consent{margin-top:clamp(28px,3vw,40px);max-width:72ch;font-size:var(--fs-s);line-height:1.5;color:var(--ink-soft)}
+.cat-card{scroll-margin-top:110px}
