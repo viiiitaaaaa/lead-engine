@@ -917,3 +917,15 @@ footer{margin-top:clamp(40px,5vw,72px)}
 .marquee-cap{position:absolute;left:0;top:0;bottom:0;z-index:1;display:flex;align-items:center;padding:0 22px 0 var(--gut);
   font:600 var(--fs-xs)/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--wine);
   background:linear-gradient(90deg,var(--paper) 80%,transparent)}
+
+/* ---------- второе/третье прочтение книг (10.10 поздно) ---------- */
+/* форма: «Адрес объекта» на две колонки + «Стадия объекта» рядом (квалифицирующая форма) */
+.field.addr{grid-column:1/-1}
+@media (min-width:1001px){.field.addr{grid-column:span 2}}
+/* статья: «Коротко» — прямой ответ в начале (для ИИ-поиска и спешащего читателя) */
+.art-short{border-left:2px solid var(--accent);padding:4px 0 4px 18px;margin-bottom:clamp(28px,3vw,44px)}
+/* главная: короткий путь назад для вернувшегося посетителя */
+.back-mine{margin-top:14px;font-size:var(--fs-s)}
+.back-mine a{color:inherit;text-underline-offset:3px}
+.field:has(> #f-stage){align-self:start} /* не растягивать выбор стадии по высоте поля адреса с подсказкой */
+.contacts-req{margin-top:18px;font-size:var(--fs-s);color:var(--ink-soft)}

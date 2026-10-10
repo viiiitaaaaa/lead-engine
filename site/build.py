@@ -329,11 +329,24 @@ def form_section(who="sobstvennik", title="Оставить заявку",
         <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@mail.ru" aria-describedby="e-email">
         <span class="err" id="e-email" hidden>Проверьте почту — например, name@mail.ru</span>
       </div>
-      <div class="field full">
+      <div class="field addr">
         <label for="f-address">Адрес объекта <span class="req">*</span></label>
         <input id="f-address" name="address" type="text" autocomplete="address-line1" placeholder="Посёлок, улица, дом или кадастровый номер участка" required aria-describedby="h-address e-address">
         <span class="hint" id="h-address">По адресу закрепляем объект за вашим менеджером</span>
         <span class="err" id="e-address" hidden>Укажите адрес объекта — хотя бы посёлок</span>
+      </div>
+      <!-- стадия объекта — необязательный вопрос-отсев (книга «How To Market High-Priced Products», гл. 11:
+           квалифицирующая форма; её решение — без бюджета и цен): менеджер сразу понимает, с чем звонить -->
+      <div class="field">
+        <label for="f-stage">Стадия объекта</label>
+        <select id="f-stage" name="stage">
+          <option value="">Не выбрано</option>
+          <option>Идея или участок</option>
+          <option>Есть проект</option>
+          <option>Идёт стройка или ремонт</option>
+          <option>Дом готов, живём</option>
+          <option>Работающий коммерческий объект</option>
+        </select>
       </div>
       <div class="field">
         <label for="f-who">Кто вы</label>
@@ -365,7 +378,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
-      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="tel:{PHONE_TEL}">{PHONE}</a>{req_line()} · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
+      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:{EMAIL}">{EMAIL}</a> · <a href="tel:{PHONE_TEL}">{PHONE}</a>{req_line()} · <a href="kontakty.html">Контакты</a> · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
     </div>
   </footer>
   {ORG_LD}
@@ -478,6 +491,10 @@ PAGES = [
    ("Вы работаете с готовыми домами?", "Да: перепланируем зоны, обустраиваем СПА, кинозал или винную комнату, обновляем интерьер и сад."),
    ("С какими домами вы работаете?", "С загородными резиденциями премиум-класса на Новой Риге, Рублёвке и Ильинском шоссе."),
    ("Будет ли слышно технику в спальнях?", "Нет. Тишину в спальнях закладываем в проект и проверяем замером при сдаче дома."),  # вопрос «про жизнь» (Котлер 7.0)
+   # 10.10, книги: Moore «Persuasion» — встреча со всеми, кто решает; consumer behavior — семейная покупка
+   ("Мы решаем вместе с супругой и архитектором. Можно встретиться всем?", "Да, так даже лучше. Приедем на одну встречу ко всем, кто участвует в решении: концепцию покажем в картинках, смету и график — отдельно, в цифрах."),
+   # Котлер «Маркетинг 7.0» (второе прочтение): помочь уйти от прежнего подрядчика; «подключаемся на любом этапе» — уже на сайте
+   ("Работы уже начал другой подрядчик. Вы подключитесь?", "Да, подключаемся на любом этапе. Осмотрим сделанное, сохраним то, что сделано хорошо, и доведём дом до конца."),
   ],
   # владельцу — без техники (её правка 06.10)
   proof=dict(title="Нам доверяют свой дом", lead="Бренд с 1961 года, в Москве с 1997-го и свой завод. За качество дома отвечаем сами, а не перекладываем на поставщиков."),
@@ -524,6 +541,8 @@ PAGES = [
    ("Как быстро вы приедете?", "Срок выезда фиксируем в договоре на обслуживание — под ваш дом и его системы."),
    ("Можно получать отчёты для владельца?", "Да. После каждого визита — акт с фото, раз в сезон — сводка по всем системам дома."),
    ("Можно вызвать мастера без договора?", "Да, разово — например, начать с диагностики. С договором удобнее: плановые визиты и срок выезда закреплены."),
+   # Moore «Persuasion», возражение «у нас уже есть подрядчик»: не замена, а сравнение
+   ("У дома уже есть подрядчик по обслуживанию. Зачем нам вы?", "Менять его не обязательно. Начните с диагностики всего дома: отчёт с фото покажет, что в порядке, а что требует внимания, — дальше решите сами."),
   ],
   form=dict(title="Вызвать инженера на диагностику", button="Вызвать инженера")),
 
@@ -704,13 +723,15 @@ PAGES = [
    ("Вы готовите документы для проверок?", "Да: паспорта оборудования, акты пусконаладки с замерами."),
    ("Работаете с сетями?", "Да, можем вести несколько объектов сети по единому решению."),
    ("Обслуживаете чужое оборудование?", "Да, европейское оборудование других брендов — тоже."),
+   # Hayden «High-Priced Products», гл. 6: «разве не стоит заплатить больше сейчас, чтобы избежать … потом» — без выпадов в адрес других
+   ("Почему не взять монтажника подешевле?", "Цена оборудования Frivent одна — у нас и у производителя. Разница в том, кто считает и отвечает: система, которая не справится с нагрузкой, обойдётся переделкой и жалобами гостей. Мы считаем под тип объекта и нормы, запускаем с замерами и обслуживаем."),
   ],
   proof_extra="Оборудование Frivent работает в фитнес-клубах World Class и Gio Wellness, отелях, больницах и на ледовых аренах.",
   roles=[
    ("Главному инженеру", "Расчёт под тип объекта и нормы, паспорта оборудования и документы для проектировщика."),
    ("Финансовому директору", "Цена фиксируется в счёте и после оплаты не меняется. Монтаж — без остановки работы объекта."),
    ("Службе эксплуатации", "Пусконаладка с замерами и актом, сервис по договору и запчасти от производителя — и для оборудования других брендов."),
-   ("Владельцу бизнеса", "Гости, пациенты и сотрудники не жалуются на духоту, запахи и сырость. Документы для проверок готовы."),
+   ("Владельцу бизнеса", "Гости, пациенты и сотрудники не жалуются на духоту, запахи и сырость. Документы для проверок готовы. Исследования поведения покупателей (Донован и Россайтер) показывают: в приятной среде люди остаются дольше и тратят больше."),  # consumer behavior, гл. о среде магазина
   ],
   form=dict(title="Рассчитать объект", button="Рассчитать объект")),
 ]
@@ -798,6 +819,54 @@ def politika_html():
   </footer>
   {COOKIE}
 </section>
+</main>
+
+<script src="app.js?v={ver('app.js')}" defer></script>
+</body>
+</html>
+'''
+
+
+def kontakty_html():
+    """Страница «Контакты» (Belch «Advertising and Promotion», гл. 9: локальный поиск «рядом со мной» — адрес и регионы работ;
+    Grewal 8e, гл. 7: B2B-покупатель проверяет, реальна ли компания; коммерческие факторы Яндекса — отдельная страница контактов).
+    Только проверенное: frivent.ru/contacts, карточки Яндекс Карт. Часы работы не пишем, пока она их не даст."""
+    r = DC.REQ
+    req = (f'<p class="contacts-req">{r["name"]} · ИНН {r["inn"]} · ОГРН {r["ogrn"]} {DEMO_TAG}</p>' if DC.DEMO else "")
+    rows = [
+        ("Телефон", f'<a href="tel:{PHONE_TEL}" data-contact="phone">{PHONE}</a>'),
+        ("Почта", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
+        ("Офис", OFFICE),
+        ("Производство", "Переславль-Залесский, Ярославская область"),
+        ("Где работаем", "Новая Рига, Рублёвка и Ильинское шоссе — до 60 км от МКАД"),
+        ("Ответ на заявку", ANSWER_TIME[0].upper() + ANSWER_TIME[1:]),
+        ("Мы на Яндекс Картах", f'<a href="{Y1}" target="_blank" rel="noopener">Frivent — отзывы и адрес</a> · <a href="{Y2}" target="_blank" rel="noopener">Frivent Рус</a>'),
+    ]
+    dl = "\n".join(f'      <div class="solve-row"><dt>{a}</dt><dd>{b}</dd></div>' for a, b in rows)
+    return head(css_v=ver("styles.css"), title="Контакты — Frivent",
+                desc=f"Телефон, почта и адрес офиса Frivent в Москве, производство в Переславле-Залесском. Работаем на Новой Риге, Рублёвке и Ильинском шоссе. Ответ на заявку {ANSWER_TIME}.",
+                page="kontakty", who="sobstvennik") + header() + f'''
+
+<main>
+<section class="cat-hero">
+  <div class="wrap">
+    <span class="eyebrow">Контакты</span>
+    <h1>Как с нами связаться</h1>
+    <p class="lead">Позвоните, напишите или оставьте заявку с адресом объекта — менеджер перезвонит {ANSWER_TIME}.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <dl class="solve">
+{dl}
+    </dl>
+    {req}
+  </div>
+  {crumbs_ld(("Главная", ""), ("Контакты", "kontakty.html"))}
+</section>
+
+{form_section("sobstvennik", "Оставить заявку")}
 </main>
 
 <script src="app.js?v={ver('app.js')}" defer></script>
@@ -934,6 +1003,57 @@ def house_rules_html():
 </section>'''
 
 
+# «Что спросить у любого подрядчика до договора» (Hayden «How To Successfully Market High-Priced Products», гл. 15: FAQ
+# с «правильными» вопросами — клиент понесёт их конкурентам). Ответы — только уже данные на сайте обещания. Владельцу.
+ASK = [
+    ("Кто отвечает за весь дом целиком?", "Один менеджер на весь дом. Его имя и прямой телефон — в договоре."),
+    ("Может ли смета вырасти по ходу работ?", "Нет. Цена фиксируется в договоре и после оплаты не растёт."),
+    ("Как я узнаю, что происходит, если меня нет рядом?", "Фото- и видеоотчёты по этапам, приёмка — актом с фото. Приезжать не обязательно."),
+    ("Кто будет работать в доме?", "Наши бригады, по одному графику для всех работ."),
+    ("Что я получу в день сдачи?", "Дом, готовый к жизни, — с мебелью, светом и текстилем — и папку со схемами и инструкциями."),
+    ("Кто приедет, если что-то сломается через два года?", "Ваш менеджер остаётся на связи: гарантия, обслуживание по сезонам и запчасти."),
+]
+
+
+def ask_html():
+    e = lambda x: escape(x, quote=False)
+    rows = "\n".join(f'      <div class="solve-row"><dt>{e(q)}</dt><dd>{e(a)}</dd></div>' for q, a in ASK)
+    return f'''
+<section class="section" id="sprosite">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Перед договором</span>
+      <h2>Что спросить у любого подрядчика</h2>
+      <p class="lead">Задайте эти вопросы всем, с кем говорите о доме. Вот наши ответы.</p>
+    </div>
+    <dl class="solve">
+{rows}
+    </dl>
+  </div>
+</section>'''
+
+
+def after_html():
+    """«Жизнь дома после сдачи» — пример со значком (demo_content.AFTER)"""
+    if not getattr(DC, "AFTER", None):
+        return ""
+    e = lambda x: escape(x, quote=False)
+    cards = "\n".join(f'      <div class="pain-card"><h3>{e(t)}</h3><p>{e(x)}</p></div>' for t, x in DC.AFTER)
+    return f'''
+<section class="section alt" id="posle-sdachi">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">После ключей {DEMO_TAG if DC.DEMO else ""}</span>
+      <h2>Жизнь дома после сдачи</h2>
+      <p class="lead">Сдача — не конец работы. Вот что происходит в первые месяцы и дальше.</p>
+    </div>
+    <div class="pain-grid">
+{cards}
+    </div>
+  </div>
+</section>'''
+
+
 def page_html(p):
     e = lambda t: escape(t, quote=False)
     light = " light" if p.get("light") else ""
@@ -1003,7 +1123,7 @@ def page_html(p):
     </dl>
   </div>
 </section>
-{roles_html(p.get("roles"))}{compare_html() if p["who"] in ("sobstvennik", "pomoshchnik") else ""}{house_rules_html() if p["who"] in ("sobstvennik", "pomoshchnik") else ""}
+{roles_html(p.get("roles"))}{compare_html() if p["who"] in ("sobstvennik", "pomoshchnik") else ""}{house_rules_html() if p["who"] in ("sobstvennik", "pomoshchnik") else ""}{ask_html() if p["who"] == "sobstvennik" else ""}
 
 <section class="section dark" id="etapy">
   <div class="wrap">
@@ -1031,6 +1151,8 @@ def page_html(p):
     </div>
   </div>
 </section>
+
+{after_html() if p["who"] in ("sobstvennik", "pomoshchnik") else ""}
 
 {proof(p.get("proof_extra", ""), owner=p["who"] == "sobstvennik", **p.get("proof", {}))}
 
@@ -1338,7 +1460,7 @@ def obj_html(i):
     </div>
   </div>
 </section>
-{results_html(o["slug"])}{quote_html(o["slug"])}
+
 
 <section class="section alt">
   <div class="wrap obj-cols">
@@ -1354,6 +1476,7 @@ def obj_html(i):
     <figure class="obj-job">{pic(o["img"] + "-job", o["name"] + ": " + o["job"].lower())}</figure>
   </div>
 </section>
+{results_html(o["slug"])}{quote_html(o["slug"])}
 
 <section class="section">
   <div class="wrap">
@@ -1578,6 +1701,7 @@ def statya_html(i):
 
 <section class="section">
   <div class="wrap art-body">
+{f'    <p class="art-short"><b>Коротко.</b> {e(a["short"])}</p>' if a.get("short") else ""}
 {chr(10).join(body)}
     <div class="art-cta">
       <p>Это наша работа: «{e(u["name"])}» — от расчёта и монтажа до сервиса, в том числе для европейского оборудования других марок.</p>
@@ -1586,7 +1710,7 @@ def statya_html(i):
     </div>
   </div>
 </section>
-{ld({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "description": a["lead"], "inLanguage": "ru",
+{ld({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "description": a.get("short") or a["lead"], "inLanguage": "ru",
      "datePublished": a.get("date", "2026-10-09"), "dateModified": a.get("date", "2026-10-09"),
      "publisher": {"@type": "Organization", "name": "Frivent", "url": "https://frivent.ru"}})}
 {crumbs_ld(("Главная", ""), ("Журнал", "zhurnal.html"), (a["title"], "statya-" + a["slug"] + ".html"))}
@@ -1613,6 +1737,7 @@ def statya_html(i):
 if __name__ == "__main__":
     (SITE / "zhurnal.html").write_text(zhurnal_html(), "utf-8")
     (SITE / "politika.html").write_text(politika_html(), "utf-8")
+    (SITE / "kontakty.html").write_text(kontakty_html(), "utf-8")
     for i, a in enumerate(ARTICLES):
         (SITE / f'statya-{a["slug"]}.html').write_text(statya_html(i), "utf-8")
     print("журнал: статей", len(ARTICLES))

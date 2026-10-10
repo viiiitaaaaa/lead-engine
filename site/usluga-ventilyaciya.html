@@ -12,7 +12,7 @@
 <script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=c56cebd6">
+<link rel="stylesheet" href="styles.css?v=5b9ac304">
 </head>
 <body data-page="usluga-ventilyaciya" data-who="pomoshchnik">
 <header class="top" id="top">
@@ -315,11 +315,24 @@
         <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@mail.ru" aria-describedby="e-email">
         <span class="err" id="e-email" hidden>Проверьте почту — например, name@mail.ru</span>
       </div>
-      <div class="field full">
+      <div class="field addr">
         <label for="f-address">Адрес объекта <span class="req">*</span></label>
         <input id="f-address" name="address" type="text" autocomplete="address-line1" placeholder="Посёлок, улица, дом или кадастровый номер участка" required aria-describedby="h-address e-address">
         <span class="hint" id="h-address">По адресу закрепляем объект за вашим менеджером</span>
         <span class="err" id="e-address" hidden>Укажите адрес объекта — хотя бы посёлок</span>
+      </div>
+      <!-- стадия объекта — необязательный вопрос-отсев (книга «How To Market High-Priced Products», гл. 11:
+           квалифицирующая форма; её решение — без бюджета и цен): менеджер сразу понимает, с чем звонить -->
+      <div class="field">
+        <label for="f-stage">Стадия объекта</label>
+        <select id="f-stage" name="stage">
+          <option value="">Не выбрано</option>
+          <option>Идея или участок</option>
+          <option>Есть проект</option>
+          <option>Идёт стройка или ремонт</option>
+          <option>Дом готов, живём</option>
+          <option>Работающий коммерческий объект</option>
+        </select>
       </div>
       <div class="field">
         <label for="f-who">Кто вы</label>
@@ -356,7 +369,7 @@
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
-      <address class="foot-addr">Офис: 111020, Москва, ул. 2-я Синичкина, 9А, стр. 3 · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:order@frivent.msk.ru">order@frivent.msk.ru</a> · <a href="tel:+74952660524">8&nbsp;(495)&nbsp;266&#8209;05&#8209;24</a> · ООО «Фривент» · ИНН 0000000000 · ОГРН 0000000000000 <span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span> · <a href="politika.html">Политика конфиденциальности</a></address>
+      <address class="foot-addr">Офис: 111020, Москва, ул. 2-я Синичкина, 9А, стр. 3 · Производство: Переславль-Залесский, Ярославская область · <a href="mailto:order@frivent.msk.ru">order@frivent.msk.ru</a> · <a href="tel:+74952660524">8&nbsp;(495)&nbsp;266&#8209;05&#8209;24</a> · ООО «Фривент» · ИНН 0000000000 · ОГРН 0000000000000 <span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span> · <a href="kontakty.html">Контакты</a> · <a href="politika.html">Политика конфиденциальности</a></address>
       <nav class="foot-links" aria-label="Услуги"><a href="usluga-ventilyaciya.html">Вентиляция с рекуперацией</a> · <a href="usluga-osushenie-basseyna.html">Осушение бассейна и СПА</a> · <a href="usluga-kondicionirovanie.html">Кондиционирование</a> · <a href="usluga-servis.html">Сервис европейского оборудования</a> · <a href="usluga-proverka-doma.html">Бесплатная проверка дома перед покупкой</a> · <a href="zhurnal.html">Журнал</a></nav>
     </div>
   </footer>
@@ -374,6 +387,6 @@
 </section>
 </main>
 
-<script src="app.js?v=e6124dd9" defer></script>
+<script src="app.js?v=fe069cad" defer></script>
 </body>
 </html>

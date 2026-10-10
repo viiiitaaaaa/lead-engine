@@ -198,6 +198,17 @@ if (tabs.length) {
 document.querySelectorAll("[data-who]").forEach(b => b.addEventListener("click", () => { if (whoSelect) whoSelect.value = b.dataset.who; }));
 if (pageWho && whoSelect) whoSelect.value = pageWho;
 
+/* вернувшийся посетитель (Dahlström «Storytelling in Design», гл. 13: «как вернувшийся, я должна быстро попасть к своему»):
+   страница клиента запоминается в этом браузере; на главной открывается уже готовая в HTML ссылка «ваш раздел» */
+const MY = ["vladelcu", "assistentu", "dizayneru", "montazhnikam", "zastroyshchikam", "kommerciya"];
+try { if (MY.includes(document.body.dataset.page)) localStorage.setItem("my-page", document.body.dataset.page); } catch (e) {}
+const backMine = document.getElementById("back-mine");
+if (backMine) {
+  let m = null; try { m = localStorage.getItem("my-page"); } catch (e) {}
+  const a = MY.includes(m) && backMine.querySelector('a[data-mine="' + m + '"]');
+  if (a) { a.hidden = false; backMine.hidden = false; }
+}
+
 /* каталог: адрес #k-N показывает только этот раздел (пункт из выпадающего списка шапки), #vse или без адреса — весь */
 const catSecs = [...document.querySelectorAll(".cat-sec")];
 if (catSecs.length) {
@@ -257,7 +268,7 @@ if (form) {
 
   /* черновик формы (Fraser «SaaS Playbook»: не терять тех, кто начал и ушёл): поля хранятся только в этом браузере,
      при возврате подставляются; после отправки черновик стирается */
-  const DRAFT = "lead-draft", keep = ["name", "phone", "email", "address", "area", "note"];
+  const DRAFT = "lead-draft", keep = ["name", "phone", "email", "address", "area", "stage", "note"];
   try {
     const d = JSON.parse(localStorage.getItem(DRAFT) || "{}");
     keep.forEach(k => { if (d[k] && !form.elements[k].value) form.elements[k].value = d[k]; });
