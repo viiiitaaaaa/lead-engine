@@ -50,13 +50,15 @@ def html(g, phone, site):
 <p class="sub">{e(g["subtitle"])}</p>
 <p class="intro">{e(g["intro"])}</p>
 {items}
-<div class="close"><b>{e(g["closing"])}</b><span>{e(phone)} · {e(site)}</span></div>
+<div class="close"><b>{e(g["closing"])}</b><span>Вопрос по памятке — оставьте заявку на сайте, ответим {e(ANSWER)}</span></div>
 <div class="foot"><span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span><span>Москва · с 1997 года</span></div>
 </body></html>"""
 
 
 def main():
-    import build  # PHONE и домен — из сборщика сайта
+    import build  # контактов в памятке нет (её решение 10.10: всё через заявку с UTM)
+    global ANSWER
+    ANSWER = build.ANSWER_TIME
     phone = getattr(build, "PHONE", "")
     site = "frivent.ru"
     from playwright.sync_api import sync_playwright
