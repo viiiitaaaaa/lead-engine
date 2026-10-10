@@ -919,6 +919,24 @@ def cw_hero(eyebrow, h1, lead, actions, media):
 </section>'''
 
 
+def page_hero(eyebrow, h1, lead, actions, media):
+    """Первый экран страниц клиентов — как на главной в v69 (её просьба 10.10 по скрину): текст и кнопки поверх фото.
+    Все аргументы — готовый HTML."""
+    return f'''<section class="hero page-hero">
+  {media}
+  <div class="wrap">
+    <div class="hero-text">
+      <span class="eyebrow">{eyebrow}</span>
+      <h1>{h1}</h1>
+      <p class="lead">{lead}</p>
+      <div class="hero-actions">
+        {actions}
+      </div>
+    </div>
+  </div>
+</section>'''
+
+
 def slide_media(img, pos, light=""):
     return f'''<div class="slides" id="slides" role="group" aria-label="Фото">
       <figure class="ph slide has-photo is-on{light}"><picture><source srcset="img/slides/{img}-m.webp 1280w, img/slides/{img}.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/{img}.jpg" srcset="img/slides/{img}-m.jpg 1280w, img/slides/{img}.jpg 2560w" sizes="100vw" alt="" style="object-position:{pos}" fetchpriority="high"></picture></figure>
@@ -1078,7 +1096,7 @@ def page_html(p):
     return head(css_v=ver("styles.css"), title=e(p["title"]), desc=e(p["desc"]), page=p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
-{cw_hero(e(p["eyebrow"]), e(p["h1"]), e(p["lead"]),
+{page_hero(e(p["eyebrow"]), e(p["h1"]), e(p["lead"]),
          f'<a class="btn" href="#zayavka">{e(p["cta"])}</a>\n        <a class="btn ghost" href="#chto-delaem">Что мы делаем</a>',
          slide_media(p["img"], p["pos"], light))}
 
