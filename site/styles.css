@@ -418,6 +418,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 .cat-card p{font-size:var(--fs-s);color:var(--ink-soft)}
 .cat-card ul{margin:0;padding-left:1.1em;display:grid;gap:6px;font-size:var(--fs-s)}
 .cat-card ul li::marker{color:var(--accent)}
+.cat-img{display:block;margin:calc(-1*clamp(22px,2vw,32px)) calc(-1*clamp(22px,2vw,32px)) 4px;width:calc(100% + 2*clamp(22px,2vw,32px));max-width:none;aspect-ratio:4/3;overflow:hidden;border-radius:var(--r) var(--r) 0 0;background-size:cover}
+.cat-img img{width:100%;height:100%;object-fit:cover;display:block}
 .cat-brand{font:600 var(--fs-xs)/1.4 var(--body) !important;color:var(--ink) !important}
 .cat-brand::before{content:"Производитель: ";font-weight:400;color:var(--ink-soft)}
 .cat-ask{margin-top:auto;align-self:flex-start}
@@ -929,3 +931,6 @@ footer{margin-top:clamp(40px,5vw,72px)}
 .back-mine a{color:inherit;text-underline-offset:3px}
 .field:has(> #f-stage){align-self:start} /* не растягивать выбор стадии по высоте поля адреса с подсказкой */
 .contacts-req{margin-top:18px;font-size:var(--fs-s);color:var(--ink-soft)}
+
+/* согласие владельцев и конфиденциальность — страницы объектов (её решение 10.10) */
+.obj-consent{margin-top:clamp(28px,3vw,40px);max-width:72ch;font-size:var(--fs-s);line-height:1.5;color:var(--ink-soft)}
