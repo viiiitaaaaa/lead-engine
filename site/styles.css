@@ -976,3 +976,16 @@ footer{margin-top:clamp(40px,5vw,72px)}
   padding-top:14px;border-top:1px solid rgb(var(--shade)/.18)}
 .price-points b{font-size:clamp(22px,2.2vw,30px);font-weight:400;line-height:1;color:var(--wine);letter-spacing:-.02em}
 .price-points span{font-size:var(--fs-m);color:var(--ink);line-height:1.45}
+/* то же для заголовков-подписей с линией (.fear в «Чего опасаются заказчики» — её скрин 10.10: «опять прыгает») */
+.pain-card>.fear{display:flex;flex-direction:column;justify-content:space-between}
+
+/* ЗАГОЛОВОК РАЗДЕЛА С ВВОДНЫМ ТЕКСТОМ (её скрин 10.10: «раздел не нравится как сконструирован» — текст справа висел вверху
+   отдельно от заголовка): подпись и вводный текст прижаты к низу заголовка, читаются одной парой */
+.wrap:not(.terms-wrap,.faq-wrap,.form-wrap,.terr,.obj-cols) > .sec-head:has(.lead){grid-template-rows:1fr auto;align-items:end}
+
+/* «Гарантии в цифрах» в блоке страхов — карточки по колонкам страхов, цифры меньше, ничего не налезает */
+.strahi-g + .facts{grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,2.4vw,36px)}
+.strahi-g + .facts > div{display:grid;align-content:start;gap:10px;padding:clamp(18px,1.8vw,24px);border-radius:var(--r);background:var(--glass)}
+.strahi-g + .facts b{font-size:clamp(26px,2.4vw,38px);line-height:1.05;margin-bottom:0;color:var(--wine)}
+@media (max-width:1100px){.strahi-g + .facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.strahi-g + .facts{grid-template-columns:1fr}}

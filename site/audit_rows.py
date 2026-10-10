@@ -8,17 +8,25 @@ JS=r"""
 () => {
  const out=[];
  const grids=[...document.querySelectorAll('main *')].filter(el=>{
-   const d=getComputedStyle(el).display; return (d==='grid'||d==='flex') && el.children.length>=2 && el.querySelector(':scope > * h3, :scope > h3');
+   const d=getComputedStyle(el).display; return (d==='grid'||d==='flex') && el.children.length>=2 && el.querySelector(':scope > * > h3, :scope > * > .fear, :scope > * > .eyebrow + h3');
  });
  for(const g of grids){
-   const kids=[...g.children].filter(c=>c.querySelector('h3')&&c.offsetHeight>0);
+   const kids=[...g.children].filter(c=>c.querySelector('h3, .fear')&&c.offsetHeight>0);
    const rows={};
    for(const c of kids){const t=Math.round(c.getBoundingClientRect().top);(rows[t]=rows[t]||[]).push(c)}
    for(const [t,cs] of Object.entries(rows)){
      if(cs.length<2) continue;
-     const ys=cs.map(c=>{const h=c.querySelector('h3');let n=h.nextElementSibling;while(n&&n.offsetHeight===0)n=n.nextElementSibling;
+     const ys=cs.map(c=>{const h=c.querySelector('h3, .fear');let n=h.nextElementSibling;while(n&&n.offsetHeight===0)n=n.nextElementSibling;
         return n? Math.round(n.getBoundingClientRect().top - c.getBoundingClientRect().top):null}).filter(v=>v!==null);
      if(ys.length<2) continue;
+     // линии под заголовком (::after) — их низ = низ первого элемента, если линия прижата вниз (flex space-between)
+     const lines=cs.map(c=>{const t=c.firstElementChild; if(!t) return null; const a=getComputedStyle(t,'::after');
+        if(!a.content||a.content==='none'||a.height==='auto') return null;
+        const cs2=getComputedStyle(t); const pinned=cs2.display==='flex'&&cs2.justifyContent==='space-between';
+        const r=document.createRange(); r.selectNodeContents(t); const rs=[...r.getClientRects()].filter(x=>x.height>0);
+        const textBottom=rs.length?Math.max(...rs.map(x=>x.bottom)):t.getBoundingClientRect().bottom;
+        return Math.round((pinned?t.getBoundingClientRect().bottom:textBottom+parseFloat(a.marginTop||0)+1) - c.getBoundingClientRect().top)}).filter(v=>v!==null);
+     if(lines.length>=2 && Math.max(...lines)-Math.min(...lines)>3) out.push({grid:(g.className||g.tagName)+' (линии)', sec:(g.closest('section')||{}).id||'', n:cs.length, spread:Math.max(...lines)-Math.min(...lines)});
      const spread=Math.max(...ys)-Math.min(...ys);
      if(spread>3) out.push({grid:(g.className||g.tagName)+'', sec:(g.closest('section')||{}).id||'', n:cs.length, spread});
    }
