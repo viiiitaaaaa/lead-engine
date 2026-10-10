@@ -1004,3 +1004,7 @@ footer{margin-top:clamp(40px,5vw,72px)}
 .road-places{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .road-places li{font-size:var(--fs-s);color:var(--ink);padding:6px 12px;border-radius:99px;background:rgb(255 255 255/.55);box-shadow:inset 0 0 0 1px rgb(var(--shade)/.12)}
 @media (max-width:520px){.road{grid-template-columns:1fr;gap:10px}.road h3{flex-wrap:wrap}}
+/* главный пакет сервиса — тёмно-синий на любом фоне раздела (её скрин 10.10: «колонка не отображается» — правило
+   .section.alt .plan было сильнее .plan.top, светлый текст оказался на светлом фоне) */
+.section .plan.top,.section.alt .plan.top{background:linear-gradient(135deg,var(--deep),var(--deep-2));color:var(--paper)}
+.plan.top .eyebrow,.plan.top .plan-sub{color:var(--on-dark-accent)}
