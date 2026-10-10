@@ -190,3 +190,23 @@ PROMPTS = {
    "linear ceiling diffusers integrated into the ceiling, an engineer's tablet with a blank screen and drawings lying "
    "on a marble table in the foreground."),
 }
+
+# фото-заглушки «Команды» на главной (её просьба 10.10: «ненастоящие фото людей в строгой официальной одежде»);
+# сохранить как site/img/team/<ключ>.png → make_katalog_img.py → build.py
+PORTRAIT = (
+    "Professional corporate headshot portrait photograph of a fictional person, {who}, wearing {suit}, white shirt, "
+    "confident calm friendly expression, looking at camera, chest-up framing, centered. Plain warm beige studio backdrop, "
+    "soft natural window light, shot on a full-frame camera with 85mm lens, shallow depth of field, photorealistic. "
+    "Muted palette of beige, greige, navy and burgundy. Square 1:1 frame. No text, no logo, no watermark."
+)
+TEAM_PROMPTS = {
+ "sokolov": ("Андрей Соколов — руководитель проектов", PORTRAIT.format(
+   who="Russian man about 45 years old, short neat dark hair with grey at the temples, clean shaven",
+   suit="a dark navy two-piece business suit and a deep burgundy silk tie")),
+ "belova": ("Ирина Белова — главный инженер", PORTRAIT.format(
+   who="Russian woman about 38 years old, light brown hair in a neat low bun, minimal makeup",
+   suit="a tailored charcoal grey business suit jacket, small pearl earrings")),
+ "orlov": ("Михаил Орлов — руководитель сервиса", PORTRAIT.format(
+   who="Russian man about 52 years old, short grey hair, neatly trimmed short grey beard",
+   suit="a charcoal business suit and a dark navy tie")),
+}

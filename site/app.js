@@ -5,7 +5,6 @@ const CONFIG = {
   // Адрес приёма заявок (серверный обработчик, который передаёт заявку в Bitrix24). Пусто — форма в тестовом режиме.
   leadEndpoint: "",
   defaultWho: "sobstvennik",
-  email: "order@frivent.msk.ru",
   fontSwitch: false, // шрифт выбран 06.10: «как у Шрифтотеки» — Vela Sans везде
   // Номер счётчика Яндекс Метрики (даст она). Пусто — цели только пишутся в консоль.
   metrika: "",
@@ -95,7 +94,7 @@ if (CONFIG.fontSwitch) {
     num.textContent = String(i + 1).padStart(2, "0");
   };
   const stop = () => { clearInterval(timer); timer = null; };
-  const play = () => { stop(); if (!still) timer = setInterval(() => show(i + 1), 6000); };
+  const play = () => { stop(); if (!still) timer = setInterval(() => show(i + 1), 4500); };
   hero.querySelector(".sl-prev").addEventListener("click", () => { show(i - 1); play(); });
   hero.querySelector(".sl-next").addEventListener("click", () => { show(i + 1); play(); });
   hero.addEventListener("mouseenter", stop); hero.addEventListener("mouseleave", play);
@@ -312,10 +311,18 @@ if (form) {
       form.reset(); if (whoSelect) whoSelect.value = data.who;
       status.innerHTML = "Заявка принята." + giftLink(false) + NEXT;
     } catch (err) {
-      status.textContent = "Не получилось отправить. Напишите нам на почту: " + CONFIG.email;
+      status.textContent = "Не получилось отправить. Проверьте интернет и попробуйте ещё раз через минуту.";
     } finally { submit.disabled = false; }
   });
   ["phone", "address", "email"].forEach(n => form.elements[n].addEventListener("input", () => {
     form.elements[n].setAttribute("aria-invalid", "false"); document.getElementById("e-" + n).hidden = true;
   }));
 }
+
+/* шапка: мягкий переход под ней — только когда страницу прокрутили (на верху он ложился полосой на фото первого экрана) */
+(() => {
+  const top = document.getElementById("top");
+  if (!top) return;
+  const on = () => top.classList.toggle("scrolled", window.scrollY > 8);
+  on(); window.addEventListener("scroll", on, {passive: true});
+})();

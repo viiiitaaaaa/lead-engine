@@ -85,8 +85,9 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
     <button type="button" class="exit-x" id="exit-x" aria-label="Закрыть">×</button>
     <b>Пока вы здесь — заберите памятку</b>
     <p>«Что делать в типовых ситуациях»: 12 коротких ответов именно для вашей роли. PDF придёт на почту.</p>
-    <a class="btn" id="exit-go" href="index.html#podarki">Получить памятку</a>
+    <a class="btn" id="exit-go" href="index.html#podarki">Посмотреть подарки</a>
   </div>'''
+# EMAIL и OFFICE на сайт не выводить (её решение 10.10: «любые контактные данные убери — всё через заявку, по UTM видно, чей клиент»)
 EMAIL = "order@frivent.msk.ru"
 
 
@@ -107,9 +108,6 @@ WHO_WE_ARE = ("Frivent — компания полного цикла для з�
 
 ORG_LD = ld({"@context": "https://schema.org", "@type": "Organization", "name": "Frivent", "url": "https://frivent.ru",
              "description": WHO_WE_ARE, "foundingDate": "1961",
-             "email": EMAIL,
-             "address": {"@type": "PostalAddress", "postalCode": "111020", "addressLocality": "Москва",
-                         "streetAddress": "ул. 2-я Синичкина, 9А, стр. 3", "addressCountry": "RU"},
              "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]})
 
 
@@ -165,19 +163,27 @@ def strahi_html():
 </section>'''
 
 
+TEAM_SLUG = {"Соколов": "sokolov", "Белова": "belova", "Орлов": "orlov"}
+
+
 def team_html():
     """«Кто отвечает за ваш объект» — люди с фото (Котлер 7.0, 10 грехов: лица руководителей и инженеров на сайте)"""
     if not DC.TEAM:
         return ""
     e = lambda x: escape(x, quote=False)
-    cards = "\n".join(f'''      <article class="team-card"><figure class="ph team-ph"><figcaption>Фото</figcaption></figure>
+    def ph(n):  # фото-заглушка, если готово: img/team/<фамилия латиницей>.jpg (промты — docs/промты_каталога.html)
+        slug = TEAM_SLUG.get(n.split()[-1], "")
+        if slug and (SITE / "img" / "team" / f"{slug}.jpg").exists():
+            return f'<img class="team-ph" src="img/team/{slug}.jpg" alt="{escape(n)}" width="800" height="800" loading="lazy">'
+        return '<figure class="ph team-ph"><figcaption>Фото</figcaption></figure>'
+    cards = "\n".join(f'''      <article class="team-card">{ph(n)}
         <h3>{e(n)}</h3><span class="team-role">{e(r)}</span><p>{e(t)}</p></article>''' for n, r, t in DC.TEAM)
     return f'''<section class="section" id="komanda">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Команда {DEMO_TAG if DC.DEMO else ""}</span>
       <h2>Кто отвечает за ваш объект</h2>
-      <p class="lead">У каждого объекта — конкретные люди с именами и прямыми телефонами.</p>
+      <p class="lead">У каждого объекта — конкретные люди, которые отвечают за результат лично.</p>
     </div>
     <div class="team-grid">
 {cards}
@@ -324,9 +330,6 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       <span class="eyebrow">Заявка</span>
       <h2>{title}</h2>
       <p class="lead">{lead}</p>
-      <div class="contacts">
-        <a href="mailto:{EMAIL}"><b>{EMAIL}</b></a>
-      </div>
     </div>
 
     <form id="lead-form" novalidate>
@@ -393,7 +396,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
-      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область{req_line()} · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
+      <address class="foot-addr">Производство: Переславль-Залесский, Ярославская область{req_line()} · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
     </div>
   </footer>
   {ORG_LD}
@@ -424,7 +427,7 @@ def reviews_html():
         f'''      <article class="rv"><div class="rv-stars" role="img" aria-label="Оценка 5 из 5">★★★★★</div>
         <p>«{escape(t, quote=False)}»</p>
         <div class="rv-meta"><span>Отзыв о Frivent · Яндекс Карты · {d}</span>
-        <a href="{u}" target="_blank" rel="noopener">Читать отзыв на Яндекс Картах →</a></div></article>''' for t, d, u in REVIEWS)
+        </div></article>''' for t, d, u in REVIEWS)
     return f'''<div class="reviews" role="region" aria-roledescription="слайдер" aria-label="Отзывы о Frivent">
     <div class="rv-viewport"><div class="rv-track">
 {cards}
@@ -787,25 +790,21 @@ def politika_html():
     """Политика обработки персональных данных (152-ФЗ) — без неё галочка согласия в форме ничего не стоит
     (noted-news akuliabuhta/1032; dropship-lessons). Реквизиты оператора — из demo_content.py (пока «пример»).
     Текст — типовой, перед запуском показать юристу."""
-    r = DC.REQ
-    tag = f" {DEMO_TAG}" if DC.DEMO else ""
-    parts = [
-        ("Кто обрабатывает данные", [f"Оператор — {r['name']}, ИНН {r['inn']}, ОГРН {r['ogrn']}{tag}. Адрес: {OFFICE}. "
-                                     f"Почта для обращений: <a href=\"mailto:{EMAIL}\">{EMAIL}</a>."]),
-        ("Какие данные мы получаем", ["Из формы заявки: имя, телефон, почта, адрес объекта, площадь, текст сообщения. "
-                                      "Технические данные: адрес страницы, метки рекламных кампаний (UTM), данные сервиса статистики посещений."]),
-        ("Зачем", ["Чтобы связаться с вами по заявке, рассчитать и выполнить работы, отправить памятку, которую вы запросили, "
-                   "и понять, какие страницы сайта полезны посетителям."]),
-        ("На каком основании", ["Ваше согласие — галочка в форме заявки. Без согласия заявку отправить нельзя."]),
-        ("Как храним и кому передаём", ["Данные хранятся на серверах в России. Доступ — только у сотрудников, которые работают с заявками. "
-                                        "Третьим лицам не передаём, кроме случаев, которые требует закон."]),
-        ("Сколько храним", ["Пока это нужно для работы по вашей заявке и договору, или до отзыва согласия."]),
-        ("Ваши права", [f"Вы можете узнать, какие данные у нас есть, исправить их или удалить, отозвать согласие. "
-                        f"Напишите на <a href=\"mailto:{EMAIL}\">{EMAIL}</a> — ответим в срок, установленный законом."]),
-        ("Cookies", ["Сайт использует cookies и сервис статистики посещений, чтобы считать заявки и улучшать страницы. "
-                     "Их можно отключить в настройках браузера."]),
-    ]
-    body = "\n".join(f"      <h2>{h}</h2>\n" + "\n".join(f"      <p>{p}</p>" for p in ps) for h, ps in parts)
+    # текст — с frivent.ru/privacy (её решение 10.10), файл politika_content.py; почта оператора заменена на форму заявки
+    import re as _re
+    from politika_content import POLICY
+    e = lambda x: escape(x, quote=False)
+    rows, out = [], []
+    for l in POLICY:
+        if ";" in l:
+            k, v = l.split(";", 1); rows.append(f'<div class="solve-row"><dt>{e(k)}</dt><dd>{e(v)}</dd></div>'); continue
+        if rows:
+            out.append('      <dl class="solve">' + "".join(rows) + "</dl>"); rows = []
+        if l == "Общие положения" or _re.match(r"^\d+\. ", l):
+            out.append(f"      <h2>{e(l)}</h2>")
+        else:
+            out.append(f"      <p>{e(l)}</p>")
+    body = "\n".join(out)
     return head(css_v=ver("styles.css"), title="Политика обработки персональных данных | Frivent",
                 desc="Как Frivent обрабатывает персональные данные из формы заявки: что получаем, зачем, как храним и как отозвать согласие.",
                 page="politika", who="sobstvennik") + header().replace('href="#zayavka"', 'href="index.html#zayavka"') + f'''
@@ -814,8 +813,8 @@ def politika_html():
 <section class="cat-hero">
   <div class="wrap">
     <span class="eyebrow">Документы</span>
-    <h1>Политика обработки персональных данных</h1>
-    <p class="lead">По закону 152-ФЗ «О персональных данных». Действует для всех страниц сайта и формы заявки.</p>
+    <h1>Политика в отношении обработки персональных данных</h1>
+    <p class="lead">ООО «Производственная компания Фривент Технология». По закону 152-ФЗ «О персональных данных». Вопросы, уточнение данных и отзыв согласия — через форму заявки на сайте.</p>
   </div>
 </section>
 
@@ -849,17 +848,14 @@ def kontakty_html():
     r = DC.REQ
     req = (f'<p class="contacts-req">{r["name"]} · ИНН {r["inn"]} · ОГРН {r["ogrn"]} {DEMO_TAG}</p>' if DC.DEMO else "")
     rows = [
-        ("Почта", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
-        ("Офис", OFFICE),
         ("Производство", "Переславль-Залесский, Ярославская область"),
         ("Где работаем", "Новая Рига, Рублёвка и Ильинское шоссе — до 60 км от МКАД"),
         ("Ответ на заявку", ANSWER_TIME[0].upper() + ANSWER_TIME[1:]),
     ] + ([("Часы работы офиса", f"{DC.HOURS} {DEMO_TAG}")] if DC.DEMO and getattr(DC, "HOURS", "") else []) + [
-        ("Мы на Яндекс Картах", f'<a href="{Y1}" target="_blank" rel="noopener">Frivent — отзывы и адрес</a> · <a href="{Y2}" target="_blank" rel="noopener">Frivent Рус</a>'),
     ]
     dl = "\n".join(f'      <div class="solve-row"><dt>{a}</dt><dd>{b}</dd></div>' for a, b in rows)
     return head(css_v=ver("styles.css"), title="Контакты — Frivent",
-                desc=f"Телефон, почта и адрес офиса Frivent в Москве, производство в Переславле-Залесском. Работаем на Новой Риге, Рублёвке и Ильинском шоссе. Ответ на заявку {ANSWER_TIME}.",
+                desc=f"Как связаться с Frivent: заявка с сайта, производство в Переславле-Залесском. Работаем на Новой Риге, Рублёвке и Ильинском шоссе. Ответ на заявку {ANSWER_TIME}.",
                 page="kontakty", who="sobstvennik") + header() + f'''
 
 <main>
@@ -867,7 +863,7 @@ def kontakty_html():
   <div class="wrap">
     <span class="eyebrow">Контакты</span>
     <h1>Как с нами связаться</h1>
-    <p class="lead">Позвоните, напишите или оставьте заявку с адресом объекта — менеджер перезвонит {ANSWER_TIME}.</p>
+    <p class="lead">Все вопросы — через заявку: оставьте телефон и адрес объекта, менеджер свяжется с вами {ANSWER_TIME}.</p>
   </div>
 </section>
 
@@ -1225,7 +1221,7 @@ def page_html(p):
 {inside}
         </ul>
         <span class="fname">PDF, {len(g["items"])} ситуаций · <b>придёт на почту после заявки</b></span>
-        <a class="btn" href="#zayavka" data-gift="{g["file"]}" data-gift-title="{e(g["title"])}">Получить памятку</a>
+        <a class="btn" href="#zayavka" data-gift="{g["file"]}" data-gift-title="{e(g["title"])}">{gift_btn(g)}</a>
       </div>
     </div>
   </div>
@@ -1311,6 +1307,16 @@ def replace_between(s, a, b, new):
     return s[:i] + new + s[j:]
 
 
+# подписи кнопок памятки — у каждой аудитории своя (её замечание 10.10: «много слова "получить памятку" — режет глаз»)
+GIFT_BTN = {"sobstvennik": "Забрать памятку", "pomoshchnik": "Скачать чек-лист", "dizayner": "Взять шпаргалку",
+            "montazh": "Получить регламент", "zastroyshchik": "Открыть руководство", "kommerciya": "Прислать справочник"}
+
+
+def gift_btn(g):
+    who = next((w for w, x in GIFT.items() if x is g), "")
+    return GIFT_BTN.get(who, "Забрать памятку")
+
+
 # ===== Памятки на главной (без слова «подарок», её решение 10.10) (её просьба 06.10): памятка-PDF для каждого специалиста, в конце перед формой =====
 def gifts_html():
     e = lambda x: escape(x, quote=False)
@@ -1322,7 +1328,7 @@ def gifts_html():
         <h3>{e(g["title"])}</h3>
         <p>{e(g["subtitle"])}</p>
         <span class="fname">PDF · {len(g["items"])} ситуаций</span>
-        <a class="btn" href="#zayavka" data-gift="{g["file"]}" data-gift-title="{e(g["title"])}" data-gift-who="{who}">Получить памятку</a>
+        <a class="btn" href="#zayavka" data-gift="{g["file"]}" data-gift-title="{e(g["title"])}" data-gift-who="{who}">{gift_btn(g)}</a>
       </article>''')
     return '''<section class="section alt" id="podarki">
   <div class="wrap">

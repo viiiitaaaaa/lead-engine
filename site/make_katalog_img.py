@@ -9,7 +9,7 @@ from html import escape
 from pathlib import Path
 
 from catalog_data import ITEMS, CATALOGS
-from catalog_prompts import PROMPTS, HOME
+from catalog_prompts import PROMPTS, HOME, TEAM_PROMPTS
 
 SITE = Path(__file__).parent
 SRC, OUT = SITE / "img" / "katalog" / "_src", SITE / "img" / "katalog"
@@ -34,6 +34,13 @@ def convert():
         im.save(OUT / f"{f.stem}.jpg", "JPEG", quality=82, optimize=True, progressive=True)
         im.save(OUT / f"{f.stem}.webp", "WEBP", quality=80)
         done += 1
+    tsrc, tout = SITE / "img" / "team" / "_src", SITE / "img" / "team"
+    tsrc.mkdir(parents=True, exist_ok=True)
+    for f in sorted(tsrc.iterdir()):
+        if f.stem in TEAM_PROMPTS and f.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp", ".jfif"):
+            im = Image.open(f).convert("RGB"); s = min(im.size)
+            im = im.crop(((im.width - s) // 2, 0, (im.width - s) // 2 + s, s)).resize((800, 800), Image.LANCZOS)
+            im.save(tout / f"{f.stem}.jpg", "JPEG", quality=84, optimize=True, progressive=True); done += 1
     print(f"картинок готово: {done}; ждут: {len([k for k in PROMPTS if not (OUT / f'{k}.jpg').exists()])} из {len(PROMPTS)}")
 
 
@@ -59,6 +66,12 @@ def prompts_page():
         cards.append(f'''<article class="c"><div class="top"><b>{escape(ITEMS[k][1])}</b><span class="st">{ready}</span></div>
 <p class="m">Где: {escape("; ".join(where[k]))}<br>Сохранить как: <code>site/img/katalog/_src/{k}.png</code> · {att}</p>
 <pre>{escape(full)}</pre><button type="button">Копировать</button></article>''')
+    cards.append('<h2>Команда (главная) — фото-заглушки</h2>')
+    for k, (who, pr) in TEAM_PROMPTS.items():
+        ready = "✅ на сайте" if (SITE / "img" / "team" / f"{k}.jpg").exists() else "ждёт картинку"
+        cards.append(f'''<article class="c"><div class="top"><b>{escape(who)}</b><span class="st">{ready}</span></div>
+<p class="m">Сохранить как: <code>site/img/team/_src/{k}.png</code> · без вложения, в новом чате</p>
+<pre>{escape(pr)}</pre><button type="button">Копировать</button></article>''')
     html = f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Промты каталога</title><style>
 :root{{--paper:#efebe6;--sand:#ddd5cb;--ink:#1d1b19;--wine:#6b1a24;--deep:#222947}}
