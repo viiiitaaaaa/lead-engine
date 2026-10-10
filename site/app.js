@@ -5,7 +5,7 @@ const CONFIG = {
   // Адрес приёма заявок (серверный обработчик, который передаёт заявку в Bitrix24). Пусто — форма в тестовом режиме.
   leadEndpoint: "",
   defaultWho: "sobstvennik",
-  phone: "8 (495) 266-05-24",
+  email: "order@frivent.msk.ru",
   fontSwitch: false, // шрифт выбран 06.10: «как у Шрифтотеки» — Vela Sans везде
   // Номер счётчика Яндекс Метрики (даст она). Пусто — цели только пишутся в консоль.
   metrika: "",
@@ -312,7 +312,7 @@ if (form) {
       form.reset(); if (whoSelect) whoSelect.value = data.who;
       status.innerHTML = "Заявка принята." + giftLink(false) + NEXT;
     } catch (err) {
-      status.textContent = "Не получилось отправить. Позвоните нам: " + CONFIG.phone;
+      status.textContent = "Не получилось отправить. Напишите нам на почту: " + CONFIG.email;
     } finally { submit.disabled = false; }
   });
   ["phone", "address", "email"].forEach(n => form.elements[n].addEventListener("input", () => {

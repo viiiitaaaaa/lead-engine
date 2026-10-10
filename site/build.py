@@ -22,7 +22,7 @@ def ver(name):
     """метка версии файла — браузер скачивает styles.css/app.js заново после каждого изменения"""
     import hashlib
     return hashlib.md5((SITE / name).read_bytes()).hexdigest()[:8]
-PHONE, PHONE_TEL = "8&nbsp;(495)&nbsp;266&#8209;05&#8209;24", "+74952660524"  # неразрывные — номер не рвётся на две строки (html-validate)
+# телефон убран по её просьбе 10.10 («номер убери») — не возвращать без её слова
 
 # порядок — её сообщение 06.10: Владельцу · Ассистенту · Дизайнеру · Монтажной компании · Застройщику · Коммерция
 NAV = [
@@ -65,7 +65,6 @@ def header(active=""):
 {links}
     </nav>
     <div class="top-contacts">
-      <a class="phone num" href="tel:{PHONE_TEL}" data-contact="phone">{PHONE}</a>
       <a class="btn" href="#zayavka">Оставить заявку</a>
     </div>
     <button class="burger" type="button" aria-expanded="false" aria-controls="top" aria-label="Открыть меню"><span></span></button>
@@ -108,7 +107,7 @@ WHO_WE_ARE = ("Frivent — компания полного цикла для з�
 
 ORG_LD = ld({"@context": "https://schema.org", "@type": "Organization", "name": "Frivent", "url": "https://frivent.ru",
              "description": WHO_WE_ARE, "foundingDate": "1961",
-             "telephone": "+7 495 266-05-24", "email": EMAIL,
+             "email": EMAIL,
              "address": {"@type": "PostalAddress", "postalCode": "111020", "addressLocality": "Москва",
                          "streetAddress": "ул. 2-я Синичкина, 9А, стр. 3", "addressCountry": "RU"},
              "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]})
@@ -326,7 +325,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       <h2>{title}</h2>
       <p class="lead">{lead}</p>
       <div class="contacts">
-        <a href="tel:{PHONE_TEL}" data-contact="phone"><b class="num">{PHONE}</b></a>
+        <a href="mailto:{EMAIL}"><b>{EMAIL}</b></a>
       </div>
     </div>
 
@@ -394,7 +393,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     <div class="wrap">
       <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <span>Москва · с 1997 года</span>
-      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область · <a href="tel:{PHONE_TEL}">{PHONE}</a>{req_line()} · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
+      <address class="foot-addr">Офис: {OFFICE} · Производство: Переславль-Залесский, Ярославская область{req_line()} · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
     </div>
   </footer>
   {ORG_LD}
@@ -850,7 +849,6 @@ def kontakty_html():
     r = DC.REQ
     req = (f'<p class="contacts-req">{r["name"]} · ИНН {r["inn"]} · ОГРН {r["ogrn"]} {DEMO_TAG}</p>' if DC.DEMO else "")
     rows = [
-        ("Телефон", f'<a href="tel:{PHONE_TEL}" data-contact="phone">{PHONE}</a>'),
         ("Почта", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
         ("Офис", OFFICE),
         ("Производство", "Переславль-Залесский, Ярославская область"),

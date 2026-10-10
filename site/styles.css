@@ -935,3 +935,18 @@ footer{margin-top:clamp(40px,5vw,72px)}
 /* согласие владельцев и конфиденциальность — страницы объектов (её решение 10.10) */
 .obj-consent{margin-top:clamp(28px,3vw,40px);max-width:72ch;font-size:var(--fs-s);line-height:1.5;color:var(--ink-soft)}
 .cat-card{scroll-margin-top:110px}
+
+/* ===== РОВНЫЕ РЯДЫ КАРТОЧЕК (её замечание 10.10: «почему тут разделы все прыгают» — аудит всего сайта) =====
+   Карточки одного ряда делят общие полосы (subgrid): заголовок соседа в 2 строки растит полосу у всех,
+   поэтому линия под заголовком, текст и кнопки стоят на одной высоте. Проверка — scratchpad audit_rows.py (0 рядов). */
+.pain-card,.steps li,.art-card,.gift-card,.plan,.cat-card{display:grid;grid-template-rows:subgrid;align-content:normal}
+.pain-card{grid-row:span 2;row-gap:16px}
+.steps li{grid-row:span 3;row-gap:12px}
+.art-card{grid-row:span 4;row-gap:12px}
+.gift-card,.plan{grid-row:span 5;row-gap:10px}
+.cat-card{grid-row:span 7;row-gap:12px}
+.cat-card>.cat-img{grid-row:1}.cat-card>.cat-kind{grid-row:2}.cat-card>h3{grid-row:3}.cat-card>p:not(.cat-brand){grid-row:4}
+.cat-card>ul{grid-row:5}.cat-card>.cat-brand{grid-row:6}.cat-card>.cat-ask{grid-row:7;align-self:end;justify-self:start}
+/* линия под заголовком — у нижнего края полосы заголовка, а не сразу под текстом */
+.pain-card h3,.gift-card h3,.art-card h3,.cat-card h3{display:flex;flex-direction:column;justify-content:space-between}
+.gift-card>.btn,.plan>.btn,.art-card>.serv-go{align-self:end}
