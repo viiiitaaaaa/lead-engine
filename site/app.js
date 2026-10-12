@@ -231,18 +231,23 @@ if (backMine) {
   if (a) { a.hidden = false; backMine.hidden = false; }
 }
 
-/* каталог: адрес #k-N показывает только этот раздел (пункт из выпадающего списка шапки), #vse или без адреса — весь */
-const catSecs = [...document.querySelectorAll(".cat-sec")];
-if (catSecs.length) {
+/* каталог (одна сетка без заголовков, её решение 10.10): раздел начинается с карточки id="k-N" и идёт до следующей k-N.
+   Кнопка #k-N показывает только карточки раздела, #vse или без адреса — весь каталог (её «переключатель не работает», 12.10) */
+const catCards = [...document.querySelectorAll(".cat-all .cat-card, .cat-grid .cat-card")];
+if (catCards.length && document.querySelector(".chips .chip")) {
+  let cur = "";
+  catCards.forEach(c => { if (/^k-\d+$/.test(c.id)) cur = c.id; c.dataset.k = cur; });
   const chips = [...document.querySelectorAll(".chips .chip")];
-  const applyCat = scroll => {
-    const h = location.hash.slice(1), one = catSecs.some(s => s.id === h);
-    catSecs.forEach(s => { s.hidden = one && s.id !== h; });
+  const applyCat = () => {
+    const h = location.hash.slice(1), one = catCards.some(c => c.dataset.k === h);
+    catCards.forEach(c => { c.hidden = one && c.dataset.k !== h; });
     chips.forEach(c => c.classList.toggle("on", one ? c.getAttribute("href") === "#" + h : c.getAttribute("href") === "#vse"));
-    if (scroll) window.scrollTo(0, 0); // наверху — кнопки разделов, сразу под ними выбранный раздел
   };
-  applyCat(true);
-  window.addEventListener("hashchange", () => applyCat(true));
+  chips.forEach(c => c.addEventListener("click", e => {
+    e.preventDefault(); history.replaceState(null, "", c.getAttribute("href")); applyCat();
+  }));
+  applyCat();
+  window.addEventListener("hashchange", applyCat);
 }
 
 /* «что дальше» после заявки (Fraser «SaaS Playbook»: сразу сказать, кто и когда свяжется, и дать, чем заняться) */
