@@ -17,9 +17,13 @@ const CONFIG = {
   let ok = false;
   try { ok = localStorage.getItem("cookie-ok") === "1"; } catch (e) {}
   if (ok) return;
+  /* дизайн-ревью 12.10: плашка стояла в конце страницы — с клавиатуры до «Хорошо» надо было пройти весь сайт */
+  document.body.prepend(box);
   box.hidden = false;
+  const room = () => document.body.style.setProperty("--cookie-h", box.hidden ? "0px" : box.offsetHeight + "px");
+  document.body.classList.add("cookie-on"); room(); addEventListener("resize", room);
   document.getElementById("cookie-ok").addEventListener("click", () => {
-    box.hidden = true;
+    box.hidden = true; document.body.classList.remove("cookie-on"); room();
     try { localStorage.setItem("cookie-ok", "1"); } catch (e) {}
   });
 })();
@@ -93,11 +97,20 @@ if (CONFIG.fontSwitch) {
     [...dots.children].forEach((d, j) => d.classList.toggle("on", j === i));
     num.textContent = String(i + 1).padStart(2, "0");
   };
+  /* дизайн-ревью 12.10 (WCAG 2.2.2): кнопка «пауза» и пауза, пока фокус клавиатуры внутри первого экрана */
+  const pauseBtn = hero.querySelector(".sl-pause");
+  let held = false;
   const stop = () => { clearInterval(timer); timer = null; };
-  const play = () => { stop(); if (!still) timer = setInterval(() => show(i + 1), 4500); };
+  const play = () => { stop(); if (!still && !held && !hero.contains(document.activeElement)) timer = setInterval(() => show(i + 1), 4500); };
   hero.querySelector(".sl-prev").addEventListener("click", () => { show(i - 1); play(); });
   hero.querySelector(".sl-next").addEventListener("click", () => { show(i + 1); play(); });
+  if (pauseBtn) pauseBtn.addEventListener("click", () => {
+    held = !held; pauseBtn.setAttribute("aria-pressed", held);
+    pauseBtn.setAttribute("aria-label", held ? "Продолжить смену фото" : "Остановить смену фото");
+    pauseBtn.textContent = held ? "▶" : "❚❚"; held ? stop() : play();
+  });
   hero.addEventListener("mouseenter", stop); hero.addEventListener("mouseleave", play);
+  hero.addEventListener("focusin", stop); hero.addEventListener("focusout", () => setTimeout(play));
   document.addEventListener("visibilitychange", () => document.hidden ? stop() : play());
   let x0 = null;
   hero.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive: true});
@@ -127,6 +140,13 @@ document.querySelectorAll(".reviews").forEach(box => {
   box.querySelector(".rv-prev").addEventListener("click", () => { prev(); play(); });
   box.querySelector(".rv-next").addEventListener("click", () => { next(); play(); });
   box.addEventListener("mouseenter", stop); box.addEventListener("mouseleave", play);
+  /* дизайн-ревью 12.10: свайп пальцем, как у первого экрана */
+  let x0 = null;
+  track.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; stop(); }, {passive: true});
+  track.addEventListener("touchend", e => {
+    if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) (dx < 0 ? next : prev)(); play();
+  });
   addEventListener("resize", () => place(false));
   place(false); play();
 });
@@ -134,14 +154,17 @@ document.querySelectorAll(".reviews").forEach(box => {
 /* меню на телефоне */
 const top_ = document.getElementById("top"), burger = top_ && top_.querySelector(".burger");
 if (burger) {
-  burger.addEventListener("click", () => {
-    const open = top_.classList.toggle("open");
+  const setMenu = open => {
+    top_.classList.toggle("open", open);
+    document.body.classList.toggle("menu-open", open); // дизайн-ревью 12.10: страница под меню не прокручивается
     burger.setAttribute("aria-expanded", open);
     burger.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
+  };
+  burger.addEventListener("click", () => setMenu(!top_.classList.contains("open")));
+  top_.querySelectorAll(".nav a, .top-contacts a").forEach(a => a.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && top_.classList.contains("open")) { setMenu(false); burger.focus(); }
   });
-  top_.querySelectorAll(".nav a, .top-contacts a").forEach(a => a.addEventListener("click", () => {
-    top_.classList.remove("open"); burger.setAttribute("aria-expanded", "false");
-  }));
 }
 
 /* выпадающие списки в шапке: стрелка открывает/закрывает (мышью — открываются и наведением), Esc и клик мимо закрывают */
@@ -227,12 +250,22 @@ const NEXT = ' <span class="next">Что дальше: менеджер позв
 
 /* форма заявки */
 const form = document.getElementById("lead-form");
+/* дизайн-ревью 12.10: после «Запросить цену» и памятки видно, что добавлено, а поле задачи растёт по тексту */
+const fitNote = () => { const n = form && form.elements.note; if (n) n.rows = Math.max(3, n.value.split("\n").length + 1); };
+const added = line => {
+  fitNote();
+  let s = document.getElementById("f-added");
+  if (!s) { s = document.createElement("p"); s.id = "f-added"; s.className = "added"; s.setAttribute("role", "status"); form.elements.note.after(s); }
+  s.textContent = "Добавлено в заявку: " + line.replace(/^Запрос цены: /, "");
+};
+if (form) form.elements.note.addEventListener("input", fitNote);
 /* каталог: «Запросить цену» вписывает позицию в заявку и ведёт к форме */
 document.querySelectorAll("[data-ask]").forEach(b => b.addEventListener("click", e => {
   if (!form) return;
   e.preventDefault();
   const note = form.elements.note, line = (b.dataset.askPrefix || "Запрос цены: ") + b.dataset.ask;
   if (!note.value.includes(line)) note.value = (note.value ? note.value + "\n" : "") + line;
+  added(line);
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
   setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);
 }));
@@ -246,6 +279,7 @@ document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click"
   if (!note.value.includes(line)) note.value = (note.value ? note.value + "\n" : "") + line;
   if (form.elements.gift) form.elements.gift.value = b.dataset.gift;
   if (b.dataset.giftWho && whoSelect) whoSelect.value = b.dataset.giftWho;
+  added(line);
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
   setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);
 }));
@@ -292,11 +326,14 @@ if (form) {
     if (phoneBad) return phone.focus();
     if (emailBad) return email.focus();
     if (addrBad) return address.focus();
-    if (!consent.checked) { status.textContent = "Отметьте согласие на обработку данных"; return consent.focus(); }
+    consent.setAttribute("aria-invalid", !consent.checked); consent.closest(".consent").classList.toggle("bad", !consent.checked);
+    if (!consent.checked) { status.textContent = "Отметьте согласие на обработку данных — галочка над кнопкой"; return consent.focus(); }
     const data = Object.fromEntries(new FormData(form));
     /* защита от спам-ботов (книга Мукминова: B2B-формы первыми получают ботов): невидимое поле заполнено
-       или форма отправлена быстрее 3 секунд после открытия — делаем вид, что приняли, и ничего не шлём */
-    if (data.website || performance.now() < 3000) { status.textContent = "Заявка принята."; return; }
+       — делаем вид, что приняли, и ничего не шлём. Быстрее 3 секунд после открытия (автозаполнение, быстрый человек) —
+       не пишем «принято», а тихо ждём до 3 секунд и отправляем (дизайн-ревью 12.10) */
+    if (data.website) { status.textContent = "Заявка принята."; return; }
+    if (performance.now() < 3000) await new Promise(r => setTimeout(r, 3000 - performance.now()));
     delete data.website;
     goal("form_submit"); clearDraft();
     if (!CONFIG.leadEndpoint) {
@@ -313,6 +350,9 @@ if (form) {
     } catch (err) {
       status.textContent = "Не получилось отправить. Проверьте интернет и попробуйте ещё раз через минуту.";
     } finally { submit.disabled = false; }
+  });
+  form.elements.consent.addEventListener("change", e => {
+    if (e.target.checked) { e.target.setAttribute("aria-invalid", "false"); e.target.closest(".consent").classList.remove("bad"); status.textContent = ""; }
   });
   ["phone", "address", "email"].forEach(n => form.elements[n].addEventListener("input", () => {
     form.elements[n].setAttribute("aria-invalid", "false"); document.getElementById("e-" + n).hidden = true;

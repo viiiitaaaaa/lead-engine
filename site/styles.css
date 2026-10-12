@@ -1011,3 +1011,27 @@ footer{margin-top:clamp(40px,5vw,72px)}
    .section.alt .plan было сильнее .plan.top, светлый текст оказался на светлом фоне) */
 .section .plan.top,.section.alt .plan.top{background:linear-gradient(135deg,var(--deep),var(--deep-2));color:var(--paper)}
 .plan.top .eyebrow,.plan.top .plan-sub{color:var(--on-dark-accent)}
+
+/* ДИЗАЙН-РЕВЬЮ 12.10 (агент design-review): фокус, меню телефона, форма, слайдеры */
+/* кольцо фокуса на тёмном фоне и на фото — светлое шампанское (тёмно-синее сливалось, WCAG 2.4.7) */
+.dark :focus-visible,.hero :focus-visible,.obj-hero :focus-visible,.slider-ui :focus-visible,.plan.top :focus-visible{outline-color:var(--on-dark-accent)}
+/* меню телефона: не выше экрана, прокрутка внутри, страница под ним стоит */
+@media (max-width:1280px){
+  .top.open{max-height:100svh;overflow-y:auto;overscroll-behavior:contain}
+  body.menu-open{overflow:hidden}
+}
+/* переход к форме и разделам — не под липкую шапку */
+section[id],#zayavka{scroll-margin-top:88px}
+/* «Добавлено в заявку» под полем задачи */
+.added{margin-top:8px;font-size:var(--fs-xs);color:var(--on-dark-accent)}
+/* согласие не отмечено — видно у самой галочки */
+.consent.bad{color:var(--on-dark-accent)}
+.consent.bad input{outline:2px solid var(--on-dark-accent);outline-offset:2px}
+/* пауза слайдера первого экрана — в стиле стрелок; на телефоне видна (стрелки там скрыты, листаем свайпом) */
+.slider-ui .sl-pause{font-size:var(--fs-xs);letter-spacing:-.1em}
+@media (max-width:860px){
+  .slider-ui .sl-pause{display:inline-grid;place-items:center;width:36px;height:36px}
+  /* плашка cookies внизу не закрывает кнопки первого экрана */
+  body.cookie-on .hero .wrap{padding-bottom:calc(56px + var(--cookie-h,0px))}
+  body.cookie-on .slider-ui{bottom:calc(18px + var(--cookie-h,0px))}
+}

@@ -13,7 +13,7 @@ OUT = Path(__file__).parent
 (OUT / "shots").mkdir(exist_ok=True)
 VIEWS = {"desktop": (1440, 900), "tablet": (768, 1024), "mobile": (375, 812)}
 
-pages = sorted(p.name for p in SITE.glob("*.html")) if SITE else ["index.html"]
+pages = sorted(p.name for p in SITE.glob("*.html") if not p.name.startswith("_")) if SITE else ["index.html"]  # _*.html служебные, не публикуются
 
 JS = r"""
 () => {

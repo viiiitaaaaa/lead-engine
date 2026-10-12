@@ -85,7 +85,7 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
     <button type="button" class="exit-x" id="exit-x" aria-label="Закрыть">×</button>
     <b>Пока вы здесь — заберите памятку</b>
     <p>«Что делать в типовых ситуациях»: 12 коротких ответов именно для вашей роли. PDF придёт на почту.</p>
-    <a class="btn" id="exit-go" href="index.html#podarki">Посмотреть подарки</a>
+    <a class="btn" id="exit-go" href="index.html#podarki">Посмотреть памятки</a>
   </div>'''
 # EMAIL и OFFICE на сайт не выводить (её решение 10.10: «любые контактные данные убери — всё через заявку, по UTM видно, чей клиент»)
 EMAIL = "order@frivent.msk.ru"
