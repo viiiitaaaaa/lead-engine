@@ -1035,3 +1035,36 @@ section[id],#zayavka{scroll-margin-top:88px}
   body.cookie-on .hero .wrap{padding-bottom:calc(56px + var(--cookie-h,0px))}
   body.cookie-on .slider-ui{bottom:calc(18px + var(--cookie-h,0px))}
 }
+
+/* ===== НАХОДКИ 12.10 (новости по вёрстке) — правила см. DESIGN.md ===== */
+/* Одинокая карточка в последнем ряду (webstandards_ru/7839: flex-wrap:balance браузеры ещё не умеют, это запасной способ).
+   3 колонки: одна последняя — в средней колонке; 2 колонки: одна последняя — по центру ряда, той же ширины, что соседи.
+   Ряды при этом остаются ровными (subgrid не трогаем). */
+@media (min-width:1101px){
+  :is(.cat-grid,.art-grid,.works,.gift-grid)>:last-child:nth-child(3n+1):not(:first-child){grid-column:2}
+}
+@media (min-width:641px) and (max-width:1100px){
+  .cat-grid>:last-child:nth-child(odd):not(:first-child),.works>:last-child:nth-child(odd):not(:first-child){grid-column:1/-1;justify-self:center;width:calc((100% - clamp(20px,2vw,32px))/2)}
+  :is(.art-grid,.gift-grid)>:last-child:nth-child(odd):not(:first-child){grid-column:1/-1;justify-self:center;width:calc((100% - clamp(16px,2vw,28px))/2)}
+}
+@media (min-width:521px) and (max-width:860px){
+  .team-grid>:last-child:nth-child(odd):not(:first-child){grid-column:1/-1;justify-self:center;width:calc((100% - clamp(20px,2.4vw,36px))/2)}
+}
+/* «Что делаем» — ячейки через линию 1px: пустая ячейка видна серым пятном, поэтому последняя карточка растягивается на остаток ряда */
+@media (min-width:1101px){
+  .serv-grid>:last-child:nth-child(3n+1):not(:first-child){grid-column:1/-1}
+  .serv-grid>:last-child:nth-child(3n+2){grid-column:span 2}
+}
+@media (min-width:561px) and (max-width:1100px){
+  .serv-grid>:last-child:nth-child(odd):not(:first-child){grid-column:1/-1}
+}
+/* значок напротив первой строки многострочного пункта — через единицу lh (webstandards_ru/7866); старое значение — запас */
+.proofs li::before{top:calc(.5lh - .5px)}
+.gift li::before{top:calc(.5lh - 5px)}
+/* форма: три состояния под кнопкой (TexterraBlog/12089) — без анимации (её правило 10.10: движение только в слайдерах) */
+.form-status[data-state]{display:block;padding-left:14px;border-left:2px solid var(--on-dark-mute);line-height:1.5}
+.form-status[data-state="sending"]{color:var(--on-dark-soft)}
+.form-status[data-state="ok"]{border-left-color:var(--on-dark-accent);color:var(--paper)}
+.form-status[data-state="error"]{border-left-color:#f0a68c;color:#f0a68c}
+.form-status[data-state="test"]{border-left-style:dashed;color:var(--on-dark-soft)}
+form[aria-busy="true"] .btn{opacity:.7;cursor:progress}

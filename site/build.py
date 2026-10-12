@@ -97,6 +97,37 @@ def ld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + '</script>'
 
 
+import re as _re_t
+
+# ===== Типограф (находки 12.10, copywritersdigest/4967: «ёлочки», длинные тире, неразрывные пробелы) =====
+# Работает только с текстом между тегами: атрибуты (alt, content, href), <script>, <style>, комментарии не трогает.
+# Повторный прогон ничего не меняет — его можно запускать на каждой сборке, в том числе по index.html, который правят руками.
+_T_SKIP = _re_t.compile(r"(<!--.*?-->|<script\b.*?</script>|<style\b.*?</style>|<textarea\b.*?</textarea>|<[^>]+>)", _re_t.S | _re_t.I)
+# короткие предлоги, союзы и частицы — к следующему слову неразрывным пробелом, чтобы не висели в конце строки
+_T_SHORT = ("в во и а к ко с со о об обо у по до за из на не ни но от для без под над при про или либо да").split()
+_T_SHORT_RX = _re_t.compile(r"(?<![\w\-])(" + "|".join(_T_SHORT) + r") (?=[^\s<])", _re_t.I)
+_T_UNITS = r"(?:м²|м³|м|км|мм|см|кг|т|°C|°|₽|%|руб|тыс|млн|млрд|лет|года|год|мес|месяцев|недель|дней|дня|дн|часов|часа|час|ч|мин|с|шт|кВт|Вт|дБ|л|ppm|раз|рабочих)"
+
+
+def typo(text_part):
+    t = text_part
+    t = _re_t.sub(r"(?<=\S) [-–] (?=\S)", " — ", t)                 # дефис или короткое тире между словами → длинное
+    t = _re_t.sub(r"(?<=\S) +—", "&nbsp;—", t)                       # тире не переносится в начало строки
+    t = _re_t.sub(r'(^|[\s(>\[«„])"(?=\S)', r"\1«", t)                # прямые кавычки → «ёлочки»
+    t = _re_t.sub(r'(?<=\S)"', "»", t)
+    t = _T_SHORT_RX.sub(r"\1&nbsp;", t)
+    t = _re_t.sub(r"(?<![\w.,])(\d{1,3}) (?=\d{3}(?!\d))", r"\1&nbsp;", t)  # 1 200, 60 000 — число не рвётся
+    t = _re_t.sub(r"(\d) (?=" + _T_UNITS + r"(?![\w]))", r"\1&nbsp;", t)    # 60 км, 4 часа не рвутся
+    t = _re_t.sub(r"№ (?=\d)", "№&nbsp;", t)
+    t = _re_t.sub(r" (же|бы|ли)(?![\w])", r"&nbsp;\1", t)              # частица держится за слово перед ней
+    return t
+
+
+def typograf(html):
+    parts = _T_SKIP.split(html)
+    return "".join(p if (i % 2) else typo(p) for i, p in enumerate(parts))
+
+
 # «Кто мы» (её решение 10.10): по образцу frivent.ru/company, факты только оттуда и с /contacts — бренд основан в Австрии
 # в 1961, представительство в Москве с 1997, производство в России с 2022 (Переславль-Залесский). Полный цикл — главное,
 # своё производство климата — сильная сторона, но не единственное. Тот же текст — index.html #o-nas (вписан руками).
@@ -107,7 +138,7 @@ WHO_WE_ARE = ("Frivent — компания полного цикла для з�
               "на своём заводе в Переславле-Залесском.")
 
 ORG_LD = ld({"@context": "https://schema.org", "@type": "Organization", "name": "Frivent", "url": "https://frivent.ru",
-             "description": WHO_WE_ARE, "foundingDate": "1961",
+             "description": WHO_WE_ARE, "foundingDate": "1961", "logo": "https://frivent.ru/img/logo-frivent.png",
              "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]})
 
 
@@ -383,6 +414,8 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       <!-- метки UTM: заполняются скриптом из адреса страницы -->
       <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page"><input type="hidden" name="gift">
+      <!-- сколько секунд человек заполнял форму — сервер отсеивает ботов (< 3 с) до записи в Bitrix24 и цели Метрики -->
+      <input type="hidden" name="fill_s">
       <!-- ловушка для спам-ботов: человек это поле не видит и не заполняет -->
       <div class="hp" aria-hidden="true"><label for="f-website">Сайт</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
       <label class="consent"><input id="f-consent" name="consent" type="checkbox" required> <span>Согласен на обработку персональных данных по <a href="politika.html" target="_blank" rel="noopener">политике конфиденциальности</a></span></label>
@@ -754,24 +787,35 @@ PAGES = [
   form=dict(title="Рассчитать объект", button="Рассчитать объект")),
 ]
 
+# Превью ссылки в мессенджерах (Open Graph) и значок вкладки (находки 12.10, webstandards_ru/7834: <head> 2026).
+# og.jpg 1200×630 и значки делает make_icons.py; то же самое вписано в <head> index.html (его шапку build.py не трогает).
+OG_IMG = ('<meta property="og:image" content="https://frivent.ru/img/og.jpg"><meta property="og:image:width" content="1200">'
+          '<meta property="og:image:height" content="630"><meta property="og:image:alt" content="Загородная резиденция — Frivent, дом под ключ">'
+          '<meta name="twitter:card" content="summary_large_image">')
+ICONS = ('<link rel="icon" href="img/favicon.svg" type="image/svg+xml"><link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">'
+         '<link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="theme-color" content="#efebe6">')
+
 HEAD = '''<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="https://frivent.ru/{page}.html">
 <meta property="og:type" content="website"><meta property="og:site_name" content="Frivent"><meta property="og:locale" content="ru_RU">
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}">
-<meta property="og:url" content="https://frivent.ru/{page}.html"><meta property="og:image" content="https://frivent.ru/img/slides/s1.jpg">
+<meta property="og:url" content="https://frivent.ru/{page}.html">
+{OG_IMG}
 <script type="speculationrules">{{"prefetch":[{{"where":{{"href_matches":"/*"}},"eagerness":"moderate"}}]}}</script>
+{ICONS}
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v={css_v}">
 </head>
 <body data-page="{page}" data-who="{who}">
 '''
+HEAD = HEAD.replace("{OG_IMG}", OG_IMG).replace("{ICONS}", ICONS)
 
 
 def head(**kw):
@@ -1819,6 +1863,7 @@ if __name__ == "__main__":
         print("страница и каталог:", p["file"])
     idx = SITE / "index.html"
     s = idx.read_text("utf-8")
+    s = replace_between(s, "<!--HEADMETA-->", "<!--/HEADMETA-->", OG_IMG + chr(10) + ICONS)
     s = replace_between(s, "<!--HEADER-->", "<!--/HEADER-->", header())
     if "<!--GIFTS-->" in s:
         s = replace_between(s, "<!--GIFTS-->", "<!--/GIFTS-->", gifts_html())
@@ -1845,6 +1890,16 @@ if __name__ == "__main__":
     s = _re.sub(r'src="app\.js(\?v=\w+)?"', f'src="app.js?v={ver("app.js")}"', s)
     idx.write_text(s, "utf-8")
     print("главная: шапка и форма обновлены")
+    # типограф по всем готовым страницам (и по index.html): «ёлочки», тире, неразрывные пробелы
+    nt = 0
+    for f in SITE.glob("*.html"):
+        if f.name.startswith("_"):
+            continue
+        h = f.read_text("utf-8")
+        h2 = typograf(h)
+        if h2 != h:
+            f.write_text(h2, "utf-8"); nt += 1
+    print("типограф: страниц поправлено", nt)
     # карта сайта для Яндекса и Google (Clarke «SEO 2025»: сайт без CMS — sitemap.xml в корень + отправить в Вебмастер).
     # Домен ещё не выбран (открытый вопрос) — BASE поменять, когда она решит; служебные _*.html не включаем.
     BASE = "https://frivent.ru/"

@@ -313,6 +313,10 @@ if (form) {
 
   const status = document.getElementById("f-status"), submit = document.getElementById("f-submit");
   const setErr = (input, errId, bad) => { input.setAttribute("aria-invalid", bad); document.getElementById(errId).hidden = !bad; };
+  /* состояние под кнопкой: sending / ok / error / test — цвет и значок в styles.css (.form-status[data-state]) */
+  const setState = (st, html) => { status.dataset.state = st; status.innerHTML = html; };
+  let firstTouch = 0;
+  form.addEventListener("focusin", () => { if (!firstTouch) firstTouch = Date.now(); });
   form.addEventListener("submit", async e => {
     e.preventDefault();
     const phone = form.elements.phone, address = form.elements.address, consent = form.elements.consent;
@@ -328,28 +332,35 @@ if (form) {
     if (addrBad) return address.focus();
     consent.setAttribute("aria-invalid", !consent.checked); consent.closest(".consent").classList.toggle("bad", !consent.checked);
     if (!consent.checked) { status.textContent = "Отметьте согласие на обработку данных — галочка над кнопкой"; return consent.focus(); }
+    if (submit.disabled) return; // уже отправляется — второй клик не шлёт дубль
+    /* сколько секунд заполняли форму: уходит на сервер, он отсеивает ботов до Bitrix24 и цели Метрики (находки 12.10) */
+    form.elements.fill_s.value = Math.round((Date.now() - (firstTouch || Date.now())) / 1000);
     const data = Object.fromEntries(new FormData(form));
     /* защита от спам-ботов (книга Мукминова: B2B-формы первыми получают ботов): невидимое поле заполнено
        — делаем вид, что приняли, и ничего не шлём. Быстрее 3 секунд после открытия (автозаполнение, быстрый человек) —
        не пишем «принято», а тихо ждём до 3 секунд и отправляем (дизайн-ревью 12.10) */
-    if (data.website) { status.textContent = "Заявка принята."; return; }
+    if (data.website) { setState("ok", "Заявка принята."); return; }
     if (performance.now() < 3000) await new Promise(r => setTimeout(r, 3000 - performance.now()));
     delete data.website;
-    goal("form_submit"); clearDraft();
     if (!CONFIG.leadEndpoint) {
-      status.innerHTML = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink(true) + NEXT;
+      /* честное состояние, пока сервера нет: «принято» не пишем (находки 12.10) */
+      setState("test", "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink(true));
       console.log("Заявка (тест):", data);
       return;
     }
-    submit.disabled = true; status.textContent = "Отправляем…";
+    /* три состояния (находки 12.10, TexterraBlog/12089): отправляется → принято (только после ответа сервера) → ошибка */
+    submit.disabled = true; form.setAttribute("aria-busy", "true"); setState("sending", "Отправляем заявку…");
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 15000);
     try {
-      const r = await fetch(CONFIG.leadEndpoint, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)});
+      const r = await fetch(CONFIG.leadEndpoint, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data), signal: ctl.signal});
       if (!r.ok) throw new Error(r.status);
+      goal("form_submit"); clearDraft(); // цель и очистка черновика — только когда сервер принял заявку
       form.reset(); if (whoSelect) whoSelect.value = data.who;
-      status.innerHTML = "Заявка принята." + giftLink(false) + NEXT;
+      setState("ok", "Заявка принята." + giftLink(false) + NEXT);
     } catch (err) {
-      status.textContent = "Не получилось отправить. Проверьте интернет и попробуйте ещё раз через минуту.";
-    } finally { submit.disabled = false; }
+      /* запасной путь без контактов (её решение 10.10 — только заявка): данные остаются в форме и в черновике браузера */
+      setState("error", "Заявка не дошла до нас — сбой связи или сервера. Всё, что вы ввели, сохранено: нажмите кнопку ещё раз через минуту. Если закроете страницу, поля заполнятся сами, когда вернётесь.");
+    } finally { clearTimeout(timer); submit.disabled = false; form.removeAttribute("aria-busy"); }
   });
   form.elements.consent.addEventListener("change", e => {
     if (e.target.checked) { e.target.setAttribute("aria-invalid", "false"); e.target.closest(".consent").classList.remove("bad"); status.textContent = ""; }
