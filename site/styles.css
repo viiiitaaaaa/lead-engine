@@ -42,6 +42,9 @@
 
 
 @media (max-width:860px){:root{--fs-xs:11.5px;--fs-s:13px;--fs-m:14px;--fs-l:16px;--fs-h3:19px;--fs-h2:26px}}
+/* телефон: ссылки в строку текста — зона нажатия не меньше 24px (WCAG 2.2), вёрстка не сдвигается:
+   отступ у строчного элемента увеличивает только область нажатия (проверка дизайн-ревью 12.10) */
+@media (max-width:860px){.foot-links a,.usl-others a,.obj-nav a,.cookie a,label a,a.who-go,.serv-go{padding-block:6px}}
 
 /* reset (по мотивам Josh W. Comeau) */
 *,*::before,*::after{box-sizing:border-box}

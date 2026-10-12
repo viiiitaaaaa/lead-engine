@@ -349,7 +349,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       </div>
       <div class="field addr">
         <label for="f-address">Адрес объекта <span class="req">*</span></label>
-        <input id="f-address" name="address" type="text" autocomplete="address-line1" placeholder="Посёлок, улица, дом или кадастровый номер участка" required aria-describedby="h-address e-address">
+        <input id="f-address" name="address" type="text" autocomplete="address-line1" placeholder="Посёлок, улица, дом или кадастровый №" required aria-describedby="h-address e-address">
         <span class="hint" id="h-address">По адресу закрепляем объект за вашим менеджером</span>
         <span class="err" id="e-address" hidden>Укажите адрес объекта — хотя бы посёлок</span>
       </div>
