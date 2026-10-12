@@ -1118,3 +1118,9 @@ form[aria-busy="true"] .btn{opacity:.7;cursor:progress}
   .hero .wrap{padding-bottom:96px}
   body.cookie-on .hero .wrap{padding-bottom:calc(96px + var(--cookie-h,0px))}
 }
+/* её слайдер 12.10 (6 кадров домов 2–3, светлое небо и интерьеры): на светлых кадрах затемнение слева чуть плотнее и шире,
+   чтобы заголовок читался на небе; правая часть кадра остаётся чистой */
+@media (min-width:861px){
+  .hero > .slides .ph.light::after{background:linear-gradient(90deg,rgb(var(--shade)/.8) 0%,rgb(var(--shade)/.66) 32%,rgb(var(--shade)/.32) 55%,transparent 74%),
+    linear-gradient(0deg,rgb(var(--shade)/.35) 0%,transparent 35%)}
+}
