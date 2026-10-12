@@ -921,7 +921,8 @@ footer{margin-top:clamp(40px,5vw,72px)}
 .marquee{position:relative}
 .marquee-cap{position:absolute;left:0;top:0;bottom:0;z-index:1;display:flex;align-items:center;padding:0 22px 0 var(--gut);
   font:600 var(--fs-xs)/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--wine);
-  background:linear-gradient(90deg,var(--paper) 80%,transparent)}
+  padding-right:120px;background:linear-gradient(90deg,var(--paper) calc(100% - 56px),transparent)}
+/* её замечание 12.10 (снова «строка поздно уходит, тексты накладываются»): марки гаснут за 110px до подписи, а не у самых букв */
 
 /* ---------- второе/третье прочтение книг (10.10 поздно) ---------- */
 /* форма: «Адрес объекта» на две колонки + «Стадия объекта» рядом (квалифицирующая форма) */
@@ -1068,3 +1069,19 @@ section[id],#zayavka{scroll-margin-top:88px}
 .form-status[data-state="error"]{border-left-color:#f0a68c;color:#f0a68c}
 .form-status[data-state="test"]{border-left-style:dashed;color:var(--on-dark-soft)}
 form[aria-busy="true"] .btn{opacity:.7;cursor:progress}
+
+/* её правки 12.10 (главная) */
+.facts-band{padding-top:clamp(32px,3.4vw,48px)}          /* «сверху ещё расстояние от главной картинки — слишком вплотную» (было 22) */
+#pochemu .lead,#dlya-kogo .lead{font-style:italic}       /* вводные «Наша цель…» и «Выберите, кто вы…» — курсивом */
+.rv-nav{justify-content:center}                         /* стрелки и «Все отзывы на 5 звёзд с Яндекс Карт» — по центру */
+/* «Я — …»: обратная инверсия — светлые карточки, при наведении тёмно-синие с бордовой полосой */
+.who .who-card{background:var(--glass,rgb(255 255 255/.55));color:var(--ink);box-shadow:inset 0 0 0 1px var(--line),inset 0 -3px 0 var(--accent)}
+.who .who-card .who-note{color:var(--ink-soft)}
+.who .who-card .who-go{color:var(--accent-ink)}
+.who .who-card:hover,.who .who-card:focus-visible{background:linear-gradient(135deg,var(--deep),var(--deep-2));color:var(--paper);box-shadow:inset 0 -3px 0 var(--accent)}
+.who .who-card:hover .who-note,.who .who-card:focus-visible .who-note{color:var(--on-dark-soft)}
+.who .who-card:hover .who-go,.who .who-card:focus-visible .who-go{color:var(--on-dark-accent)}
+/* её правка 12.10: подписи над заголовками разделов («Как работаем», «Отзывы»…) убраны, вводный текст раздела — курсивом.
+   Подпись со значком «пример» остаётся (правило: примеры помечены). */
+.sec-head .eyebrow:not(:has(.demo)){display:none}
+.sec-head .lead{font-style:italic}
