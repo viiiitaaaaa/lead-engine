@@ -1124,3 +1124,17 @@ form[aria-busy="true"] .btn{opacity:.7;cursor:progress}
   .hero > .slides .ph.light::after{background:linear-gradient(90deg,rgb(var(--shade)/.8) 0%,rgb(var(--shade)/.66) 32%,rgb(var(--shade)/.32) 55%,transparent 74%),
     linear-gradient(0deg,rgb(var(--shade)/.35) 0%,transparent 35%)}
 }
+/* её правка 12.10 (13 кадров): панель слайдера компактнее — чёрточки вдвое короче, на телефоне ещё короче, панель уже */
+.sl-dots{gap:4px}
+.sl-dots i{width:11px}
+.sl-dots i.on{width:22px}
+.slider-ui{gap:12px}
+@media (max-width:860px){
+  .sl-dots{gap:3px}
+  .sl-dots i{width:7px}
+  .sl-dots i.on{width:16px}
+  .slider-ui{gap:10px;padding:6px 6px 6px 12px}
+  .slider-ui .sl-pause{width:32px;height:32px}
+}
+/* её правка 12.10: без нумерации «01 / 13» */
+.slider-ui .sl-count{display:none}
