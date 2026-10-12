@@ -734,7 +734,7 @@ PAGES = [
   ],
   form=dict(title="Обсудить посёлок", button="Обсудить посёлок")),
 
- dict(file="kommerciya.html", who="kommerciya", img="s6", pos="50% 60%", light=True,
+ dict(file="kommerciya.html", who="kommerciya", img="k1", pos="50% 60%", light=True,
   title="Вентиляция и климат для коммерческих объектов — Frivent",
   desc="Вентиляция, кондиционирование и осушение бассейнов для ресторанов, клиник, фитнес-клубов и СПА, торговых центров и серверных. Своё производство Frivent, монтаж без остановки работы, сервис.",
   eyebrow="Коммерческим объектам",
