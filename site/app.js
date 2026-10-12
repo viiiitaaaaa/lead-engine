@@ -251,7 +251,7 @@ if (catCards.length && document.querySelector(".chips .chip")) {
 }
 
 /* «что дальше» после заявки (Fraser «SaaS Playbook»: сразу сказать, кто и когда свяжется, и дать, чем заняться) */
-const NEXT = ' <span class="next">Что дальше: менеджер позвонит в течение 4 часов в рабочее время, договоримся о встрече на объекте и пришлём смету. Пока ждёте — посмотрите <a href="index.html#raboty">наши объекты</a>.</span>';
+const NEXT = ' <span class="next">Что дальше: менеджер позвонит в течение часа в рабочее время, договоримся о встрече на объекте и пришлём смету. Пока ждёте — посмотрите <a href="index.html#raboty">наши объекты</a>.</span>';
 
 /* форма заявки */
 const form = document.getElementById("lead-form");

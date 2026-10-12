@@ -1,4 +1,4 @@
-# Выкладка сайта на Cloudflare (её аккаунт, адрес без её имени): https://frivent-site.frivent-dom.workers.dev
+﻿# Выкладка сайта на Cloudflare (её аккаунт, адрес без её имени): https://frivent-site.frivent-dom.workers.dev
 # 1) собрать страницы, 2) чистая версия без комментариев/исходников, JS запутан, 3) выложить.
 # Запуск: powershell -File site/deploy_cf.ps1      (добавить -Index, когда она скажет «запускаем» — уберёт noindex)
 param([switch]$Index)

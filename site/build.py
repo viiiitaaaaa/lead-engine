@@ -75,7 +75,7 @@ def header(active=""):
 # контакты из frivent.ru/contacts (проверено 10.10): офис в Москве, общая почта, производство — Переславль-Залесский.
 # ИНН/ОГРН на сайте нет — дописать, когда она даст (книги: юрлицо и адрес — главные сигналы доверия в B2B и для Яндекса).
 OFFICE = "111020, Москва, ул. 2-я Синичкина, 9А, стр. 3"
-ANSWER_TIME = "в течение 4 часов в рабочее время"  # её слово 10.10; то же — в app.js (сообщение после отправки)
+ANSWER_TIME = "в течение часа в рабочее время"  # её слово 12.10 (было 4 часа); то же — в app.js (сообщение после отправки)
 # плашка про cookies (её решение 10.10: «баннер не запрещала») — один раз, в углу, не закрывает страницу; показывает app.js
 COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" hidden>
     <p>Сайт использует cookies и сервис статистики посещений, чтобы считать заявки и улучшать страницы. <a href="politika.html">Подробнее</a></p>
@@ -551,7 +551,7 @@ PAGES = [
   proof=dict(title="Нам доверяют свой дом", lead="Бренд с 1961 года, в Москве с 1997-го и свой завод. За качество дома отвечаем сами, а не перекладываем на поставщиков."),
   form=dict(title="Оставить заявку", button="Оставить заявку")),
 
- dict(file="assistentu.html", who="pomoshchnik", img="s2", pos="50% 60%", light=True,
+ dict(file="assistentu.html", who="pomoshchnik", img="d2-holl", pos="50% 55%", light=True,
   title="Обслуживание дома для ассистента владельца — Frivent",
   desc="Для личных помощников, управляющих домом и семейных офисов: обслуживание и ремонт всех систем дома, запчасти к любому европейскому оборудованию, отчёт с фото для владельца.",
   eyebrow="Ассистенту владельца",
@@ -684,7 +684,7 @@ PAGES = [
   ],
   form=dict(title="Стать партнёром", button="Стать партнёром")),
 
- dict(file="zastroyshchikam.html", who="zastroyshchik", img="s5", pos="50% 50%", light=True,
+ dict(file="zastroyshchikam.html", who="zastroyshchik", img="d2-fasad", pos="60% 55%", light=True,
   title="Инженерия и климат для застройщика посёлка — Frivent",
   desc="Инженерное оборудование, климат и остекление для домов коттеджного посёлка партиями: одно решение на все дома, документы производителя, сервис для жителей.",
   eyebrow="Застройщику",
@@ -1394,7 +1394,7 @@ def plans_html():
     cards = []
     for pl in SC.PLANS:
         pts = "\n".join(f"          <li>{e(t)}</li>" for t in pl["points"])
-        cards.append(f'''      <article class="plan{" top" if pl.get("top") else ""}">
+        cards.append(f'''      <article class="plan{" plan-top" if pl.get("top") else ""}">
         <span class="eyebrow">Пакет</span>
         <h3>{e(pl["name"])}</h3>
         <p class="plan-sub">{e(pl["sub"])}</p>
