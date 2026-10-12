@@ -1085,3 +1085,22 @@ form[aria-busy="true"] .btn{opacity:.7;cursor:progress}
    Подпись со значком «пример» остаётся (правило: примеры помечены). */
 .sec-head .eyebrow:not(:has(.demo)){display:none}
 .sec-head .lead{font-style:italic}
+/* её замечание 12.10 (в 3-й раз, скрин каталога): «окно перекрывает шапку» — фон первого экрана каталога из пятен-градиентов
+   начинался от самого низа шапки и выглядел плашкой, наползающей на неё. Фон — ровный, как у страницы. */
+.cat-hero{background:var(--paper)}
+/* её просьба 12.10: «Что болит — и что мы с этим делаем» — «сплошной голый текст, некомфортно читать».
+   Каждая пара — карточка: сверху боль (бордовый маркер), ниже решение с пометкой «Решение» и тонкой линией. */
+.solve{border-top:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:clamp(12px,1.4vw,20px)}
+.solve-row{grid-template-columns:1fr;gap:12px;padding:22px 24px 24px;border:0;border-radius:var(--r);
+  background:var(--glass);box-shadow:inset 0 0 0 1px var(--line);align-content:start}
+.solve dt{display:flex;gap:10px;align-items:baseline;font-size:var(--fs-l);line-height:1.3;color:var(--ink)}
+.solve dt::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--wine);transform:translateY(-1px)}
+.solve dd{position:relative;padding-top:12px;border-top:1px solid var(--line);color:var(--ink-soft)}
+.solve dd::before{content:"Решение";display:block;margin-bottom:4px;font:600 var(--fs-xs)/1.2 var(--body);letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent-ink)}
+@media (max-width:640px){.solve-row{padding:18px 18px 20px}}
+/* ровные ряды (её правило «не прыгает»): боль и решение делят полосы ряда — линия под болью на одной высоте у соседей */
+@supports (grid-template-rows:subgrid){
+  .solve-row{grid-row:span 2;grid-template-rows:subgrid;row-gap:12px}
+  .solve dt{align-self:start}
+}
