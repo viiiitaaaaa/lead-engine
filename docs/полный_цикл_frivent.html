@@ -1,0 +1,253 @@
+<title>Полный цикл Frivent</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Деловая записка: узкая колонка текста, широкая таблица веток, этапы списком. Цвета сайта: беж/серый, бордо, глубокий синий. */
+:root{
+  --bg:#f3f1ee; --paper:#fbfaf8; --fg:#1d2230; --muted:#5d6272; --line:#d9d5ce;
+  --wine:#7d1f2c; --navy:#1f2f4f; --ok:#2f6b46; --part:#8a6411; --todo:#7d1f2c; --pause:#6b6f7a;
+  --ok-bg:#e3efe6; --part-bg:#f4ead2; --todo-bg:#f3e1e3; --pause-bg:#e7e8eb;
+  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14171e; --paper:#1b1f28; --fg:#e8e6e2; --muted:#a3a7b3; --line:#2f3542;
+  --wine:#e0828f; --navy:#9fb4dc; --ok:#8fd0a6; --part:#e2bf6e; --todo:#ef9aa5; --pause:#a9adb8;
+  --ok-bg:#1d3326; --part-bg:#3a2f15; --todo-bg:#3b1f24; --pause-bg:#2a2e37; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14171e; --paper:#1b1f28; --fg:#e8e6e2; --muted:#a3a7b3; --line:#2f3542;
+  --wine:#e0828f; --navy:#9fb4dc; --ok:#8fd0a6; --part:#e2bf6e; --todo:#ef9aa5; --pause:#a9adb8;
+  --ok-bg:#1d3326; --part-bg:#3a2f15; --todo-bg:#3b1f24; --pause-bg:#2a2e37; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--body);padding-inline:16px;padding-block:40px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:48px}
+.narrow{max-width:760px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:700;color:var(--navy)}
+h2{font-size:24px;font-weight:600;color:var(--navy)}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);font-weight:600}
+.lead{font-size:19px;color:var(--fg)}
+.muted{color:var(--muted)}
+header{display:grid;gap:16px}
+section{display:grid;gap:20px}
+code{font:13px/1.4 var(--mono);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:1px 5px;white-space:nowrap}
+
+/* поток схемы */
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:f}
+.flow div{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--navy);padding:14px;display:grid;gap:6px;align-content:start;min-width:0}
+.flow div:nth-child(4){border-top-color:var(--wine)}
+.flow b{font-size:15px}
+.flow span{font-size:14px;color:var(--muted)}
+@media (max-width:860px){.flow{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.flow{grid-template-columns:1fr}}
+
+/* таблица веток */
+.tbl{overflow-x:auto;border:1px solid var(--line);background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+td:first-child{font-weight:600;width:16%}
+td.n{font-variant-numeric:tabular-nums}
+tr.grp td{background:var(--bg);color:var(--wine);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding-block:8px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.ok{background:var(--ok-bg);color:var(--ok)}
+.part{background:var(--part-bg);color:var(--part)}
+.todo{background:var(--todo-bg);color:var(--todo)}
+.pause{background:var(--pause-bg);color:var(--pause)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;font-size:14px;color:var(--muted);align-items:center}
+
+/* этапы */
+ol.stages{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
+ol.stages li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:20px;padding:18px 0;border-bottom:1px solid var(--line)}
+ol.stages .st{font-weight:600;color:var(--wine)}
+ol.stages .st small{display:block;margin-top:6px}
+ol.stages li>div{display:grid;gap:6px}
+@media (max-width:560px){ol.stages li{grid-template-columns:1fr;gap:6px}}
+ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.box{background:var(--paper);border:1px solid var(--line);padding:20px;display:grid;gap:12px;align-content:start}
+footer{font-size:13px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+<header class="narrow">
+  <p class="eyebrow">Frivent · «Смарт Люкс» · по схеме воронки от 30.09.2026</p>
+  <h1>Полный цикл привлечения клиентов</h1>
+  <p class="lead">Мы ведём клиента от первого поиска до сделки: находим тех, кто реально покупает премиум-инженерию и интерьер для загородных резиденций, выходим на них лично, собираем все заявки в одну точку с меткой источника и раз в неделю показываем, какой канал приносит деньги.</p>
+  <p class="muted">Документ разбирает схему по веткам. Для каждой указано, что уже сделано нашими скриптами (сборщики данных в проекте lead-engine), какие цифры уже собраны и что осталось построить.</p>
+</header>
+
+<section>
+  <h2>Как устроена схема</h2>
+  <div class="flow">
+    <div><b>1. Находим</b><span>ИИ-поиск дизайн-бюро, монтажников, клубов, блогеров, редакций; мониторинг новых объектов и тендеров</span></div>
+    <div><b>2. Выходим лично</b><span>Персональное письмо с пользой для конкретного адресата, без массовых рассылок; повтор через 5 дней, потом пауза</span></div>
+    <div><b>3. Свои витрины</b><span>Сайт, Яндекс Бизнес, Авито, экспертные статьи, Telegram, Instagram, позже YouTube</span></div>
+    <div><b>4. Один вход заявок</b><span>Лендинг или бот → Bitrix24. У каждого партнёра и канала своя ссылка (UTM или QR), поэтому источник заявки виден</span></div>
+    <div><b>5. ИИ-оценка воронки</b><span>Раз в неделю: источник → переход → заявка → созвон → аудит → сделка. Что работает, что убрать</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Ветки схемы и что по ним уже есть</h2>
+  <div class="legend">
+    <span><span class="pill ok">готово</span> работает, данные собраны</span>
+    <span><span class="pill part">частично</span> база есть, выход на людей строим</span>
+    <span><span class="pill todo">строим</span> следующий шаг</span>
+    <span><span class="pill pause">на паузе</span> решение 04.10</span>
+  </div>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>Ветка схемы</th><th>Что делаем для Frivent</th><th>Наши скрипты</th><th>Уже собрано</th><th>Статус</th></tr></thead>
+    <tbody>
+      <tr class="grp"><td colspan="5">Партнёры, которые приводят клиентов</td></tr>
+      <tr><td>Монтажные и климатические компании «под ключ»</td>
+        <td>ИИ-поиск и сегментация: кто работает в премиуме, ставит чужое оборудование (значит, может брать наше). Личное предложение, партнёрский мини-лендинг, тестовый объект, затем постоянная ссылка партнёра</td>
+        <td><code>yandex_maps_bd.py</code> <code>contractors_search.py</code> <code>montazhniki_elita.py</code> <code>sayty_obhod.py</code> <code>partnery_proverka.py</code></td>
+        <td class="n">131 партнёр; 90 подходят (85 ставят чужое); телефон у всех 90, почта у 87, ИНН у 62; 35 проверить звонком</td>
+        <td><span class="pill part">частично</span></td></tr>
+      <tr><td>Дизайн-бюро и архитекторы</td>
+        <td>Отбор бюро с загородными премиум-проектами, персональная идея под их объекты, мини-лендинг с кейсами «интерьер + скрытая инженерия», созвон, тестовый проект, CRM партнёров с UTM/QR</td>
+        <td><code>design_bureaus.py</code> <code>ad_list.py</code> <code>list_dossier.py</code> <code>make_pdf.py</code></td>
+        <td class="n">61 бюро «загородный премиум» (у 44 наши посёлки, у 42 нет своей комплектации); каталог AD List — 190 студий</td>
+        <td><span class="pill part">частично</span></td></tr>
+      <tr><td>Фитнес- и SPA-клубы, коммерция</td>
+        <td>Клубы с премиальной аудиторией: управляющему — полезная тема (климат зала, бассейна), участники приходят по ссылке клуба. Коммерция (общепит, медицина, ТЦ, отели) — прямые клиенты</td>
+        <td><code>yandex_maps_bd.py --clubs</code> <code>kommerciya_klienty.py</code> <code>commercial_reviews.py</code></td>
+        <td class="n">453 места досуга; 3 659 коммерческих объектов; у фитнеса каждый 4-й негативный отзыв про помещение</td>
+        <td><span class="pill part">частично</span></td></tr>
+      <tr><td>Брокеры</td>
+        <td>По схеме: бесплатный чек-лист инженерных рисков для покупателя дома. Страница «Проверка дома перед покупкой» на сайте уже есть</td>
+        <td><code>brokers_contacts.py</code> <code>cian_doma_1000.py</code></td>
+        <td class="n">63 агентства (сайт у 56, почта у 40); 590 домов от 1 000 м² на продаже</td>
+        <td><span class="pill pause">на паузе</span></td></tr>
+      <tr><td>Управляющие компании и консьержи</td>
+        <td>По схеме: материал или мини-лекция для жителей через УК. Жителям сами не пишем, базы не покупаем</td>
+        <td><code>uk_search.py</code> <code>cian_villages.py</code></td>
+        <td class="n">418 посёлков: 20 УК, 185 сайтов посёлков, контакт у 142</td>
+        <td><span class="pill pause">на паузе</span></td></tr>
+
+      <tr class="grp"><td colspan="5">Медиа и авторы</td></tr>
+      <tr><td>Редакции и PR</td>
+        <td>Следим, о чём пишут медиа, предлагаем редактору короткую идею под его тему; после согласия собираем материал (кейс, комментарий инженера). Читатель приходит по ссылке из статьи</td>
+        <td><code>media_search.py</code> + сборщик Telegram-новостей</td>
+        <td class="n">107 находок: 70 сайтов СМИ, почта у 32 («Рублёвка Life», «Капитал Рублёвки», «Красивые дома пресс», IVD)</td>
+        <td><span class="pill part">частично</span></td></tr>
+      <tr><td>Блогеры</td>
+        <td>Поиск авторов про загородную жизнь, архитектуру, Рублёвку и Новую Ригу; проверка аудитории, личное сообщение, интеграционный пакет</td>
+        <td><code>media_search.py</code> <code>instagram_profiles.py</code> <code>socials_stats.py</code></td>
+        <td class="n">12 YouTube, 10 ВК, 9 Telegram, 6 Дзен; 66 Instagram-аккаунтов рынка</td>
+        <td><span class="pill todo">строим</span></td></tr>
+
+      <tr class="grp"><td colspan="5">Свои витрины</td></tr>
+      <tr><td>Сайт / лендинг</td>
+        <td>Один лендинг: кто мы, раскрывающиеся УТП по типам клиентов, объекты, форма заявки с UTM и стадией объекта, памятки за контакт</td>
+        <td><code>site/build.py</code> <code>make_pdf.py</code> <code>qa_site.py</code></td>
+        <td class="n">Черновик опубликован; каркас по встрече 13.10 ждёт тексты УТП</td>
+        <td><span class="pill part">частично</span></td></tr>
+      <tr><td>Экспертный SEO-контент</td>
+        <td>Статьи по реальным болям (шум, сырость, конденсат у бассейна, духота), в конце кнопка «получить разбор». Ссылки на статьи идут в письма дизайнерам и редакциям</td>
+        <td><code>klyuchevye_slova.py</code> <code>wordstat_import.py</code> <code>klimat_forumy.py</code></td>
+        <td class="n">7 статей; 462 поисковые фразы с частотами; 593 мнения о конкурентах с форумов</td>
+        <td><span class="pill part">частично</span></td></tr>
+      <tr><td>Яндекс Бизнес / Карты</td>
+        <td>Профиль с реальными фото, услугами и отзывами; ссылка на сайт с меткой yandex_maps</td>
+        <td><code>yandex_reviews_bd.py</code> (отзывы конкурентов)</td>
+        <td class="n">Карточка Frivent: 4,5, 6 отзывов; 8 023 отзыва рынка разобраны по болям</td>
+        <td><span class="pill todo">строим</span></td></tr>
+      <tr><td>Авито</td>
+        <td>8–10 отдельных объявлений под конкретные запросы (аудит инженерии дома перед покупкой, бассейн без конденсата, тихая спальня, сервис готового дома). Через 2–3 недели усиливаем те, что дают диалоги</td>
+        <td>сборщик Авито через Apify</td>
+        <td class="n">200 объявлений конкурентов для образца</td>
+        <td><span class="pill todo">строим</span></td></tr>
+      <tr><td>Telegram</td>
+        <td>Свой канал: 2–3 кейса, совета или чек-листа в неделю. В чатах посёлков — только согласованные с админом ответы инженера; участников не парсим и не рассылаем</td>
+        <td><code>tg_chats_search.py</code> <code>tg_overlap.py</code></td>
+        <td class="n">45 чатов и каналов территории; в 8 чатах посёлков 4 741 житель; знаем, где они ещё сидят</td>
+        <td><span class="pill todo">строим</span></td></tr>
+      <tr><td>Instagram, YouTube</td>
+        <td>Instagram: 2 Reels в неделю (шум ночью, духота, конденсат), геометки Новой Риги и Рублёвки, коллаборации с дизайнерами. YouTube — позже, когда накопятся видео объектов</td>
+        <td><code>instagram_profiles.py</code></td>
+        <td class="n">Аккаунты конкурентов для образца</td>
+        <td><span class="pill todo">строим</span></td></tr>
+
+      <tr class="grp"><td colspan="5">Мониторинг</td></tr>
+      <tr><td>Новые объекты и запросы</td>
+        <td>Сигналы «строят дом / открылся клуб / ищут подрядчика / проектируют SPA»: ИИ отбирает подходящие и находит заказчика или партнёра, дальше — личное полезное сообщение</td>
+        <td><code>cian_villages.py</code> <code>cian_doma_1000.py</code> <code>okn_territoriya.py</code> <code>contractors_search.py</code></td>
+        <td class="n">527 посёлков; 1 345 объектов в стройке; 205 подрядчиков, уже работающих в посёлках; 116 зданий-памятников</td>
+        <td><span class="pill part">частично</span></td></tr>
+      <tr><td>Тендеры</td>
+        <td>Закупки по нашей территории и работам: благоустройство, стройка, бассейн, SPA, инженерия → подготовка предложения</td>
+        <td><code>tenders_zakupki.py</code> + Fabrikant, Тендерплан</td>
+        <td class="n">2 538 просмотрено, 19 подходят по территории</td>
+        <td><span class="pill ok">готово</span></td></tr>
+
+      <tr class="grp"><td colspan="5">Сердце схемы</td></tr>
+      <tr><td>Один вход заявок → Bitrix24</td>
+        <td>Форма сайта и Telegram-бот передают имя, телефон, запрос, источник, UTM, услугу, адрес объекта. Заявка сама появляется карточкой в Bitrix24, менеджер получает задачу</td>
+        <td>форма сайта с UTM; n8n для связки</td>
+        <td class="n">Форма готова; ждёт доступ к Bitrix24</td>
+        <td><span class="pill todo">строим</span></td></tr>
+      <tr><td>Автоворонка кейсов</td>
+        <td>Каждый кейс превращается в пост, Reels, статью и страницу; в каждом ссылка с меткой канала</td>
+        <td><code>site/objects_content.py</code></td>
+        <td class="n">5 страниц объектов (Kol Gali и др.)</td>
+        <td><span class="pill part">частично</span></td></tr>
+      <tr><td>ИИ-оценка воронки</td>
+        <td>Еженедельный короткий отчёт: какие партнёры, авторы и каналы привели созвоны и сделки; с кем продолжать, на что не тратить бюджет</td>
+        <td>панель <code>build_dashboard.py</code> как основа</td>
+        <td class="n">Панель лидогенерации работает на собранных данных</td>
+        <td><span class="pill todo">строим</span></td></tr>
+      <tr><td>Боли и офферы (под всё)</td>
+        <td>Тексты писем, УТП и статей — из реальных жалоб рынка, а не из головы</td>
+        <td><code>klimat_boli.py</code> <code>partner_pains.py</code> <code>zastroyshchiki_boli.py</code></td>
+        <td class="n">Первые 4 боли форумов: шум 24%, сырость 22%, духота 15%, сквозняки 12%; клиенты монтажников: плохой монтаж 22%, пропадают 21%</td>
+        <td><span class="pill ok">готово</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">Всего в общей базе 1 436 организаций с контактами. Брокеры и УК стоят на паузе по решению от 04.10 (они не наши партнёры); база по ним сохранена, ветку можно включить одним словом.</p>
+</section>
+
+<section class="narrow">
+  <h2>Порядок запуска</h2>
+  <p class="muted">Каждый этап сдаётся отдельно и даёт результат сам по себе.</p>
+  <ol class="stages">
+    <li><div class="st">Этап 1<small class="pill ok">сделан</small></div><div><h3>Фундамент</h3><p>База 1 436 организаций, досье партнёров и конкурентов, карта болей, поисковые фразы, черновик сайта, тендеры.</p></div></li>
+    <li><div class="st">Этап 2</div><div><h3>Один вход заявок</h3><p>Каркас сайта по встрече 13.10 с УТП по типам клиентов. Форма и Telegram-бот → Bitrix24 с источником. Персональные ссылки и QR для партнёров.</p></div></li>
+    <li><div class="st">Этап 3</div><div><h3>Партнёры, которые приносят деньги</h3><p>90 монтажных компаний и 61 дизайн-бюро: личные письма, партнёрский мини-лендинг + PDF, тестовый объект, CRM партнёров. Повтор через 5 дней, затем пауза 2–3 месяца.</p></div></li>
+    <li><div class="st">Этап 4</div><div><h3>Свои витрины</h3><p>Яндекс Бизнес, 8–10 объявлений на Авито, статьи по болям, Telegram-канал, Instagram. Всё со ссылками с метками.</p></div></li>
+    <li><div class="st">Этап 5</div><div><h3>Охват</h3><p>Клубы и коммерция, редакции, блогеры, регулярный мониторинг новых объектов и тендеров.</p></div></li>
+    <li><div class="st">Этап 6</div><div><h3>ИИ-оценка</h3><p>Еженедельный отчёт по источникам: заявка → созвон → аудит → сделка.</p></div></li>
+  </ol>
+</section>
+
+<section>
+  <div class="two">
+    <div class="box">
+      <h3>Нужно от заказчика</h3>
+      <ul>
+        <li>Доступ к Bitrix24 (куда падают заявки)</li>
+        <li>Тексты УТП для первых 1–2 типов клиентов, описание «Смарт Люкс» и «Центра компетенций»</li>
+        <li>От чьего имени идут личные письма партнёрам (отправляет человек, не робот)</li>
+        <li>Реальные кейсы, фото «до и после», телефон и мессенджеры</li>
+        <li>Бюджет на сервисы сбора данных (Apify, Bright Data)</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Чего не делаем</h3>
+      <ul>
+        <li>Не покупаем базы и не пишем жителям посёлков напрямую</li>
+        <li>Не делаем массовых рассылок: только личные письма тем, кому тема подходит</li>
+        <li>Не собираем участников чатов для рассылок</li>
+        <li>Не давим: одно напоминание через 5 дней, дальше пауза и возврат с новым кейсом</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="narrow">Основа: схема воронки lead-engine (30.09.2026), состояние проекта на 14.10.2026. Цифры — из наших сборов, источник каждой хранится в проекте.</footer>
+</div>
