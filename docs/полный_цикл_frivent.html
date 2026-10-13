@@ -69,6 +69,31 @@ ul{margin:0;padding-left:20px;display:grid;gap:6px}
 @media (max-width:760px){.two{grid-template-columns:1fr}}
 .box{background:var(--paper);border:1px solid var(--line);padding:20px;display:grid;gap:12px;align-content:start}
 footer{font-size:13px;color:var(--muted)}
+.no{background:var(--pause-bg);color:var(--pause);text-decoration:line-through}
+/* приёмы по веткам */
+.filt{display:flex;flex-wrap:wrap;gap:8px}
+.filt button{font:inherit;font-size:14px;padding:6px 14px;border:1px solid var(--line);background:var(--paper);color:var(--fg);border-radius:999px;cursor:pointer}
+.filt button.on{background:var(--navy);border-color:var(--navy);color:var(--paper)}
+.filt button:focus-visible,summary:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+h3.grp{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);margin-top:12px}
+details.br{background:var(--paper);border:1px solid var(--line)}
+details.br summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:14px 18px}
+details.br summary::-webkit-details-marker{display:none}
+details.br summary .bn{font-weight:600;font-size:16px}
+details.br summary .bn::before{content:"+";display:inline-block;width:18px;color:var(--wine)}
+details.br[open] summary .bn::before{content:"−"}
+details.br summary .bw{grid-column:1;font-size:14px;color:var(--muted);padding-left:18px}
+details.br summary .chips{grid-column:2;grid-row:1/3;display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;align-content:center;max-width:300px}
+@media (max-width:640px){details.br summary{grid-template-columns:1fr}details.br summary .chips{grid-column:1;grid-row:auto;justify-content:flex-start;padding-left:18px;max-width:none}}
+ul.pr{list-style:none;margin:0;padding:0 18px 12px;display:grid;gap:0}
+ul.pr li{display:grid;grid-template-columns:100px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
+ul.pr li .pill{justify-self:start;align-self:start;margin-top:2px}
+ul.pr li small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+@media (max-width:480px){ul.pr li{grid-template-columns:1fr;gap:4px}}
+.docs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.docs div{background:var(--paper);border:1px solid var(--line);padding:14px;display:grid;gap:4px;align-content:start}
+.docs b{font-size:15px}
+.docs span{font-size:14px;color:var(--muted)}
 </style>
 
 <div class="wrap">
@@ -76,7 +101,7 @@ footer{font-size:13px;color:var(--muted)}
   <p class="eyebrow">Frivent · «Смарт Люкс» · по схеме воронки от 30.09.2026</p>
   <h1>Полный цикл привлечения клиентов</h1>
   <p class="lead">Мы ведём клиента от первого поиска до сделки: находим тех, кто реально покупает премиум-инженерию и интерьер для загородных резиденций, выходим на них лично, собираем все заявки в одну точку с меткой источника и раз в неделю показываем, какой канал приносит деньги.</p>
-  <p class="muted">Документ разбирает схему по веткам. Для каждой указано, что уже сделано нашими скриптами (сборщики данных в проекте lead-engine), какие цифры уже собраны и что осталось построить.</p>
+  <p class="muted">Документ разбирает схему по веткам. Для каждой указано, что уже сделано нашими скриптами (сборщики данных в проекте lead-engine), какие цифры уже собраны и что осталось построить. Затем по каждой ветке идут приёмы, которыми мы её ведём. Они сверены с нашими скиллами (поиск партнёров и досье, дизайн сайта, договорённости, уроки из новостей, курсы по ИИ-агентам) и с конспектами около 60 книг: Котлер, Grewal, SPIN Selling, Challenger Sale, The Mom Test, Pitch Anything, Obviously Awesome, Million Dollar Consulting, SEO 2025 и другие.</p>
 </header>
 
 <section>
@@ -212,13 +237,340 @@ footer{font-size:13px;color:var(--muted)}
   <p class="muted">Всего в общей базе 1 436 организаций с контактами. Брокеры и УК стоят на паузе по решению от 04.10 (они не наши партнёры); база по ним сохранена, ветку можно включить одним словом.</p>
 </section>
 
+<section id="priemy">
+  <h2>Как ведём каждую ветку</h2>
+<!--PRIEMY-->
+<p class="muted">В схему вошли 249 приёмов: готово 26, делаем 209, ждут данных или решения 12, не делаем по вашим решениям 2. Нажмите на ветку, чтобы раскрыть её.</p>
+<div class="filt" role="group" aria-label="Фильтр по статусу"><button type="button" class="on" data-f="all">Все</button><button type="button" data-f="ok">готово</button><button type="button" data-f="wait">ждёт данных</button><button type="button" data-f="new">делаем</button><button type="button" data-f="no">не делаем</button><button type="button" id="openall">Раскрыть всё</button></div>
+<h3 class="grp">Партнёры</h3>
+<details class="br" id="montazh"><summary><span class="bn">Монтажные и климатические компании</span><span class="bw">Главный «денежный» канал: им мы постоянный поставщик, они приводят объекты</span><span class="chips"><span class="pill ok">готово 1</span><span class="pill todo">делаем 22</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Отбор по сегменту и марке чужого оборудования</b> — 131 компания → 90 подходят: ставят чужое, работают в премиуме<small>Котлер ММ, Котлер EM; скрипты partnery_proverka.py, montazhniki_elita.py</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Карта оценки партнёра 0–100 с порогами</b> — охват 0,2 · маржа 0,3 · стоимость работы 0,3 · наша независимость 0,2 → «брать / с оговорками / проверить / отказ»<small>Vuibert; Мукминов</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сначала проверяемые факты, потом впечатление</b> — ЕГРЮЛ, суды, объекты, отзывы, «тест 15 минут» (вакансии висят месяцами, текучка) — до первого звонка<small>Prediction Machines; Котлер «10 грехов»; Экман</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Два типа хозяев — два письма</b> — мастеру — интересные объекты и качество; управленцу — маржа, сроки, загрузка бригад<small>Whalen</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Одна минута о Frivent для партнёра</b> — «Объекты с готовым проектом и комплектацией, оплата по этапам, шеф-наладка от завода» — только реальные условия<small>Klaff</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Идти «за советом», а не продавать</b> — первый разговор — «как вы решаете осушение бассейнов?»; лучшие собеседники становятся партнёрами<small>Mom Test</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>SPIN-вопросы партнёру</b> — ситуация (бригады, объекты) → проблема (нет поставщика к графику) → последствие (штрафы, потеря генподрядчика) → «если оборудование и документы возьмёт Frivent?»<small>Rackham SPIN</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Условия партнёра на одной странице до первого договора</b> — территория, комиссия, чей клиент с сайта, цена одна для всех, сроки ответа, формат смет и актов<small>Grewal; Котлер Digital; Котлер EM</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Двойная комиссия</b> — заявка с сайта из района партнёра: процент ему, даже если сделку закрыл Frivent — нет спора каналов<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Платим за качество заявки</b> — процент по UTM — от заявок, дошедших до договора; права на данные о заявках — в договоре<small>Prediction Machines</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Лестница скидок из реальной экономии</b> — за объём, накопительная за квартал, за быструю оплату, сезонная (осушение до весны)<small>Vuibert; Grewal; Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ключевое оставляем у себя</b> — подбор, автоматика, гарантийный сервис, связь с заводом — партнёр не становится конкурентом<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Гарантия только при авторизованном монтаже</b> — серийные номера, стандарт сдачи, штраф за «серый» монтаж<small>Grewal; Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>«Сертифицированный партнёр Frivent»</b> — знак можно отозвать; продление раз в год по оценкам владельцев<small>Котлер Digital; Котлер 4.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Школа партнёров</b> — короткое обучение с сертификатом + выезд нашего инженера на первые объекты<small>Grewal; Hill; Vuibert</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Набор партнёра</b> — презентация, кейсы, фото, расчётные листы, шаблоны расчёта, материалы для его клиентов<small>High-Priced; Франц.</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Лестница партнёрства</b> — один объект → совместные материалы → постоянная ссылка → эксклюзив только в обмен на план и вложения<small>SaaS Playbook; Hill; High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Канал для партнёров и совет лучших</b> — новости, прайс, наличие; 3–5 лучших монтажников — в совет, 20% самых активных — особые условия<small>Котлер 6.0; Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Групповой онлайн-показ раз в месяц</b> — «как устроено осушение и как работают партнёры» для нескольких монтажников, потом звонок<small>SaaS Playbook</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ранжирование раз в полгода</b> — лучшим больше заявок, слабым дообучение или выход<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Нарушение — урок всей сети</b> — рассылка «правила обновлены, причина…» без публичного позора<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Цифру вводим пилотом</b> — CRM и фотоотчёт сначала на одной бригаде<small>Котлер Digital</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Запас монтажников</b> — сколько объектов в сезон тянут бригады и кто проверен на подмену<small>Котлер EM; Cloud</small></div></li>
+</ul></details>
+<details class="br" id="dizain"><summary><span class="bn">Дизайн-бюро и архитекторы</span><span class="bw">Через них приходит владелец: сам богатый клиент почти не ищет</span><span class="chips"><span class="pill ok">готово 3</span><span class="pill pause">ждёт данных 1</span><span class="pill todo">делаем 13</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Канал к владельцу — через архитекторов, дизайнеров, ассистентов</b> — вывод по Вордстату и отзывам, раздел 11а основы<small>b2b-sbor; лендинг_основа §13</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Дизайнер остаётся лицом проекта</b> — страница для дизайнера, вознаграждение открыто<small>site-design; внедрение_книг</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Памятки-PDF за контакт</b> — 12 ситуаций на клиента, кнопка на сайте<small>site-design (make_pdf.py)</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Идём к решающему через влияющих</b> — архитектору даём расчёт и сравнение вариантов, а не «презентацию компании»<small>Challenger Sale</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Карточка роли «архитектор»</b> — критерии, тревоги, рычаги; язык — его слова<small>Challenger; Whalen</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Техпакет для проектировщика</b> — расчёт влагоудаления, паспорта, узлы, протоколы пусконаладки; BIM — уточнить, есть ли у Frivent<small>Котлер 4.0; Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Бесплатная проверка чужого проекта по климату</b> — маленький шаг без риска для бюро<small>лендинг_основа §18; Котлер 7.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>«15 минут инженера по проекту»</b> — первый шаг для архитектора<small>High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Закрытый показ сданного объекта</b> — с согласия владельца, до 8 дизайнеров, 1 час, «как спрятали оборудование в отделку»<small>Котлер 7.0; Котлер 6.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Семинар «Климат премиального дома: ошибки проектирования»</b> — для архитекторов и дизайнеров, можно с фуршетом<small>High-Priced; Котлер 6.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Совместные кейсы под именем бюро</b> — кейс объекта за подписью бюро и Frivent<small>Vuibert</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Размер вознаграждения бюро</b> — решить по марже<small>лендинг_основа §16</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Альянс «под ключ»</b> — постоянный круг смежников с правилами передачи клиента, Frivent ведёт круг<small>Котлер ММ; Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Панель из 5–10 проектировщиков</b> — раз в полгода спрашиваем мнение о сайте, ценах, услугах; благодарим услугой<small>Котлер ММ; «10 грехов»</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Замер известности</b> — спросить 5–10 архитекторов, знают ли Frivent и что думают<small>Котлер «10 грехов»</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Узкий клуб архитекторов</b> — вход по рекомендации, Frivent — хозяин встреч<small>Mom Test; Котлер Digital</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Рассылка через ассоциации</b> — АВОК, ассоциации бассейнов, СРО — законный выход без покупки баз<small>SaaS Playbook; High-Priced</small></div></li>
+</ul></details>
+<details class="br" id="kommerciya"><summary><span class="bn">Фитнес, SPA, общепит, клиники, отели</span><span class="bw">Прямые клиенты и клубы с богатой аудиторией</span><span class="chips"><span class="pill ok">готово 2</span><span class="pill todo">делаем 13</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>База коммерции</b> — 3 659 объектов; у фитнеса каждый 4-й негативный отзыв — про помещение<small>kommerciya_klienty.py, commercial_reviews.py</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Заголовок-«датчик дыма» для Коммерции</b> — «Духота уводит гостей из зала раньше десерта»<small>Tracy</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Порядок захода</b> — сначала несетевые фитнес, отели, СПА, рестораны; сети (1 509) — позже, через головной офис<small>лендинг_основа §17; Cloud</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Делить по потребности, а не по отрасли</b> — «скрытая цена влаги» (бассейн), «цена воздуха и шума» (зал)<small>Challenger</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Карта закупочного центра</b> — инициатор, главный инженер, эксплуатация, закупщик, собственник — каждому своё письмо<small>Котлер 7.0; Belch</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Одностраничник «суть для директора»</b> — проблема, решение, срок, цена, риск без решения<small>Storytelling in Design</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Проблема клиента его клиента</b> — запах, конденсат, сквозняк у посетителей — довод для владельца<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>BANT в карточке</b> — бюджет, право решать, потребность, сроки<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Фильтр «уже ищет решение»</b> — есть проблема, знает о ней, есть бюджет, уже поставил времянку<small>Mom Test</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Вход через пробу</b> — бесплатная диагностика или пробный ТО на 1–3 объектах<small>Cloud; Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сервисный договор и «программа экономии»</b> — рамочный договор на фильтры; ежегодно приносить экономию ≥5%<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Окна работ в часы клиента</b> — ресторан до открытия, бассейн ночью<small>Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Отраслевые подборки кейсов</b> — бассейны, рестораны, медицина — отдельные PDF<small>DM; SaaS; Keller</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Семинар у управляющих</b> — «как снизить счета и избежать аварий»<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Клубу — полезная тема вместо рекламы</b> — участники приходят по ссылке клуба; контакты членов не берём<small>схема воронки</small></div></li>
+</ul></details>
+<details class="br" id="brokery"><summary><span class="bn">Брокеры и УК посёлков</span><span class="bw">На паузе по решению 04.10. Что сохранено на случай, если включим</span><span class="chips"><span class="pill pause">ждёт данных 4</span></span></summary><ul class="pr">
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Брокеры: бесплатный чек-лист инженерных рисков для покупателя</b> — страница «Проверка дома перед покупкой» уже есть<small>схема воронки; сайт</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Договор агента на 15 пунктов</b> — территория, полномочия, комиссия на ИП/юрлицо с актом, тайна базы<small>High-Priced; Grewal</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>УК — материал для жителей через управляющего</b> — жителям сами не пишем<small>схема; правило lead-engine</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Сервис-абонемент «доступ к инженеру»</b> — оплата за квартал вперёд, сезонные проверки<small>Weiss; Котлер Digital</small></div></li>
+</ul></details>
+<h3 class="grp">Медиа</h3>
+<details class="br" id="pr"><summary><span class="bn">Редакции и PR</span><span class="bw">Бесплатное доверие: о нас пишут независимые люди</span><span class="chips"><span class="pill ok">готово 1</span><span class="pill pause">ждёт данных 1</span><span class="pill todo">делаем 11</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Список изданий</b> — «Капитал Рублёвки» (~90 тыс.), «На Рублёвке Life», «Красивые дома пресс», IVD, Villagio Magazine<small>media_search.py</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Лестница публикаций</b> — своя рассылка → отраслевая → колонка → крупное издание; темы только наши<small>Weiss</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Короткий личный питч редактору</b> — идея под его текущую тему, материал собираем после «да»<small>схема воронки; Belch (6 новостных ценностей)</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Повод — каждый сданный объект</b> — релиз: задача, оборудование, влажность до/после<small>SMM; High-Priced; «10 грехов»</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>PR на своих данных</b> — «Сколько стоит осушение бассейна в 2026» по нашим сметам<small>Clarke SEO</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Журналиста — на объект до сдачи</b> — «писать не обязательно»; инженер показывает расчёт<small>Котлер «10 грехов»</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Голоса своих инженеров</b> — проектировщик, бригадир, сервисный инженер как авторы<small>Котлер «10 грехов»</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ответы журналистам</b> — Pressfeed и похожие, спикер назначен заранее<small>Clarke; Davidson; Belch</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Разбор отраслевого происшествия</b> — «почему гниют перекрытия у бассейна» без названий объектов<small>Котлер Digital</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Конкурсы и награды</b> — подавать объекты, значок в КП<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Своя ссылка с меткой на каждую публикацию</b> — видно, какое издание дало заявки<small>High-Priced</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Блок «Как о нас писали» и «Пресса» на сайте</b> — только реальные упоминания<small>Clarke; внедрение_книг №13</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Маркировка рекламы</b> — посевы через ОРД: ERID, UTM, проверка в ЕРИР<small>новости 12.10</small></div></li>
+</ul></details>
+<details class="br" id="blogery"><summary><span class="bn">Блогеры</span><span class="bw">Тёплая аудитория загородной жизни и архитектуры</span><span class="chips"><span class="pill todo">делаем 6</span><span class="pill no">не делаем 1</span></span></summary><ul class="pr">
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ищем от аудитории, а не по каталогам</b> — кого читают наши клиенты; каталоги блогеров — под массовые бренды<small>SaaS Playbook</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>3–5 узких экспертов</b> — дизайнеры и инженеры с блогами делают обзор «как сделано осушение» (как у Bosch)<small>Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сначала комментарии по делу, потом письмо</b> — пара вдумчивых комментариев к постам автора<small>Davidson; LinkedIn Sales</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Интеграционный пакет</b> — готовый материал, фото, ссылка с меткой<small>схема воронки</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Эфир с управляющим объекта клиента</b> — ему видимость, нам тёплое знакомство<small>LinkedIn Sales</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Нативную рекламу помечаем сразу</b> — поздно понятая реклама = ощущение манипуляции<small>Belch</small></div></li>
+<li data-s="no"><span class="pill no">не делаем</span><div><b>Мемы</b> — для премиум-люкс тон не подходит<small>LinkedIn Sales</small></div></li>
+</ul></details>
+<h3 class="grp">Витрины</h3>
+<details class="br" id="sayt"><summary><span class="bn">Сайт</span><span class="bw">Один лендинг: кто мы, УТП по типам клиентов, объекты, заявка с меткой источника</span><span class="chips"><span class="pill ok">готово 4</span><span class="pill pause">ждёт данных 3</span><span class="pill todo">делаем 12</span><span class="pill no">не делаем 1</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Обещание первого экрана</b> — «тихо, сухо, свежо, без сквозняков» — 4 главные боли форумов<small>лендинг_основа §6</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>«Почему мы — 3 причины», «Чего опасаются заказчики», «Что фиксируем в договоре»</b> — блоки на сайте<small>Tracy; Котлер 7.0</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>«Что спросить у любого подрядчика», «Жизнь дома после сдачи», честная таблица «один подрядчик или несколько»</b> — блоки на сайте<small>Hayden; Dahlström; Котлер 7.0</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>FAQ с разметкой, политика ПДн, ответ «в течение 4 часов»</b> — на сайте<small>Clarke; внедрение_книг</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Каркас по встрече 13.10</b> — раскрывающиеся УТП по типам клиентов посередине главной, без меню аудиторий<small>встреча с Пашей</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Порядок текста</b> — боль голосом эксперта → неожиданный взгляд → цена бездействия → случай «как у вас» → как иначе → Frivent<small>Challenger</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Начинать со слов владельца</b> — «запотевают окна, пахнет сыростью», потом объяснять настоящую задачу<small>Whalen</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Две версии текста</b> — простыми словами + раскрывающийся блок «для проектировщика»<small>Whalen; Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Путь покупки одной строкой</b> — заявка → выезд инженера → проект → смета → монтаж → сервис<small>Whalen; Котлер 4.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Убрать слова-«мины»</b> — «ведущий», «уникальный», «индивидуальный подход», «высокое качество»<small>Challenger</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Тест подмены и SAFE-BOLD</b> — если текст подходит конкуренту — позиционирования нет<small>Котлер ММ; Challenger</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Одна кнопка + тест размытия после каждой выкладки</b> — добавить в автопроверку qa_site<small>Whalen</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Микровопросы там, где возникают</b> — «шумит?», «испачкаете отделку?», «что если сломается?»<small>Whalen</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Страница партнёров отдельно от страницы заказчиков</b> — не смешивать тексты<small>Dunford</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Гарантии и сроки сервиса цифрами</b> — выезд за N часов, склад запчастей<small>Tracy; Котлер ММ</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Команда с лицами «кто приедет на объект»</b> — без телефонов — только заявка<small>Котлер 7.0</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Действующие сертификаты (ОСМК истекли 05.07.2025), дом «под ключ» в объектах</b> — нужны от Frivent<small>внедрение_книг</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Скорость</b> — LCP ≤2,5 с, тяжёлые фото убрать (решение 13.10), Kol Gali оставить<small>Clarke; встреча 13.10</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Бесплатный SEO-аудит по 74 параметрам перед запуском</b><small>новости (принятое)</small></div></li>
+<li data-s="no"><span class="pill no">не делаем</span><div><b>Калькуляторы, квизы, цены «от», контакты в шапке</b> — книги советуют, но это её решение 10.10 — не делаем<small>её решения; книги High-Priced, Котлер</small></div></li>
+</ul></details>
+<details class="br" id="seo"><summary><span class="bn">Экспертные статьи и SEO</span><span class="bw">Человек ищет решение — находит нашу статью — нажимает «получить разбор»</span><span class="chips"><span class="pill ok">готово 3</span><span class="pill todo">делаем 11</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Журнал по болям</b> — 11 статей: шум, сырость, конденсат, духота, мифы, «закладывать на черновых»<small>site-design; Fraser; Котлер ММ</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>«Коротко» в начале статьи, разметка Article, sitemap</b> — ответ, который пересказывает ИИ-поиск<small>Котлер 7.0; Clarke</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>462 фразы с частотами Вордстата</b> — семантика для страниц<small>klyuchevye_slova.py, wordstat_import.py</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Страница под каждое намерение</b> — «под ключ» → форма; «какой выбрать» → честное сравнение<small>Davidson; Clarke</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Страницы «запрос + место»</b> — «осушение бассейна на Рублёвке»<small>Davidson</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Кейс в трёх актах, от 800 слов</b> — что хотел заказчик → что нашли → результат; заголовок = вопрос клиента<small>Kleon; SaaS; DM</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Одна авторская «модель» в неделю</b> — схема влажности, чек-лист, «5 ошибок монтажа»<small>Weiss</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Лид-магнит «7 вещей, которые обязана иметь система осушения»</b> — каждая из 7 — наша сильная сторона<small>High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>FAQ по вопросам с форумов, 40–50 слов</b> — разметка FAQPage<small>Clarke</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ссылки «по-белому»</b> — каталоги АВОК, отраслевые СМИ, ссылки лидера (Systemair, Menerga) — пройти по списку<small>Clarke; Davidson; Belch</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Экспертные ответы на FORUMHOUSE</b> — сначала польза, потом ссылка<small>лендинг_основа §17; Davidson</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Проверить, рекомендуют ли нас нейросети</b> — FAQ и Organization для цитирования<small>новости 12.10</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Авторы — инженеры с фото</b><small>Котлер «10 грехов»</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ожидание по сроку</b> — эффект SEO оценивать не раньше 4 недель, трафик — через 1–2 месяца<small>Belch; новости</small></div></li>
+</ul></details>
+<details class="br" id="yandex"><summary><span class="bn">Яндекс Бизнес, Карты, Директ</span><span class="bw">Чтобы находили по названию и «рядом», видели фото и отзывы</span><span class="chips"><span class="pill ok">готово 1</span><span class="pill pause">ждёт данных 1</span><span class="pill todo">делаем 6</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Отзывы Яндекса на сайте текстом</b> — 7 отзывов 5★<small>site-design</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Карточка заполнена полностью</b> — все категории, услуги, фото каждого объекта и производства, описание без «лучшие в мире»<small>Clarke; Davidson</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Разбор 3–5 карточек конкурентов по 10 факторам</b> — своя карточка «больше, чем у них»<small>Clarke</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Отзыв с каждого объекта</b> — QR и ссылка в акте сдачи; «оставите отзыв? и, может, знаете, кому ещё нужно?»<small>Clarke; LinkedIn Sales</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Карточка в 2ГИС</b> — сейчас её нет<small>лендинг_основа §16</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ссылка на сайт с меткой yandex_maps</b> — видно, что заявка пришла с Карт<small>схема воронки</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Директ: защитить запрос «Frivent», цели Метрики, отсев ботов</b> — площадки РСЯ с CTR 60–70% исключать; бюджет к пику менять за 2 недели<small>Belch; новости 12.10</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Директ по премиальным районам</b> — книга советует, но сначала её решение (жителям не пишем)<small>Котлер EM</small></div></li>
+</ul></details>
+<details class="br" id="avito"><summary><span class="bn">Авито</span><span class="bw">Ловим тех, кто уже ищет конкретное решение</span><span class="chips"><span class="pill todo">делаем 6</span></span></summary><ul class="pr">
+<li data-s="new"><span class="pill todo">делаем</span><div><b>8–10 отдельных объявлений под запросы</b> — аудит инженерии дома перед покупкой, бассейн без конденсата, тихая спальня, сервис европейского оборудования, остекление, текстиль<small>схема воронки; лендинг_основа §1</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Прямо писать, чего не делаем</b> — эконом и массовое — отсекает чужие запросы<small>SMM</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Не демпинговать</b> — никаких «проект за 9 990 ₽» — низкая цена убивает доверие<small>High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Страница, куда ведёт объявление, повторяет его</b> — тот же заголовок и обещание, ссылка с меткой<small>Vuibert</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Через 2–3 недели усиливаем только объявления с диалогами</b><small>схема воронки</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Шаблоны быстрых ответов</b> — заготовки на частые вопросы, человек отправляет<small>схема воронки</small></div></li>
+</ul></details>
+<details class="br" id="telegram"><summary><span class="bn">Telegram</span><span class="bw">Прогрев: кейсы, советы, разборы; в чатах — только польза через админа</span><span class="chips"><span class="pill ok">готово 1</span><span class="pill todo">делаем 8</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>45 чатов и каналов территории, где сидят жители</b> — знаем, куда нести пользу<small>tg_chats_search.py, tg_overlap.py</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Свой канал: 2–3 поста в неделю</b> — кейсы, ход работ, экспертные советы; рубрики для заказчиков, архитекторов, монтажников<small>схема воронки; SMM</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Посты из реальных вопросов, а не «плановые»</b><small>Котлер Digital</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Серия «этапы объекта»</b> — монтаж → воздуховоды → пусконаладка, без лиц и адресов, с разрешения<small>Kleon</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>«Вопрос инженеру» в чатах посёлков</b> — только согласованный с админом пост; участников не парсим<small>схема воронки</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Дайджест чатов раз в день</b> — боли, конкуренты, похожее на заявку — из сборщика новостей<small>новости 12.10</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Telegram Ads по смежным люкс-темам</b> — яхты, гольф, элитная недвижимость<small>новости 12.10</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Своя база контактов с первого дня</b> — соцсети — «арендованные»<small>Котлер 6.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Занять имя Frivent в Max</b><small>новости 12.10</small></div></li>
+</ul></details>
+<details class="br" id="insta"><summary><span class="bn">Instagram и YouTube</span><span class="bw">Показать уровень объектов и процесс; YouTube — позже</span><span class="chips"><span class="pill pause">ждёт данных 1</span><span class="pill todo">делаем 6</span></span></summary><ul class="pr">
+<li data-s="new"><span class="pill todo">делаем</span><div><b>2 Reels в неделю</b> — шум ночью, духота, конденсат, скрытая вентиляция; геометки Новой Риги, Рублёвки, Жуковки<small>схема воронки</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Первый кадр — объект, без лица; тест 2–3 начал</b> — мерить ценой встречи, а не просмотрами<small>новости 12.10</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Коллаборации с дизайнерами, бассейностроителями</b> — совместные Reels по реальному кейсу<small>схема; Котлер 4.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Фильм объекта 3–5 минут</b> — сцена → конфликт (конденсат) → разрешение (замер, монтаж, результат)<small>Котлер 7.0; Belch</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Субтитры в каждом ролике</b> — большинство смотрит без звука<small>SMM</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>YouTube: 2 длинных видео в месяц + Shorts</b> — когда накопятся видео объектов<small>схема; SMM (ниша свободна у европейцев)</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Картинки установок без съёмки</b> — разрезы и виды в разборе нейросетью<small>site-design</small></div></li>
+</ul></details>
+<h3 class="grp">Мониторинг</h3>
+<details class="br" id="monitoring"><summary><span class="bn">Новые объекты и сигналы</span><span class="bw">Узнать о стройке раньше конкурентов</span><span class="chips"><span class="pill ok">готово 1</span><span class="pill todo">делаем 8</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Стройки и дома на продаже</b> — 1 345 объектов в стройке, 590 домов от 1 000 м², 116 памятников<small>cian_villages.py, cian_doma_1000.py, okn_territoriya.py</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Триггеры, а не готовые объекты</b> — открытие ресторана или клиники, стройка бассейна, реконструкция — под каждый готовое письмо<small>SaaS Playbook</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ловить стадию черновых работ</b> — «потом в 2–3 раза дороже»<small>Fraser; SaaS</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Обходной путь = горячий лид</b> — бытовые осушители у чаши, «проветриваем каждый вечер»<small>Котлер 7.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сменился управляющий или главный инженер</b> — повод выйти на связь (ЕГРЮЛ, hh.ru)<small>LinkedIn Sales</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Досье начинать с вывода</b> — «подходит / не подходит, потому что…», у каждого факта источник<small>Minto; Gulli</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>ИНН — главный ключ, ушедших помечать, не удалять</b><small>Mendelevitch</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Доля упоминаний Frivent и 6 европейцев раз в месяц</b><small>Котлер Digital</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Не принимать единичный крик за тренд</b><small>Belch</small></div></li>
+</ul></details>
+<details class="br" id="tendery"><summary><span class="bn">Тендеры</span><span class="bw">Закупки по нашей территории и работам</span><span class="chips"><span class="pill ok">готово 1</span><span class="pill todo">делаем 6</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>ЕИС, Fabrikant, Тендерплан</b> — 2 538 просмотрено, 19 подходят<small>tenders_zakupki.py</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Попасть в спецификацию до тендера через проектировщика</b><small>Котлер Digital</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Не больше двух тендеров в квартал</b> — нет доступа к ЛПР — не тратить недели<small>Weiss; Challenger</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>КП из готовых блоков</b> — ответы на опросники собирать из прошлых КП<small>Keller; Mendelevitch</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Расчёт ставки</b> — прибыль при победе × вероятность, учёт загрузки бригад<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Просить разбор проигранной заявки</b><small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Без откатов, «тест газеты»</b><small>Hill</small></div></li>
+</ul></details>
+<h3 class="grp">Сердце схемы</h3>
+<details class="br" id="vhod"><summary><span class="bn">Один вход заявок → Bitrix24</span><span class="bw">Все каналы ведут в одну форму или бота; источник виден по метке</span><span class="chips"><span class="pill ok">готово 2</span><span class="pill pause">ждёт данных 1</span><span class="pill todo">делаем 9</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Форма с UTM, «Стадия объекта», адрес объекта обязателен</b> — кто первым указал адрес — за тем объект<small>site; лендинг_основа §10</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Защита формы</b> — ловушка для ботов, отсев отправки быстрее 3 с, черновик сохраняется<small>Мукминов</small></div></li>
+<li data-s="wait"><span class="pill pause">ждёт данных</span><div><b>Bitrix24: заявка = «лид → сделка» с суммой и UTM</b> — не задачи — иначе воронку не посчитать<small>новости 12.10</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Telegram-бот заявок</b> — кнопка «к инженеру», сложное — сразу человеку<small>схема; Prediction Machines</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Персональные ссылки и QR каждому партнёру, изданию, блогеру</b><small>схема; High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Классификатор заявок</b> — вентиляция / осушение / климат / партнёрство / другое + «неясно → уточнить»<small>Gulli</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ответ в тот же день, у каждой заявки ответственный</b> — раз в неделю список «зависших»<small>Котлер ММ; High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Страница «спасибо» с именем менеджера и записью на время</b><small>SaaS Playbook</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Перезвон тем, кто бросил форму с телефоном</b><small>SaaS; Fraser</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Поля «экономический покупатель» и «привратник»</b> — «согласую с руководителем» = говорим не с тем<small>Weiss</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сквозная проверка после каждой правки</b> — тестовая заявка реально дошла<small>Мукминов</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Опрос «как вы о нас узнали?»</b><small>Котлер 7.0</small></div></li>
+</ul></details>
+<details class="br" id="keisy"><summary><span class="bn">Автоворонка кейсов и жизнь после сдачи</span><span class="bw">Каждый объект → пост, статья, страница; клиент → сервис и рекомендации</span><span class="chips"><span class="pill ok">готово 2</span><span class="pill todo">делаем 9</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>5 страниц объектов «задача → решение → было/стало»</b> — «показано с согласия владельца»<small>site-design</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Звонок через неделю после сдачи</b> — в блоке «Жизнь дома после сдачи»<small>Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Один кейс → несколько постов</b> — в каждом ссылка с меткой канала<small>схема воронки</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Письма 3-2-1</b> — оффер → через неделю кейс → обучающее; в каждом «пришлите план — посчитаем»<small>SaaS; Vuibert</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Серия касаний 4–8 недель</b> — кейс, ошибка монтажа, расчёт экономии, видео<small>High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Два буклета</b> — 2 страницы к первому письму, 12 после ответа<small>DM</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Лестница продуктов</b> — чек-лист → аудит → под ключ → сервисный контракт<small>High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>«После сдачи» как отдельный этап</b> — день (запуск, обучение), неделя (звонок), месяц (замеры), сезон (ТО)<small>Storytelling in Design; Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Паспорт системы и QR на установке</b> — инструкция, «вызвать инженера», дата ТО<small>Котлер 7.0; Котлер EM</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Оценившим 9–10 — просьба о видео-отзыве и 3–5 рекомендациях</b><small>Котлер ММ; High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сценарий сбоя HEARD</b> — выслушать → посочувствовать → извиниться → решить → сообщить, что изменили<small>Котлер 7.0</small></div></li>
+</ul></details>
+<details class="br" id="ocenka"><summary><span class="bn">ИИ-оценка воронки</span><span class="bw">Раз в неделю: какой источник привёл деньги, что резать</span><span class="chips"><span class="pill ok">готово 1</span><span class="pill todo">делаем 11</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Панель лидогенерации на собранных данных</b> — основа для отчёта<small>build_dashboard.py</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Воронка по шагам</b> — найдено → написали → ответили → встреча → КП → сделка; чиним самое узкое место<small>SaaS; DM</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Клики — не деньги</b> — считаем заявки с UTM, встречи, договоры<small>Weiss; SaaS</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Конверсия канала через 30/60/90/180 дней</b> — цикл сделки долгий<small>High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Балл заявки 1–5 от Claude с причиной</b> — ≥4 — сразу менеджеру; данные остаются у нас<small>Fraser; SaaS</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Под каждым графиком — вывод и «какое решение меняет»</b><small>Knaflic; Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сверять с сезоном и прошлым периодом</b> — не приписывать рост своему действию<small>Котлер Digital; Belch</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Поиск «Frivent» в Вордстате каждый месяц</b> — рост бренда<small>High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Чистка «зомби-заявок»</b> — хвалили и откладывали 2+ раза — дать шанс отказаться<small>Mom Test</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Разбор потерянных сделок раз в квартал</b> — внутренние и внешние причины<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Отдача канала = (выручка − затраты) / затраты</b> — резать слабые<small>Vuibert</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Живой разговор с клиентом раз в месяц</b> — аналитика его не заменяет<small>Котлер 7.0</small></div></li>
+</ul></details>
+<h3 class="grp">Сквозные правила</h3>
+<details class="br" id="pisma"><summary><span class="bn">Личные письма партнёрам и компаниям</span><span class="bw">Как пишем любому адресату в схеме</span><span class="chips"><span class="pill todo">делаем 10</span></span></summary><ul class="pr">
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Письмо VFWPA</b> — что улучшаем → «ничего не продаём» → чего не понимаем → почему именно вы → просьба<small>Mom Test</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Первая строка — о его деле</b> — конкретный объект адресата, тема с названием его компании<small>Kleon; Dickey; SaaS</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Первое сообщение — вопрос, не оффер</b> — без прайса и ссылок<small>LinkedIn Sales</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Схема Минто</b> — ситуация → осложнение → вопрос → ответ «да, потому что 1–4»<small>Minto</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>В конце — следующий шаг со сроком</b> — не «буду на связи»<small>Challenger</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Одно напоминание через 5 дней, дальше пауза 2–3 месяца</b> — возвращаемся с новым кейсом<small>схема воронки; Dickey</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Без массовых рассылок</b> — SPF/DKIM/DMARC, малые партии, отправляет человек<small>Clarke; Tracy</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ссылаться на общего знакомого только с его разрешения</b><small>LinkedIn Sales; Weiss</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Видеосообщение 1–2 минуты на фоне его объекта</b><small>8-Figure; LinkedIn Sales</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Пишем только юрлицам и тем, кто сам оставил контакт</b> — жителям посёлков — никогда<small>правило lead-engine; «10 грехов»</small></div></li>
+</ul></details>
+<details class="br" id="utp"><summary><span class="bn">Позиционирование и УТП</span><span class="bw">Почему у Frivent, а не у других</span><span class="chips"><span class="pill ok">готово 2</span><span class="pill todo">делаем 11</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Полный цикл под ключ, только премиум-люкс; свой завод климата</b><small>решение 04.10; ВК №4</small></div></li>
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Цена от курса не зависит</b> — оборудование Frivent — завод в РФ; импорт фиксируется в день оплаты<small>ВК №3</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ответ на вопрос «почему вы?» без слов «премиум, под ключ, надёжный»</b> — не вышло за 30 минут — исследовать до текста<small>Challenger (Деб Олер)</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Особенность → выгода → ценность</b> — свои бригады → один ответственный → гарантия на весь результат<small>Dunford</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Настоящие альтернативы клиента</b> — «несколько подрядчиков», «дилер + свои монтажники», «терпеть / отложить»<small>Dunford; Weiss</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Фланг против европейцев, не в лоб</b> — стоимость владения, сроки, сервис их брошенного парка<small>Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сильнейшая ниша — сервис Menerga, York, Swegon, Systemair</b> — «европейцы ушли, а запчасти и инженер у нас»<small>лендинг_основа §6а, §12</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Маленький первый шаг</b> — экспресс-аудит, диагностика, проект с зачётом в монтаж<small>Котлер 7.0; High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сервисное обещание цифрой</b> — ответ за N часов, выезд на аварию за N часов<small>Tracy; 8-Figure</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Имя для методики и большая идея</b> — «дом на поколения», «дом одной командой»<small>Klaff; Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Мастер-документ формулировок</b> — один источник для сайта, КП, писем, ботов; пересматривать раз в полгода<small>Dunford; Tracy</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Опрос 3–5 довольных заказчиков</b> — что ещё рассматривали, чем мы лучше<small>Dunford; High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Не демпинговать</b> — цена — сигнал качества<small>Weiss; Dunford</small></div></li>
+</ul></details>
+<details class="br" id="prodazha"><summary><span class="bn">Продажа после заявки</span><span class="bw">Созвон, выезд, КП, возражения</span><span class="chips"><span class="pill todo">делаем 14</span></span></summary><ul class="pr">
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Досье до звонка, спрашиваем только то, чего в нём нет</b><small>SPIN; Mom Test</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>План звонка на листе</b> — шаг вперёд + запасной → 3 проблемы → последствия → явная потребность<small>SPIN</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Открывать выгодой, без «удобно говорить?»</b><small>Moore</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>«Расскажите про последний раз»</b> — вместо «бывают ли проблемы?»<small>Mom Test</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Смету — только на явную потребность</b><small>SPIN</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Решающий — с первой встречи</b> — «посоветуюсь с супругой и архитектором» → общая встреча<small>Moore; Challenger</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Встреча 30 минут</b> — 5 мин вопросы → 10 показ → 5 следующие шаги; не дольше минуты без вопроса<small>Mom Test; High-Priced</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>КП в течение 24 ч, 2–3 страницы, три варианта</b> — цели клиента его словами в начале, что НЕ входит в цену<small>Weiss; Котлер 7.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>«Дорого» → «сколько вы сейчас теряете?»</b> — стоимость владения, урезанный вариант, торговаться об условиях, не о сумме<small>SPIN; Котлер ММ; Weiss</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Таблица возражений и карточка на каждого конкурента</b><small>Котлер 7.0; Котлер ММ</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Экскурсия на работающий объект на финале</b><small>«10 грехов»</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Честно сказать, когда не подходим</b><small>High-Priced; Klaff</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Ролевые тренировки с Claude</b> — «заказчик считает дорого», «прораб тянет сроки»<small>Котлер 6.0; Co-Intelligence</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Слушать записи звонков раз в месяц (с согласия)</b> — разбор по SPIN<small>Tracy; SPIN</small></div></li>
+</ul></details>
+<details class="br" id="dogovor"><summary><span class="bn">Договор и деньги с клиентами Frivent</span><span class="bw">Чтобы сделка не развалилась после «да»</span><span class="chips"><span class="pill todo">делаем 8</span></span></summary><ul class="pr">
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Оплата по проверяемым этапам, аванс</b><small>Котлер EM; Hill</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>В КП всё, что входит, и что не входит</b> — против «дёшево, но с доплатами»<small>Vuibert; Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Валютная оговорка для импорта</b> — фиксация в день оплаты<small>Hill</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сроки — только после подтверждения поставщика</b> — 4 причины задержки в договоре<small>Grewal; «10 грехов»</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Проверить платёжеспособность</b> — ЕГРЮЛ, арбитраж, долги<small>«10 грехов»</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Сервисный договор сразу после монтажа</b> — фикс или абонемент, время реакции, штраф за срыв<small>Котлер ММ; Grewal</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Перед подписанием — итог, после — письмо «почему выбор верный»</b> — план работ, контакт прораба<small>Dahlström; Belch</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Без откатов и сговора</b><small>Котлер ММ; Grewal</small></div></li>
+</ul></details>
+<details class="br" id="agenty"><summary><span class="bn">Автоматизация и ИИ-агенты</span><span class="bw">Что делает техника, а что люди</span><span class="chips"><span class="pill ok">готово 1</span><span class="pill todo">делаем 9</span></span></summary><ul class="pr">
+<li data-s="ok"><span class="pill ok">готово</span><div><b>Сборщики данных и панель</b> — 60+ скриптов lead-engine<small>b2b-sbor</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Прогноз — машине, суждение — человеку, действие — скрипту</b><small>Prediction Machines</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Claude пишет черновик, отправляет человек</b> — письма от имени и деньги проверяем всегда<small>Prediction Machines; Котлер 4.0</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Три корзины</b> — частые вопросы — бот сам; личное — черновик + человек; жалобы — только человек<small>dropship-lessons</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Исполнитель и критик — разные проходы</b> — тексты через критика по нашим правилам, до 3 кругов<small>Gulli; Hur</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Лёгкое — Hermes, сложное — Claude</b><small>скилл hermes</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>CRM не писать с нуля</b> — Bitrix24 + связка n8n<small>новости (принятое)</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Минимум прав агентам, без боевых ключей</b><small>Gulli; новости</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Агент не меняет правила сам</b> — только предложение и «да» человека<small>Prediction Machines</small></div></li>
+<li data-s="new"><span class="pill todo">делаем</span><div><b>Журнал провалов раз в месяц → правило скилла</b><small>kursy-konspekty</small></div></li>
+</ul></details>
+<!--/PRIEMY-->
+</section>
+
+<section>
+  <h2>Что готовим к запуску</h2>
+  <p class="muted">Рабочие документы, которые вытекают из приёмов выше. Каждый делается один раз и дальше используется во всех каналах.</p>
+  <div class="docs">
+    <div><b>Мастер-документ формулировок</b><span>Кто мы, ответ на «почему вы», большая идея, слова-«мины», которые не пишем. Единый источник для сайта, КП, писем и бота</span></div>
+    <div><b>Условия партнёра на одной странице</b><span>Территория, комиссия от договоров по UTM, чей клиент, цена одна для всех, стандарт сдачи, права на данные</span></div>
+    <div><b>Набор партнёра</b><span>Мини-лендинг, PDF с кейсами, расчётные листы, шаблоны для его клиентов, знак «Партнёр Frivent»</span></div>
+    <div><b>Карта оценки партнёра 0–100</b><span>Веса, пороги «брать / с оговорками / отказ», проверка фактов до звонка</span></div>
+    <div><b>Письма по типам адресатов</b><span>Монтажник-мастер, монтажник-управленец, архитектор, управляющий клуба, редактор, блогер. Схема VFWPA, одно напоминание через 5 дней</span></div>
+    <div><b>Карточки ролей и закупочного центра</b><span>Владелец, ассистент, архитектор, главный инженер, закупщик: критерии, тревоги, свой довод каждому</span></div>
+    <div><b>Скрипт звонка по SPIN</b><span>План на листе, вопросы о последствиях, следующий шаг со сроком, запасной шаг</span></div>
+    <div><b>Таблица возражений и карточки конкурентов</b><span>«Дорого», «есть подрядчик», «сделаем сами», Systemair, Menerga, York, Swegon, Euroclima, PRIME</span></div>
+    <div><b>Шаблон КП</b><span>2–3 страницы, цели клиента его словами, три варианта, что входит и что не входит, кто лично отвечает</span></div>
+    <div><b>Техпакет для проектировщика</b><span>Расчёт влагоудаления, паспорта, узлы, протоколы пусконаладки</span></div>
+    <div><b>Отраслевые подборки кейсов</b><span>Частные бассейны и СПА, рестораны, фитнес, медицина, отели — отдельные PDF</span></div>
+    <div><b>Паспорт системы и сценарий «после сдачи»</b><span>QR на установке, звонки через неделю, месяц, сезон; просьба об отзыве и рекомендациях</span></div>
+    <div><b>Еженедельный отчёт по воронке</b><span>Источник → заявка → встреча → КП → договор, узкое место и что резать</span></div>
+  </div>
+</section>
+
 <section class="narrow">
   <h2>Порядок запуска</h2>
   <p class="muted">Каждый этап сдаётся отдельно и даёт результат сам по себе.</p>
   <ol class="stages">
     <li><div class="st">Этап 1<small class="pill ok">сделан</small></div><div><h3>Фундамент</h3><p>База 1 436 организаций, досье партнёров и конкурентов, карта болей, поисковые фразы, черновик сайта, тендеры.</p></div></li>
-    <li><div class="st">Этап 2</div><div><h3>Один вход заявок</h3><p>Каркас сайта по встрече 13.10 с УТП по типам клиентов. Форма и Telegram-бот → Bitrix24 с источником. Персональные ссылки и QR для партнёров.</p></div></li>
-    <li><div class="st">Этап 3</div><div><h3>Партнёры, которые приносят деньги</h3><p>90 монтажных компаний и 61 дизайн-бюро: личные письма, партнёрский мини-лендинг + PDF, тестовый объект, CRM партнёров. Повтор через 5 дней, затем пауза 2–3 месяца.</p></div></li>
+    <li><div class="st">Этап 2</div><div><h3>Один вход заявок</h3><p>Мастер-документ формулировок. Каркас сайта по встрече 13.10 с УТП по типам клиентов. Форма и Telegram-бот → Bitrix24: заявка = сделка с суммой и меткой, классификатор, ответ в тот же день. Персональные ссылки и QR для партнёров.</p></div></li>
+    <li><div class="st">Этап 3</div><div><h3>Партнёры, которые приносят деньги</h3><p>90 монтажных компаний и 61 дизайн-бюро: карта оценки, условия на одной странице, набор партнёра, письма по типам адресатов, скрипт звонка по SPIN, тестовый объект, CRM партнёров. Повтор через 5 дней, затем пауза 2–3 месяца. Для архитекторов — техпакет, проверка их проекта и закрытый показ объекта.</p></div></li>
     <li><div class="st">Этап 4</div><div><h3>Свои витрины</h3><p>Яндекс Бизнес, 8–10 объявлений на Авито, статьи по болям, Telegram-канал, Instagram. Всё со ссылками с метками.</p></div></li>
     <li><div class="st">Этап 5</div><div><h3>Охват</h3><p>Клубы и коммерция, редакции, блогеры, регулярный мониторинг новых объектов и тендеров.</p></div></li>
     <li><div class="st">Этап 6</div><div><h3>ИИ-оценка</h3><p>Еженедельный отчёт по источникам: заявка → созвон → аудит → сделка.</p></div></li>
@@ -249,5 +601,21 @@ footer{font-size:13px;color:var(--muted)}
   </div>
 </section>
 
-<footer class="narrow">Основа: схема воронки lead-engine (30.09.2026), состояние проекта на 14.10.2026. Цифры — из наших сборов, источник каждой хранится в проекте.</footer>
+<script>
+(function(){
+  var bs=document.querySelectorAll('.filt button[data-f]');
+  bs.forEach(function(b){b.addEventListener('click',function(){
+    bs.forEach(function(x){x.classList.toggle('on',x===b)});
+    var f=b.dataset.f;
+    document.querySelectorAll('ul.pr li').forEach(function(li){li.hidden=!(f==='all'||li.dataset.s===f)});
+    document.querySelectorAll('details.br').forEach(function(d){
+      var any=d.querySelector('ul.pr li:not([hidden])'); d.hidden=!any; if(f!=='all'&&any)d.open=true;});
+  })});
+  var oa=document.getElementById('openall');
+  if(oa)oa.addEventListener('click',function(){
+    var ds=document.querySelectorAll('details.br'), open=![].every.call(ds,function(d){return d.open});
+    ds.forEach(function(d){d.open=open}); oa.textContent=open?'Свернуть всё':'Раскрыть всё';});
+})();
+</script>
+<footer class="narrow">Основа: схема воронки lead-engine (30.09.2026), состояние проекта на 14.10.2026, приёмы из скиллов b2b-sbor, site-design, dogovorennosti, dropship-lessons, noted-news, kursy-konspekty и конспектов книг (knowledge-library). Список приёмов — docs/полный_цикл_приёмы.txt, сборка — dashboard/build_polny_cikl.py. Цифры — из наших сборов, источник каждой хранится в проекте.</footer>
 </div>
