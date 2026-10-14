@@ -1,6 +1,6 @@
 """Проверка битых ссылок по всем страницам (находки 12.10, CodeGuard Python/1026: requests + BeautifulSoup).
 
-Запуск: python site/check_links.py [адрес-сайта]   (по умолчанию — превью https://viiiitaaaaa.github.io/frivent-preview/)
+Запуск: python site/check_links.py [адрес-сайта]   (по умолчанию — превью https://viiiitaaaaa.github.io/ventilation-site-preview/)
 Проверяет на каждой странице из site/*.html (кроме служебных _*.html):
   - ссылки <a href> на свои страницы и файлы (PDF, картинки) — отвечает ли сервер 200;
   - якоря #id — есть ли такой id на странице, куда ведёт ссылка;
@@ -16,7 +16,7 @@ from urllib.parse import urljoin, urldefrag, urlparse
 import requests
 from bs4 import BeautifulSoup
 
-BASE = (sys.argv[1] if len(sys.argv) > 1 else "https://viiiitaaaaa.github.io/frivent-preview/").rstrip("/") + "/"
+BASE = (sys.argv[1] if len(sys.argv) > 1 else "https://viiiitaaaaa.github.io/ventilation-site-preview/").rstrip("/") + "/"
 SITE = Path(__file__).resolve().parent
 pages = sorted(p.name for p in SITE.glob("*.html") if not p.name.startswith("_"))
 S = requests.Session()

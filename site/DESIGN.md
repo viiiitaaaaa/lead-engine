@@ -106,5 +106,5 @@
 
 ## 12. Проверки после правки
 `python site/build.py` → `python site/check_gaps.py site` → `python site/audit_rows.py` →
-`powershell -File site/publish_preview.ps1` → `python site/qa_site.py https://viiiitaaaaa.github.io/frivent-preview site`
+`powershell -File site/publish_preview.ps1` → `python site/qa_site.py https://viiiitaaaaa.github.io/ventilation-site-preview site`
 (скрины телефона в shots/ смотреть глазами) → `python site/check_links.py`.
