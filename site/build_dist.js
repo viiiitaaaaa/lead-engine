@@ -52,6 +52,13 @@ for (const f of fs.readdirSync(SRC).filter(f => f.endsWith(".js") && !f.startsWi
     fs.writeFileSync(path.join(DST, f), h);
   }
   // заголовки: запрет показа в чужих фреймах и подсказки браузеру
-  fs.writeFileSync(path.join(DST, "_headers"), "/*\n  X-Frame-Options: DENY\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n" + (INDEX ? "" : "  X-Robots-Tag: noindex, nofollow\n"));
+  // 14.10 (c/3493639787/800): + HSTS (только HTTPS) и CSP (грузить только своё). Всё на сайте своё; inline-стили в
+  // атрибутах style= и правило speculationrules — разрешены точечно; mc.yandex.ru — заранее под Метрику (CONFIG.metrika).
+  // Когда появится CONFIG.leadEndpoint на другом домене — дописать его в connect-src, иначе форма не отправится.
+  const CSP = "default-src 'self'; script-src 'self' 'inline-speculation-rules' https://mc.yandex.ru; " +
+    "style-src 'self' 'unsafe-inline'; img-src 'self' data: https://mc.yandex.ru; font-src 'self'; " +
+    "connect-src 'self' https://mc.yandex.ru; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'";
+  fs.writeFileSync(path.join(DST, "_headers"), "/*\n  X-Frame-Options: DENY\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n" +
+    "  Strict-Transport-Security: max-age=31536000\n  Content-Security-Policy: " + CSP + "\n" + (INDEX ? "" : "  X-Robots-Tag: noindex, nofollow\n"));
   console.log("готово:", pages.length, "страниц →", DST);
 })();

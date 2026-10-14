@@ -31,7 +31,7 @@ def salt() -> str:
 def collect(chat: str, n: int, cap: float, sl: str) -> dict:
     items, r = run(ACTOR, {"telegram_url": chat, "max_results": n, "deep_search": True}, cap, wait=3600)
     urllib.request.urlopen(urllib.request.Request(f"{API}/datasets/{r['defaultDatasetId']}", method="DELETE",
-                                                  headers={"Authorization": "Bearer " + token()}))
+                                                  headers={"Authorization": "Bearer " + token()}), timeout=30)  # 14.10: без таймаута мог висеть вечно
     people = [i for i in items if i.get("type") != "bot" and i.get("id")]
     first = items[0] if items else {}
     return {"size": first.get("group_member_count"), "hidden": first.get("group_members_hidden"),
