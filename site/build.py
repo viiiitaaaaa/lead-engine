@@ -1312,18 +1312,17 @@ from utp_content import UTP
 
 
 def utp_html():
+    # её правка 19.10: не раскрывающиеся — список каждого направления виден сразу
     e = lambda x: escape(x, quote=False)
     stub = ' <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span>'
     cards = []
     for u in UTP:
         pts = "".join(f"<li>{e(x)}</li>" for x in u["points"])
-        cards.append(f'''      <details class="who-card" name="utp">
-        <summary><span class="who-title">{e(u["title"])}{stub if u.get("stub") else ""}</span><span class="who-go">Подробнее ↓</span></summary>
-        <div class="utp-body">
-          <ul class="utp-points">{pts}</ul>
-          <a class="btn" href="#zayavka" data-ask="{e(u["key"])}" data-ask-prefix="Интересует: ">Оставить заявку</a>
-        </div>
-      </details>''')
+        cards.append(f'''      <div class="who-card">
+        <h3 class="who-title">{e(u["title"])}{stub if u.get("stub") else ""}</h3>
+        <ul class="utp-points">{pts}</ul>
+        <a class="btn" href="#zayavka" data-ask="{e(u["key"])}" data-ask-prefix="Интересует: ">Оставить заявку</a>
+      </div>''')
     return "\n" + "\n".join(cards) + "\n    "
 
 
