@@ -116,9 +116,9 @@ def typograf(html):
 # «Кто мы» (её решение 10.10): по образцу frivent.ru/company, факты только оттуда и с /contacts — бренд основан в Австрии
 # в 1961, представительство в Москве с 1997, производство в России с 2022 (Переславль-Залесский). Полный цикл — главное,
 # своё производство климата — сильная сторона, но не единственное. Тот же текст — index.html #o-nas (вписан руками).
-WHO_WE_ARE = ("Смарт Люкс — компания полного цикла для загородных резиденций премиум-класса. Берём на себя работы под ключ: "
-              "архитектуру и дизайн, проектирование, инженерию дома, монтаж, остекление и перегородки, текстиль и европейские ткани, "
-              "мебель и сервис после сдачи.")
+# текст Паши 19.10 («что такое Смарт Люкс»)
+WHO_WE_ARE = ("Смарт Люкс — центр компетенций с функциями генподрядчика и авторским надзором. Выполняем полный комплекс работ "
+              "под ключ — от проектирования до сервиса. Строим и оснащаем загородные дома, промышленные предприятия и отели.")
 
 ORG_LD = ld({"@context": "https://schema.org", "@type": "Organization", "name": BRAND, "url": BASE_URL,
              "description": WHO_WE_ARE,
@@ -1313,16 +1313,15 @@ from utp_content import UTP
 
 def utp_html():
     e = lambda x: escape(x, quote=False)
-    stub = ' <span class="demo" title="Текст-заглушка — ждём УТП от Паши (site/utp_content.py)">пример</span>'
+    stub = ' <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span>'
     cards = []
     for u in UTP:
         pts = "".join(f"<li>{e(x)}</li>" for x in u["points"])
         cards.append(f'''      <details class="who-card" name="utp">
-        <summary><span class="who-title">{e(u["title"])}</span><span class="who-note">{e(u["note"])}</span><span class="who-go">Что предлагаем ↓</span></summary>
+        <summary><span class="who-title">{e(u["title"])}{stub if u.get("stub") else ""}</span><span class="who-go">Подробнее ↓</span></summary>
         <div class="utp-body">
-          <p class="utp-offer">{e(u["offer"])}{stub if u.get("stub") else ""}</p>
           <ul class="utp-points">{pts}</ul>
-          <a class="btn" href="#zayavka" data-who="{u["who"]}">{e(u["button"])}</a>
+          <a class="btn" href="#zayavka" data-ask="{e(u["key"])}" data-ask-prefix="Интересует: ">Оставить заявку</a>
         </div>
       </details>''')
     return "\n" + "\n".join(cards) + "\n    "
