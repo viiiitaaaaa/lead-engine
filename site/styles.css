@@ -1138,3 +1138,21 @@ form[aria-busy="true"] .btn{opacity:.7;cursor:progress}
 }
 /* её правка 12.10: без нумерации «01 / 13» */
 .slider-ui .sl-count{display:none}
+
+/* ===== ПРАВКИ ПАШИ 13.10 (каркас; дизайн не трогаем): логотип словом, «Я — …» с УТП, «Что поставляем» текстом ===== */
+.logo.logo-word{line-height:1;font-size:var(--fs-h3);font-weight:500;letter-spacing:.2em;color:var(--wine);white-space:nowrap}
+.who-utp .who-card{padding:0}
+.who-utp .who-card summary{display:grid;gap:10px;align-content:start;padding:28px 26px 30px;cursor:pointer;list-style:none}
+.who-utp .who-card summary::-webkit-details-marker{display:none}
+.who-utp .who-card[open]{background:linear-gradient(135deg,var(--deep),var(--deep-2));color:var(--paper);box-shadow:inset 0 -3px 0 var(--accent)}
+.who-utp .who-card[open] .who-note{color:var(--on-dark-soft)}
+.who-utp .who-card[open] .who-go{color:var(--on-dark-accent)}
+.utp-body{display:grid;gap:14px;justify-items:start;padding:0 26px 30px}
+.utp-offer{font-size:var(--fs-l);margin:0}
+.utp-points{margin:0;padding-left:1.1em;display:grid;gap:6px;font-size:var(--fs-s)}
+.who-utp .who-card[open] .demo{color:var(--on-dark-accent)}
+.supply-text{max-width:90ch;font-size:var(--fs-m);margin:0}
+/* шапка без меню аудиторий: кнопка заявки справа и видна на любом экране (гамбургера больше нет) */
+.top .top-contacts{margin-left:auto}
+@media (max-width:1280px){.top .top-contacts{display:flex}}
+@media (max-width:520px){.logo.logo-word{font-size:var(--fs-l);letter-spacing:.14em}.top .top-contacts .btn{padding-inline:14px}}

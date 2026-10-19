@@ -218,6 +218,17 @@ if (tabs.length) {
   choose(ids.includes(start) ? start : CONFIG.defaultWho, ids.includes(location.hash.slice(1)));
 }
 document.querySelectorAll("[data-who]").forEach(b => b.addEventListener("click", () => { if (whoSelect) whoSelect.value = b.dataset.who; }));
+
+// «Я — …» с УТП (правки Паши 13.10): на ПК — раскрывается при наведении, без клика; на телефоне и с клавиатуры — нажатием
+const utpCards = [...document.querySelectorAll(".who-utp details")];
+if (utpCards.length && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+  utpCards.forEach(d => {
+    d.addEventListener("mouseenter", () => { utpCards.forEach(o => { if (o !== d) o.open = false; }); d.open = true; });
+    d.addEventListener("mouseleave", () => { d.open = false; });
+    // мышью карточка уже открыта наведением — клик её не закрывает; клавиатура (detail = 0) переключает как обычно
+    d.querySelector("summary").addEventListener("click", ev => { if (ev.detail > 0) ev.preventDefault(); });
+  });
+}
 if (pageWho && whoSelect) whoSelect.value = pageWho;
 
 /* вернувшийся посетитель (Dahlström «Storytelling in Design», гл. 13: «как вернувшийся, я должна быстро попасть к своему»):

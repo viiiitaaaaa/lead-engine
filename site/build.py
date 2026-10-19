@@ -16,6 +16,10 @@ from zhurnal_content import ARTICLES
 import demo_content as DC
 
 SITE = Path(__file__).resolve().parent
+# бренд сайта — «Смарт Люкс» (встреча с Пашей 13.10, п.4: Frivent убрать везде). Адрес — пока публичная ссылка Cloudflare;
+# появится свой домен — поменять здесь (canonical, og, карта сайта, разметка)
+BRAND = "Смарт Люкс"
+BASE_URL = "https://frivent-site.frivent-dom.workers.dev/"
 
 
 def ver(name):
@@ -41,33 +45,14 @@ WHO_OPTIONS = [
 
 
 def header(active=""):
-    # пункт шапки + выпадающий список = разделы каталога этого клиента (её правка 06.10: пункт списка сразу
-    # открывает каталог на своём разделе; строки «Каталог →» в шапке нет)
-    items = []
-    for k, (href, who, label) in enumerate(NAV):
-        on = ' on" aria-current="page' if href == active else ""
-        sub = "\n".join(f'          <li><a href="katalog-{href}#k-{i}">{escape(t, quote=False)}</a></li>'
-                        for i, (t, _) in enumerate(CATALOGS[who], 1))
-        items.append(f'''      <div class="nav-item">
-        <a class="nav-link{on}" href="{href}">{label}</a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="dd-{k}" aria-label="{label}: что предлагаем"></button>
-        <div class="dd" id="dd-{k}"><ul>
-{sub}
-          <li class="dd-all"><a href="{href}">Вся страница →</a></li>
-        </ul></div>
-      </div>''')
-    links = "\n".join(items)
+    # правки Паши 13.10, п.1: меню аудиторий сверху убрано — вверху только «кто мы»; выбор «Я — …» — посередине главной
+    # (раскрывающиеся блоки с УТП, utp_content.py). Логотип — словом, пока нет нового знака «Смарт Люкс».
     return f'''<header class="top" id="top">
   <div class="wrap">
-    <a class="logo" href="index.html"><picture><source srcset="img/logo-frivent.webp" type="image/webp"><img src="img/logo-frivent.png" alt="Frivent" width="439" height="120"></picture></a>
-    <!-- шапка = страницы по клиентам (её решение 06.10) -->
-    <nav class="nav" aria-label="Разделы для клиентов">
-{links}
-    </nav>
+    <a class="logo logo-word" href="index.html">{BRAND}</a>
     <div class="top-contacts">
       <a class="btn" href="#zayavka">Оставить заявку</a>
     </div>
-    <button class="burger" type="button" aria-expanded="false" aria-controls="top" aria-label="Открыть меню"><span></span></button>
   </div>
 </header>'''
 
@@ -131,14 +116,12 @@ def typograf(html):
 # «Кто мы» (её решение 10.10): по образцу frivent.ru/company, факты только оттуда и с /contacts — бренд основан в Австрии
 # в 1961, представительство в Москве с 1997, производство в России с 2022 (Переславль-Залесский). Полный цикл — главное,
 # своё производство климата — сильная сторона, но не единственное. Тот же текст — index.html #o-nas (вписан руками).
-WHO_WE_ARE = ("Frivent — компания полного цикла для загородных резиденций премиум-класса. Берём на себя практически все работы "
-              "под ключ: архитектуру и дизайн, проектирование, всю инженерию дома, монтаж своими бригадами, остекление, текстиль "
-              "и ландшафт. Наша сильная сторона — собственное климатическое оборудование: бренд Frivent основан в Австрии в 1961 году, "
-              "с 1997 года работает в Москве, а с 2022-го выпускает вентиляцию, осушение бассейнов и центральные кондиционеры "
-              "на своём заводе в Переславле-Залесском.")
+WHO_WE_ARE = ("Смарт Люкс — компания полного цикла для загородных резиденций премиум-класса. Берём на себя работы под ключ: "
+              "архитектуру и дизайн, проектирование, инженерию дома, монтаж, остекление и перегородки, текстиль и европейские ткани, "
+              "мебель и сервис после сдачи.")
 
-ORG_LD = ld({"@context": "https://schema.org", "@type": "Organization", "name": "Frivent", "url": "https://frivent.ru",
-             "description": WHO_WE_ARE, "foundingDate": "1961", "logo": "https://frivent.ru/img/logo-frivent.png",
+ORG_LD = ld({"@context": "https://schema.org", "@type": "Organization", "name": BRAND, "url": BASE_URL,
+             "description": WHO_WE_ARE,
              "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]})
 
 
@@ -155,8 +138,7 @@ def req_line():
 
 # Цена и курс (её решение 10.10): оборудование Frivent делает завод в России — от курса не зависит; импорт — цена в рублях
 # фиксируется в день оплаты (Hill: валютная оговорка до оплаты, новые:450, 467).
-PRICE_NOTE = ("Оборудование Frivent делает наш завод в России, поэтому его цена от курса валют не зависит. "
-              "Цена импортного оборудования и материалов в рублях фиксируется в день оплаты: до оплаты она может "
+PRICE_NOTE = ("Цена импортного оборудования и материалов в рублях фиксируется в день оплаты: до оплаты она может "
               "меняться вместе с курсом, после — не меняется.")
 
 # «Чего опасаются заказчики» (Трейси «Marketing», гл. 2: четыре страха покупателя). Её решение 10.10: «пиши как правильно,
@@ -427,9 +409,8 @@ def form_section(who="sobstvennik", title="Оставить заявку",
   </div>
   <footer>
     <div class="wrap">
-      <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
-      <span>Москва · с 1997 года</span>
-      <address class="foot-addr">Производство: Переславль-Залесский, Ярославская область{req_line()} · <a href="politika.html">Политика конфиденциальности</a></address>{usl}
+      <span>Смарт Люкс — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
+      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a></address>{usl}
     </div>
   </footer>
   {ORG_LD}
@@ -459,9 +440,9 @@ def reviews_html():
     cards = "\n".join(
         f'''      <article class="rv"><div class="rv-stars" role="img" aria-label="Оценка 5 из 5">★★★★★</div>
         <p>«{escape(t, quote=False)}»</p>
-        <div class="rv-meta"><span>Отзыв о Frivent · Яндекс Карты · {d}</span>
+        <div class="rv-meta"><span>Яндекс Карты · {d}</span>
         </div></article>''' for t, d, u in REVIEWS)
-    return f'''<div class="reviews" role="region" aria-roledescription="слайдер" aria-label="Отзывы о Frivent">
+    return f'''<div class="reviews" role="region" aria-roledescription="слайдер" aria-label="Отзывы">
     <div class="rv-viewport"><div class="rv-track">
 {cards}
     </div></div>
@@ -471,35 +452,16 @@ def reviews_html():
   </div>'''
 
 
-def proof(extra="", title="Своё производство климата",
-          lead="Вентиляцию, осушение бассейнов и кондиционирование делаем на своём заводе в Переславле-Залесском. Расчёт, пусконаладку, сервис и запчасти даёт сам производитель.",
-          owner=False):
-    ex = f'<p class="lead" style="margin-top:8px">{extra}</p>' if extra else ""
-    # владельцу — без техники (её правка 06.10; ревизия 10.10): цифры простыми словами, отзывы про «вентустановки» не показываем
-    brand = "австрийский бренд Frivent" if owner else "австрийский бренд климатического оборудования Frivent"
-    rv = "" if owner else f'\n    <div style="margin-top:clamp(40px,5vw,64px)">{reviews_html()}</div>'
-    return f'''<section class="section" id="o-nas">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Почему нам доверяют</span>
-      <h2>{title}</h2>
-      <p class="lead">{lead}</p>{ex}
-    </div>
-    <div class="facts">
-      <div><b class="num">1961</b><span>{brand}</span></div>
-      <div><b class="num">1997</b><span>работаем в Москве</span></div>
-      <div><b class="num">2022</b><span>свой завод в Переславле-Залесском</span></div>
-      <div><b class="num">4,5</b><span>рейтинг Frivent на Яндекс Картах</span></div>
-    </div>{rv}
-  </div>
-</section>'''
+def proof(*a, **kw):
+    # был блок «Своё производство климата»: годы, завод и отзывы Frivent. Правки Паши 13.10 — это не «Смарт Люкс», блок убран.
+    return ""
 
 
 # ===== Тексты страниц =====
 PAGES = [
  dict(file="vladelcu.html", who="sobstvennik", img="h-vl2", pos="50% 55%", light=True,
-  title="Дом под ключ для владельца — Frivent",
-  desc="Загородный дом под ключ с одним ответственным менеджером: архитектура, стройка, вся инженерия, климат собственного производства, интерьер и сервис. Новая Рига, Рублёвка, Ильинское шоссе.",
+  title="Дом под ключ для владельца — Смарт Люкс",
+  desc="Загородный дом под ключ с одним ответственным менеджером: архитектура, стройка, вся инженерия и климат, интерьер и сервис. Новая Рига, Рублёвка, Ильинское шоссе.",
   eyebrow="Владельцу дома",
   h1="Ваш дом под ключ. Один ответственный за всё.",
   lead="Архитектура, стройка и интерьер одной командой — от эскиза до ключей. СПА, кинозал, винная комната и сад — по одному проекту и с одним менеджером. В доме тихо, тепло и свежо круглый год.",
@@ -548,11 +510,11 @@ PAGES = [
    ("Работы уже начал другой подрядчик. Вы подключитесь?", "Да, подключаемся на любом этапе. Осмотрим сделанное, сохраним то, что сделано хорошо, и доведём дом до конца."),
   ],
   # владельцу — без техники (её правка 06.10)
-  proof=dict(title="Нам доверяют свой дом", lead="Бренд с 1961 года, в Москве с 1997-го и свой завод. За качество дома отвечаем сами, а не перекладываем на поставщиков."),
+  
   form=dict(title="Оставить заявку", button="Оставить заявку")),
 
  dict(file="assistentu.html", who="pomoshchnik", img="d2-holl", pos="50% 55%", light=True,
-  title="Обслуживание дома для ассистента владельца — Frivent",
+  title="Обслуживание дома для ассистента владельца — Смарт Люкс",
   desc="Для личных помощников, управляющих домом и семейных офисов: обслуживание и ремонт всех систем дома, запчасти к любому европейскому оборудованию, отчёт с фото для владельца.",
   eyebrow="Ассистенту владельца",
   h1="Всё в доме работает. Отчёт для владельца — у вас.",
@@ -570,7 +532,7 @@ PAGES = [
   services=[
    ("Диагностика всего дома", "Вентиляция, отопление, кондиционирование, водоподготовка, сантехника. Отчёт: что работает, что требует внимания, что заменить."),
    ("Обслуживание по договору", "Плановые визиты по сезонам: фильтры, промывка, настройка автоматики."),
-   ("Любое европейское оборудование", "Не только Frivent: находим запчасти, ремонтируем или заменяем то, что ставили другие. Только премиум-сегмент."),
+   ("Любое европейское оборудование", "Не только то, что ставили мы: находим запчасти, ремонтируем или заменяем то, что ставили другие. Только премиум-сегмент."),
    ("Выезд при поломке", "Срок приезда закреплён в договоре на обслуживание."),
    ("Мелкие поставки по дому", "Фильтры, расходники, увлажнители, кондиционер в гостевой дом — без поиска поставщиков."),
    ("Памятка по дому", "Что проверять раз в сезон, чтобы не было сырости, запахов и поломок."),
@@ -598,7 +560,7 @@ PAGES = [
   form=dict(title="Вызвать инженера на диагностику", button="Вызвать инженера")),
 
  dict(file="dizayneru.html", who="dizayner", img="h-diz", pos="50% 55%", light=True,
-  title="Комплектация для дизайнера и архитектора — Frivent",
+  title="Комплектация для дизайнера и архитектора — Смарт Люкс",
   desc="Отделочные материалы, текстиль, стекло, свет и мебель для загородных интерьеров строго по спецификации дизайнера. Сроки в договоре, образцы, вознаграждение открыто.",
   eyebrow="Дизайнеру и архитектору",
   h1="Поставка по вашей спецификации. Лицо проекта — вы.",
@@ -642,11 +604,11 @@ PAGES = [
   form=dict(title="Запросить условия для дизайнеров", button="Запросить условия")),
 
  dict(file="montazhnikam.html", who="montazh", img="h-mont", pos="50% 45%", light=True,
-  title="Оборудование для монтажных компаний — Frivent",
-  desc="Постоянный поставщик для монтажных и климатических компаний: вентиляция с рекуперацией, осушение бассейнов, кондиционирование Frivent. Поставка к графику монтажа, документы к сдаче, пусконаладка производителем.",
+  title="Оборудование для монтажных компаний — Смарт Люкс",
+  desc="Постоянный поставщик для монтажных и климатических компаний: вентиляция с рекуперацией, осушение бассейнов, кондиционирование. Поставка к графику монтажа, документы к сдаче, пусконаладка с замерами.",
   eyebrow="Монтажной и инженерной компании",
   h1="Оборудование к графику монтажа. Документы к сдаче.",
-  lead="Постоянный поставщик для монтажных и климатических компаний, которые работают на премиальных домах и коммерческих объектах. Своё производство Frivent, расчёт, шеф-наладка и запчасти от производителя.",
+  lead="Постоянный поставщик для монтажных и климатических компаний, которые работают на премиальных домах и коммерческих объектах. Расчёт, шеф-наладка и запчасти со склада в России.",
   cta="Стать партнёром",
   pains_title="На что жалуются клиенты монтажников",
   pains_intro="Чаще всего заказчики ругают монтаж и то, что подрядчик «пропадает». А гарантия, сроки, конденсат и цена во многом зависят от оборудования и поставщика.",
@@ -658,7 +620,7 @@ PAGES = [
   ],
   serv_title="Что поставляем",
   services=[
-   ("Frivent — своё производство", "Приточно-вытяжные установки с рекуперацией, осушение бассейнов, центральные кондиционеры, воздушное отопление, шкафы автоматики."),
+   ("Климатическое оборудование российского производства", "Приточно-вытяжные установки с рекуперацией, осушение бассейнов, центральные кондиционеры, воздушное отопление, шкафы автоматики."),
    ("Отопление", "Алюминиевые радиаторы, внутрипольные конвекторы."),
    ("Климат", "Кондиционеры, очистка и увлажнение воздуха."),
    ("Вентиляция бизнес-сегмента", "Канальные вентиляторы, дымоудаление."),
@@ -679,13 +641,13 @@ PAGES = [
   faq=[
    ("Какие условия для постоянных партнёров?", "Обсуждаем по объёму и регулярности закупок. Условия фиксируем в договоре."),
    ("Вы сами монтируете у моих заказчиков?", "Нет. Партнёрам поставляем оборудование, расчёт и наладку — монтаж и заказчик остаются за вами."),
-   ("Есть ли запчасти в наличии?", "Запчасти к оборудованию Frivent — со склада в России: завод в Переславле-Залесском."),
+   ("Есть ли запчасти в наличии?", "Запчасти к оборудованию российского производства — со склада в России."),
    ("Подберёте по чужому проекту?", "Да, по вашему проекту или техническому заданию. Замены согласуем до заказа."),
   ],
   form=dict(title="Стать партнёром", button="Стать партнёром")),
 
  dict(file="zastroyshchikam.html", who="zastroyshchik", img="d2-fasad", pos="60% 55%", light=True,
-  title="Инженерия и климат для застройщика посёлка — Frivent",
+  title="Инженерия и климат для застройщика посёлка — Смарт Люкс",
   desc="Инженерное оборудование, климат и остекление для домов коттеджного посёлка партиями: одно решение на все дома, документы производителя, сервис для жителей.",
   eyebrow="Застройщику",
   h1="Дом с продуманным климатом — довод для покупателей.",
@@ -735,11 +697,11 @@ PAGES = [
   form=dict(title="Обсудить посёлок", button="Обсудить посёлок")),
 
  dict(file="kommerciya.html", who="kommerciya", img="k1", pos="50% 60%", light=True,
-  title="Вентиляция и климат для коммерческих объектов — Frivent",
-  desc="Вентиляция, кондиционирование и осушение бассейнов для ресторанов, клиник, фитнес-клубов и СПА, торговых центров и серверных. Своё производство Frivent, монтаж без остановки работы, сервис.",
+  title="Вентиляция и климат для коммерческих объектов — Смарт Люкс",
+  desc="Вентиляция, кондиционирование и осушение бассейнов для ресторанов, клиник, фитнес-клубов и СПА, торговых центров и серверных. Расчёт под нормы, монтаж без остановки работы, сервис.",
   eyebrow="Коммерческим объектам",
   h1="Свежий воздух, который замечают только гости.",
-  lead="Рестораны, клиники, фитнес и СПА, торговые центры, серверные. Расчёт под тип объекта и нормы, своё производство Frivent, монтаж и замена без остановки работы.",
+  lead="Рестораны, клиники, фитнес и СПА, торговые центры, серверные. Расчёт под тип объекта и нормы, монтаж и замена без остановки работы.",
   cta="Рассчитать объект",
   pains_title="Духота уводит гостей из зала раньше десерта",  # «датчик дыма» (Трейси), её решение 10.10 — только климат/монтаж
   pains_intro="Гости редко пишут «плохая вентиляция» — они пишут «душно», «пахнет кухней», «сыро у бассейна» и больше не приходят.",
@@ -767,7 +729,7 @@ PAGES = [
    ("Сервис", "Обслуживание по договору."),
   ],
   terms_title="Что получаете",
-  terms=["Расчёт под тип объекта и нормы", "Своё производство: сроки и запчасти от производителя", "Монтаж и замена без остановки работы",
+  terms=["Расчёт под тип объекта и нормы", "Сроки поставки и запчасти — в договоре", "Монтаж и замена без остановки работы",
          "Пусконаладка с замерами и актом", "Документы для проверок", "Сервис по договору — и для оборудования других брендов"],
   faq=[
    ("Можно обновить вентиляцию, не закрываясь?", "Да, работы планируем поэтапно и в нерабочее время."),
@@ -775,9 +737,8 @@ PAGES = [
    ("Работаете с сетями?", "Да, можем вести несколько объектов сети по единому решению."),
    ("Обслуживаете чужое оборудование?", "Да, европейское оборудование других брендов — тоже."),
    # Hayden «High-Priced Products», гл. 6: «разве не стоит заплатить больше сейчас, чтобы избежать … потом» — без выпадов в адрес других
-   ("Почему не взять монтажника подешевле?", "Цена оборудования Frivent одна — у нас и у производителя. Разница в том, кто считает и отвечает: система, которая не справится с нагрузкой, обойдётся переделкой и жалобами гостей. Мы считаем под тип объекта и нормы, запускаем с замерами и обслуживаем."),
+   ("Почему не взять монтажника подешевле?", "Цена оборудования одна — у нас и у производителя. Разница в том, кто считает и отвечает: система, которая не справится с нагрузкой, обойдётся переделкой и жалобами гостей. Мы считаем под тип объекта и нормы, запускаем с замерами и обслуживаем."),
   ],
-  proof_extra="Оборудование Frivent работает в фитнес-клубах World Class и Gio Wellness, отелях, больницах и на ледовых аренах.",
   roles=[
    ("Главному инженеру", "Расчёт под тип объекта и нормы, паспорта оборудования и документы для проектировщика."),
    ("Финансовому директору", "Цена фиксируется в счёте и после оплаты не меняется. Монтаж — без остановки работы объекта."),
@@ -789,8 +750,8 @@ PAGES = [
 
 # Превью ссылки в мессенджерах (Open Graph) и значок вкладки (находки 12.10, webstandards_ru/7834: <head> 2026).
 # og.jpg 1200×630 и значки делает make_icons.py; то же самое вписано в <head> index.html (его шапку build.py не трогает).
-OG_IMG = ('<meta property="og:image" content="https://frivent.ru/img/og.jpg"><meta property="og:image:width" content="1200">'
-          '<meta property="og:image:height" content="630"><meta property="og:image:alt" content="Загородная резиденция — Frivent, дом под ключ">'
+OG_IMG = ('<meta property="og:image" content="' + BASE_URL + 'img/og.jpg"><meta property="og:image:width" content="1200">'
+          '<meta property="og:image:height" content="630"><meta property="og:image:alt" content="Загородная резиденция — Смарт Люкс, дом под ключ">'
           '<meta name="twitter:card" content="summary_large_image">')
 ICONS = ('<link rel="icon" href="img/favicon.svg" type="image/svg+xml"><link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">'
          '<link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="theme-color" content="#efebe6">')
@@ -802,10 +763,10 @@ HEAD = '''<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<link rel="canonical" href="https://frivent.ru/{page}.html">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Frivent"><meta property="og:locale" content="ru_RU">
+<link rel="canonical" href="{BASE_URL}{page}.html">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Смарт Люкс"><meta property="og:locale" content="ru_RU">
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}">
-<meta property="og:url" content="https://frivent.ru/{page}.html">
+<meta property="og:url" content="{BASE_URL}{page}.html">
 {OG_IMG}
 <script type="speculationrules">{{"prefetch":[{{"where":{{"href_matches":"/*"}},"eagerness":"moderate"}}]}}</script>
 {ICONS}
@@ -815,7 +776,7 @@ HEAD = '''<!doctype html>
 </head>
 <body data-page="{page}" data-who="{who}">
 '''
-HEAD = HEAD.replace("{OG_IMG}", OG_IMG).replace("{ICONS}", ICONS)
+HEAD = HEAD.replace("{OG_IMG}", OG_IMG).replace("{ICONS}", ICONS).replace("{BASE_URL}", BASE_URL)
 
 
 def head(**kw):
@@ -849,8 +810,8 @@ def politika_html():
         else:
             out.append(f"      <p>{e(l)}</p>")
     body = "\n".join(out)
-    return head(css_v=ver("styles.css"), title="Политика обработки персональных данных | Frivent",
-                desc="Как Frivent обрабатывает персональные данные из формы заявки: что получаем, зачем, как храним и как отозвать согласие.",
+    return head(css_v=ver("styles.css"), title="Политика обработки персональных данных | Смарт Люкс",
+                desc="Как «Смарт Люкс» обрабатывает персональные данные из формы заявки: что получаем, зачем, как храним и как отозвать согласие.",
                 page="politika", who="sobstvennik") + header().replace('href="#zayavka"', 'href="index.html#zayavka"') + f'''
 
 <main>
@@ -871,7 +832,7 @@ def politika_html():
 <section class="section dark">
   <footer>
     <div class="wrap">
-      <span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
+      <span>Смарт Люкс — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
       <a href="index.html">На главную →</a>
     </div>
   </footer>
@@ -892,14 +853,13 @@ def kontakty_html():
     r = DC.REQ
     req = (f'<p class="contacts-req">{r["name"]} · ИНН {r["inn"]} · ОГРН {r["ogrn"]} {DEMO_TAG}</p>' if DC.DEMO else "")
     rows = [
-        ("Производство", "Переславль-Залесский, Ярославская область"),
         ("Где работаем", "Новая Рига, Рублёвка и Ильинское шоссе — до 60 км от МКАД"),
         ("Ответ на заявку", ANSWER_TIME[0].upper() + ANSWER_TIME[1:]),
     ] + ([("Часы работы офиса", f"{DC.HOURS} {DEMO_TAG}")] if DC.DEMO and getattr(DC, "HOURS", "") else []) + [
     ]
     dl = "\n".join(f'      <div class="solve-row"><dt>{a}</dt><dd>{b}</dd></div>' for a, b in rows)
-    return head(css_v=ver("styles.css"), title="Контакты — Frivent",
-                desc=f"Как связаться с Frivent: заявка с сайта, производство в Переславле-Залесском. Работаем на Новой Риге, Рублёвке и Ильинском шоссе. Ответ на заявку {ANSWER_TIME}.",
+    return head(css_v=ver("styles.css"), title="Контакты — Смарт Люкс",
+                desc=f"Как связаться со «Смарт Люкс»: заявка с сайта. Работаем на Новой Риге, Рублёвке и Ильинском шоссе. Ответ на заявку {ANSWER_TIME}.",
                 page="kontakty", who="sobstvennik") + header() + f'''
 
 <main>
@@ -939,7 +899,7 @@ def rus_date(iso):
 def crumbs_ld(*items):
     """«хлебные крошки» для поисковиков (Clarke «SEO 2025», гл. 10): [(название, файл)]"""
     return ld({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
-        {"@type": "ListItem", "position": i, "name": n, "item": "https://frivent.ru/" + f} for i, (n, f) in enumerate(items, 1)]})
+        {"@type": "ListItem", "position": i, "name": n, "item": BASE_URL + f} for i, (n, f) in enumerate(items, 1)]})
 
 
 # услуга страницы → раздел каталога (katalog-*.html#k-N); у владельца и монтажников первые совпадают 1:1
@@ -1037,7 +997,7 @@ HOUSE_RULES = DC.HOUSE_RULES  # примеры — в demo_content.py
 
 def compare_html():
     e = lambda x: escape(x, quote=False)
-    rows = "\n".join(f'        <tr><th scope="row">{e(a)}</th><td data-label="Несколько подрядчиков">{e(b)}</td><td data-label="Frivent">{e(c)}</td></tr>' for a, b, c in COMPARE)
+    rows = "\n".join(f'        <tr><th scope="row">{e(a)}</th><td data-label="Несколько подрядчиков">{e(b)}</td><td data-label="Смарт Люкс">{e(c)}</td></tr>' for a, b, c in COMPARE)
     return f'''
 <section class="section alt" id="sravnenie">
   <div class="wrap">
@@ -1048,7 +1008,7 @@ def compare_html():
     </div>
     <div class="cmp-wrap">
       <table class="cmp">
-        <thead><tr><th scope="col"></th><th scope="col">Несколько подрядчиков</th><th scope="col">Frivent — полный цикл</th></tr></thead>
+        <thead><tr><th scope="col"></th><th scope="col">Несколько подрядчиков</th><th scope="col">Смарт Люкс — полный цикл</th></tr></thead>
         <tbody>
 {rows}
         </tbody>
@@ -1319,8 +1279,8 @@ def catalog_html(p):
     </div>
   </div>
 </section>''']
-    title = f"Каталог — {p['eyebrow'].lower()} — Frivent"
-    desc = f"Каталог товаров и услуг Frivent: {', '.join(n for n, _ in cats).lower()}. Цена — по запросу."
+    title = f"Каталог — {p['eyebrow'].lower()} — Смарт Люкс"
+    desc = f"Каталог товаров и услуг «Смарт Люкс»: {', '.join(n for n, _ in cats).lower()}. Цена — по запросу."
     return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="katalog-" + p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
@@ -1344,6 +1304,28 @@ def catalog_html(p):
 </body>
 </html>
 '''
+
+
+# ===== «Я — …» с УТП посередине главной (встреча с Пашей 13.10, п.2): один лендинг, без ссылок и подкатегорий =====
+# наведение (на телефоне — нажатие) сразу раскрывает УТП; тексты — utp_content.py (пока заглушки, ждём от Паши)
+from utp_content import UTP
+
+
+def utp_html():
+    e = lambda x: escape(x, quote=False)
+    stub = ' <span class="demo" title="Текст-заглушка — ждём УТП от Паши (site/utp_content.py)">пример</span>'
+    cards = []
+    for u in UTP:
+        pts = "".join(f"<li>{e(x)}</li>" for x in u["points"])
+        cards.append(f'''      <details class="who-card" name="utp">
+        <summary><span class="who-title">{e(u["title"])}</span><span class="who-note">{e(u["note"])}</span><span class="who-go">Что предлагаем ↓</span></summary>
+        <div class="utp-body">
+          <p class="utp-offer">{e(u["offer"])}{stub if u.get("stub") else ""}</p>
+          <ul class="utp-points">{pts}</ul>
+          <a class="btn" href="#zayavka" data-who="{u["who"]}">{e(u["button"])}</a>
+        </div>
+      </details>''')
+    return "\n" + "\n".join(cards) + "\n    "
 
 
 def replace_between(s, a, b, new):
@@ -1427,7 +1409,7 @@ def plans_html():
 
 # ===== «Договорённости» на главной (раздел 18, п.16): что фиксируем в договоре — только уже данные на сайте обещания =====
 DOGOVOR = [
- "Цена — в договоре, после оплаты не растёт. Оборудование Frivent от курса не зависит, импорт — по курсу на день оплаты",
+ "Цена — в договоре, после оплаты не растёт. Импортное оборудование — по курсу на день оплаты",
  "Даты поставки оборудования и этапов работ",
  "Ваш менеджер: имя и прямой телефон",
  "Оригинальное оборудование с паспортами и сертификатами",
@@ -1462,7 +1444,7 @@ def dogovor_html():
 # ===== Документы для проекта за контакт (раздел 18, п.12) — дизайнеру, монтажнику, застройщику, коммерции =====
 # BIM-модели не обещаем, пока она не подтвердит, что они есть у Frivent
 DOCS = [
- "Технические описания и паспорта установок Frivent",
+ "Технические описания и паспорта установок",
  "Сертификаты соответствия и декларация ЕАЭС на линейку оборудования",
  "Подбор установки под ваш объект: расход воздуха, шум, габариты, подключения",
  "Габаритные чертежи и схемы подключения для проекта",
@@ -1525,12 +1507,12 @@ def pic(name, alt, pos="", eager=False):
 def works_html():
     e = lambda x: escape(x, quote=False)
     rows = []
-    for o in OBJECTS:
+    # правки Паши 13.10, п.5: фото отелей и тяжёлые фото убраны — на главной только резиденция Kol Gali, без перехода на страницу
+    for o in [o for o in OBJECTS if o["slug"] == "kol-gali"]:
         city = o["place"].split(",")[0] if "Летний" not in o["name"] else "Летний сад, Санкт-Петербург"
         rows.append(f'''      <article class="wk">
         <div class="wk-half wk-obj">{pic(o["img"], o["name"], o["pos"])}<div class="wk-cap"><span class="wk-tag">Объект</span><h3>{e(o["name"])}</h3><p>{e(city)}</p></div></div>
         <div class="wk-half wk-job">{pic(o["img"] + "-job", o["name"] + ": монтаж оборудования")}<div class="wk-cap"><span class="wk-tag">Что сделали</span><h3>{e(o["job"])}</h3><p>{e(o["job_sub"])}</p></div></div>
-        <a class="wk-link" href="obekt-{o["slug"]}.html"><span>Подробнее об объекте →</span></a>
       </article>''')
     return "\n" + "\n".join(rows) + "\n  "
 
@@ -1553,7 +1535,7 @@ def obj_html(i):
     <dl class="solve">
 {team}
     </dl>''' if team else ""
-    title = f'{o["name"]} — {o["job"].lower()} — Frivent'
+    title = f'{o["name"]} — {o["job"].lower()} — Смарт Люкс'
     desc = f'{o["name"]}, {o["place"]}: {o["job"].lower()}. {o["lead"]}'
     return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="obekt-" + o["slug"], who="sobstvennik") + header() + f'''
 
@@ -1590,7 +1572,7 @@ def obj_html(i):
 <section class="section">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Оборудование Frivent</span>
+      <span class="eyebrow">Оборудование</span>
       <h2>Что поставили</h2>
     </div>
     <ul class="proofs obj-list">
@@ -1707,7 +1689,7 @@ def usl_html(u):
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Нам доверяют</span>
-      <h2>Объекты с оборудованием Frivent</h2>
+      <h2>Наши объекты</h2>
     </div>
     <div class="serv-grid">
 {objs}
@@ -1731,7 +1713,7 @@ def usl_html(u):
   {faq_ld(u["faq"])}
   {crumbs_ld(("Главная", ""), (u["name"], "usluga-" + u["slug"] + ".html"))}
   {ld({"@context": "https://schema.org", "@type": "Service", "name": u["name"], "description": u["lead"],
-       "provider": {"@type": "Organization", "name": "Frivent", "url": "https://frivent.ru"},
+       "provider": {"@type": "Organization", "name": BRAND, "url": BASE_URL},
        "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]})}
 </section>
 
@@ -1753,7 +1735,7 @@ def zhurnal_html():
         <p>{e(a["lead"])}</p>
         <span class="serv-go">Читать →</span>
       </a>''' for a in ARTICLES)
-    return head(css_v=ver("styles.css"), title="Журнал — климат и инженерия загородного дома — Frivent",
+    return head(css_v=ver("styles.css"), title="Журнал — климат и инженерия загородного дома — Смарт Люкс",
                        desc="Статьи о главных проблемах загородного дома: шум вентиляции, сырость и плесень, конденсат у бассейна, духота, обмерзание рекуператора, сервис европейского оборудования.",
                        page="zhurnal", who="pomoshchnik") + header() + f'''
 
@@ -1795,7 +1777,7 @@ def statya_html(i):
         else:
             body += [f"      <p>{e(p)}</p>" for p in paras]
     more = "\n".join(f'      <li><a href="statya-{x["slug"]}.html">{e(x["title"])}</a></li>' for x in ARTICLES if x is not a)
-    return head(css_v=ver("styles.css"), title=e(a["title"]) + " | Frivent", desc=e(a["lead"]),
+    return head(css_v=ver("styles.css"), title=e(a["title"]) + " | Смарт Люкс", desc=e(a["lead"]),
                        page="statya-" + a["slug"], who="pomoshchnik") + header() + f'''
 
 <main>
@@ -1822,7 +1804,7 @@ def statya_html(i):
 </section>
 {ld({"@context": "https://schema.org", "@type": "Article", "headline": a["title"], "description": a.get("short") or a["lead"], "inLanguage": "ru",
      "datePublished": a.get("date", "2026-10-09"), "dateModified": a.get("date", "2026-10-09"),
-     "publisher": {"@type": "Organization", "name": "Frivent", "url": "https://frivent.ru"}})}
+     "publisher": {"@type": "Organization", "name": BRAND, "url": BASE_URL}})}
 {crumbs_ld(("Главная", ""), ("Журнал", "zhurnal.html"), (a["title"], "statya-" + a["slug"] + ".html"))}
 </article>
 
@@ -1867,7 +1849,10 @@ if __name__ == "__main__":
     s = replace_between(s, "<!--HEADER-->", "<!--/HEADER-->", header())
     if "<!--GIFTS-->" in s:
         s = replace_between(s, "<!--GIFTS-->", "<!--/GIFTS-->", gifts_html())
-    s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section(uslugi=True))
+    # главная — один лендинг (правки Паши 13.10): в подвале без ссылок на другие страницы, кроме политики
+    s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section(uslugi=False))
+    if "<!--UTP-->" in s:
+        s = replace_between(s, "<!--UTP-->", "<!--/UTP-->", utp_html())
     if "<!--WORKS-->" in s:
         s = replace_between(s, "<!--WORKS-->", "<!--/WORKS-->", works_html())
     if "<!--DOGOVOR-->" not in s:
@@ -1877,9 +1862,9 @@ if __name__ == "__main__":
     if "<!--STRAHI-->" not in s:
         s = s.replace("<!--DOGOVOR-->", "<!--STRAHI--><!--/STRAHI-->\n\n<!--DOGOVOR-->", 1)
     s = replace_between(s, "<!--STRAHI-->", "<!--/STRAHI-->", strahi_html())
-    if "<!--TEAM-->" not in s:
-        s = s.replace('<section class="section alt" id="sertifikaty">', '<!--TEAM--><!--/TEAM-->\n\n<section class="section alt" id="sertifikaty">', 1)
-    s = replace_between(s, "<!--TEAM-->", "<!--/TEAM-->", team_html())
+    # «Кто отвечает за ваш объект» (примеры-люди) и сертификаты Frivent с главной убраны (правки Паши 13.10: лишний текст)
+    if "<!--TEAM-->" in s:
+        s = replace_between(s, "<!--TEAM-->", "<!--/TEAM-->", team_html())
     if "<!--HOMEFAQ-->" not in s:
         s = s.replace("<!--GIFTS-->", "<!--HOMEFAQ--><!--/HOMEFAQ-->\n\n<!--GIFTS-->", 1)
     s = replace_between(s, "<!--HOMEFAQ-->", "<!--/HOMEFAQ-->", home_faq_html())
@@ -1902,7 +1887,7 @@ if __name__ == "__main__":
     print("типограф: страниц поправлено", nt)
     # карта сайта для Яндекса и Google (Clarke «SEO 2025»: сайт без CMS — sitemap.xml в корень + отправить в Вебмастер).
     # Домен ещё не выбран (открытый вопрос) — BASE поменять, когда она решит; служебные _*.html не включаем.
-    BASE = "https://frivent.ru/"
+    BASE = BASE_URL
     pages = sorted(f.name for f in SITE.glob("*.html") if not f.name.startswith("_"))
     urls = "\n".join(f"  <url><loc>{BASE}{'' if n == 'index.html' else n}</loc></url>" for n in pages)
     (SITE / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'

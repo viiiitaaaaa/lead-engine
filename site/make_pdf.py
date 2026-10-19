@@ -22,6 +22,7 @@ CSS = f"""
 body{{margin:0;font:11pt/1.5 "Vela Sans",Arial,sans-serif;color:#1d1b19;background:#fff}}
 .head{{border-bottom:2px solid #6b1a24;padding-bottom:10pt;margin-bottom:14pt;display:flex;justify-content:space-between;align-items:flex-end;gap:20pt}}
 .head img{{height:34pt}}
+.head .brand{{font-size:16pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#6b1a24}}
 .head .tag{{font-size:8.5pt;letter-spacing:.12em;text-transform:uppercase;color:#394172}}
 h1{{font:500 22pt/1.15 "Vela Sans";letter-spacing:-.02em;margin:0 0 6pt}}
 .sub{{font-size:12pt;color:#5a5651;margin:0 0 14pt}}
@@ -42,16 +43,15 @@ def html(g, phone, site):
     items = "\n".join(
         f'<div class="item"><div class="n">{i:02d}</div><div><h2>{e(a)}</h2><p>{e(b)}</p></div></div>'
         for i, (a, b) in enumerate(g["items"], 1))
-    logo = (HERE / "img" / "logo-frivent.png").as_uri()
     return f"""<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>{e(g["title"])}</title><style>{CSS}</style></head>
 <body>
-<div class="head"><img src="{logo}" alt="Frivent"><span class="tag">Памятка · Frivent</span></div>
+<div class="head"><span class="brand">Смарт Люкс</span><span class="tag">Памятка · Смарт Люкс</span></div>
 <h1>{e(g["title"])}</h1>
 <p class="sub">{e(g["subtitle"])}</p>
 <p class="intro">{e(g["intro"])}</p>
 {items}
 <div class="close"><b>{e(g["closing"])}</b><span>Вопрос по памятке — оставьте заявку на сайте, ответим {e(ANSWER)}</span></div>
-<div class="foot"><span>Frivent — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span><span>Москва · с 1997 года</span></div>
+<div class="foot"><span>Смарт Люкс — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span></div>
 </body></html>"""
 
 
@@ -60,7 +60,7 @@ def main():
     global ANSWER
     ANSWER = build.ANSWER_TIME
     phone = getattr(build, "PHONE", "")
-    site = "frivent.ru"
+    site = ""
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
         b = p.chromium.launch()
