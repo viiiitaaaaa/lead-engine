@@ -1,0 +1,582 @@
+- generic [ref=f3e1]:
+  - main [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - generic [ref=f3e4]: lead-engine · сайт · шаг 0
+      - 'heading "Сайты конкурентов: что берём, чего не делаем" [level=1] [ref=f3e5]'
+      - paragraph [ref=f3e6]: "16 сайтов в трёх группах плюс 4 образца из архива Inspo. У каждого сайта первый экран на компьютере и на телефоне. По клику открывается страница целиком (до 7 000 пикселей). Ниже по каждому: что хорошо, что плохо и что берём себе."
+      - generic [ref=f3e7]:
+        - generic [ref=f3e8]: Снято 05.10.2026
+        - generic [ref=f3e9]: "Скрипт: parsers/sayty_konkurentov.py"
+        - generic [ref=f3e10]: Menerga — снимок первого прохода, с плашкой cookie
+    - region "Сводка" [ref=f3e11]:
+      - generic [ref=f3e12]:
+        - heading "Берём себе" [level=2] [ref=f3e13]
+        - list [ref=f3e14]:
+          - listitem [ref=f3e15]: "Первый экран про ощущение, а не про железо. Swegon пишет «Feel good inside», Menerga ставит установку в интерьер СПА. У нас: «тихо, сухо, свежо» и фото дома, а не установки. Swegon, Menerga, Louis Poulsen"
+          - listitem [ref=f3e16]: "Цифры масштаба в первом абзаце: площадь домов, территория, год основания. «Резиденции 500–7 000 м², Рублёвка, с 1992». Резников, Приоритет"
+          - listitem [ref=f3e17]: Разделы по аудиториям. У Fedorova отдельно «Для заказчиков» и «Для поставщиков», у Fisch & Tisch целая страница для профессионалов. Это совпадает с нашим «Я — …». Fedorova, Fisch & Tisch
+          - listitem [ref=f3e18]: "«Посёлки, где стоят наши дома»: список или карта с названиями. Владелец узнаёт соседей, ассистент видит территорию. Резников, Приоритет, Монолит, Усов"
+          - listitem [ref=f3e19]: "«Все этапы — один подрядчик»: шкала этапов от обследования до сервиса. Резников, Акварай"
+          - listitem [ref=f3e20]: Строка с марками оборудования, которое обслуживаем. Сразу видно, что сервис чужого европейского оборудования — к нам. АВГ, Теплосервис
+          - listitem [ref=f3e21]: "Кнопка «Записаться на встречу» вместо «Заказать звонок». В форме: имя, телефон, адрес объекта, площадь, «участок, пожелания, сроки — коротко». Резников"
+          - listitem [ref=f3e22]: "Мессенджеры в шапке: Telegram, WhatsApp, MAX. Они есть у всех российских сайтов, кроме Frivent. все RU-сайты"
+      - generic [ref=f3e23]:
+        - heading "Не делаем" [level=2] [ref=f3e24]
+        - list [ref=f3e25]:
+          - listitem [ref=f3e26]: Яркие цвета, много кнопок, калькуляторы, акции, квизы. Так выглядит «сервис по вызову» и массовая стройка, а не премиум. АВГ, Монолит, Hotwell, Акварай
+          - listitem [ref=f3e27]: Стоковые фото с вклеенной установкой (город, ледовая арена, теплица). Frivent
+          - listitem [ref=f3e28]: "Пустой первый экран, пока грузится слайдер или видео: белое поле у Усова, пустой верх у Frivent на телефоне. Усов, Frivent, Euroclima"
+          - listitem [ref=f3e29]: "Сайт без текста: только видео и фото. Яндекс и ИИ-поисковики такой сайт не прочитают. Fedorova (213 слов), Euroclima (97)"
+          - listitem [ref=f3e30]: "Кнопка «Play» поверх заголовка на телефоне: закрывает главную фразу. Резников"
+          - listitem [ref=f3e31]: Тёмный фон с золотом. Это уже стиль Резникова, главного конкурента по концепции. Наша светлая бежево-бронзовая гамма будет отличаться.
+          - listitem [ref=f3e32]: "Рендеры вместо фото и тонкий капс в заголовках: выглядит как шаблон. Приоритет"
+          - listitem [ref=f3e33]: Плашка cookie на половину экрана. Нужна одна тонкая строка внизу. York, Swegon
+    - region [ref=f3e34]:
+      - generic [ref=f3e35]:
+        - generic [ref=f3e36]: Группа 1 · 7 сайтов
+        - 'heading "Производители оборудования: Frivent и европейские марки" [level=2] [ref=f3e37]'
+        - paragraph [ref=f3e38]: "Сайты для инженеров и проектировщиков: каталог, подборщики, документы, почти всё по-английски. Частному клиенту они ничего не объясняют. Для нас это не образец лендинга, а фон: показывают, как марки сами себя подают."
+      - article [ref=f3e39]:
+        - generic [ref=f3e40]:
+          - heading "Frivent (мы)" [level=3] [ref=f3e41]
+          - link "frivent.ru" [ref=f3e42] [cursor=pointer]:
+            - /url: https://frivent.ru
+          - generic [ref=f3e43]: как сейчас — не годится для лендинга
+        - paragraph [ref=f3e44]: 382 слова · ни одного подзаголовка · одна кнопка «Обратный звонок» · мессенджеров нет
+        - generic [ref=f3e45]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e46]:
+            - link [ref=f3e47] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Frivent (мы): первый экран на компьютере" [ref=f3e48]'
+          - figure "Телефон" [ref=f3e50]:
+            - 'img "Frivent (мы): первый экран на телефоне" [ref=f3e51]'
+        - generic [ref=f3e53]:
+          - generic [ref=f3e54]:
+            - heading "Хорошо" [level=4] [ref=f3e55]
+            - list [ref=f3e56]:
+              - listitem [ref=f3e57]: "Сразу видно все направления: жильё, бассейны, ледовые арены, музеи"
+              - listitem [ref=f3e58]: Телефон и почта в шапке
+          - generic [ref=f3e59]:
+            - heading "Плохо" [level=4] [ref=f3e60]
+            - list [ref=f3e61]:
+              - listitem [ref=f3e62]: Заголовок капсом на красно-синей полосе
+              - listitem [ref=f3e63]: "Стоковые фото с вклеенной установкой: город, теплица, склад"
+              - listitem [ref=f3e64]: На телефоне первый экран пустой, плитки начинаются ниже
+              - listitem [ref=f3e65]: Частный дом стоит в одном ряду с агрокомплексом и складом
+          - generic [ref=f3e66]:
+            - heading "Берём себе" [level=4] [ref=f3e67]
+            - list [ref=f3e68]:
+              - listitem [ref=f3e69]: Frivent на нашем сайте — только доказательство «свой завод с 1961 года», а не образец
+              - listitem [ref=f3e70]: Направление «осушение бассейна» — у нас фото бассейна в доме, без установки
+      - article [ref=f3e71]:
+        - generic [ref=f3e72]:
+          - heading "Systemair" [level=3] [ref=f3e73]
+          - link "systemair.com" [ref=f3e74] [cursor=pointer]:
+            - /url: https://www.systemair.com
+          - generic [ref=f3e75]: берём один приём
+        - paragraph [ref=f3e76]: 810 слов · 7 смысловых блоков · подборщики оборудования · форм на главной нет
+        - generic [ref=f3e77]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e78]:
+            - link [ref=f3e79] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Systemair: первый экран на компьютере" [ref=f3e80]'
+          - figure "Телефон" [ref=f3e82]:
+            - 'img "Systemair: первый экран на телефоне" [ref=f3e83]'
+        - generic [ref=f3e85]:
+          - generic [ref=f3e86]:
+            - heading "Хорошо" [level=4] [ref=f3e87]
+            - list [ref=f3e88]:
+              - listitem [ref=f3e89]: "Разрез установки с потоками воздуха: техника выглядит понятно"
+              - listitem [ref=f3e90]: Блок «Certified performance» — сертификаты отдельным разделом
+          - generic [ref=f3e91]:
+            - heading "Плохо" [level=4] [ref=f3e92]
+            - list [ref=f3e93]:
+              - listitem [ref=f3e94]: Заголовок про хладагент R290 — частному клиенту непонятно
+              - listitem [ref=f3e95]: Синий корпоративный стиль, всё для инженеров
+          - generic [ref=f3e96]:
+            - heading "Берём себе" [level=4] [ref=f3e97]
+            - list [ref=f3e98]:
+              - listitem [ref=f3e99]: "Для раздела «Монтажнику»: схема-разрез вместо фото коробки"
+              - listitem [ref=f3e100]: Сертификаты и документы — отдельным коротким блоком
+      - article [ref=f3e101]:
+        - generic [ref=f3e102]:
+          - heading "Swegon" [level=3] [ref=f3e103]
+          - link "swegon.com" [ref=f3e104] [cursor=pointer]:
+            - /url: https://www.swegon.com
+          - generic [ref=f3e105]: берём слоган-ощущение
+        - paragraph [ref=f3e106]: Слоган «Feel good inside» («хорошо внутри») · меню из 6 разделов · кнопка «Contact»
+        - generic [ref=f3e107]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e108]:
+            - link [ref=f3e109] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Swegon: первый экран на компьютере" [ref=f3e110]'
+          - figure "Телефон" [ref=f3e112]:
+            - 'img "Swegon: первый экран на телефоне" [ref=f3e113]'
+        - generic [ref=f3e115]:
+          - generic [ref=f3e116]:
+            - heading "Хорошо" [level=4] [ref=f3e117]
+            - list [ref=f3e118]:
+              - listitem [ref=f3e119]: Главная фраза про ощущение человека, а не про технику
+              - listitem [ref=f3e120]: Раздел «Why Swegon?» — прямой ответ «почему мы»
+          - generic [ref=f3e121]:
+            - heading "Плохо" [level=4] [ref=f3e122]
+            - list [ref=f3e123]:
+              - listitem [ref=f3e124]: Первый экран снова занят установкой
+              - listitem [ref=f3e125]: Плашка cookie закрывает полэкрана
+          - generic [ref=f3e126]:
+            - heading "Берём себе" [level=4] [ref=f3e127]
+            - list [ref=f3e128]:
+              - listitem [ref=f3e129]: "Наш первый экран: ощущение («тихо, сухо, свежо, без сквозняков») вместо названия техники"
+              - listitem [ref=f3e130]: Блок «Почему мы» короткими пунктами
+      - article [ref=f3e131]:
+        - generic [ref=f3e132]:
+          - heading "Menerga" [level=3] [ref=f3e133]
+          - link "menerga.com" [ref=f3e134] [cursor=pointer]:
+            - /url: https://www.menerga.com
+          - generic [ref=f3e135]: берём подачу
+        - paragraph [ref=f3e136]: 1 010 слов · запчасти и техсервис в главном меню · магазин запчастей
+        - generic [ref=f3e137]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e138]:
+            - link [ref=f3e139] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Menerga: первый экран на компьютере" [ref=f3e140]'
+          - figure "Телефон" [ref=f3e142]:
+            - 'img "Menerga: первый экран на телефоне" [ref=f3e143]'
+        - generic [ref=f3e145]:
+          - generic [ref=f3e146]:
+            - heading "Хорошо" [level=4] [ref=f3e147]
+            - list [ref=f3e148]:
+              - listitem [ref=f3e149]: "Установка стоит в интерьере дорогого СПА с бассейном: техника показана в жизни владельца"
+              - listitem [ref=f3e150]: «Spare parts» и «Technical Service» — пункты главного меню
+          - generic [ref=f3e151]:
+            - heading "Плохо" [level=4] [ref=f3e152]
+            - list [ref=f3e153]:
+              - listitem [ref=f3e154]: Оранжевая установка спорит с интерьером
+              - listitem [ref=f3e155]: Текст на полупрозрачной плашке читается плохо
+          - generic [ref=f3e156]:
+            - heading "Берём себе" [level=4] [ref=f3e157]
+            - list [ref=f3e158]:
+              - listitem [ref=f3e159]: Если показываем оборудование — только в интерьере дома, тёплый свет, бассейн
+              - listitem [ref=f3e160]: Сервис и запчасти — в главное меню, а не в подвал сайта
+      - article [ref=f3e161]:
+        - generic [ref=f3e162]:
+          - heading "Euroclima" [level=3] [ref=f3e163]
+          - link "euroclima.com" [ref=f3e164] [cursor=pointer]:
+            - /url: https://www.euroclima.com
+          - generic [ref=f3e165]: контрпример
+        - paragraph [ref=f3e166]: 97 слов на главной · только слайдер новостей · 5 языков
+        - generic [ref=f3e167]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e168]:
+            - link [ref=f3e169] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Euroclima: первый экран на компьютере" [ref=f3e170]'
+          - figure "Телефон" [ref=f3e172]:
+            - 'img "Euroclima: первый экран на телефоне" [ref=f3e173]'
+        - generic [ref=f3e175]:
+          - generic [ref=f3e176]:
+            - heading "Хорошо" [level=4] [ref=f3e177]
+            - list [ref=f3e178]:
+              - listitem [ref=f3e179]: Строгий логотип с подписью «We care for better air»
+          - generic [ref=f3e180]:
+            - heading "Плохо" [level=4] [ref=f3e181]
+            - list [ref=f3e182]:
+              - listitem [ref=f3e183]: Главная — один слайдер с новостью про увлажнители
+              - listitem [ref=f3e184]: Ни слова о том, кому и зачем это нужно
+          - generic [ref=f3e185]:
+            - heading "Берём себе" [level=4] [ref=f3e186]
+            - list [ref=f3e187]:
+              - listitem [ref=f3e188]: "Ничего не берём: так делать нельзя"
+      - article [ref=f3e189]:
+        - generic [ref=f3e190]:
+          - heading "PRIME" [level=3] [ref=f3e191]
+          - link "prime-t.com" [ref=f3e192] [cursor=pointer]:
+            - /url: https://prime-t.com
+          - generic [ref=f3e193]: берём сегменты объектов
+        - paragraph [ref=f3e194]: "442 слова · сегменты: жилая недвижимость, ЦОД, фарма, промышленность · Telegram и WhatsApp"
+        - generic [ref=f3e195]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e196]:
+            - link [ref=f3e197] [cursor=pointer]:
+              - /url: "#"
+              - 'img "PRIME: первый экран на компьютере" [ref=f3e198]'
+          - figure "Телефон" [ref=f3e200]:
+            - 'img "PRIME: первый экран на телефоне" [ref=f3e201]'
+        - generic [ref=f3e203]:
+          - generic [ref=f3e204]:
+            - heading "Хорошо" [level=4] [ref=f3e205]
+            - list [ref=f3e206]:
+              - listitem [ref=f3e207]: Тёмный строгий стиль, крупный спокойный шрифт
+              - listitem [ref=f3e208]: "Объекты разбиты по типам: культурные центры, жильё, фарма, ЦОД"
+          - generic [ref=f3e209]:
+            - heading "Плохо" [level=4] [ref=f3e210]
+            - list [ref=f3e211]:
+              - listitem [ref=f3e212]: Правый блок слайдера пустой, пока не загрузится
+              - listitem [ref=f3e213]: Логотипа на первом экране не видно
+          - generic [ref=f3e214]:
+            - heading "Берём себе" [level=4] [ref=f3e215]
+            - list [ref=f3e216]:
+              - listitem [ref=f3e217]: "Для раздела «Коммерция»: объекты по типам (общепит, клиники, фитнес, ЦОД)"
+      - article [ref=f3e218]:
+        - generic [ref=f3e219]:
+          - heading "York" [level=3] [ref=f3e220]
+          - link "york.com" [ref=f3e221] [cursor=pointer]:
+            - /url: https://www.york.com
+          - generic [ref=f3e222]: контрпример
+        - paragraph [ref=f3e223]: Сайт Johnson Controls · окно cookie на весь экран · открывается дольше 45 секунд
+        - generic [ref=f3e224]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e225]:
+            - link [ref=f3e226] [cursor=pointer]:
+              - /url: "#"
+              - 'img "York: первый экран на компьютере" [ref=f3e227]'
+          - figure "Телефон" [ref=f3e229]:
+            - 'img "York: первый экран на телефоне" [ref=f3e230]'
+        - generic [ref=f3e232]:
+          - generic [ref=f3e233]:
+            - heading "Хорошо" [level=4] [ref=f3e234]
+            - list [ref=f3e235]:
+              - listitem [ref=f3e236]: Фраза про 150 лет и «самые престижные здания»
+          - generic [ref=f3e237]:
+            - heading "Плохо" [level=4] [ref=f3e238]
+            - list [ref=f3e239]:
+              - listitem [ref=f3e240]: Огромное окно согласия закрывает весь первый экран
+              - listitem [ref=f3e241]: Грузится очень долго
+          - generic [ref=f3e242]:
+            - heading "Берём себе" [level=4] [ref=f3e243]
+            - list [ref=f3e244]:
+              - listitem [ref=f3e245]: "Возраст бренда одной строкой: «Frivent — с 1961 года»"
+    - region [ref=f3e246]:
+      - generic [ref=f3e247]:
+        - generic [ref=f3e248]: Группа 2 · 7 сайтов из нашей базы
+        - heading "Инженерные и строительные компании «под ключ»" [level=2] [ref=f3e249]
+        - paragraph [ref=f3e250]: Это те, кто уже работает в наших посёлках. Подача почти у всех массовая. Ближе всех к премиуму «Приоритет». Hotwell и «Монолит» — массовая стройка, они здесь для сравнения.
+      - article [ref=f3e251]:
+        - generic [ref=f3e252]:
+          - heading "АВГ инженерный сервис" [level=3] [ref=f3e253]
+          - link "avgis.ru" [ref=f3e254] [cursor=pointer]:
+            - /url: https://avgis.ru
+          - generic [ref=f3e255]: берём строку марок и районы
+        - paragraph [ref=f3e256]: 1 012 слов · 57 кейсов · рейтинг Яндекса в шапке · аварийный выезд 24/7 · Telegram
+        - generic [ref=f3e257]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e258]:
+            - link [ref=f3e259] [cursor=pointer]:
+              - /url: "#"
+              - 'img "АВГ инженерный сервис: первый экран на компьютере" [ref=f3e260]'
+          - figure "Телефон" [ref=f3e262]:
+            - 'img "АВГ инженерный сервис: первый экран на телефоне" [ref=f3e263]'
+        - generic [ref=f3e265]:
+          - generic [ref=f3e266]:
+            - heading "Хорошо" [level=4] [ref=f3e267]
+            - list [ref=f3e268]:
+              - listitem [ref=f3e269]: На первом экране марки, с которыми работают (Vaillant, Buderus, Viessmann…), и районы (Нахабино, Истра, Одинцово)
+              - listitem [ref=f3e270]: Счётчик «57 опубликованных кейсов», вопросы и ответы
+              - listitem [ref=f3e271]: Плашка «Аварийный выезд 24/7»
+          - generic [ref=f3e272]:
+            - heading "Плохо" [level=4] [ref=f3e273]
+            - list [ref=f3e274]:
+              - listitem [ref=f3e275]: "Синий фон, оранжевые слова, сварка на фото: выглядит как срочный ремонт"
+              - listitem [ref=f3e276]: Много кнопок и плашек сразу
+          - generic [ref=f3e277]:
+            - heading "Берём себе" [level=4] [ref=f3e278]
+            - list [ref=f3e279]:
+              - listitem [ref=f3e280]: Строка марок европейского оборудования, которое обслуживаем
+              - listitem [ref=f3e281]: Районы работы одной строкой
+              - listitem [ref=f3e282]: Раздел вопросов и ответов
+      - article [ref=f3e283]:
+        - generic [ref=f3e284]:
+          - heading "Теплосервис (Viessmann)" [level=3] [ref=f3e285]
+          - link "viessmann-profi.ru" [ref=f3e286] [cursor=pointer]:
+            - /url: https://viessmann-profi.ru
+          - generic [ref=f3e287]: берём адрес
+        - paragraph [ref=f3e288]: 543 слова · адрес на Рублёво-Успенском шоссе в шапке · Telegram, WhatsApp, MAX, чат Jivo
+        - generic [ref=f3e289]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e290]:
+            - link [ref=f3e291] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Теплосервис (Viessmann): первый экран на компьютере" [ref=f3e292]'
+          - figure "Телефон" [ref=f3e294]:
+            - 'img "Теплосервис (Viessmann): первый экран на телефоне" [ref=f3e295]'
+        - generic [ref=f3e297]:
+          - generic [ref=f3e298]:
+            - heading "Хорошо" [level=4] [ref=f3e299]
+            - list [ref=f3e300]:
+              - listitem [ref=f3e301]: Адрес на Рублёвке в шапке — сразу «свои, местные»
+              - listitem [ref=f3e302]: Мессенджеры рядом с телефоном
+              - listitem [ref=f3e303]: Портфолио котельных в домах
+          - generic [ref=f3e304]:
+            - heading "Плохо" [level=4] [ref=f3e305]
+            - list [ref=f3e306]:
+              - listitem [ref=f3e307]: Красная полоса меню и слайдер с котлами — стиль каталога запчастей
+              - listitem [ref=f3e308]: Котельные сняты на телефон
+          - generic [ref=f3e309]:
+            - heading "Берём себе" [level=4] [ref=f3e310]
+            - list [ref=f3e311]:
+              - listitem [ref=f3e312]: Если будет адрес на нашей территории — в шапку
+              - listitem [ref=f3e313]: Три мессенджера рядом с телефоном
+      - article [ref=f3e314]:
+        - generic [ref=f3e315]:
+          - heading "Superspa" [level=3] [ref=f3e316]
+          - link "superspa.ru" [ref=f3e317] [cursor=pointer]:
+            - /url: https://superspa.ru
+          - generic [ref=f3e318]: контрпример
+        - paragraph [ref=f3e319]: 1 427 слов · корзина и каталог мебели на главной · 4 мессенджера
+        - generic [ref=f3e320]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e321]:
+            - link [ref=f3e322] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Superspa: первый экран на компьютере" [ref=f3e323]'
+          - figure "Телефон" [ref=f3e325]:
+            - 'img "Superspa: первый экран на телефоне" [ref=f3e326]'
+        - generic [ref=f3e328]:
+          - generic [ref=f3e329]:
+            - heading "Хорошо" [level=4] [ref=f3e330]
+            - list [ref=f3e331]:
+              - listitem [ref=f3e332]: "Понятно разделены: строительство, обслуживание, проекты"
+              - listitem [ref=f3e333]: Есть раздел «Как мы делаем»
+          - generic [ref=f3e334]:
+            - heading "Плохо" [level=4] [ref=f3e335]
+            - list [ref=f3e336]:
+              - listitem [ref=f3e337]: Жёлтый цвет и капс на кнопках
+              - listitem [ref=f3e338]: Корзина и «скамейка из липы» рядом с хаммамом под ключ
+          - generic [ref=f3e339]:
+            - heading "Берём себе" [level=4] [ref=f3e340]
+            - list [ref=f3e341]:
+              - listitem [ref=f3e342]: Хаммам, сауна, СПА — отдельной строкой в нашем «Образ жизни»
+      - article [ref=f3e343]:
+        - generic [ref=f3e344]:
+          - heading "Акварай" [level=3] [ref=f3e345]
+          - link "aquarai.ru" [ref=f3e346] [cursor=pointer]:
+            - /url: https://aquarai.ru
+          - generic [ref=f3e347]: берём этапы и вопросы
+        - paragraph [ref=f3e348]: 3 289 слов · «7 шагов к собственному бассейну» · цены · вопросы и ответы · длинная форма расчёта
+        - generic [ref=f3e349]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e350]:
+            - link [ref=f3e351] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Акварай: первый экран на компьютере" [ref=f3e352]'
+          - figure "Телефон" [ref=f3e354]:
+            - 'img "Акварай: первый экран на телефоне" [ref=f3e355]'
+        - generic [ref=f3e357]:
+          - generic [ref=f3e358]:
+            - heading "Хорошо" [level=4] [ref=f3e359]
+            - list [ref=f3e360]:
+              - listitem [ref=f3e361]: Этапы работы списком
+              - listitem [ref=f3e362]: Блок вопросов и ответов
+              - listitem [ref=f3e363]: "Две заявки: быстрая и полная"
+          - generic [ref=f3e364]:
+            - heading "Плохо" [level=4] [ref=f3e365]
+            - list [ref=f3e366]:
+              - listitem [ref=f3e367]: «От недорогого дачного варианта» — сразу не премиум
+              - listitem [ref=f3e368]: Оранжевая и голубая кнопки, зелёная плашка звонка
+              - listitem [ref=f3e369]: Форма на 15 полей
+          - generic [ref=f3e370]:
+            - heading "Берём себе" [level=4] [ref=f3e371]
+            - list [ref=f3e372]:
+              - listitem [ref=f3e373]: Этапы бассейна в нашей шкале «от обследования до сервиса»
+              - listitem [ref=f3e374]: Короткая и полная форма — оставить только короткую
+      - article [ref=f3e375]:
+        - generic [ref=f3e376]:
+          - heading "Приоритет Luxury" [level=3] [ref=f3e377]
+          - link "prioritet-luxury.ru" [ref=f3e378] [cursor=pointer]:
+            - /url: https://prioritet-luxury.ru
+          - generic [ref=f3e379]: ближе всех к нам
+        - paragraph [ref=f3e380]: 365 слов · карточки объектов с площадью и бюджетом · «Где мы строим дома» — список посёлков
+        - generic [ref=f3e381]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e382]:
+            - link [ref=f3e383] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Приоритет Luxury: первый экран на компьютере" [ref=f3e384]'
+          - figure "Телефон" [ref=f3e386]:
+            - 'img "Приоритет Luxury: первый экран на телефоне" [ref=f3e387]'
+        - generic [ref=f3e389]:
+          - generic [ref=f3e390]:
+            - heading "Хорошо" [level=4] [ref=f3e391]
+            - list [ref=f3e392]:
+              - listitem [ref=f3e393]: «Не просто строим загородные дома, мы обустраиваем жизнь»
+              - listitem [ref=f3e394]: "Карточки: «Коттедж 1 200 м² · 500 млн ₽», «Особняк 2 360 м² · 1,5 млрд ₽»"
+              - listitem [ref=f3e395]: "Услуги: генподряд, технический заказчик, отделка"
+              - listitem [ref=f3e396]: "Посёлки списком: Завидово, Ренессанс Парк, Березки River Village…"
+          - generic [ref=f3e397]:
+            - heading "Плохо" [level=4] [ref=f3e398]
+            - list [ref=f3e399]:
+              - listitem [ref=f3e400]: Рендеры вместо фото построенных домов
+              - listitem [ref=f3e401]: Тонкий капс в заголовке читается тяжело
+              - listitem [ref=f3e402]: Только «Оставить заявку», без встречи и выезда
+          - generic [ref=f3e403]:
+            - heading "Берём себе" [level=4] [ref=f3e404]
+            - list [ref=f3e405]:
+              - listitem [ref=f3e406]: Карточки объектов с площадью (бюджет — по её решению)
+              - listitem [ref=f3e407]: Список посёлков
+              - listitem [ref=f3e408]: Услуга «технический заказчик» — подходит ассистентам владельца
+      - article [ref=f3e409]:
+        - generic [ref=f3e410]:
+          - heading "Hotwell" [level=3] [ref=f3e411]
+          - link "hotwell.com" [ref=f3e412] [cursor=pointer]:
+            - /url: https://www.hotwell.com
+          - generic [ref=f3e413]: массовая стройка
+        - paragraph [ref=f3e414]: 3 153 слова · дома из СИП-панелей · счётчик «Построено 4 147» · каталог бань и гаражей
+        - generic [ref=f3e415]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e416]:
+            - link [ref=f3e417] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Hotwell: первый экран на компьютере" [ref=f3e418]'
+          - figure "Телефон" [ref=f3e420]:
+            - 'img "Hotwell: первый экран на телефоне" [ref=f3e421]'
+        - generic [ref=f3e423]:
+          - generic [ref=f3e424]:
+            - heading "Хорошо" [level=4] [ref=f3e425]
+            - list [ref=f3e426]:
+              - listitem [ref=f3e427]: "Живые цифры: построено, объекты 2026, строим сейчас"
+              - listitem [ref=f3e428]: Цитата клиента прямо на фото
+          - generic [ref=f3e429]:
+            - heading "Плохо" [level=4] [ref=f3e430]
+            - list [ref=f3e431]:
+              - listitem [ref=f3e432]: «Добро пожаловать на сайт» — пустая фраза
+              - listitem [ref=f3e433]: Каталог бань, беседок и хозблоков
+          - generic [ref=f3e434]:
+            - heading "Берём себе" [level=4] [ref=f3e435]
+            - list [ref=f3e436]:
+              - listitem [ref=f3e437]: Цитату клиента на фото — если будут настоящие отзывы
+      - article [ref=f3e438]:
+        - generic [ref=f3e439]:
+          - heading "Монолит Домстрой" [level=3] [ref=f3e440]
+          - link "monolithome.ru" [ref=f3e441] [cursor=pointer]:
+            - /url: https://monolithome.ru
+          - generic [ref=f3e442]: массовая стройка
+        - paragraph [ref=f3e443]: 4 340 слов · калькулятор · квиз · избранное и сравнение · «Акции» · карта построенных объектов
+        - generic [ref=f3e444]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e445]:
+            - link [ref=f3e446] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Монолит Домстрой: первый экран на компьютере" [ref=f3e447]'
+          - figure "Телефон" [ref=f3e449]:
+            - 'img "Монолит Домстрой: первый экран на телефоне" [ref=f3e450]'
+        - generic [ref=f3e452]:
+          - generic [ref=f3e453]:
+            - heading "Хорошо" [level=4] [ref=f3e454]
+            - list [ref=f3e455]:
+              - listitem [ref=f3e456]: Раздел «Посёлки» и карта построенных объектов
+          - generic [ref=f3e457]:
+            - heading "Плохо" [level=4] [ref=f3e458]
+            - list [ref=f3e459]:
+              - listitem [ref=f3e460]: «Наша работа — ваша выгода», «от 42 т.р./м²» — разговор о дешевизне
+              - listitem [ref=f3e461]: Жёлтые кнопки, калькулятор, квиз, плашки
+          - generic [ref=f3e462]:
+            - heading "Берём себе" [level=4] [ref=f3e463]
+            - list [ref=f3e464]:
+              - listitem [ref=f3e465]: Карту объектов по посёлкам — но тихо, без цен
+    - region [ref=f3e466]:
+      - generic [ref=f3e467]:
+        - generic [ref=f3e468]: Группа 3 · 3 сайта
+        - heading "Архитектурные бюро загородного премиума" [level=2] [ref=f3e469]
+        - paragraph [ref=f3e470]: "Самые сильные сайты выборки. Резников — главный конкурент по концепции: «полный цикл, один подрядчик», в меню у него есть «Оснащение»."
+      - article [ref=f3e471]:
+        - generic [ref=f3e472]:
+          - heading "Reznikov Studio" [level=3] [ref=f3e473]
+          - link "reznikov-studio.ru" [ref=f3e474] [cursor=pointer]:
+            - /url: https://reznikov-studio.ru
+          - generic [ref=f3e475]: лучший в выборке · главный конкурент
+        - paragraph [ref=f3e476]: 948 слов · резиденции 500–7 000 м² · с 1992 · «Двенадцать этапов — один подрядчик» · «Посёлки, где стоят наши дома» · запись на встречу
+        - generic [ref=f3e477]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e478]:
+            - link [active] [ref=f3e479] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Reznikov Studio: первый экран на компьютере" [ref=f3e480]'
+          - figure "Телефон" [ref=f3e482]:
+            - 'img "Reznikov Studio: первый экран на телефоне" [ref=f3e483]'
+        - generic [ref=f3e485]:
+          - generic [ref=f3e486]:
+            - heading "Хорошо" [level=4] [ref=f3e487]
+            - list [ref=f3e488]:
+              - listitem [ref=f3e489]: "Заголовок «Архитектура, которая переживает моду» и сразу цифры: площадь, Рублёвка, с 1992"
+              - listitem [ref=f3e490]: Обращение основателя в начале страницы
+              - listitem [ref=f3e491]: Крупные фото построенных домов с названиями
+              - listitem [ref=f3e492]: "Форма: как обращаться, телефон, направление, площадь, «Участок, пожелания, сроки — коротко»"
+              - listitem [ref=f3e493]: Кнопка «Записаться на встречу», меню «Оснащение»
+          - generic [ref=f3e494]:
+            - heading "Плохо" [level=4] [ref=f3e495]
+            - list [ref=f3e496]:
+              - listitem [ref=f3e497]: Страница очень длинная, 22 000 пикселей
+              - listitem [ref=f3e498]: На телефоне кнопка «Play» закрывает заголовок
+              - listitem [ref=f3e499]: "Только собственник: монтажнику и дизайнеру тут нечего делать"
+          - generic [ref=f3e500]:
+            - heading "Берём себе" [level=4] [ref=f3e501]
+            - list [ref=f3e502]:
+              - listitem [ref=f3e503]: Цифры масштаба в первом абзаце
+              - listitem [ref=f3e504]: «Все этапы — один подрядчик»
+              - listitem [ref=f3e505]: «Посёлки, где стоят наши дома»
+              - listitem [ref=f3e506]: Форму с площадью и коротким полем «пожелания»
+              - listitem [ref=f3e507]: «Записаться на встречу» вместо «Заказать звонок»
+      - article [ref=f3e508]:
+        - generic [ref=f3e509]:
+          - heading "Fedorova Architects" [level=3] [ref=f3e510]
+          - link "fedorova.ru" [ref=f3e511] [cursor=pointer]:
+            - /url: https://fedorova.ru
+          - generic [ref=f3e512]: берём разделы по аудиториям
+        - paragraph [ref=f3e513]: 213 слов · сайт из одного экрана с видео · разделы «Для заказчиков» и «Для поставщиков» · публикации в СМИ
+        - generic [ref=f3e514]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e515]:
+            - link [ref=f3e516] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Fedorova Architects: первый экран на компьютере" [ref=f3e517]'
+          - figure "Телефон" [ref=f3e519]:
+            - 'img "Fedorova Architects: первый экран на телефоне" [ref=f3e520]'
+        - generic [ref=f3e522]:
+          - generic [ref=f3e523]:
+            - heading "Хорошо" [level=4] [ref=f3e524]
+            - list [ref=f3e525]:
+              - listitem [ref=f3e526]: "Видео на весь экран: камень, вход, человек — дорого без слов"
+              - listitem [ref=f3e527]: "Меню по типам: архитектура, виллы, интерьеры"
+              - listitem [ref=f3e528]: Отдельно «Для заказчиков» и «Для поставщиков», «Признание»
+          - generic [ref=f3e529]:
+            - heading "Плохо" [level=4] [ref=f3e530]
+            - list [ref=f3e531]:
+              - listitem [ref=f3e532]: "Текста почти нет: поисковики ничего не увидят"
+              - listitem [ref=f3e533]: Всё спрятано в меню-гамбургер
+          - generic [ref=f3e534]:
+            - heading "Берём себе" [level=4] [ref=f3e535]
+            - list [ref=f3e536]:
+              - listitem [ref=f3e537]: Разделы по аудиториям в меню
+              - listitem [ref=f3e538]: "Блок «Признание»: публикации и награды, если будут"
+      - article [ref=f3e539]:
+        - generic [ref=f3e540]:
+          - heading "Бюро Михаила Усова" [level=3] [ref=f3e541]
+          - link "usov.archi" [ref=f3e542] [cursor=pointer]:
+            - /url: https://usov.archi
+          - generic [ref=f3e543]: берём только названия
+        - paragraph [ref=f3e544]: "405 слов · слайдер на 110 проектов · названия с посёлками: Agalarov Estate, Forest Stone Club, Барвиха"
+        - generic [ref=f3e545]:
+          - figure "Компьютер · по клику страница целиком" [ref=f3e546]:
+            - link [ref=f3e547] [cursor=pointer]:
+              - /url: "#"
+              - 'img "Бюро Михаила Усова: первый экран на компьютере" [ref=f3e548]'
+          - figure "Телефон" [ref=f3e550]:
+            - 'img "Бюро Михаила Усова: первый экран на телефоне" [ref=f3e551]'
+        - generic [ref=f3e553]:
+          - generic [ref=f3e554]:
+            - heading "Хорошо" [level=4] [ref=f3e555]
+            - list [ref=f3e556]:
+              - listitem [ref=f3e557]: "Проекты названы с посёлком: «Вилла в посёлке Agalarov Estate», «Резиденция Barvikha»"
+          - generic [ref=f3e558]:
+            - heading "Плохо" [level=4] [ref=f3e559]
+            - list [ref=f3e560]:
+              - listitem [ref=f3e561]: Первый экран белый, пока грузится слайдер
+              - listitem [ref=f3e562]: Нет ни одного предложения о том, что делает бюро
+          - generic [ref=f3e563]:
+            - heading "Берём себе" [level=4] [ref=f3e564]
+            - list [ref=f3e565]:
+              - listitem [ref=f3e566]: "Называть объекты с посёлком: «Дом в Жуковке, 1 400 м²»"
+    - region [ref=f3e567]:
+      - generic [ref=f3e568]:
+        - generic [ref=f3e569]: Не конкуренты · образцы настроения
+        - 'heading "Inspo: 4 образца «тихой роскоши»" [level=2] [ref=f3e570]'
+      - generic [ref=f3e571]:
+        - 'figure "Louis Poulsen. Продукт показан в руке человека, в тёплом свете. Так можно показать и климат: через человека в доме, а не через железо." [ref=f3e572]':
+          - 'img "Louis Poulsen: лампа в руке человека в тёплом вечернем свете" [ref=f3e573]'
+        - figure "Fisch & Tisch · Professionals. Отдельная страница для архитекторов и дизайнеров. Это образец нашего раздела «Я — дизайнер»." [ref=f3e575]:
+          - 'img "Fisch & Tisch: страница для профессионалов, стол на фото с плавной нижней кромкой" [ref=f3e576]'
+        - figure "Snøhetta. Одно крупное предложение о себе, ниже направления простым списком. Без кнопок и слайдеров." [ref=f3e578]:
+          - 'img "Snøhetta: одно предложение о себе крупным шрифтом, ниже список дисциплин" [ref=f3e579]'
+        - figure "Kengo Kuma (KKAA). Фото на весь экран и меню текстом. Самая тихая подача из всех." [ref=f3e581]:
+          - 'img "Kengo Kuma: фото объекта на весь экран, меню текстом справа" [ref=f3e582]'
+  - generic [ref=f3e584]:
+    - button "Закрыть ✕" [ref=f3e585] [cursor=pointer]
+    - img "Страница целиком" [ref=f3e586]
