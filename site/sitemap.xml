@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/assistentu.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/dizayneru.html</loc></url>
   <url><loc>https://frivent-site.frivent-dom.workers.dev/</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/katalog-assistentu.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/katalog-dizayneru.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/katalog-kommerciya.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/katalog-montazhnikam.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/katalog-vladelcu.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/katalog-zastroyshchikam.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/kommerciya.html</loc></url>
   <url><loc>https://frivent-site.frivent-dom.workers.dev/kontakty.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/montazhnikam.html</loc></url>
   <url><loc>https://frivent-site.frivent-dom.workers.dev/obekt-grand-tirol.html</loc></url>
   <url><loc>https://frivent-site.frivent-dom.workers.dev/obekt-kol-gali.html</loc></url>
   <url><loc>https://frivent-site.frivent-dom.workers.dev/obekt-letniy-dvorets.html</loc></url>
@@ -35,7 +25,5 @@
   <url><loc>https://frivent-site.frivent-dom.workers.dev/usluga-proverka-doma.html</loc></url>
   <url><loc>https://frivent-site.frivent-dom.workers.dev/usluga-servis.html</loc></url>
   <url><loc>https://frivent-site.frivent-dom.workers.dev/usluga-ventilyaciya.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/vladelcu.html</loc></url>
-  <url><loc>https://frivent-site.frivent-dom.workers.dev/zastroyshchikam.html</loc></url>
   <url><loc>https://frivent-site.frivent-dom.workers.dev/zhurnal.html</loc></url>
 </urlset>

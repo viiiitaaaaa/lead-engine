@@ -307,7 +307,7 @@ if (form) {
 
   /* черновик формы (Fraser «SaaS Playbook»: не терять тех, кто начал и ушёл): поля хранятся только в этом браузере,
      при возврате подставляются; после отправки черновик стирается */
-  const DRAFT = "lead-draft", keep = ["name", "phone", "email", "address", "area", "stage", "note"];
+  const DRAFT = "lead-draft", keep = ["phone"];
   try {
     const d = JSON.parse(localStorage.getItem(DRAFT) || "{}");
     keep.forEach(k => { if (d[k] && !form.elements[k].value) form.elements[k].value = d[k]; });
@@ -325,17 +325,11 @@ if (form) {
   form.addEventListener("focusin", () => { if (!firstTouch) firstTouch = Date.now(); });
   form.addEventListener("submit", async e => {
     e.preventDefault();
-    const phone = form.elements.phone, address = form.elements.address, consent = form.elements.consent;
+    const phone = form.elements.phone, consent = form.elements.consent;
     const digits = phone.value.replace(/\D/g, "");
     const phoneBad = !(digits.length === 11 && /^[78]/.test(digits)) && digits.length !== 10;
-    const addrBad = address.value.trim().length < 3;
-    /* почта необязательна, но если введена — проверяем (Мукминов: список плохих значений — без @, «user@», «@mail.ru», «user@.com», пробел) */
-    const email = form.elements.email, em = email.value.trim();
-    const emailBad = em !== "" && !/^[^\s@]{1,64}@[^\s@.][^\s@]*\.[^\s@.]{2,}$/.test(em);
-    setErr(phone, "e-phone", phoneBad); setErr(address, "e-address", addrBad); setErr(email, "e-email", emailBad);
+    setErr(phone, "e-phone", phoneBad);
     if (phoneBad) return phone.focus();
-    if (emailBad) return email.focus();
-    if (addrBad) return address.focus();
     consent.setAttribute("aria-invalid", !consent.checked); consent.closest(".consent").classList.toggle("bad", !consent.checked);
     if (!consent.checked) { status.textContent = "Отметьте согласие на обработку данных — галочка над кнопкой"; return consent.focus(); }
     if (submit.disabled) return; // уже отправляется — второй клик не шлёт дубль
@@ -371,7 +365,7 @@ if (form) {
   form.elements.consent.addEventListener("change", e => {
     if (e.target.checked) { e.target.setAttribute("aria-invalid", "false"); e.target.closest(".consent").classList.remove("bad"); status.textContent = ""; }
   });
-  ["phone", "address", "email"].forEach(n => form.elements[n].addEventListener("input", () => {
+  ["phone"].forEach(n => form.elements[n].addEventListener("input", () => {
     form.elements[n].setAttribute("aria-invalid", "false"); document.getElementById("e-" + n).hidden = true;
   }));
 }

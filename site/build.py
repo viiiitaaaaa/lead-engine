@@ -16,9 +16,9 @@ from zhurnal_content import ARTICLES
 import demo_content as DC
 
 SITE = Path(__file__).resolve().parent
-# бренд сайта — «Смарт Люкс» (встреча с Пашей 13.10, п.4: Frivent убрать везде). Адрес — пока публичная ссылка Cloudflare;
+# бренд сайта — «Смарт Инжиниринг» (встреча с Пашей 13.10, п.4: Frivent убрать везде). Адрес — пока публичная ссылка Cloudflare;
 # появится свой домен — поменять здесь (canonical, og, карта сайта, разметка)
-BRAND = "Смарт Люкс"
+BRAND = "Смарт Инжиниринг"
 BASE_URL = "https://frivent-site.frivent-dom.workers.dev/"
 
 
@@ -46,7 +46,7 @@ WHO_OPTIONS = [
 
 def header(active=""):
     # правки Паши 13.10, п.1: меню аудиторий сверху убрано — вверху только «кто мы»; выбор «Я — …» — посередине главной
-    # (раскрывающиеся блоки с УТП, utp_content.py). Логотип — словом, пока нет нового знака «Смарт Люкс».
+    # (раскрывающиеся блоки с УТП, utp_content.py). Логотип — словом, пока нет нового знака «Смарт Инжиниринг».
     return f'''<header class="top" id="top">
   <div class="wrap">
     <a class="logo logo-word" href="index.html">{BRAND}</a>
@@ -65,12 +65,6 @@ ANSWER_TIME = "в течение часа в рабочее время"  # её 
 COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" hidden>
     <p>Сайт использует cookies и сервис статистики посещений, чтобы считать заявки и улучшать страницы. <a href="politika.html">Подробнее</a></p>
     <button type="button" class="btn" id="cookie-ok">Хорошо</button>
-  </div>
-  <div class="exit-card" id="exit-card" role="dialog" aria-label="Памятка для вас" hidden>
-    <button type="button" class="exit-x" id="exit-x" aria-label="Закрыть">×</button>
-    <b>Пока вы здесь — заберите памятку</b>
-    <p>«Что делать в типовых ситуациях»: 12 коротких ответов именно для вашей роли. PDF придёт на почту.</p>
-    <a class="btn" id="exit-go" href="index.html#podarki">Посмотреть памятки</a>
   </div>
   <div class="call-modal" id="call-modal" role="dialog" aria-modal="true" aria-labelledby="call-title" hidden>
     <form class="call-box" id="call-form" novalidate>
@@ -92,7 +86,7 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
 EMAIL = "order@frivent.msk.ru"
 
 # 27.10 (её «все, добавляй» по сравнению с prioritet-ing.ru, п.6): места под телефон и мессенджеры в шапке и подвале.
-# Данных «Смарт Люкс» пока нет (Андрей пришлёт) — пустое не выводится; прежнее решение 10.10 «без контактов» действует, пока пусто.
+# Данных «Смарт Инжиниринг» пока нет (Андрей пришлёт) — пустое не выводится; прежнее решение 10.10 «без контактов» действует, пока пусто.
 # Заполнить: phone="+7 …", whatsapp="https://wa.me/…", telegram="https://t.me/…", email="…@…" → python site/build.py
 CONTACTS = dict(phone="", whatsapp="", telegram="", email="")
 
@@ -120,12 +114,12 @@ def foot_contacts():
 
 
 def facts_html():
-    """блок цифр под первым экраном (у «Приоритета» — 150+ объектов, 200 брендов…); цифры «Смарт Люкс» — demo_content.FACTS"""
+    """блок цифр под первым экраном (у «Приоритета» — 150+ объектов, 200 брендов…); цифры «Смарт Инжиниринг» — demo_content.FACTS"""
     if not DC.FACTS or (not DC.DEMO and all(not f[0].strip("0+") for f in DC.FACTS)):
         return ""
     cells = "\n".join(
         f'      <div><b>{n}</b><span>{t}{" " + DEMO_TAG if demo else ""}</span></div>' for n, t, demo in DC.FACTS)
-    return f'''<section class="facts-band" id="cifry" aria-label="Смарт Люкс в цифрах">
+    return f'''<section class="facts-band" id="cifry" aria-label="Смарт Инжиниринг в цифрах">
   <div class="wrap">
     <div class="facts">
 {cells}
@@ -174,7 +168,7 @@ def typograf(html):
 # «Кто мы» (её решение 10.10): по образцу frivent.ru/company, факты только оттуда и с /contacts — бренд основан в Австрии
 # в 1961, представительство в Москве с 1997, производство в России с 2022 (Переславль-Залесский). Полный цикл — главное,
 # своё производство климата — сильная сторона, но не единственное. Тот же текст — index.html #o-nas (вписан руками).
-# текст Паши 19.10 («что такое Смарт Люкс»)
+# текст Паши 19.10 («что такое Смарт Инжиниринг»)
 WHO_WE_ARE = ("Поставляем, проектируем, монтируем и обслуживаем инженерное и климатическое оборудование. "
               "Заменяем европейское оборудование.")  # 27.10: сайт стал инженерным (её слово), текст — черновик
 
@@ -405,52 +399,12 @@ def form_section(who="sobstvennik", title="Оставить заявку",
 
     <form id="lead-form" novalidate>
       <div class="field">
-        <label for="f-name">Как к вам обращаться</label>
-        <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Имя">
-      </div>
-      <div class="field">
         <label for="f-phone">Телефон <span class="req">*</span></label>
         <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="e-phone">
         <span class="err" id="e-phone" hidden>Укажите телефон: 10 цифр после +7</span>
       </div>
-      <div class="field">
-        <label for="f-email">Почта <span class="hint-inline">для памятки</span></label>
-        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@mail.ru" aria-describedby="e-email">
-        <span class="err" id="e-email" hidden>Проверьте почту — например, name@mail.ru</span>
-      </div>
-      <div class="field addr">
-        <label for="f-address">Адрес объекта <span class="req">*</span></label>
-        <input id="f-address" name="address" type="text" autocomplete="address-line1" placeholder="Посёлок, улица, дом или кадастровый №" required aria-describedby="h-address e-address">
-        <span class="hint" id="h-address">По адресу закрепляем объект за вашим менеджером</span>
-        <span class="err" id="e-address" hidden>Укажите адрес объекта — хотя бы посёлок</span>
-      </div>
-      <!-- стадия объекта — необязательный вопрос-отсев (книга «How To Market High-Priced Products», гл. 11:
-           квалифицирующая форма; её решение — без бюджета и цен): менеджер сразу понимает, с чем звонить -->
-      <div class="field">
-        <label for="f-stage">Стадия объекта</label>
-        <select id="f-stage" name="stage">
-          <option value="">Не выбрано</option>
-          <option>Идея или участок</option>
-          <option>Есть проект</option>
-          <option>Идёт стройка или ремонт</option>
-          <option>Дом готов, живём</option>
-          <option>Работающий коммерческий объект</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="f-who">Кто вы</label>
-        <select id="f-who" name="who">
-{opts}
-        </select>
-      </div>
-      <div class="field">
-        <label for="f-area">Площадь объекта, м²</label>
-        <input id="f-area" name="area" type="text" inputmode="numeric" placeholder="Например, 1 200">
-      </div>
-      <div class="field full">
-        <label for="f-note">Коротко о задаче</label>
-        <textarea id="f-note" name="note" rows="3" placeholder="Что нужно, сроки, пожелания"></textarea>
-      </div>
+      <!-- 27.10: в форме только телефон; позиции из «Интересует: …» копятся в скрытом поле, менеджер видит их в заявке -->
+      <input type="hidden" name="note"><input type="hidden" id="f-who" name="who" value="{who}">
       <!-- метки UTM: заполняются скриптом из адреса страницы -->
       <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page"><input type="hidden" name="gift">
@@ -467,7 +421,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
   </div>
   <footer>
     <div class="wrap">
-      <span>Смарт Люкс — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
+      <span>Смарт Инжиниринг — инженерные системы и оборудование</span>
       <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a>{req_line()}{foot_contacts()}</address>{usl}
     </div>
   </footer>
@@ -511,14 +465,14 @@ def reviews_html():
 
 
 def proof(*a, **kw):
-    # был блок «Своё производство климата»: годы, завод и отзывы Frivent. Правки Паши 13.10 — это не «Смарт Люкс», блок убран.
+    # был блок «Своё производство климата»: годы, завод и отзывы Frivent. Правки Паши 13.10 — это не «Смарт Инжиниринг», блок убран.
     return ""
 
 
 # ===== Тексты страниц =====
 PAGES = [
  dict(file="vladelcu.html", who="sobstvennik", img="h-vl2", pos="50% 55%", light=True,
-  title="Дом под ключ для владельца — Смарт Люкс",
+  title="Дом под ключ для владельца — Смарт Инжиниринг",
   desc="Загородный дом под ключ с одним ответственным менеджером: архитектура, стройка, вся инженерия и климат, интерьер и сервис. Новая Рига, Рублёвка, Ильинское шоссе.",
   eyebrow="Владельцу дома",
   h1="Ваш дом под ключ. Один ответственный за всё.",
@@ -572,7 +526,7 @@ PAGES = [
   form=dict(title="Оставить заявку", button="Оставить заявку")),
 
  dict(file="assistentu.html", who="pomoshchnik", img="d2-holl", pos="50% 55%", light=True,
-  title="Обслуживание дома для ассистента владельца — Смарт Люкс",
+  title="Обслуживание дома для ассистента владельца — Смарт Инжиниринг",
   desc="Для личных помощников, управляющих домом и семейных офисов: обслуживание и ремонт всех систем дома, запчасти к любому европейскому оборудованию, отчёт с фото для владельца.",
   eyebrow="Ассистенту владельца",
   h1="Всё в доме работает. Отчёт для владельца — у вас.",
@@ -618,7 +572,7 @@ PAGES = [
   form=dict(title="Вызвать инженера на диагностику", button="Вызвать инженера")),
 
  dict(file="dizayneru.html", who="dizayner", img="h-diz", pos="50% 55%", light=True,
-  title="Комплектация для дизайнера и архитектора — Смарт Люкс",
+  title="Комплектация для дизайнера и архитектора — Смарт Инжиниринг",
   desc="Отделочные материалы, текстиль, стекло, свет и мебель для загородных интерьеров строго по спецификации дизайнера. Сроки в договоре, образцы, вознаграждение открыто.",
   eyebrow="Дизайнеру и архитектору",
   h1="Поставка по вашей спецификации. Лицо проекта — вы.",
@@ -662,7 +616,7 @@ PAGES = [
   form=dict(title="Запросить условия для дизайнеров", button="Запросить условия")),
 
  dict(file="montazhnikam.html", who="montazh", img="h-mont", pos="50% 45%", light=True,
-  title="Оборудование для монтажных компаний — Смарт Люкс",
+  title="Оборудование для монтажных компаний — Смарт Инжиниринг",
   desc="Постоянный поставщик для монтажных и климатических компаний: вентиляция с рекуперацией, осушение бассейнов, кондиционирование. Поставка к графику монтажа, документы к сдаче, пусконаладка с замерами.",
   eyebrow="Монтажной и инженерной компании",
   h1="Оборудование к графику монтажа. Документы к сдаче.",
@@ -705,7 +659,7 @@ PAGES = [
   form=dict(title="Стать партнёром", button="Стать партнёром")),
 
  dict(file="zastroyshchikam.html", who="zastroyshchik", img="d2-fasad", pos="60% 55%", light=True,
-  title="Инженерия и климат для застройщика посёлка — Смарт Люкс",
+  title="Инженерия и климат для застройщика посёлка — Смарт Инжиниринг",
   desc="Инженерное оборудование, климат и остекление для домов коттеджного посёлка партиями: одно решение на все дома, документы производителя, сервис для жителей.",
   eyebrow="Застройщику",
   h1="Дом с продуманным климатом — довод для покупателей.",
@@ -755,7 +709,7 @@ PAGES = [
   form=dict(title="Обсудить посёлок", button="Обсудить посёлок")),
 
  dict(file="kommerciya.html", who="kommerciya", img="k1", pos="50% 60%", light=True,
-  title="Вентиляция и климат для коммерческих объектов — Смарт Люкс",
+  title="Вентиляция и климат для коммерческих объектов — Смарт Инжиниринг",
   desc="Вентиляция, кондиционирование и осушение бассейнов для ресторанов, клиник, фитнес-клубов и СПА, торговых центров и серверных. Расчёт под нормы, монтаж без остановки работы, сервис.",
   eyebrow="Коммерческим объектам",
   h1="Свежий воздух, который замечают только гости.",
@@ -809,7 +763,7 @@ PAGES = [
 # Превью ссылки в мессенджерах (Open Graph) и значок вкладки (находки 12.10, webstandards_ru/7834: <head> 2026).
 # og.jpg 1200×630 и значки делает make_icons.py; то же самое вписано в <head> index.html (его шапку build.py не трогает).
 OG_IMG = ('<meta property="og:image" content="' + BASE_URL + 'img/og.jpg"><meta property="og:image:width" content="1200">'
-          '<meta property="og:image:height" content="630"><meta property="og:image:alt" content="Загородная резиденция — Смарт Люкс, дом под ключ">'
+          '<meta property="og:image:height" content="630"><meta property="og:image:alt" content="Загородная резиденция — Смарт Инжиниринг, дом под ключ">'
           '<meta name="twitter:card" content="summary_large_image">')
 ICONS = ('<link rel="icon" href="img/favicon.svg" type="image/svg+xml"><link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">'
          '<link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="theme-color" content="#efebe6">')
@@ -822,7 +776,7 @@ HEAD = '''<!doctype html>
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{BASE_URL}{page}.html">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Смарт Люкс"><meta property="og:locale" content="ru_RU">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Смарт Инжиниринг"><meta property="og:locale" content="ru_RU">
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}">
 <meta property="og:url" content="{BASE_URL}{page}.html">
 {OG_IMG}
@@ -868,8 +822,8 @@ def politika_html():
         else:
             out.append(f"      <p>{e(l)}</p>")
     body = "\n".join(out)
-    return head(css_v=ver("styles.css"), title="Политика обработки персональных данных | Смарт Люкс",
-                desc="Как «Смарт Люкс» обрабатывает персональные данные из формы заявки: что получаем, зачем, как храним и как отозвать согласие.",
+    return head(css_v=ver("styles.css"), title="Политика обработки персональных данных | Смарт Инжиниринг",
+                desc="Как «Смарт Инжиниринг» обрабатывает персональные данные из формы заявки: что получаем, зачем, как храним и как отозвать согласие.",
                 page="politika", who="sobstvennik") + header().replace('href="#zayavka"', 'href="index.html#zayavka"') + f'''
 
 <main>
@@ -890,7 +844,7 @@ def politika_html():
 <section class="section dark">
   <footer>
     <div class="wrap">
-      <span>Смарт Люкс — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
+      <span>Смарт Инжиниринг — инженерные системы и оборудование</span>
       <a href="index.html">На главную →</a>
     </div>
   </footer>
@@ -916,8 +870,8 @@ def kontakty_html():
     ] + ([("Часы работы офиса", f"{DC.HOURS} {DEMO_TAG}")] if DC.DEMO and getattr(DC, "HOURS", "") else []) + [
     ]
     dl = "\n".join(f'      <div class="solve-row"><dt>{a}</dt><dd>{b}</dd></div>' for a, b in rows)
-    return head(css_v=ver("styles.css"), title="Контакты — Смарт Люкс",
-                desc=f"Как связаться со «Смарт Люкс»: заявка с сайта. Работаем на Новой Риге, Рублёвке и Ильинском шоссе. Ответ на заявку {ANSWER_TIME}.",
+    return head(css_v=ver("styles.css"), title="Контакты — Смарт Инжиниринг",
+                desc=f"Как связаться со «Смарт Инжиниринг»: заявка с сайта. Работаем на Новой Риге, Рублёвке и Ильинском шоссе. Ответ на заявку {ANSWER_TIME}.",
                 page="kontakty", who="sobstvennik") + header() + f'''
 
 <main>
@@ -1055,7 +1009,7 @@ HOUSE_RULES = DC.HOUSE_RULES  # примеры — в demo_content.py
 
 def compare_html():
     e = lambda x: escape(x, quote=False)
-    rows = "\n".join(f'        <tr><th scope="row">{e(a)}</th><td data-label="Несколько подрядчиков">{e(b)}</td><td data-label="Смарт Люкс">{e(c)}</td></tr>' for a, b, c in COMPARE)
+    rows = "\n".join(f'        <tr><th scope="row">{e(a)}</th><td data-label="Несколько подрядчиков">{e(b)}</td><td data-label="Смарт Инжиниринг">{e(c)}</td></tr>' for a, b, c in COMPARE)
     return f'''
 <section class="section alt" id="sravnenie">
   <div class="wrap">
@@ -1066,7 +1020,7 @@ def compare_html():
     </div>
     <div class="cmp-wrap">
       <table class="cmp">
-        <thead><tr><th scope="col"></th><th scope="col">Несколько подрядчиков</th><th scope="col">Смарт Люкс — полный цикл</th></tr></thead>
+        <thead><tr><th scope="col"></th><th scope="col">Несколько подрядчиков</th><th scope="col">Смарт Инжиниринг — полный цикл</th></tr></thead>
         <tbody>
 {rows}
         </tbody>
@@ -1337,8 +1291,8 @@ def catalog_html(p):
     </div>
   </div>
 </section>''']
-    title = f"Каталог — {p['eyebrow'].lower()} — Смарт Люкс"
-    desc = f"Каталог товаров и услуг «Смарт Люкс»: {', '.join(n for n, _ in cats).lower()}. Цена — по запросу."
+    title = f"Каталог — {p['eyebrow'].lower()} — Смарт Инжиниринг"
+    desc = f"Каталог товаров и услуг «Смарт Инжиниринг»: {', '.join(n for n, _ in cats).lower()}. Цена — по запросу."
     return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="katalog-" + p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
 <main>
@@ -1595,7 +1549,7 @@ def obj_html(i):
     <dl class="solve">
 {team}
     </dl>''' if team else ""
-    title = f'{o["name"]} — {o["job"].lower()} — Смарт Люкс'
+    title = f'{o["name"]} — {o["job"].lower()} — Смарт Инжиниринг'
     desc = f'{o["name"]}, {o["place"]}: {o["job"].lower()}. {o["lead"]}'
     return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="obekt-" + o["slug"], who="sobstvennik") + header() + f'''
 
@@ -1795,7 +1749,7 @@ def zhurnal_html():
         <p>{e(a["lead"])}</p>
         <span class="serv-go">Читать →</span>
       </a>''' for a in ARTICLES)
-    return head(css_v=ver("styles.css"), title="Журнал — климат и инженерия загородного дома — Смарт Люкс",
+    return head(css_v=ver("styles.css"), title="Журнал — климат и инженерия загородного дома — Смарт Инжиниринг",
                        desc="Статьи о главных проблемах загородного дома: шум вентиляции, сырость и плесень, конденсат у бассейна, духота, обмерзание рекуператора, сервис европейского оборудования.",
                        page="zhurnal", who="pomoshchnik") + header() + f'''
 
@@ -1837,7 +1791,7 @@ def statya_html(i):
         else:
             body += [f"      <p>{e(p)}</p>" for p in paras]
     more = "\n".join(f'      <li><a href="statya-{x["slug"]}.html">{e(x["title"])}</a></li>' for x in ARTICLES if x is not a)
-    return head(css_v=ver("styles.css"), title=e(a["title"]) + " | Смарт Люкс", desc=e(a["lead"]),
+    return head(css_v=ver("styles.css"), title=e(a["title"]) + " | Смарт Инжиниринг", desc=e(a["lead"]),
                        page="statya-" + a["slug"], who="pomoshchnik") + header() + f'''
 
 <main>
@@ -1899,10 +1853,7 @@ if __name__ == "__main__":
     for i, o in enumerate(OBJECTS):
         (SITE / f'obekt-{o["slug"]}.html').write_text(obj_html(i), "utf-8")
     print("страницы объектов:", len(OBJECTS))
-    for p in PAGES:
-        (SITE / p["file"]).write_text(page_html(p), "utf-8")
-        (SITE / ("katalog-" + p["file"])).write_text(catalog_html(p), "utf-8")
-        print("страница и каталог:", p["file"])
+    # 27.10 (её «да»): сайт инженерный, страницы клиентов (владельцу, дизайнеру…) и их каталоги не собираем
     idx = SITE / "index.html"
     s = idx.read_text("utf-8")
     s = replace_between(s, "<!--HEADMETA-->", "<!--/HEADMETA-->", OG_IMG + chr(10) + ICONS)
