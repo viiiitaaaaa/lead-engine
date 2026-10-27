@@ -1206,26 +1206,26 @@ body.call-open{overflow:hidden}
    Слой поверх прежних правил. Идея: светлая холодная страница + тёмно-синие «острова» со скруглением, карточки-стекло с мягкой тенью,
    тонкие концентрические кольца как единственный декор; один акцент — бирюза (воздух, вода) на синем. Токены переопределены здесь. */
 :root{
-  --paper:#f0f4f9; --sand:#e1e9f3; --ink:#111a2e; --ink-2:#2a3552; --ink-soft:#56627c; --line:#d3dcea;
-  --deep:#0d1d3b; --deep-2:#1c4a80;
-  --wine:#1b5aa8; --wine-2:#144a8d;          /* имена прежние; цвет — лазурь: кнопки заявки */
-  --accent:#27a3b3; --accent-ink:#1b4f8a;
-  --on-dark-soft:#c9d7ea; --on-dark-mute:#8ea3c2; --on-dark-accent:#9fe2ea;
-  --shade:8 18 38; --error:#b8381f;
+  --paper:#f1eef3; --sand:#e4dfea; --ink:#2a2530; --ink-2:#3d3546; --ink-soft:#5f566a; --line:#d9d1e0;
+  --deep:#221c29; --deep-2:#4a3156;
+  --wine:#704779; --wine-2:#5c3b65;          /* имена прежние; цвет — закалённый фиолет: кнопки заявки */
+  --accent:#b4a27c; --accent-ink:#5c3b65;
+  --on-dark-soft:#dcd3e4; --on-dark-mute:#a398b0; --on-dark-accent:#dccb9f;
+  --shade:30 22 36; --error:#b8381f;
   --r:28px; --r-s:18px; --glass:rgb(255 255 255/.72);
-  --sh-1:0 1px 2px rgb(17 30 60/.06),0 10px 28px -10px rgb(17 30 60/.16);
-  --sh-2:0 2px 4px rgb(17 30 60/.08),0 28px 56px -20px rgb(17 30 60/.34);
+  --sh-1:0 1px 2px rgb(42 37 48/.06),0 10px 28px -10px rgb(42 37 48/.16);
+  --sh-2:0 2px 4px rgb(42 37 48/.08),0 28px 56px -20px rgb(42 37 48/.34);
   --island:clamp(28px,3.4vw,48px);
 }
-body{background:radial-gradient(1100px 600px at 8% -4%,rgb(39 163 179/.10),transparent 60%),radial-gradient(900px 500px at 100% 18%,rgb(27 90 168/.08),transparent 60%),var(--paper)}
+body{background:radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.14),transparent 60%),radial-gradient(900px 500px at 100% 18%,rgb(112 71 121/.08),transparent 60%),var(--paper)}
 
 /* кнопки: таблетка с объёмом */
-.btn{border-radius:999px;background:linear-gradient(180deg,#2b6bbd,var(--wine));border-color:transparent;color:#fff;
-  box-shadow:0 1px 0 rgb(255 255 255/.25) inset,0 8px 20px -8px rgb(27 90 168/.7);transition:box-shadow .25s,background .25s,color .25s}
-.btn:hover{background:linear-gradient(180deg,#2562b0,var(--wine-2));border-color:transparent;color:#fff;box-shadow:0 1px 0 rgb(255 255 255/.2) inset,0 14px 26px -10px rgb(27 90 168/.8)}
-.btn.ghost{background:rgb(255 255 255/.55);color:var(--ink);border:1px solid rgb(17 26 46/.18);box-shadow:var(--sh-1);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn{border-radius:999px;background:linear-gradient(180deg,#7a4f84,var(--wine));border-color:transparent;color:#fff;
+  box-shadow:0 1px 0 rgb(255 255 255/.25) inset,0 8px 20px -8px rgb(92 59 101/.6);transition:box-shadow .25s,background .25s,color .25s}
+.btn:hover{background:linear-gradient(180deg,#6a4273,var(--wine-2));border-color:transparent;color:#fff;box-shadow:0 1px 0 rgb(255 255 255/.2) inset,0 14px 26px -10px rgb(92 59 101/.7)}
+.btn.ghost{background:rgb(255 255 255/.55);color:var(--ink);border:1px solid rgb(42 37 48/.2);box-shadow:var(--sh-1);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .btn.ghost:hover{background:#fff;color:var(--ink)}
-.dark .btn,.hero .btn{background:linear-gradient(180deg,#fff,#e8eff8);color:var(--ink);border-color:transparent;box-shadow:0 1px 0 #fff inset,0 10px 24px -10px rgb(0 0 0/.5)}
+.dark .btn,.hero .btn{background:linear-gradient(180deg,#fff,#efeaf3);color:var(--ink);border-color:transparent;box-shadow:0 1px 0 #fff inset,0 10px 24px -10px rgb(0 0 0/.5)}
 .dark .btn:hover,.hero .btn:hover{background:#fff;color:var(--ink)}
 .hero .btn.ghost{background:rgb(255 255 255/.12);color:#fff;border:1px solid rgb(255 255 255/.4);box-shadow:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .hero .btn.ghost:hover{background:#fff;color:var(--ink)}
@@ -1247,7 +1247,7 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(39 163 179/.10),trans
 /* цифры: карточки */
 .facts-band{padding-block:clamp(22px,2.4vw,34px)}
 .facts>div{background:var(--glass);border:1px solid rgb(255 255 255/.8);border-radius:var(--r);box-shadow:var(--sh-1);padding:clamp(18px,2vw,28px)}
-.facts b{background:linear-gradient(135deg,var(--accent-ink),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.facts b{background:linear-gradient(135deg,var(--accent-ink),var(--accent-ink));-webkit-background-clip:text;background-clip:text;color:transparent}
 .marquee{border:0;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 
 /* карточки: отдельные, объёмные, без линий-сеток */
@@ -1262,11 +1262,11 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(39 163 179/.10),trans
 /* «острова»: тёмные и светло-голубые блоки — скруглённые плиты с кольцами */
 .section.dark,.section.alt{margin-inline:var(--gut);border-radius:clamp(28px,3.4vw,48px);position:relative;overflow:hidden}
 .section.dark .wrap,.section.alt .wrap{padding-inline:clamp(20px,4vw,64px)}
-.section.alt{background:linear-gradient(160deg,#e6edf7,#dbe6f3);box-shadow:inset 0 1px 0 rgb(255 255 255/.8)}
+.section.alt{background:linear-gradient(160deg,#e9e4ee,#ddd6e5);box-shadow:inset 0 1px 0 rgb(255 255 255/.8)}
 .dark{background:
-  repeating-radial-gradient(circle at 88% 8%,transparent 0 70px,rgb(255 255 255/.055) 70px 71px),
-  repeating-radial-gradient(circle at 6% 96%,transparent 0 90px,rgb(255 255 255/.045) 90px 91px),
-  linear-gradient(140deg,var(--deep) 0%,#13305e 55%,var(--deep-2) 100%);box-shadow:var(--sh-2)}
+  repeating-radial-gradient(circle at 88% 8%,transparent 0 70px,rgb(220 203 159/.10) 70px 71px),
+  repeating-radial-gradient(circle at 6% 96%,transparent 0 90px,rgb(220 203 159/.08) 90px 91px),
+  linear-gradient(140deg,var(--deep) 0%,#33263d 55%,var(--deep-2) 100%);box-shadow:var(--sh-2)}
 .steps{border-top:0;gap:14px}
 .steps li{padding:22px;background:rgb(255 255 255/.07);border:1px solid rgb(255 255 255/.14);border-radius:var(--r-s);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .steps li::before{display:none}
@@ -1286,20 +1286,20 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(39 163 179/.10),trans
 
 /* плашки поверх страницы */
 .cookie,.exit-card,.call-box{border-radius:var(--r);box-shadow:var(--sh-2);border:1px solid rgb(255 255 255/.7);background:rgb(255 255 255/.86);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
-.call-modal{background:rgb(13 29 59/.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
-.call-box .btn{background:linear-gradient(180deg,#2b6bbd,var(--wine));color:#fff}
-.cookie .btn{background:linear-gradient(180deg,#2b6bbd,var(--wine));color:#fff;border-color:transparent}
+.call-modal{background:rgb(34 28 41/.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.call-box .btn{background:linear-gradient(180deg,#7a4f84,var(--wine));color:#fff}
+.cookie .btn{background:linear-gradient(180deg,#7a4f84,var(--wine));color:#fff;border-color:transparent}
 @media (prefers-reduced-transparency:reduce){.top,.cookie,.exit-card,.call-box{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}
 @media (max-width:860px){.hero{border-radius:28px}.top{border-radius:28px}.section.dark,.section.alt{margin-inline:12px}.top{margin-inline:12px}.hero{margin-inline:12px}}
 .hero{width:auto;max-width:none}
 .hero .btn,.hero .btn:hover{border-radius:999px;padding:15px 26px}
 .hero .btn.ghost{border:1px solid rgb(255 255 255/.4)}
 .btn.ghost{border-radius:999px}
-@supports (-moz-appearance:none){html{scrollbar-color:#b4c3d8 var(--paper)}}
+@supports (-moz-appearance:none){html{scrollbar-color:#c4b8d0 var(--paper)}}
 ::-webkit-scrollbar{width:14px;height:14px}
 ::-webkit-scrollbar-track{background:var(--paper)}
-::-webkit-scrollbar-thumb{background:#b4c3d8;border:3px solid var(--paper);border-radius:99px}
-::-webkit-scrollbar-thumb:hover{background:#8da3c2}
+::-webkit-scrollbar-thumb{background:#c4b8d0;border:3px solid var(--paper);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:#a596b5}
 ::-webkit-scrollbar-corner{background:var(--paper)}
 .dark input,.dark select,.dark textarea{border:1px solid rgb(255 255 255/.28);border-radius:var(--r-s);background:rgb(255 255 255/.07);padding:14px 16px}
 .rv{border-radius:var(--r);border:1px solid rgb(255 255 255/.8);background:var(--glass);box-shadow:var(--sh-1)}

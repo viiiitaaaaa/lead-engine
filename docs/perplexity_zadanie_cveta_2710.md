@@ -1,0 +1,13 @@
+# Задание помощнику: глубокое исследование в Perplexity про цвета сайта (27.10.2026)
+
+Цель: получить пересказ глубокого исследования Perplexity про необычную цветовую палитру для сайта инженерной компании.
+Файлы: ничего не править. Результат — сохранить текстом в `C:\Users\User\lead-engine\docs\perplexity_cveta_2710.md` (английский ответ целиком + ниже пересказ по-русски со ссылками).
+Образец итога: список из 4–6 палитр; у каждой — название, 4–5 цветов с hex, чем связана с инженерией, чем отличается от синего-голубого конкурента, где источник (ссылка).
+Если А (Perplexity просит вход или показывает лимит/оплату) — стоп, доложить, ничего не вводить и не платить. Если Б (нет кнопки «Deep Research») — задать обычный поиск.
+Потолок: не больше 25 действий; застрял — стоп и доложить. Один вопрос, одна вкладка, без повторов и циклов.
+Другие вкладки и файлы не трогать. Ответ читать текстом страницы (get_page_text), не снимками.
+
+## Запрос (вставить как есть)
+Deep research: I am designing a website for a Russian engineering company (HVAC, ventilation, climate and engineering equipment supply, installation, service; replacing European equipment). The main competitor's site uses standard navy blue and light blue with white. I need 4-6 unusual, memorable colour palettes tied to engineering that avoid standard blue and cyan. Think about real engineering colour language: heat-treated steel and anodised metals, copper and brass piping, safety-coding colours for ducts and pipes, blueprint/cyanotype alternatives, thermal-imaging gradients, industrial coatings (RAL), oxidised patina. For each palette give: a name, 4-5 hex colours with roles (background, text, primary, accent, button), why it fits engineering and climate/ventilation, how it looks premium and trustworthy for B2B clients (developers, installers, commercial objects), contrast/accessibility notes (WCAG AA for text and buttons), and 1-2 real websites or brand examples using a similar idea. Cite sources.
+
+(Перевод: Глубокое исследование: я делаю сайт российской инженерной компании (вентиляция, климат, поставка, монтаж, сервис; замена европейского оборудования). У главного конкурента стандартный тёмно-синий и голубой с белым. Нужно 4–6 необычных запоминающихся палитр, связанных с инженерией, без обычного синего и голубого: закалённая и анодированная сталь, медь и латунь труб, цвета маркировки труб и воздуховодов, альтернатива чертежам-синькам, тепловизор, промышленные покрытия RAL, патина. Для каждой: название, 4–5 цветов hex с ролями, почему подходит инженерии и климату, как выглядит солидно для B2B, доступность (контраст WCAG AA), 1–2 реальных примера сайтов или брендов. С источниками.)

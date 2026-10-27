@@ -1,0 +1,782 @@
+For this brief, the strongest starting points are “Copper + Graphite” for a premium equipment
+supplier and “Green Patina + Brass” for a more distinctive engineering-services brand. Below
+are six complete directions without navy, blue or cyan—each based on a material, engineering
+process or technical visual convention.
+The HEX values are original proposals, not colours extracted from the reference brands.
+“Premium” and “trustworthy” describe the intended art direction, not a claim that a particular
+hue automatically creates B2B trust.
+Deep research: I am designing a website for a Russian
+engineering company (HVAC, ventilation, climate and
+engineering equipment supply, installation, service;
+replacing European equipment). The main
+competitor's site uses standard navy blue and light
+blue with white. I need 4-6 unusual, memorable
+colour palettes tied to engineering that avoid
+standard blue and cyan. Think about real engineering
+colour language: heat-treated steel and anodised
+metals, copper and brass piping, safety-coding
+colours for ducts and pipes, blueprint/cyanotype
+alternatives, thermal-imaging gradients, industrial
+coatings (RAL), oxidised patina. For each palette give:
+a name, 4-5 hex colours with roles (background, text,
+primary, accent, button), why it ﬁts engineering and
+climate/ventilation, how it looks premium and
+trustworthy for B2B clients (developers, installers,
+commercial objects), contrast/accessibility notes
+(WCAG AA for text and buttons), and 1-2 real websites
+or brand examples using a similar idea. Cite sources.
+WCAG AA requires 4.5:1 for ordinary text, including most button labels, and 3:1 for large text—
+at least 24 CSS px regular or approximately 18.67 CSS px bold. Meaningful control indicators
+and graphical elements generally need 3:1 against adjacent colours; colour must not be the
+only way to communicate status, selection or an error.
+The approximate contrast ratios below are calculated from the proposed opaque sRGB colours
+using WCAGʼs relative-luminance formula; they describe the speciﬁed pairings, not whole-site
+compliance.
+Character: Precision equipment, heat transfer, machined components—not generic
+“construction orange.”
+Role HEX Suggested application
+Background — warm porcelain #F5F2EC Main pages, equipment cards, specifications
+Text — graphite #242424 Body copy, navigation, technical data
+Primary — dark bronze #5B4636 Headings, underlined links, diagrams
+Accent — brushed brass #C69A68 Small markers, rules, decorative details
+Button — oxidised copper #974B2E Main CTA, with #F5F2EC label
+Engineering connection. Copper has a direct HVAC association through refrigerant tubing,
+condenser and evaporator tubes, and heat exchangers. The bronze-to-black supporting tones
+also reﬂect real anodised-aluminium ﬁnishes rather than an invented metallic aesthetic.
+B2B execution. Use mostly light surfaces, tightly organised speciﬁcations and actual equipment
+photography; reserve copper for “Подобрать аналог” or “Запросить расчёт.” The intended
+premium eﬀect comes from material restraint: matte colours, generous spacing and sharp
+technical diagrams—not shiny gold gradients.
+This direction particularly suits a company presenting itself as a technically competent
+replacement-equipment partner: substantial, warm and precise without looking like a
+household air-conditioning retailer.
+Contrast and restrictions
+Graphite text/background: 13.9:1; bronze text/background: 7.9:1
+Background-colour label/copper button: 5.6:1—passes AA for ordinary labels
+Brass/background: approximately 2.3:1—use decoratively, not for small text or essential
+diagram lines
+Real references
+Gaggenau AC250121: a particularly relevant product precedent—ceiling ventilation with a
+solid anodised-aluminium ﬁlter cover in Light Bronze.
+Accessibility baseline
+[1] [2] [3] [4]
+[4]
+Copper + Graphite
+[5] [6]
+[7]
+Hydro — Premium Anodizing Solutions: a material reference spanning natural aluminium,
+champagne, light/dark bronze and black—not a claim that Hydroʼs website uses this
+complete palette.
+Character: Architectural engineering, lifecycle service, substantial mechanical systems.
+Role HEX Suggested application
+Background — carbon green #15201B Hero, navigation, footer, selected feature sections
+Text — mineral white #F2F3EB Main text on dark surfaces
+Primary — green patina #91AD97 Headings, underlined links, technical illustrations
+Accent — pale mineral #C9D4C1 Secondary annotations and supporting graphics
+Button — muted brass #C4A268 Main CTA, with #15201B label
+Engineering connection. This takes its cue from copperʼs green patina and brassʼs golden-
+yellow appearance, both represented in real architectural-metal product ranges. Importantly,
+the proposed green is sage/mineral green, not turquoise: it avoids slipping back into the
+competitorʼs blue–cyan territory.
+B2B execution. Use the dark treatment for the ﬁrst screen and high-value service sections, then
+introduce light technical-document surfaces for long product tables. Pair it with copper-pipe
+details, plant-room photography and restrained line drawings.
+The intended impression is an established specialist that understands equipment across its
+lifecycle. Avoid leaves, eco-stock photography and unsupported sustainability badges:
+otherwise the engineering story becomes a generic environmental brand.
+Contrast and restrictions
+Mineral-white text/background: 15.0:1
+Patina primary/background: 6.9:1—suitable for ordinary text
+Dark label/brass button: 6.9:1
+Mineral-white label/brass button: only 2.2:1—do not use the light text token on this CTA
+Real reference
+Nordic Copper: Nordic Green, Nordic Brown and Nordic Brass provide a genuine material
+family behind this direction. Treat it as an architectural-material reference, not an exact
+website-palette match.
+[6]
+Green Patina + Brass
+[8]
+[8]
+Character: Controls, installation, commissioning, dependable ﬁeld service.
+Role HEX Suggested application
+Background — industrial oﬀ-white #F4F4F0 Main content and equipment catalogue
+Text — near-black #202020 Text, navigation, technical values
+Primary — machine grey #555B52 Headings, diagram strokes, secondary controls
+Accent — signal yellow #E2B83F Numbered steps and small operational markers
+Button — equipment orange #ED6A21 CTA, with #202020 label and dark border
+Engineering connection. Orange and black have a direct HVAC precedent in Belimoʼs published
+identity; yellow and grey also appear as functional operating/service codes on Kärcher
+equipment. The useful idea is colour as an operational instruction, rather than colour as
+decoration.
+B2B execution. Keep the page predominantly oﬀ-white and grey, with orange concentrated on
+actions and key process transitions. Use numbered commissioning stages, equipment
+identiﬁers and clear service categories; avoid hazard stripes across entire sections.
+Of these six directions, this is the most suitable for a hands-on installation and service
+business. It communicates a more practical, ﬁeld-oriented character than the architectural
+elegance of patina or bronze.
+Contrast and restrictions
+Near-black text/background: 14.8:1; machine-grey text/background: 6.3:1
+Dark label/orange button: 5.2:1—passes AA
+White label/orange button: approximately 3.1:1—fails for ordinary-sized labels
+Orange button/background: approximately 2.85:1; add a dark border for clear delineation,
+particularly where the boundary identiﬁes the control.
+Real references
+Belimo: the closest sector reference, oﬀering HVAC ﬁeld devices and publishing an
+orange/black logo version.
+Kärcher Professional: a functional-colour reference—yellow identiﬁes daily-operator touch
+points, grey identiﬁes service-technician touch points.
+Important Russian-context caveat: borrow the discipline of industrial marking, not an invented
+standard. Russian industrial-pipe identiﬁcation is addressed by ГОСТ Р 71918—2024, eﬀective
+from 1 March 2025; website branding should remain separate from actual pipe, safety and
+project-documentation marking.
+Signal Orange + Machine Grey
+[9] [10]
+[1]
+[11] [9]
+[10]
+[12]
+Character: Materials science, controlled heat, precision manufacturing.
+Role HEX Suggested application
+Background — ceramic mist #F1EEF3 Main pages, documents, product cards
+Text — carbon plum #2A2530 Body copy and technical data
+Primary — temper violet #5C3B65 Headings, links, selected navigation
+Accent — champagne metal #B4A27C Decorative rules, small material details
+Button — muted violet #704779 Main CTA, with #F1EEF3 label
+Engineering connection. Violet is not inherently “non-industrial”: coloured stainless-steel
+ﬁnishes include bronze, gold and red-violet, with colour arising from oxide-layer interference.
+Champagne is also a real anodised-aluminium ﬁnish.
+B2B execution. Make violet a controlled technical ink, not a luminous background wash.
+Combine it with clean CAD-style illustrations, silver equipment photographs and a disciplined
+grid; keep champagne details sparse.
+This is the most unexpected light-background direction. It could diﬀerentiate a technically
+sophisticated selection-and-integration company, but should be tested carefully: overly
+rounded cards, pink gradients or glossy eﬀects would push it toward cosmetics or consumer
+technology.
+Contrast and restrictions
+Carbon-plum text/background: 13.0:1
+Temper-violet primary/background: 8.1:1
+Background-colour label/violet button: 6.4:1
+Champagne/background: approximately 2.2:1—decorative only on the light surface
+Real reference
+Dyson — Plum/Copper collection: a product-colour precedent for plum plus a warm metal
+accent, rather than an exact corporate-web palette.
+Technical caution: do not illustrate this concept with visibly heat-discoloured welds as proof of
+manufacturing quality. BSSA notes that welding heat tint can reduce stainless steelʼs corrosion
+resistance and normally requires appropriate post-weld treatment. This palette borrows a
+colour phenomenon, not a quality claim about untreated welds.
+Character: Diagnostics, energy performance, measurement and control.
+Temper Violet + Champagne
+[13] [6]
+[14]
+[15]
+Thermal Plum + Amber
+Role HEX Suggested application
+Background — thermal charcoal #211A22 Hero and diagnostic/service sections
+Text — warm white #F8F1DE Main copy on dark surfaces
+Primary — spectral violet #B69BCC Headings, links, illustrative contours
+Accent — heat orange #E08045 Hotspot markers and highlights
+Button — thermal amber #F0C35A Main CTA, with #211A22 label
+Engineering connection. This is a deliberately reduced, blue-free interpretation of thermal-
+imaging colour language. FLIR describes Ironbow as a palette for identifying thermal
+anomalies and showing heat distribution, with hotter areas represented by lighter, warmer
+colours.
+B2B execution. Use the thermal idea in a narrow, purposeful way: diagnostic case studies, heat-
+loss investigations, commissioning and performance optimisation. Keep the rest of the
+interface structured and quiet.
+A small violet–orange–amber contour or gradient can become a memorable signature.
+Covering every card and button with gradients would weaken the intended instrument-like
+precision.
+Contrast and restrictions
+Warm-white text/background: 15.1:1
+Spectral-violet primary/background: 6.9:1
+Heat-orange accent/background: 5.9:1
+Dark label/amber button: 10.2:1; warm-white label/amber is only 1.5:1
+Keep ordinary text on solid panels; text over a gradient must meet contrast requirements at
+every point immediately behind it.
+Real reference
+FLIR — Picking a Thermal Color Palette: an actual instrumentation-interface reference, not
+FLIRʼs corporate website colour scheme.
+For genuine measurement graphics, preserve the source data, numerical scale and legend.
+Changing a thermal palette changes its visual presentation, not the underlying temperature
+data; the proposed brand colours should not be presented as a calibrated temperature scale.
+Character: Engineering documentation, architectural coordination, speciﬁcation-led
+procurement.
+Role HEX Suggested application
+Background — drawing paper #EFE7D6 Main content and specification panels
+[16]
+[4]
+[16]
+[16]
+Brownprint + Oxblood
+Role HEX Suggested application
+Text — dra ing graphite #302B26 Body copy, schedules, technical tables
+Primary — sepia ink #6B4F36 Headings, links, schematic drawings
+Accent — aged brass #B49763 Document markers and decorative rules
+Button — oxblood enamel #7A263A Main CTA, with #EFE7D6 label
+Engineering connection. Engineering drawings were not exclusively blue: VanDyke
+reproductions used brown-and-white imagery, while other historical reproduction processes
+produced brown, black, sepia, purple and magenta images. This gives the palette a genuine
+alternative to the familiar cyanotype reference.
+B2B execution. Translate the drawing-oﬃce idea into modern precision: clear schedules,
+revision identiﬁers, equipment cross-sections and well-labelled replacement-equipment tables.
+Use a clean parchment colour—not distressed paper, stains or vintage textures.
+The intended premium character is closer to an architectural speciﬁcation oﬃce than an
+industrial warehouse. Oxblood supplies a distinctive action colour without turning the whole
+site into a red engineering template.
+Contrast and restrictions
+Graphite text/background: 11.4:1
+Sepia primary/background: 6.1:1
+Background-colour label/oxblood button: 7.9:1
+Brass/background: approximately 2.3:1—not suitable for ordinary text or essential diagram
+strokes
+Real reference
+USM Haller — colours and surfaces: an adjacent architectural-product reference combining
+beige, brown, ruby red and industrial ﬁnishes; its speciﬁcation also identiﬁes several RAL
+colours. It supports the enamel-and-architecture idea, not an assertion that USM uses these
+exact HEX values.
+These are art-direction recommendations for the brief, rather than measured rankings.
+Main commercial emphasis Strongest direction Intended positioning Main risk to avoid
+Equipment supply and European-
+equipment replacement Copper + Graphite Material competence,premium selection Looking like an interiorsretailer
+Long-term engineering and
+service relationships
+Green Patina +
+Brass
+Architectural maturity,
+lifecycle thinking Generic “eco” branding
+Installation, commissioning and
+rapid service
+Signal Orange +
+Machine Grey
+Operational clarity, field
+competence
+Construction-store or
+hazard-sign aesthetic
+[17] [18]
+[19]
+Choosing a direction
+Main commercial emphasis Strongest direction Intended positioning Main risk to avoid
+Technical selection and
+sophisticated integration
+Temper Violet +
+Champagne
+Distinctive, materials-led
+precision
+Cosmetic or consumer-tech
+styling
+Diagnostics and performance
+optimisation
+Thermal Plum +
+Amber Measurement-led expertise Decorative pseudo-scientificheatmaps
+Developer and architect
+coordination
+Brownprint +
+Oxblood
+Documentation-led
+confidence
+Nostalgia instead of
+contemporary engineering
+Keep branding separate from technical semantics. Actual safety markings and engineering
+documentation should not be recoloured merely to match the website; their applicable
+standards and project conventions take precedence.
+Use RAL as a physical reference, not a HEX promise. RAL states that digital representations
+approximate physical samples and recommends physical samples for ﬁnal production
+decisions. Specify the websiteʼs sRGB tokens separately from paint, powder-coating and
+signage speciﬁcations.
+Underline inline links and label statuses. Pair colour with text, icons or shape—for
+example, “В наличии,” “Под заказ” and “Требуется проверка совместимости”—rather
+than relying on green, amber and red alone.
+Test every interaction state. Hover, selected, focus and validation states must retain the
+relevant contrast; a compliant default button does not establish compliance for its other
+states.
+Build credibility beyond colour. For this company, the palette should frame evidence:
+replacement-selection criteria, actual project photographs, equipment speciﬁcations,
+commissioning scope, warranty responsibilities and clearly stated service coverage. Avoid
+visual or verbal suggestions of European manufacture or manufacturer authorisation
+unless those claims are supportable.
+⁂
+1. https://www.w3.org/WAI/WCAG22/quickref/?levels=aaa&currentsidebar=%23702
+2. https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html
+3. https://www.w3.org/WAI/WCAG22/quickref/
+4. https://www.w3.org/WAI/WCAG22/Techniques/general/G18
+5. https://copper.org/applications/plumbing/comml_tube/reading/cu_ally_tbpp.php
+6. https://www.hydro.com/globalassets/01-products--services/extruded-profiles/uk/hydro-anodizing-uk_final-1.pdf
+7. https://www.gaggenau.com/za/en/mkt-product/ventilation/200-series/ceiling-ventilation/AC250121
+8. https://www.nordiccopper.com/nordic-copper-aurubis-com/sv/nordic-copper/
+9. https://www.belimo.com/hk/en_GB/about/media/pictures-logos
+10. https://www.kaercher.com/us/en/commercial/products/commercial-and-industrial-vacuums-c4411
+11. https://www.belimo.com/de/en_GB/
+Implementation guardrails
+[12]
+[20]
+[2]
+[1]
+12. https://protect.gost.ru/gost/details/c31a94b2-d2ae-4ee0-bf3a-559dﬀ0c9bb4
+13. https://bssa.org.uk/bssa_articles/specifying-coloured-stainless-steel-finishes-and-their-applications/
+14. https://www.dyson.com/hair-care/gi -guide
+15. https://bssa.org.uk/bssa_articles/getting-the-best-out-of-stainless-steel/
+16. https://www.flir.com/en-asia/discover/industrial/picking-a-thermal-color-palette/
+17. https://psap.library.illinois.edu/collection-id-guide/summary-archdrawrepro
+18. https://resources.culturalheritage.org/pmgtopics/1995-volume-six/06_03_Price.html
+19. https://cms.usm.com/media/14dhic3x/usm_haller_specifications_en.pdf
+20. https://www.ral-farben.de/ral-digitale-farbbibliothek
+21. https://www.nordiccopper.com/nordic-copper-aurubis-com/dam/jcr:70b6c19f-a408-4165-98f4-74b15e7c3fb3/copperb
+ook-2024.pdf
+22. https://www.nordiccopper.com/nordic-copper-aurubis-com/en/nordic-copper/
+23. https://www.nordiccopper.com/nordic-copper-aurubis-com/dam/jcr:16719364-c3ea-4102-a0c9-e063fbe194fd/Architec
+tural-brochure_web-2-2024.pdf
+24. https://www.nordiccopper.com/nordic-copper-aurubis-com/en/nordic-copper/faq
+25. https://www.nordiccopper.com/copper-stories/sustainable-restoration/
+26. https://www.nordiccopper.com/nordic-copper-aurubis-com/en/nordic-copper/copper-stories/we-land-helsinki-finland
+27. https://www.nordiccopper.com/dam/jcr:ad26aa93-6baa-4326-880d-27ec3a1e298a/473EH00002_specification-nordic-g
+reen.pdf
+28. https://www.nordiccopper.com/copper-stories/klaveness-rabu/
+29. https://www.nordiccopper.com/nordic-copper-aurubis-com/nordic-copper/copper-stories/ram-quarter
+30. https://www.nordiccopper.com/copper-stories/lyyra-helsinki/
+31. https://www.nordiccopper.com/copper-stories/helsinki-music-centre-finland/
+32. https://www.designedbycultivate.com/work/arupdigitalidentityandmarketingmaterials
+33. https://www.arup.com/en-us/about-us/arup-logo/
+34. https://kbbonline.com/products/vola/47545/
+35. https://www.hastingsbathcollection.com/hubfs/Vola Catalogue 2024.pdf
+36. https://www.eands.com.au/brands/vola
+37. https://www.hastingsbathcollection.com/collections/vola
+38. https://dasfeinebad.de/en/products/vola-towel-holder-70cm-t19-700
+39. https://www.hok.com/design-annual/hok-2026-design-annual/arup-oﬀice-at-one-centenary-way/
+40. https://www.savisstudios.com/work/vaillant
+41. https://www.vaillant-group.com/our-brands-solutions/vaillant/
+42. https://www.designmadeingermany.de/2013/179432/
+43. https://professional.vaillant.co.uk/about-vaillant/news/vaillant-celebrates-120-years-of-johann/
+44. https://vaillantstudio.com/pages/about
+45. https://www.vaillant-group.com/news-stories/media-downloads/vaillant-group-logos.html
+46. https://en.vola.com/references/kategori/reference?reference=4049
+47. https://freepng.com/ramboll-analytics-logo-png-22652
+48. https://www.loc.gov/collections/architecture-design-and-engineering-drawings/about-this-collection/
+49. https://www.ramboll.com/en-us/news-media
+50. https://aira.io/wp-content/uploads/2025/07/Logo-Usage-Guidelines_508-compliant.pdf
+51. https://www.loc.gov/pictures/collection/ade/
+52. https://www.kurppahosk.com/news/from-idea-to-reality
+53. https://www.airahome.com/en-gb/about-us
+54. https://www.airahome.com/en-gb/media
+55. https://www.airahome.com/en-gb/ikea-aira-heat-pump
+56. https://cms-assets.prod.airahome.com/Aira_Heat_Pump_Fact_Sheet_2025_77b428dcba.pdf
+57. https://www.ramboll.com/en-gb
+58. https://www.loc.gov/pictures/item/tgm003062/
+59. https://fold7design.com/work/aira
+60. https://www.loc.gov/pictures/item/2010634795/
+61. https://www.eevblog.com/forum/chat/fluke-you-make-neat-stuﬀ-but-really-you-r-killing-sparkfun/
+62. https://www.fluke.com/en-us/fluke/fluke-terms-of-use
+63. https://mvrdv.com/projects/1104/buro-happold-rotterdam
+64. https://www.kaercher.com/ca/inside-kaercher/company/about-kaercher/innovative-from-the-outset.html
+65. https://www.burohappold.com/
+66. https://www.burohappold.com/about/
+67. https://www.kaercher.com/gb/en/home-and-garden/kaercher-battery-universe-en/faqs-battery-universe-en-c6908
+68. https://www.linkedin.com/posts/brucebraescsypriskadviza_security-and-inclusive-design-have-become-activity-7435
+658778391515138-kJgV
+69. https://www.burohappold.com/wp-content/uploads/2016/05/burohappold-annual-review-2015.pdf
+70. https://www.kaercher.com/int/faqs-battery-universe.html
+71. https://www.kaercher.com/za/professional/kaercher-industrial-vacuuming.html
+72. https://www.kaercher.com/gb/en/professional/products/industrial-vacuuming-dedusting-solutions-c6904
+73. https://www.kaercher.com/id/professional/industrial-vacuuming-dedusting-solutions.html
+74. https://www.kaercher.com/hk/professional/vacuums/dry-vacuum-cleaners/dry-vacuum-cleaners/t-12-1-13551000.htm
+l
+75. https://en.wikipedia.org/wiki/Kärcher
+76. https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast
+77. https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast
+78. https://www.w3.org/WAI/WCAG21/Techniques/general/G182.html
+79. https://www.w3.org/WAI/WCAG22/Understanding/use-of-color
+80. https://www.w3.org/WAI/GL/2010/WD-WCAG20-TECHS-20100923/G182
+81. https://www.w3.org/WAI/GL/WCAG20/WD-WCAG20-TECHS-20071102/F73.html
+82. https://www.w3.org/WAI/GL/2011/WD-UNDERSTANDING-WCAG20-20110929/visual-audio-contrast-without-color.html
+83. https://www.w3.org/WAI/GL/2010/WD-UNDERSTANDING-WCAG20-20100923/visual-audio-contrast-without-color.html
+84. https://www.w3.org/WAI/GL/2013/WD-WCAG20-TECHS-20130711/F73
+85. https://www.w3.org/WAI/GL/2014/WD-WCAG20-TECHS-20140107/G182
+86. https://www.w3.org/WAI/GL/2010/WD-WCAG20-TECHS-20100923/F73
+87. https://www.w3.org/WAI/WCAG21/Techniques/general/G183
+88. https://www.w3.org/WAI/GL/2014/WD-UNDERSTANDING-WCAG20-20140107/visual-audio-contrast-without-color.html
+89. https://www.w3.org/WAI/GL/WCAG20/WD-UNDERSTANDING-WCAG20-20070730/visual-audio-contrast-without-color.ht
+ml
+90. https://www.w3.org/WAI/GL/2010/WD-WCAG20-TECHS-20100617/G183
+91. https://www.flir.com/discover/industrial/four-ways-flir-thermal-studio-makes-drone-inspections-more-eﬀicient/
+92. https://bssa.org.uk/bssa_articles/post-weld-cleaning-and-finishing-of-stainless-steels/
+93. https://bssa.org.uk/bssa_articles/welding-joining-page-2/
+94. https://bssa.org.uk/bssa_articles/category-process-plant-furnaces/
+95. https://bssa.org.uk/bssa_articles/material-selection-page-5/
+96. https://bssa.org.uk/bssa_articles/category-post-weld-cleaning-and-finishing/
+97. https://bssa.org.uk/bssa_articles/category-oxidation-high-temperature-corrosion/
+98. https://www.tandfonline.com/doi/full/10.1080/00202967.2022.2154495
+99. https://bssa.org.uk/bssa_articles/surface-finishes-treatments-cleaning-page-2/
+100. https://bssa.org.uk/bssa_articles/technical-library-corrosion-oxidation/
+101. https://bssa.org.uk/bssa_articles/heat-tint-temper-colours-on-stainless-steel-surface-heated-in-air/
+102. https://www.flir.com/discover/industrial/picking-a-thermal-color-palette/
+103. https://www.flir.com/discover/ots/outdoor/your-perfect-palette/
+104. https://palatemcp.com/gallery/aesop
+105. https://www.pikspec.com/design-systems/aesop
+106. https://www.shadcn.io/design/aesop
+107. https://tastekit.dev/apps/aesop/marketing/DESIGN.md
+108. https://www.viessmann-climatesolutions.com/de/newsroom/loesungsangebot/eﬀiziente-systeme-fuer-wohngebaeud
+e.html
+109. https://www.viessmann-climatesolutions.com/en/about-us/brand-viessmann.html
+110. https://www.viessmann-orange.com/about
+111. https://viessmann.com/de.html
+112. https://www.viessmann-climatesolutions.com/en/about-us.html
+113. https://www.viessmann-climatesolutions.com/de/ueber-uns/marke-viessmann.html
+114. https://www.viessmann-climatesolutions.com/
+115. https://www.viessmann-climatesolutions.com/de/ueber-uns.html
+116. https://www.viessmann-climatesolutions.com/en/viessmann-websites.html
+117. https://www.arup.com/globalassets/downloads/corporate-documents/brand/arup-logo-quick-guide-1.pdf
+118. https://www.ral-farben.de/farbe/ral-classic/ral-6011/9200
+119. https://www.ral-farben.de/en/colour/ral-classic/ral-6011/9200
+120. https://shop.ral-farben.de/de/ral-p1-kunststoﬀfarbmuster-farbreihe-6011-resedagruen.html
+121. https://shop.ral-farben.de/en/ral-p1-plastic-colour-sample-colour-series-6011-reseda-green.html
+122. https://shop.ral-farben.de/en/ral-840-hr-colour-primary-standard-set-6011-reseda-green.html
+123. https://shop.ral-farben.de/en/ral-k4-single-sheet-a4-colour-series-6011-reseda-green.html
+124. https://www.ral-farben.de/en/all-ral-colours
+125. https://shop.ral-farben.de/de/ral-841-gl-farbregister-6011-resedagruen.html
+126. https://shop.ral-farben.de/de/ral-k6-einzelbogen-a6-farbreihe-6011-resedagruen.html
+127. https://www.ral-farben.de/alle-ral-farben
+128. https://www.ral-farben.de/en/colour/ral-classic/ral-3009/9134
+129. https://www.ral-farben.de/en/colour/ral-classic/ral-1003/9086
+130. https://www.ral-farben.de/farbe/ral-classic/ral-1003/9086
+131. https://files.stroyinf.ru/Data/271/27122.pdf
+132. https://www.ral-farben.de/en/logistics-and-transport
+133. https://shop.ral-farben.de/en/ral-k4-single-sheet-a4-colour-series-3009-oxide-red.html
+134. https://www.copper.org/applications/plumbing/comml_tube/copper-tube-specifications.php
+135. https://normativka.by/lib/document/18951
+136. https://base.garant.ru/3923956/53f89421bbdaf741eb2d1ecc4ddb4c33/
+137. https://blog.copper.org/hvac/r/sustainable-planning-for-hvac/r-design-with-small-diameter-copper-tubes
+138. https://blog.copper.org/hvac/r/the-environmental-benefits-of-using-copper-in-hvacr-equipment-applications
+139. https://blog.copper.org/hvac/r/advancing-heat-pump-design-with-r-454b-and-the-power-of-copper
+140. https://copper.org/publications/newsletters/discover/2007/spring/article2.php
+141. https://blog.copper.org/data-centers/balancing-thermal-performance-and-water-use-in-modern-data-centers
+142. https://base.garant.ru/3923956/
+143. https://www.copper.org/applications/plumbing/HVAC_Studies/
+144. https://blog.copper.org/hvac/r/optimizing-heat-exchanger-components
+145. https://copper.org/applications/plumbing/comml_tube/reading/hvac_faqs.php
+146. https://copper.org/applications/plumbing/cth/select-tube/cth_2select_recom.php
+147. https://docs.cntd.ru/document/1200002068
+148. https://www.belimo.com/us/en_US/
+149. https://www.belimo.com/mam/americas/marketing_communication/case_studies/ccv/belimo_new_york_post_succe
+ss-stories_en-us.pdf
+150. https://belimo-public-files.s3.eu-central-1.amazonaws.com/Belimo_Styring_af_vand_i_hvac-brochure_a4_DK_20+sid
+er_WEB.pdf
+151. https://www.belimo.com.cn/belimo-no/no/en_GB/support-eu/belimo-education/bec-ch
+152. https://www.belimo.com/lv/en_GB/about/media/success-stories
+153. https://docs.flir.com/T810605/en-US/latest/s07.html
+154. https://www.belimo.com/mam/asia-pacific/marketing_communication/Product-Launch/Sensors/Sensors_brochure_A
+P_A4_single_page.pdf
+155. https://www.belimo.com/belimo-master/el_GR/about/media/news
+156. https://www.festo.com/ch/en/e/about-festo/company/history-of-festo-id_34983
+157. https://www.festo.com/de/de/e/new-festo-com-id_67417
+158. https://www.belimo.com/belimo-com-cn/en_GB/cn/about/media/success-stories
+159. https://www.belimo.com/mam/europe/marketing_communication/brochures-and-flyers/sensors/eu_en-gb/belimo_s
+ensors-meters_brochure_a4_emea_en-gb.pdf
+160. https://www.controlco.com/site/Files and Documents/Manufacturers/Belimo/Data Sheets/belimo_LRX24-
+MFT_datasheet_en-us.pdf
+161. https://www.nedcc.org/assets/media/documents/Pres101/4_price_arch_draw.pdf
+162. https://www.nedcc.org/preservation101/session-4/4inherent-vice-structures
+163. https://www.belimo.com/my/en_GB/products/valves/product-documentation/valve-actuators
+164. https://www.flir.com/products/tg268/
+165. https://www.fanuc.eu/kz-en/node/2567
+166. https://www.fanuc.eu/ma-fr/gamme-de-robots
+167. https://www.fanuc.eu/de-de/fanuc-industrieroboter
+168. https://www.fanuc.eu/fr-fr/robots-industriels-fanuc
+169. https://www.fanuc.eu/lt-en/node/2393
+170. https://www.fanuc.eu/eu-en/robot-range
+171. https://www.kaercher.com/id/inside-kaercher/company/about-kaercher/innovative-from-the-outset.html
+172. https://www.fanuc.eu/uk-en/robot-finder
+173. https://www.atkinsrealis.com/?location=uk-and-europe
+174. https://www.kaercher.com/my/professional/vacuums/dry-vacuum-cleaners/dry-vacuum-cleaners/t-15-1-hepa-135523
+50.html
+175. https://www.w3.org/TR/WCAG22/
+176. https://www.kaercher.com/int/professional/floor-scrubbers-scrubber-driers/walk-behind-scrubber-driers/bd-43-35-c-c
+lassic-ep-15154010.html
+177. https://www.kaercher.com/nz/professional/floor-scrubbers-scrubber-driers/compact-push-scrubber-driers/bd-43-35-c
+-ep-15154010.html
+178. https://www.fanuc.eu/eu-en/fanuc-collaborative-robots
+179. https://www.fanuc.eu/eu-en/fanuc-industrial-robots
+180. https://www.dyson.co.uk/support/journey/spare-details.968683-04
+181. https://en.vola.com/media/375154/VOLA_GB.pdf
+182. https://dasfeinebad.de/en/products/vola-bathtub-set-2471
+183. https://www.dyson.com/hair-care/hair-dryers/supersonic/origin-nickel-copper
+184. https://www.dyson.co.uk/support/journey/tools/search.107833-01
+185. https://www.dyson.co.uk/hair-care/hair-dryers/supersonic/nickel-copper
+186. https://www.flir.com/en-gb/products/e54/
+187. https://www.evonik.com/en/products.html?brand=Brand_1487225
+188. https://www.evonik.com/en/products.html?brand=Brand_2214492
+189. https://dasfeinebad.de/en/products/vola-soap-dispenser-250ml-t10jr
+190. https://www.evonik.com/en/products.html?brand=Brand_1337004
+191. https://dasfeinebad.de/en/products/vola-magnetic-soap-holder-t3
+192. https://www.dyson.com/hair-care/hair-stylers/airwrap/complete-long-nickel-copper
+193. https://www.dyson.co.uk/hair-care/hair-straighteners/airstrait/nickel-copper
+194. https://support.dyson.com.au/SupportHome.aspx/Hair-Care/Dyson-Supersonic/HD01/309701-01
+195. https://www.normacs.info/answers/5816
+196. https://protect.gost.ru/gost/changesdetails/cfaf2c88-9a2f-443a-abd1-a16e954cf3b5
+197. https://www.flir.com/en-gb/products/tg165-x/
+198. https://protect.gost.ru/gost/changes?year=0&month=0&search=&page=267
+199. https://www.anodizing.org/anodizing-reference-guide/
+200. https://www.anodizing.org/current-anodizing-processes/
+201. https://www.anodizing.org/anodizing-sustainability/
+202. https://www.anodizing.org/wp-content/uploads/2024/09/specifying-anodized-finishes.pdf
+203. https://www.anodizing.org/anodizing-definitions-and-methods/
+204. https://www.ral-farben.de/en/
+205. https://www.anodizing.org/coil-anodizing/
+206. https://www.anodizing.org/anodizing-publications-technical-information/
+207. https://www.anodizing.org/specifying-anodized-aluminum/
+208. https://docs.flir.com/T810411/en-US/latest/s12.html
+209. https://www.anodizing.org/interference-coloring/
+210. https://www.anodizing.org/specify-finishes-on-aluminum/
+211. https://www.anodizing.org/anodizing-design/
+212. https://www.flir.com/en-asia/instruments/hvac-r/
+213. https://www.flir.com/en-asia/instruments/energy-audit/
+214. https://www.flir.com/instruments/energy-audit/
+215. https://www.flir.com/instruments/building-diagnostics/facility-management--maintenance/
+216. https://meganorm.ru/Data/843/84353.pdf
+217. https://www.flir.com/discover/professional-tools/thermal-cameras-reveal-how-to-keep-your-home-cool-during-a-heat
+-wave/
+218. https://meganorm.ru/mega_doc/norm_update_29032025/gost-r_gosudarstvennyj-standart/0/gost_r_71918-2024_nats
+ionalnyy_standart_rossiyskoy.html
+219. https://www.flir.com/products/t540/
+220. https://www.flir.com/en-asia/discover/instruments/hvac-r/inspecting-building-insulation-hvac-systems-and-refrigerati
+on-units-with-thermal-imaging/
+221. http://flirmedia.com/MMC/THG/Brochures/7037/7037_EN.pdf
+222. https://www.flir.com/instruments/building-diagnostics/building-inspection/
+223. https://www.flir.com/en-asia/discover/instruments/hvac-r/
+224. https://www.flir.com/en-ca/discover/instruments/hvac-r/inspecting-building-insulation-hvac-systems-and-refrigeratio
+n-units-with-thermal-imaging/
+225. https://www.flir.com/browse/portable-inspection-solutions/handheld-thermal-cameras/cx-series/
+226. https://tke-moscow.ru/lib/1258/
+227. https://www.flir.com/instruments/hvac-r/
+228. https://www.nordiccopper.com/nordic-copper-aurubis-com/en/nordic-copper/nordic-copper-products
+229. https://www.nordiccopper.com/nordic-copper-aurubis-com/dam/jcr:b05d1662-7342-49c7-9c18-b15156bdb8b8/EPD_A
+urubis_Finland_Oy_Nordic_Green___Blue_HUB-0256_2023-01-30.pdf
+230. https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
+231. https://www.nordiccopper.com/nordic-copper-aurubis-com/dam/jcr:53005bbb-1ce0-4537-87a6-5dc4798f99ea/Archite
+ctural-brochure-DE-web-2-2024.pdf
+232. https://www.nordiccopper.com/finland-aurubis-com/en/finland/
+233. https://www.belimo.com/at/sr_BA/about/media/pictures-logos
+234. https://www.belimo.com/no/en_GB/about/media/pictures-logos
+235. https://www.belimo.com/us/en_US/about/media/pictures-logos
+236. https://www.belimo.com/ch/fr_FR/
+237. https://en.vola.com/files/accreditation/3065-5400-070-080ST_E-12-2027.pdf
+238. https://en.vola.com/files/accreditation/3132-2411C-071_2413CK-071_2414C-071_E-03-2027.pdf
+239. https://www.gaggenau.com/ch/de/geraete/backofen/serie-minimalistic
+240. https://media3.gaggenau.com/Documents/27619765_GG_NZ_Minimalistic_Series_Catalogue.pdf
+241. https://www.flir.com/products/ax8-automation/
+242. https://media3.gaggenau.com/Documents/27619599_GG_AU_Minimalistic_Series_Catalogue.pdf
+243. https://www.gaggenau.com/global/mkt-category/coﬀee
+244. https://media3.gaggenau.com/Documents/27563629_GG_FR_ProductFolder_Minimalistic.pdf
+245. https://www.gaggenau.com/it/prodotti/forni/la-serie-gaggenau-minimalistic
+246. https://www.gaggenau.com/de/pressecenter/pressrelease-2688
+247. https://www.gaggenau.com/ch/it/prodotti/forni/la-serie-gaggenau-minimalistic
+248. https://www.gaggenau.com/global/mkt-category/ovens/ovensminimalisticseries/ovensminimalisticseriesovens
+249. https://www.gaggenau.com/de/de/mkt-category/backoefen/ovensminimalisticseries
+250. https://www.gaggenau.com.au/en/mkt-category/ovens/ovensminimalisticseries/ovensminimalisticseriescombimicrow
+aveovens
+251. https://www.gaggenau.com/be/fr/mkt-category/fours/ovensminimalisticseries/ovensminimalisticseriescombisteamov
+ens
+252. https://www.flir.com/browse/portable-inspection-solutions/handheld-thermal-cameras/flir-one/
+253. https://vola.com/newcatalogue?page=8
+254. https://fontsinuse.com/tags/295/logos?order=most-viewed&filters=all
+255. https://www.vaillant.com/en/about-us/sustainability-at-vaillant/
+256. https://www.vaillant-group.com/our-brands-solutions/
+257. https://www.vaillant.com/en/about-us/our-quality-promise/green-technology/
+258. https://www.vaillant.ch/uber-vaillant/
+259. https://fontsinuse.com/sets/6600/refined
+260. https://shop.ral-farben.de/en/ral-color-reader-ral-k6-box-bundle.html
+261. https://www.vaillant-group.com/unsere-marken-loesungen/vaillant/
+262. https://www.vaillant-group.com/our-company/at-a-glance/
+263. https://www.flir.com/browse/portable-inspection-solutions/handheld-thermal-cameras/tg-series/
+264. https://fontsinuse.com/uses/20234/aesop-logo-website-and-packaging
+265. https://www.vaillant-group.com/our-responsibility/sustainability/
+266. https://www.w3.org/WAI/WCAG22/Techniques/general/G18.html
+267. https://www.ral-farben.de/farbe/ral-classic/ral-7016/9239
+268. https://www.ral-farben.de/www.ral-farben.de/farbe/ral-classic/ral-7016/9239
+269. https://shop.ral-farben.de/en/ral-p1-plastic-colour-sample-colour-series-7016-anthracite-grey.html
+270. https://shop.ral-farben.de/en/ral-841-gl-colour-primary-standard-set-7016-anthracite-grey.html
+271. https://shop.ral-farben.de/en/ral-k6-single-sheet-a6-colour-series-7016-anthracite-grey.html
+272. https://shop.ral-farben.de/en/ral-840-hr-colour-primary-standard-set-7016-anthracite-grey.html
+273. https://shop.ral-farben.de/en/ral-k4-single-sheet-a4-colour-series-7016-anthracite-grey.html
+274. https://support.flir.com/docdownload/assets/web/vj2p/en-us/T506143.xml.html
+275. https://protect.gost.ru/gost/changesdetails/953243d8-8c15-451c-872c-4fe2cd62fea4
+276. https://protect.gost.ru/gost/changes?year=0&month=0&search=&page=1610
+277. https://protect.gost.ru/gost?year=2025&month=11&search=&page=2
+278. https://protect.gost.ru/default.aspx/document1.aspx?control=31&baseC=6&page=6&month=1&year=2025&search=&id
+=265117
+279. https://github.com/waic/w3c-wcag/blob/master/wcag22/understanding/non-text-contrast.html
+280. https://wa-reviews.hosting.cornell.edu/guidelines/39
+281. https://lists.w3.org/Archives/Public/w3c-wai-ig//2023OctDec/0101.html
+282. https://www.nyc.gov/assets/mopd/downloads/excel/2025-Appendix-3--2025_NYC_Website_Auditing_Tool.xlsx
+283. https://edtechbooks.org/docx/18222
+284. https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance
+285. https://www.flir.com/products/c5/
+286. https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced.html
+287. https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html
+288. https://www.w3.org/WAI/WCAG22/Understanding/
+289. https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-without-color.html
+290. https://bssa.org.uk/bssa_articles/category-heat-treatment-ferritic-aust-duplex/
+291. https://bssa.org.uk/wp-content/uploads/2021/07/Colouring-Stainless-Steel.pdf
+292. https://bssa.org.uk/technical-help/joining-welding-brazing-soldering/welding/
+293. https://bssa.org.uk/wp-content/uploads/2021/07/Pickling-and-Passivating-Stainless-Steel.pdf
+294. https://www.flir.com/en-asia/discover/ots/outdoor/your-perfect-palette/
+295. https://docs.flir.com/T810587/en-US/latest/s11.html
+296. https://shop.ral-farben.de/en/ral-digital.html
+297. https://www.flir.com/en-ca/products/e53/
+298. https://www.viessmann.ch/fr.html
+299. https://www.viessmann-climatesolutions.com/en.html
+300. https://www.belimo.com.cn/belimo-com/fr_CA/about/media/pictures-logos
+301. https://www.belimo.com/in/en_GB/about/media/pictures-logos.html
+302. https://www.belimo.com/us/en_US/belimomarketing
+303. https://www.belimo.com/ch/en_US/
+304. https://www.cloudair.tech/expo-photos/chillventa-2026/testo-stand-measuring-instruments-slatted-wood-walls
+305. https://www.atkinsrealis.com/
+306. https://www.atkinsrealis.com/en/media/press-releases/2023/12-09-2023
+307. https://www.ral-farben.de/en/colour/ral-classic/ral-7016/9239
+308. https://www.ral-farben.de/farbe/ral-classic/ral-7032/9247
+309. https://shop.ral-farben.de/en/ral-840-hr-colour-primary-standard-set-7032-pebble-grey.html
+310. https://www.ral-farben.de/en/colour/ral-classic/ral-7032/9247
+311. https://muster-schmidt.de/englisch/ral-farben.htm
+312. https://shop.ral-farben.de/en/ral-k4-single-sheet-a4-colour-series-7032-pebble-grey.html
+313. https://shop.ral-farben.de/en/ral-k6-single-sheet-a6-colour-series-7032-pebble-grey.html
+314. https://shop.ral-farben.de/en/ral-841-gl-colour-primary-standard-set-7032-pebble-grey.html
+315. https://www.kaercher.com/sg/home-garden/ecologic.html
+316. https://blog.copper.org/hvac/r/heat-pumps-and-small-diameter-copper-tube-the-future-of-heating-and-cooling
+317. https://blog.copper.org/hvac/r/the-global-shi -to-enhanced-small-diameter-copper-tubes
+318. https://www.ral-farben.de/en/colour/ral-classic/x/9239
+319. https://cms.usm.com/media/kgbd1wpe/usm_haller_tables_specifications_en.pdf
+320. https://blog.copper.org/hvac/r/small-diameter-copper-tubes-in-advanced-heat-exchanger-design
+321. https://blog.copper.org/hvac/r/midea-split-air-conditioning-system-reduced-charge-with-4-mm-copper-tubes
+322. https://www.copper.org/applications/plumbing/comml_tube/
+323. https://cms.usm.com/media/ijhj4p2j/usm_haller_e_specifications_en.pdf
+324. https://us.usm.com/products/usm-haller-media-b218
+325. https://us.usm.com/products/usm-haller-shelving-q118
+326. https://us.usm.com/products/usm-haller-storage-g118
+327. https://www.hydro.com/gb/gb/aluminium/products/extruded-profiles/aluminium-fabrication/aluminium-anodising/
+328. https://www.ral-farben.de/ral-digital
+329. https://shop.ral-farben.de/en/ral-digital-colour-library-set.html
+330. https://shop.ral-farben.de/en/ral-digital-colour-library-ral-design-system-plus.html
+331. https://www.hydro.com/globalassets/08-about-hydro/hydro-worldwide/germany/extrusion-germany/rackwitz/premiu
+m-anodizing-solutions
+332. https://www.hydro.com/en/global/aluminium/products/extruded-profiles/services/surface-treatment/anodizing/
+333. https://shop.ral-farben.de/de/ral-digitale-farbbibliothek-ral-design-system-plus.html
+334. https://www.hydro.com/fr-CH/global/aluminium/products/extruded-profiles/production-services/surface-treatment/a
+nodizing-including-mechanical-surface-treatment/
+335. https://www.hydro.com/fr-BE/global/aluminium/products/extruded-profiles/production-services/traitement-de-surfac
+e/anodisation-y-compris-traitement-de-surface-mecanique/
+336. https://www.hydro.com/nl-BE/global/aluminium/products/geextrudeerde-profielen/services/oppervlaktebehandelin
+g/anodiseren-inclusief-mechanische-oppervlaktebehandeling/
+337. https://www.hydro.com/fr-BE/global/aluminium/products/extruded-profiles/production-services/traitement-de-surfac
+e/
+338. https://www.hydro.com/it/global/Alluminio/products/profili-estrusi/servizi/trattamento-superficiale/anodizzazione-in
+cluso-il-trattamento-meccanico-della-superficie/
+339. https://www.nordiccopper.com/nordic-copper-aurubis-com/dam/jcr:7f87fe84-4785-449b-b03f-67624d0d8e7d/declarat
+ion-of-performance-DE.pdf
+340. https://www.orologeria.com/english/magazine/magazine005.html
+341. https://www.nordiccopper.com/finland-aurubis-com/de/finland/architecture-products
+342. https://www.nordiccopper.com/nordic-copper-aurubis-com/nordic-copper/copper-architecture
+343. https://www.nordiccopper.com/nordic-copper-aurubis-com/en/nordic-copper/copper-stories/paramount-house-hotel-
+sydney
+344. https://www.dyson.hr/supersonic-nural-straight-wavy-plum-copper
+345. https://www.gaggenau.com/at/geraete/serie-expressive
+346. https://www.gaggenau.com/ch/de
+347. https://www.gaggenau.com/ch/de/mkt-product/backoefen/ovensexpressiveseries/ovensexpressiveseriescombimicrow
+aveovens/GM450120
+348. https://www.gaggenau.com/ae/en/mkt-category/ventilation
+349. https://www.digitalpolicy.gov.hk/en/our_work/digital_infrastructure/digital_inclusion/accessibility/promulgating_reso
+urces/handbook/wcag2aa/9_5_contrast_minimum.html
+350. https://note.com/oto_no_kakehashi/n/n19d2bccf8bae?hl=en
+351. https://shop.ral-farben.de/en/ral-digital/ral-digital-colour-library-ral-classic.html
+352. https://www.vaillant-group.com/news-storys/media-downloads/vaillant-group-logos.html
+353. https://krantest.ru/lib/1258
+354. https://www.gostinfo.ru/catalog/Details/?id=7636388
+355. https://base.garant.ru/411432919/
+356. http://www.normacs.ru/Doclist/doc/26R8P.html
+357. https://protect.gost.ru/gost/changes?year=2025&month=8&search=&page=3
+358. https://base.garant.ru/411299109/
+359. https://www.w3.org/WAI/WCAG22/Techniques/
+360. https://www.standards.ru/document/7636388.aspx
+361. https://docs.cntd.ru/document/1310846585
+362. https://www.ral-farben.de/en/ral-classic
+363. https://docs.cntd.ru/document/1310846585/titles
+364. https://www.ica.org/app/uploads/2023/12/ArchitectureEN.pdf
+365. https://surface.syr.edu/cgi/viewcontent.cgi?filename=2&article=1007&context=pres_brodsky&type=additional
+366. https://cool.culturalheritage.org/coolaic/sg/bpg/annual/v21/bpga21-07.pdf
+367. https://madegooddesigns.com/inspiration/museum/view-of-jerusalem-with-the-temple-of-solomon-1610-eba2cf3f52
+93
+368. https://digital.library.cornell.edu/catalog/ss:1508533
+369. https://collections.centerforbookarts.org/Browse/objects/facet/entity_facet/id/3944
+370. https://collections.centerforbookarts.org/Browse/objects/key/ccc45d97d4381d9f67922eafa694fb4e/facet/published_b
+y_facet/id/4812/view/images
+371. https://collections.centerforbookarts.org/Detail/objects/3281
+372. https://enofileonline.com/search.aspx
+373. https://shop.ral-farben.de/en
+374. https://digitalcollections.winterthur.org/Documents/Detail/list-of-names/29343
+375. https://novel-coronavirus.onlinelibrary.wiley.com/doi/pdf/10.1002/9780470999875.ch32
+376. https://www.gaggenau.com/gb/en/mkt-category/extractors
+377. https://www.gaggenau.com/gb/en/mkt-product/AC250121
+378. https://www.gaggenau.com/global/mkt-category/extractors/ventilation200
+379. https://www.gaggenau.com/ae/en/mkt-product/ventilation/ventilation200/ventilation200ceilingventilation/AC250121
+380. https://www.gaggenau.com/ae/en/mkt-category/ventilation/200-series?em_c=ventilation200tableventilation
+381. https://www.gaggenau.com/global/mkt-category/extractors?em_c=ventilation400
+382. https://www.gaggenau.com/pl/pl/mkt-product/wyciagi-kuchenne/seria-200/wentylacja-sufitowa/AC250121
+383. https://www.gaggenau.com/be/fr/mkt-product/ventilation/ventilation-serie-200/ventilation-de-plafond-serie-200/AC2
+50121
+384. https://www.ral-farben.de/en/ral-digital-colour-library
+385. https://media3.gaggenau.com/Documents/specsheet/de-LU/AC250121.pdf
+386. https://media3.gaggenau.com/Documents/specsheet/ru-RU/AC250121.pdf
+387. https://forgestarter.com/reference/tempering-colors-chart/
+388. https://shop.ral-farben.de/en/product-world.html
+389. https://aobosteel.com/steel-heat-color-chart/
+390. https://calibr.pro/tables/steel-tempering-color-chart/
+391. https://www.surfchem.com/intro.htm
+392. https://www.ral-farben.de/en/ral-digital
+393. https://logotyp.us/logo/evonik/
+394. https://de.wikipedia.org/wiki/Evonik_Industries_AG?oldformat=true
+395. https://central-south-america.evonik.com/pt/attachment/6299?rev=1
+396. https://www.logofav.com/logo/purple-letter-e-letter-geometric-logo-example-evonik
+397. https://central-south-america.evonik.com/en/attachment/5444?rev=1
+398. https://corporate.evonik.cn/en/media/news/changing-the-world-with-plexiglas-104354.html
+399. https://blog.copper.org/hvac/r/tag/heat-exchangers
+400. https://www.shutterstock.com/search/evonik-industries
+401. https://blog.copper.org/hvac/r/understanding-inner-grooved-small-diameter-copper-tube-heat-exchangers-design-be
+nefits-and-applications
+402. https://www.evonik.com/en/news/press-releases/2026/03/pchi-2026--evonik-goes-beyond-for-the-soul-and-science-of
+-beauty.html
+403. https://www.evonik.com/en/products.html?brand=Brand_1328773
+404. https://copper.org/applications/plumbing/comml_tube/CDA_Copper-Corrosion_button-v.pdf
+405. https://corporate.evonik.cn/en/let-plexiglas-liven-up-your-space-28482.html
+406. https://www.exhibitoronline.com/corpevent/spring08/evonik.asp
+407. http://www.vokdams.de/work/detail/article/evonik-industries-brand-re-launch.html
+408. https://www.belimo.com/ca/en_US/terms-conditions
+409. https://www.wieland.com/about/wieland-worldwide/wieland-copper-products
+410. https://www.belimo.com/br/en_US/about/media/pictures-logos
+411. https://www.belimo.com/be/de_CH/about/media/pictures-logos
+412. https://www.wieland.com/en/about/wieland-worldwide?country=us
+413. https://www.belimo.com/ca/fr_CA/about/media/pictures-logos
+414. https://www.belimo.com/ch/en_GB/about/media/pictures-logos
+415. https://www.belimo.com/ch/fr_FR/about/media/pictures-logos
+416. https://www.wieland.com/en/resources/metal-information/
+417. https://www.wieland.com/en/kupral
+418. https://www.wieland.com/en/manner
+419. https://www.wieland.com/en/metalix
+420. https://www.wieland.com/en/products/copper-and-copper-alloys
+421. https://www.wieland.com/en/products/product-categories/copper-and-copper-alloys/
+422. https://www.wieland.com/en/france
+423. https://www.gaggenau.com/gr/appliances/ovens/expressive-series
+424. https://www.gaggenau.com/gb/en/mkt-category/ovens/ovensexpressiveseries
+425. https://www.kuka.com/en-ch/company/about-kuka/kuka120
+426. https://my.kuka.com/s/category/robots/0ZG1i000000XZrrGAG?language=en_US
+427. https://www.gaggenau.com/us/en/mkt-category/ovens/ovensexpressiveseries/ovensexpressiveseriesovens
+428. https://media3.gaggenau.com/Documents/27619767_GG_AU_Expressive_Series_Catalogue.pdf
+429. https://www.gaggenau.com/global/appliances/ovens
+430. https://www.kuka.com/en-ch/company/about-kuka/brand
+431. https://www.gaggenau.com/global/mkt-category/ovens/ovensexpressiveseries
+432. https://media3.gaggenau.com/Documents/28559451_GG_AE_Expressive_Series.pdf
+433. https://media3.gaggenau.com/Documents/23466686_GG_GL_PU_The_Range_2024.pdf
+434. https://media3.gaggenau.com/Documents/26036534_GG_GL_PU_The_Range_2025.pdf
+435. https://www.kuka.com/de-de/unternehmen/über-kuka/marke
+436. https://media3.gaggenau.com/Documents/26731097_GG_US_Expressive_Product_Brochure.pdf
+437. https://www.gaggenau.com/de/de/mkt-category/backoefen/ovensexpressiveseries
+438. https://www.nordiccopper.com/author/larsboenischluxidgroupcom/
+439. https://www.nordiccopper.com/nordic-copper-products/nordic-green/
+440. https://www.nordiccopper.com/nordic-copper-aurubis-com/en/nordic-copper/downloads
+441. https://www.nordiccopper.com/nordic-copper-aurubis-com/en/nordic-copper/special-patina
