@@ -1200,3 +1200,4 @@ body.call-open{overflow:hidden}
 .call-box>*{grid-column:1/-1}
 .call-box input[type=tel]{max-width:none;min-width:0;box-sizing:border-box}
 .call-box .btn{white-space:nowrap}
+.hero .demo{color:var(--on-dark-accent)}

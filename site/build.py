@@ -175,8 +175,8 @@ def typograf(html):
 # в 1961, представительство в Москве с 1997, производство в России с 2022 (Переславль-Залесский). Полный цикл — главное,
 # своё производство климата — сильная сторона, но не единственное. Тот же текст — index.html #o-nas (вписан руками).
 # текст Паши 19.10 («что такое Смарт Люкс»)
-WHO_WE_ARE = ("Смарт Люкс — центр компетенций с функциями генподрядчика и авторским надзором. Выполняем полный комплекс работ "
-              "под ключ — от проектирования до сервиса. Строим и оснащаем загородные дома, промышленные предприятия и отели.")
+WHO_WE_ARE = ("Поставляем, проектируем, монтируем и обслуживаем инженерное и климатическое оборудование. "
+              "Заменяем европейское оборудование.")  # 27.10: сайт стал инженерным (её слово), текст — черновик
 
 ORG_LD = ld({"@context": "https://schema.org", "@type": "Organization", "name": BRAND, "url": BASE_URL,
              "description": WHO_WE_ARE,
@@ -1404,6 +1404,8 @@ def gifts_html():
     e = lambda x: escape(x, quote=False)
     cards = []
     for href, who, label in NAV:
+        if who == "dizayner":  # 27.10: сайт инженерный — памятки дизайнеру на нём нет
+            continue
         g = GIFT[who]
         cards.append(f'''      <article class="gift-card">
         <span class="eyebrow">{e(label)}</span>
@@ -1910,7 +1912,7 @@ if __name__ == "__main__":
     if "<!--GIFTS-->" in s:
         s = replace_between(s, "<!--GIFTS-->", "<!--/GIFTS-->", gifts_html())
     # главная — один лендинг (правки Паши 13.10): в подвале без ссылок на другие страницы, кроме политики
-    s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section(uslugi=False))
+    s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section(uslugi=False).replace('          <option value="dizayner">Дизайнер, архитектор</option>' + chr(10), ""))
     if "<!--UTP-->" in s:
         s = replace_between(s, "<!--UTP-->", "<!--/UTP-->", utp_html())
     if "<!--WORKS-->" in s:
