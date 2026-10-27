@@ -1311,3 +1311,25 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.14),tran
 .who-utp .who-card .who-img img{width:100%;height:100%;object-fit:cover;display:block}
 /* 27.10 вечер: на узком телефоне (≤430px) логотип + «Заказать звонок» вылезали за экран (ширина страницы 413 при 390) */
 @media (max-width:430px){.top .wrap{gap:10px}.logo.logo-word{font-size:var(--fs-m);letter-spacing:.08em;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.top .top-contacts .btn{padding:10px 12px;font-size:var(--fs-xs)}}
+/* 28.10 — ПРИЁМЫ РЕФЕРЕНСА prioritet-ing.ru («похоже, но не так же», её «сайт скучный»): скобки у подписей, кольца за цифрами, лента-лозунг, аккордеон этапов, чертёжная сетка */
+.eyebrow::before{content:"[ "}.eyebrow::after{content:" ]"}
+.facts-band .wrap{position:relative}
+.facts-band .wrap::before{content:"";position:absolute;inset:-40px -10% -40px -10%;pointer-events:none;background:repeating-radial-gradient(circle at 18% 50%,transparent 0 110px,rgb(92 59 101/.09) 110px 111px);mask:linear-gradient(90deg,#000 0,#000 45%,transparent 75%)}
+.facts > div{position:relative}
+.facts > div > span::before{content:"[ "}.facts > div > span::after{content:" ]"}
+.slogan-band{padding-block:calc(var(--sec) * .55)!important}
+.slogan-band .wrap{display:flex;justify-content:center}
+.slogan{margin:0;padding:18px clamp(20px,4vw,48px);border:1px solid rgb(228 203 159/.55);border-radius:999px;font:400 clamp(16px,1.6vw,22px)/1.3 var(--body);letter-spacing:.04em;text-transform:uppercase;text-align:center;color:var(--paper);max-width:40ch}
+.stage-list{border-top:1px solid var(--line,rgb(42 37 48/.15));max-width:1100px}
+.stage-row{border-bottom:1px solid var(--line,rgb(42 37 48/.15))}
+.stage-row summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:20px 4px;font:500 var(--fs-m)/1.3 var(--body);text-transform:uppercase;letter-spacing:.04em}
+.stage-row summary::-webkit-details-marker{display:none}
+.stage-row summary::after{content:"+";font:300 28px/1 var(--body);color:var(--accent-ink);transition:transform .25s}
+.stage-row[open] summary::after{transform:rotate(45deg)}
+.stage-n{font:500 var(--fs-xs)/1 var(--body);color:var(--accent-ink);letter-spacing:.08em}
+.stage-row p{margin:0 0 20px 0;max-width:70ch;color:var(--ink-soft,var(--ink))}
+#raboty{background-image:linear-gradient(rgb(92 59 101/.06) 1px,transparent 1px),linear-gradient(90deg,rgb(92 59 101/.06) 1px,transparent 1px);background-size:48px 48px}
+@media (max-width:640px){.stage-row summary{grid-template-columns:auto 1fr;}.stage-row summary::after{grid-column:2;justify-self:end}}
+.facts-band{overflow:hidden} /* кольца за цифрами не должны расширять страницу */
+.facts > div > span:has(.demo)::before,.facts > div > span:has(.demo)::after{content:none} /* пока стоит бирка «пример», скобки не ставим — переносились */
+@media (max-width:640px){.stage-row summary{grid-template-columns:auto 1fr auto;gap:12px}.stage-row summary::after{grid-column:auto}}

@@ -1349,6 +1349,20 @@ def utp_html():
     return "\n" + "\n".join(cards) + "\n    "
 
 
+def stages_home_html():
+    # 28.10: приём референса prioritet-ing.ru — аккордеон «подключаемся на любом этапе [01]…[06]» на главной, тексты из uslugi_content.STAGES
+    e = lambda x: escape(x, quote=False)
+    rows = "\n".join(f'      <details class="stage-row"><summary><span class="stage-n">[ {i:02d} ]</span><span>{e(t)}</span></summary><p>{e(x)}</p></details>' for i, (t, x) in enumerate(STAGES, 1))
+    return f'''<section class="section" id="etap-vhoda">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">На любом этапе</span><h2>Готовы подключиться к&nbsp;вашему объекту на&nbsp;любом этапе</h2></div>
+    <div class="stage-list">
+{rows}
+    </div>
+  </div>
+</section>'''
+
+
 def replace_between(s, a, b, new):
     i, j = s.index(a) + len(a), s.index(b)
     return s[:i] + new + s[j:]
@@ -1871,6 +1885,8 @@ if __name__ == "__main__":
     s = replace_between(s, "<!--HEADER-->", "<!--/HEADER-->", header())
     if "<!--FACTS-->" in s:
         s = replace_between(s, "<!--FACTS-->", "<!--/FACTS-->", facts_html())
+    if "<!--STAGES-->" in s:
+        s = replace_between(s, "<!--STAGES-->", "<!--/STAGES-->", stages_home_html())
     if "<!--GIFTS-->" in s:
         s = replace_between(s, "<!--GIFTS-->", "<!--/GIFTS-->", gifts_html())
     # главная — один лендинг (правки Паши 13.10): в подвале без ссылок на другие страницы, кроме политики
