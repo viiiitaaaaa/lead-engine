@@ -1201,3 +1201,107 @@ body.call-open{overflow:hidden}
 .call-box input[type=tel]{max-width:none;min-width:0;box-sizing:border-box}
 .call-box .btn{white-space:nowrap}
 .hero .demo{color:var(--on-dark-accent)}
+
+/* ===== ДИЗАЙН 27.10 («поменять стиль полностью, похоже на референс, но не такой»: другие цвета, объём, скругления) =====
+   Слой поверх прежних правил. Идея: светлая холодная страница + тёмно-синие «острова» со скруглением, карточки-стекло с мягкой тенью,
+   тонкие концентрические кольца как единственный декор; один акцент — бирюза (воздух, вода) на синем. Токены переопределены здесь. */
+:root{
+  --paper:#f0f4f9; --sand:#e1e9f3; --ink:#111a2e; --ink-2:#2a3552; --ink-soft:#56627c; --line:#d3dcea;
+  --deep:#0d1d3b; --deep-2:#1c4a80;
+  --wine:#1b5aa8; --wine-2:#144a8d;          /* имена прежние; цвет — лазурь: кнопки заявки */
+  --accent:#27a3b3; --accent-ink:#1b4f8a;
+  --on-dark-soft:#c9d7ea; --on-dark-mute:#8ea3c2; --on-dark-accent:#9fe2ea;
+  --shade:8 18 38; --error:#b8381f;
+  --r:28px; --r-s:18px; --glass:rgb(255 255 255/.72);
+  --sh-1:0 1px 2px rgb(17 30 60/.06),0 10px 28px -10px rgb(17 30 60/.16);
+  --sh-2:0 2px 4px rgb(17 30 60/.08),0 28px 56px -20px rgb(17 30 60/.34);
+  --island:clamp(28px,3.4vw,48px);
+}
+body{background:radial-gradient(1100px 600px at 8% -4%,rgb(39 163 179/.10),transparent 60%),radial-gradient(900px 500px at 100% 18%,rgb(27 90 168/.08),transparent 60%),var(--paper)}
+
+/* кнопки: таблетка с объёмом */
+.btn{border-radius:999px;background:linear-gradient(180deg,#2b6bbd,var(--wine));border-color:transparent;color:#fff;
+  box-shadow:0 1px 0 rgb(255 255 255/.25) inset,0 8px 20px -8px rgb(27 90 168/.7);transition:box-shadow .25s,background .25s,color .25s}
+.btn:hover{background:linear-gradient(180deg,#2562b0,var(--wine-2));border-color:transparent;color:#fff;box-shadow:0 1px 0 rgb(255 255 255/.2) inset,0 14px 26px -10px rgb(27 90 168/.8)}
+.btn.ghost{background:rgb(255 255 255/.55);color:var(--ink);border:1px solid rgb(17 26 46/.18);box-shadow:var(--sh-1);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn.ghost:hover{background:#fff;color:var(--ink)}
+.dark .btn,.hero .btn{background:linear-gradient(180deg,#fff,#e8eff8);color:var(--ink);border-color:transparent;box-shadow:0 1px 0 #fff inset,0 10px 24px -10px rgb(0 0 0/.5)}
+.dark .btn:hover,.hero .btn:hover{background:#fff;color:var(--ink)}
+.hero .btn.ghost{background:rgb(255 255 255/.12);color:#fff;border:1px solid rgb(255 255 255/.4);box-shadow:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.hero .btn.ghost:hover{background:#fff;color:var(--ink)}
+
+/* шапка: плавающая стеклянная таблетка */
+.top{top:12px;margin:12px var(--gut) 0;border-radius:999px;background:rgb(255 255 255/.72);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid rgb(255 255 255/.7);box-shadow:var(--sh-1)}
+.top::after,.top::before{display:none}
+.top .wrap{min-height:64px;padding-inline:clamp(18px,2vw,30px)}
+.top.scrolled{box-shadow:var(--sh-2)}
+
+/* первый экран: плавающая скруглённая карточка с фото */
+.hero{margin:14px var(--gut) 0;border-radius:40px;box-shadow:var(--sh-2)}
+.slides .ph,.slides .ph img{border-radius:0}
+.slider-ui button{background:rgb(255 255 255/.14);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.hero .hero-text .lead{border-radius:var(--r-s)}
+.hero-quick .btn{padding-block:11px}
+
+/* цифры: карточки */
+.facts-band{padding-block:clamp(22px,2.4vw,34px)}
+.facts>div{background:var(--glass);border:1px solid rgb(255 255 255/.8);border-radius:var(--r);box-shadow:var(--sh-1);padding:clamp(18px,2vw,28px)}
+.facts b{background:linear-gradient(135deg,var(--accent-ink),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.marquee{border:0;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+
+/* карточки: отдельные, объёмные, без линий-сеток */
+.who{gap:clamp(12px,1.4vw,20px);background:none;border:0}
+.who .who-card,.who-utp .who-card{border-radius:var(--r);box-shadow:var(--sh-2);overflow:hidden}
+.who-utp .who-card:hover{box-shadow:var(--sh-2)}
+.why{gap:clamp(12px,1.4vw,20px);background:none;border:0}
+.why li{border-radius:var(--r);background:var(--glass);border:1px solid rgb(255 255 255/.8);box-shadow:var(--sh-1);padding:28px 26px 30px}
+.pain-card,.gift-card,.terms-box,.fear{border-radius:var(--r);box-shadow:var(--sh-1)}
+.gift-card{background:var(--glass);border:1px solid rgb(255 255 255/.8)}
+
+/* «острова»: тёмные и светло-голубые блоки — скруглённые плиты с кольцами */
+.section.dark,.section.alt{margin-inline:var(--gut);border-radius:clamp(28px,3.4vw,48px);position:relative;overflow:hidden}
+.section.dark .wrap,.section.alt .wrap{padding-inline:clamp(20px,4vw,64px)}
+.section.alt{background:linear-gradient(160deg,#e6edf7,#dbe6f3);box-shadow:inset 0 1px 0 rgb(255 255 255/.8)}
+.dark{background:
+  repeating-radial-gradient(circle at 88% 8%,transparent 0 70px,rgb(255 255 255/.055) 70px 71px),
+  repeating-radial-gradient(circle at 6% 96%,transparent 0 90px,rgb(255 255 255/.045) 90px 91px),
+  linear-gradient(140deg,var(--deep) 0%,#13305e 55%,var(--deep-2) 100%);box-shadow:var(--sh-2)}
+.steps{border-top:0;gap:14px}
+.steps li{padding:22px;background:rgb(255 255 255/.07);border:1px solid rgb(255 255 255/.14);border-radius:var(--r-s);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.steps li::before{display:none}
+
+/* «Нам доверяют»: скруглённые полосы */
+.wk{border-radius:var(--r);box-shadow:var(--sh-2)}
+
+/* вопросы: отдельные плашки */
+.faq{border-top:0;gap:10px}
+.faq-item{border:1px solid rgb(255 255 255/.8);border-radius:var(--r-s);background:var(--glass);box-shadow:var(--sh-1)}
+.faq-item summary{padding:20px 56px 20px 24px}
+.faq-item summary::after{right:22px;top:16px}
+.faq-item p{padding:0 24px 22px}
+
+/* поля формы на тёмном */
+.dark input,.dark select,.dark textarea{border-radius:var(--r-s);background:rgb(255 255 255/.07);border-color:rgb(255 255 255/.28)}
+
+/* плашки поверх страницы */
+.cookie,.exit-card,.call-box{border-radius:var(--r);box-shadow:var(--sh-2);border:1px solid rgb(255 255 255/.7);background:rgb(255 255 255/.86);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.call-modal{background:rgb(13 29 59/.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.call-box .btn{background:linear-gradient(180deg,#2b6bbd,var(--wine));color:#fff}
+.cookie .btn{background:linear-gradient(180deg,#2b6bbd,var(--wine));color:#fff;border-color:transparent}
+@media (prefers-reduced-transparency:reduce){.top,.cookie,.exit-card,.call-box{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (max-width:860px){.hero{border-radius:28px}.top{border-radius:28px}.section.dark,.section.alt{margin-inline:12px}.top{margin-inline:12px}.hero{margin-inline:12px}}
+.hero{width:auto;max-width:none}
+.hero .btn,.hero .btn:hover{border-radius:999px;padding:15px 26px}
+.hero .btn.ghost{border:1px solid rgb(255 255 255/.4)}
+.btn.ghost{border-radius:999px}
+@supports (-moz-appearance:none){html{scrollbar-color:#b4c3d8 var(--paper)}}
+::-webkit-scrollbar{width:14px;height:14px}
+::-webkit-scrollbar-track{background:var(--paper)}
+::-webkit-scrollbar-thumb{background:#b4c3d8;border:3px solid var(--paper);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:#8da3c2}
+::-webkit-scrollbar-corner{background:var(--paper)}
+.dark input,.dark select,.dark textarea{border:1px solid rgb(255 255 255/.28);border-radius:var(--r-s);background:rgb(255 255 255/.07);padding:14px 16px}
+.rv{border-radius:var(--r);border:1px solid rgb(255 255 255/.8);background:var(--glass);box-shadow:var(--sh-1)}
+.top .btn{white-space:nowrap}
+@media (max-width:520px){.top .wrap{padding-inline:16px}.top .btn{padding:11px 16px}}
