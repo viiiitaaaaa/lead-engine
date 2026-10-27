@@ -1,0 +1,40 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Выбор шрифта&nbsp;— живой сайт</title>
+<style>
+body{margin:0;font:14px/1.4 system-ui;background:#221c29;color:#f1eef3;display:grid;grid-template-rows:auto 1fr;height:100vh}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid #4a3156}
+.bar b{margin-right:6px}button{padding:8px 14px;border-radius:999px;border:1px solid #b4a27c;background:transparent;color:#f1eef3;cursor:pointer;font:inherit}
+button.on{background:#704779;border-color:#704779}
+iframe{width:100%;height:100%;border:0;background:#f1eef3}
+.hint{opacity:.7;width:100%;font-size:12px}
+</style>
+<div class="bar"><b>Шрифт:</b><span id="btns"></span><span class="hint">Нажми вариант&nbsp;— сайт ниже переключится целиком (заголовки + текст). Все шрифты с&nbsp;кириллицей и&nbsp;бесплатной лицензией для&nbsp;коммерции (Google Fonts, OFL). Vela Sans&nbsp;— нынешний.</span></div>
+<iframe id="f" src="index.html"></iframe>
+<script>
+// пары: заголовки / текст. Montserrat — как у референса prioritet-ing.ru (она отвергала 06.10, вернула в список 28.10 по её «сделаем всё»)
+const V = [
+ ['Vela Sans (сейчас)', null, null],
+ ['Onest', 'Onest', 'Onest'],
+ ['Commissioner', 'Commissioner', 'Commissioner'],
+ ['Geologica', 'Geologica', 'Geologica'],
+ ['Unbounded + Inter', 'Unbounded', 'Inter'],
+ ['Montserrat (как у референса)', 'Montserrat', 'Montserrat'],
+ ['Jost', 'Jost', 'Jost'],
+ ['Wix Madefor', 'Wix Madefor Display', 'Wix Madefor Text'],
+ ['Rubik', 'Rubik', 'Rubik'],
+];
+const f = document.getElementById('f'), btns = document.getElementById('btns');
+function apply(i){
+  const d = f.contentDocument; if (!d) return;
+  [...btns.children].forEach((b,j)=>b.classList.toggle('on', j===i));
+  let st = d.getElementById('font-test'); if (!st) { st = d.createElement('style'); st.id='font-test'; d.head.appendChild(st); }
+  const [name, hf, tf] = V[i];
+  if (!hf) { st.textContent=''; return; }
+  const fam = [...new Set([hf,tf])].map(x=>'family='+encodeURIComponent(x).replace(/%20/g,'+')+':wght@300;400;500;600;700').join('&');
+  if (!d.getElementById('font-link-'+i)) { const l=d.createElement('link'); l.id='font-link-'+i; l.rel='stylesheet'; l.href='https://fonts.googleapis.com/css2?'+fam+'&display=swap'; d.head.appendChild(l); }
+  st.textContent = `body,p,li,a,button,input,textarea,select,span,div,label,td,th,small{font-family:"${tf}",system-ui,sans-serif!important}
+h1,h2,h3,h4,.num,.logo,.who-title,.hero h1{font-family:"${hf}",system-ui,sans-serif!important}`;
+}
+V.forEach((v,i)=>{ const b=document.createElement('button'); b.textContent=v[0]; b.onclick=()=>apply(i); btns.appendChild(b); });
+f.addEventListener('load', ()=>{ const on=[...btns.children].findIndex(b=>b.classList.contains('on')); apply(on<0?0:on); });
+</script>
+</html>
