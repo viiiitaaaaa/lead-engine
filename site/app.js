@@ -376,6 +376,51 @@ if (form) {
   }));
 }
 
+/* окно «Заказать звонок» (27.10, как у prioritet-ing.ru): только телефон + согласие; кнопка шапки открывает окно, без окна — ведёт к форме */
+(() => {
+  const modal = document.getElementById("call-modal"), cf = document.getElementById("call-form");
+  if (!modal || !cf) return;
+  const opener = [...document.querySelectorAll("[data-call]")];
+  let back = null;
+  const open = e => { e.preventDefault(); back = document.activeElement; modal.hidden = false; document.body.classList.add("call-open"); cf.elements.phone.focus(); };
+  const close = () => { modal.hidden = true; document.body.classList.remove("call-open"); if (back) back.focus(); };
+  opener.forEach(b => b.addEventListener("click", open));
+  document.getElementById("call-x").addEventListener("click", close);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) close(); });
+  ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => {
+    let v = params.get(k);
+    try { if (v) sessionStorage.setItem(k, v); else v = sessionStorage.getItem(k); } catch (e) {}
+    if (v) cf.elements[k].value = v;
+  });
+  cf.elements.page.value = location.href;
+  const st = document.getElementById("call-status"), err = document.getElementById("call-err"), btn = document.getElementById("call-submit");
+  const opened = () => Date.now();
+  let t0 = 0;
+  cf.addEventListener("focusin", () => { if (!t0) t0 = opened(); });
+  cf.addEventListener("submit", async e => {
+    e.preventDefault();
+    const ph = cf.elements.phone, ok = cf.elements.consent, d = ph.value.replace(/\D/g, "");
+    const bad = !(d.length === 11 && /^[78]/.test(d)) && d.length !== 10;
+    err.hidden = !bad; ph.setAttribute("aria-invalid", bad);
+    if (bad) return ph.focus();
+    if (!ok.checked) { st.dataset.state = "error"; st.textContent = "Отметьте согласие на обработку данных"; return ok.focus(); }
+    if (btn.disabled) return;
+    const data = Object.fromEntries(new FormData(cf));
+    if (data.website) { st.dataset.state = "ok"; st.textContent = "Заявка принята."; return; }
+    delete data.website;
+    data.who = CONFIG.defaultWho; data.fill_s = Math.round((Date.now() - (t0 || Date.now())) / 1000);
+    if (!CONFIG.leadEndpoint) { st.dataset.state = "test"; st.textContent = "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена."; console.log("Звонок (тест):", data); return; }
+    btn.disabled = true; st.dataset.state = "sending"; st.textContent = "Отправляем…";
+    try {
+      const r = await fetch(CONFIG.leadEndpoint, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)});
+      if (!r.ok) throw new Error(r.status);
+      goal("form_submit"); cf.reset(); st.dataset.state = "ok"; st.textContent = "Заявка принята. Перезвоним " + "в течение часа в рабочее время.";
+    } catch (x) { st.dataset.state = "error"; st.textContent = "Не дошло — нажмите ещё раз через минуту."; }
+    finally { btn.disabled = false; }
+  });
+})();
+
 /* шапка: мягкий переход под ней — только когда страницу прокрутили (на верху он ложился полосой на фото первого экрана) */
 (() => {
   const top = document.getElementById("top");

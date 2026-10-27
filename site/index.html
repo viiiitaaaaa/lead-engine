@@ -14,7 +14,7 @@
 <script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=5573caa7">
+<link rel="stylesheet" href="styles.css?v=d0bdddab">
 </head>
 <body data-page="index">
 
@@ -22,7 +22,7 @@
   <div class="wrap">
     <a class="logo logo-word" href="index.html">Смарт Люкс</a>
     <div class="top-contacts">
-      <a class="btn" href="#zayavka">Оставить заявку</a>
+      <a class="btn" href="#zayavka" data-call>Заказать звонок</a>
     </div>
   </div>
 </header><!--/HEADER-->
@@ -63,10 +63,23 @@
         <a class="btn ghost" href="#dlya-kogo">Что мы делаем</a>
       </div>
       <!-- вернувшийся посетитель: app.js открывает одну ссылку — раздел, где он был (Dahlström, гл. 13) -->
+      <!-- 27.10 (сравнение с prioritet-ing.ru, п.1): быстрые кнопки по направлениям — якоря к карточкам «Что мы делаем» -->
+      <nav class="hero-quick" aria-label="Быстрый переход к направлению"><a class="btn ghost" href="#napr-1">Инженерия и&nbsp;сервис</a><a class="btn ghost" href="#napr-2">Отделка</a><a class="btn ghost" href="#napr-3">Остекление</a><a class="btn ghost" href="#napr-4">Текстиль</a></nav>
       <ul class="dirs" aria-label="Что делаем"><li>Архитектура</li><li>Дизайн</li><li>Стройка</li><li>Инженерия</li><li>Климат</li><li>Остекление</li><li>Текстиль</li><li>Мебель</li><li>Ландшафт</li><li>Сервис</li></ul>
     </div>
   </div>
 </section>
+
+<!--FACTS--><section class="facts-band" id="cifry" aria-label="Смарт Люкс в цифрах">
+  <div class="wrap">
+    <div class="facts">
+      <div><b>00+</b><span>объектов <span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span></span></div>
+      <div><b>00</b><span>лет опыта <span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span></span></div>
+      <div><b>00</b><span>марок оборудования <span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span></span></div>
+      <div><b>4</b><span>направления работ</span></div>
+    </div>
+  </div>
+</section><!--/FACTS-->
 
 <div class="marquee" role="region" aria-label="Европейское оборудование, которое обслуживаем">
   <span class="marquee-cap">Обслуживаем</span>
@@ -83,22 +96,22 @@
       <h2>Что мы делаем</h2>
           </div>
     <div class="who who-utp"><!--UTP-->
-      <div class="who-card">
+      <div class="who-card" id="napr-1">
         <h3 class="who-title">Инженерное оборудование и&nbsp;сервисные услуги</h3>
         <ul class="utp-points"><li>Климатическое оборудование от&nbsp;производителей: рециркуляторы против аллергии, конвекторы, алюминиевые радиаторы, кондиционеры, увлажнители и&nbsp;водоподготовка</li><li>Диагностика и&nbsp;обслуживание инженерных систем: вентиляция, отопление, кондиционирование, водоподготовка, сантехника</li></ul>
         <a class="btn" href="#zayavka" data-ask="Инженерное оборудование и сервис" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
-      <div class="who-card">
+      <div class="who-card" id="napr-2">
         <h3 class="who-title">Отделка</h3>
         <ul class="utp-points"><li>Гибкая и&nbsp;прочная штукатурка, которая быстро наносится,&nbsp;— по&nbsp;цене обычной</li></ul>
         <a class="btn" href="#zayavka" data-ask="Отделка" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
-      <div class="who-card">
+      <div class="who-card" id="napr-3">
         <h3 class="who-title">Остекление</h3>
         <ul class="utp-points"><li>Остекление любой сложности, в&nbsp;том числе безрамные конструкции 3000 × 9000 мм</li><li>Дизайнерские стеклянные люстры и&nbsp;перегородки</li></ul>
         <a class="btn" href="#zayavka" data-ask="Остекление" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
-      <div class="who-card">
+      <div class="who-card" id="napr-4">
         <h3 class="who-title">Текстиль</h3>
         <ul class="utp-points"><li>Прямые поставки европейских тканей без&nbsp;наценок</li></ul>
         <a class="btn" href="#zayavka" data-ask="Текстиль" data-ask-prefix="Интересует: ">Оставить заявку</a>
@@ -120,10 +133,26 @@
   </div>
   <div class="wks"><!--WORKS-->
       <article class="wk">
-        <div class="wk-half wk-obj"><picture class="wk-img" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAAQABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDlYRdNxJ8g9SasCGXblZ1xWE93NIcFyfxqzFM8EB3scsOBVvEVu5HsaS6F14bpjhCH+horMjuJd2Y5CD9aKf1mt3D2FHsf/9k=);background-size:cover;background-position:50% 62%"><source srcset="img/raboty/kolgaliresort-m.webp 1200w, img/raboty/kolgaliresort.webp 2400w" sizes="(max-width: 860px) 100vw, 60vw" type="image/webp"><img style="object-position:50% 62%" src="img/raboty/kolgaliresort.jpg" srcset="img/raboty/kolgaliresort-m.jpg 1200w, img/raboty/kolgaliresort.jpg 2400w" sizes="(max-width: 860px) 100vw, 60vw" alt="Kol Gali Resort &amp; Spa 5*" loading="lazy"></picture><div class="wk-cap"><span class="wk-tag">Объект</span><h3>Kol Gali Resort &amp; Spa 5*</h3><p>Болгар</p></div></div>
+        <div class="wk-half wk-obj"><picture class="wk-img" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAAQABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDlYRdNxJ8g9SasCGXblZ1xWE93NIcFyfxqzFM8EB3scsOBVvEVu5HsaS6F14bpjhCH+horMjuJd2Y5CD9aKf1mt3D2FHsf/9k=);background-size:cover;background-position:50% 62%"><source srcset="img/raboty/kolgaliresort-m.webp 1200w, img/raboty/kolgaliresort.webp 2400w" sizes="(max-width: 860px) 100vw, 60vw" type="image/webp"><img style="object-position:50% 62%" src="img/raboty/kolgaliresort.jpg" srcset="img/raboty/kolgaliresort-m.jpg 1200w, img/raboty/kolgaliresort.jpg 2400w" sizes="(max-width: 860px) 100vw, 60vw" alt="Kol Gali Resort &amp; Spa 5*" loading="lazy"></picture><div class="wk-cap"><span class="wk-tag">Объект</span><h3>Kol Gali Resort &amp; Spa 5*</h3><p class="wk-facts">315&nbsp;м² основной бассейн · Болгар</p></div></div>
         <div class="wk-half wk-job"><picture class="wk-img" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAALABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwC2dNsliDFsHHY1kQ2kF9PPCJOVqeZ2xjcag0kbL6UrwSKkroRpa+U5tF4VT+dFbTRoxDFQT60U9BH/2Q==);background-size:cover"><source srcset="img/raboty/kolgaliresort-job-m.webp 1200w, img/raboty/kolgaliresort-job.webp 2400w" sizes="(max-width: 860px) 100vw, 60vw" type="image/webp"><img src="img/raboty/kolgaliresort-job.jpg" srcset="img/raboty/kolgaliresort-job-m.jpg 1200w, img/raboty/kolgaliresort-job.jpg 2400w" sizes="(max-width: 860px) 100vw, 60vw" alt="Kol Gali Resort &amp; Spa 5*: монтаж оборудования" loading="lazy"></picture><div class="wk-cap"><span class="wk-tag">Что сделали</span><h3>Климат бассейнов</h3><p>Бассейн 315&nbsp;м², джакузи и&nbsp;детский бассейн&nbsp;— одно решение на&nbsp;весь курорт</p></div></div>
       </article>
   <!--/WORKS--></div>
+</section>
+
+<!-- 27.10 (п.5): «Почему мы» — доводы из текстов самого сайта (этапы, договор), новых обещаний нет -->
+<section class="section" id="pochemu">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Почему мы</span>
+      <h2>Почему выбирают нас</h2>
+    </div>
+    <ul class="why">
+      <li><h3>Один подрядчик</h3><p>От&nbsp;первой встречи до&nbsp;сервиса отвечает одна компания.</p></li>
+      <li><h3>Оригинал с&nbsp;документами</h3><p>Оборудование, материалы, стекло и&nbsp;текстиль; даты поставки&nbsp;— в&nbsp;договоре.</p></li>
+      <li><h3>Один график на&nbsp;все работы</h3><p>Стройка и&nbsp;монтаж своими бригадами.</p></li>
+      <li><h3>Сервис после сдачи</h3><p>Гарантия, обслуживание по&nbsp;сезонам и&nbsp;запчасти со&nbsp;склада в&nbsp;России.</p></li>
+    </ul>
+  </div>
 </section>
 
 <section class="section dark" id="etapy">
@@ -361,7 +390,7 @@
   <footer>
     <div class="wrap">
       <span>Смарт Люкс&nbsp;— загородный дом под&nbsp;ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
-      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a></address>
+      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a> · ООО «Фривент» · ИНН 0000000000 · ОГРН 0000000000000 <span class="demo" title="Условные данные — заменить в site/demo_content.py">пример</span></address>
     </div>
   </footer>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Смарт Люкс", "url": "https://frivent-site.frivent-dom.workers.dev/", "description": "Смарт Люкс — центр компетенций с функциями генподрядчика и авторским надзором. Выполняем полный комплекс работ под ключ — от проектирования до сервиса. Строим и оснащаем загородные дома, промышленные предприятия и отели.", "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]}</script>
@@ -375,10 +404,26 @@
     <p>«Что делать в&nbsp;типовых ситуациях»: 12 коротких ответов именно для&nbsp;вашей роли. PDF придёт на&nbsp;почту.</p>
     <a class="btn" id="exit-go" href="index.html#podarki">Посмотреть памятки</a>
   </div>
+  <div class="call-modal" id="call-modal" role="dialog" aria-modal="true" aria-labelledby="call-title" hidden>
+    <form class="call-box" id="call-form" novalidate>
+      <button type="button" class="call-x" id="call-x" aria-label="Закрыть">×</button>
+      <b id="call-title">Заказать звонок</b>
+      <p>Оставьте телефон&nbsp;— перезвоним в&nbsp;рабочее время.</p>
+      <label for="call-phone">Телефон</label>
+      <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="call-err">
+      <span class="err" id="call-err" hidden>Укажите телефон: 10 цифр после +7</span>
+      <input type="hidden" name="page"><input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
+      <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="note" value="Заказ звонка (окно)">
+      <div class="hp" aria-hidden="true"><label for="call-website">Сайт</label><input id="call-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="consent"><input id="call-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных по <a href="politika.html" target="_blank" rel="noopener">политике конфиденциальности</a></span></label>
+      <button class="btn" type="submit" id="call-submit">Жду звонка</button>
+      <span class="form-status" id="call-status" role="status"></span>
+    </form>
+  </div>
 </section><!--/FORM-->
 </main>
 
 
-<script src="app.js?v=cdee5730" defer></script>
+<script src="app.js?v=d4048b3d" defer></script>
 </body>
 </html>

@@ -50,8 +50,8 @@ def header(active=""):
     return f'''<header class="top" id="top">
   <div class="wrap">
     <a class="logo logo-word" href="index.html">{BRAND}</a>
-    <div class="top-contacts">
-      <a class="btn" href="#zayavka">Оставить заявку</a>
+    <div class="top-contacts">{contacts_html()}
+      <a class="btn" href="#zayavka" data-call>Заказать звонок</a>
     </div>
   </div>
 </header>'''
@@ -71,9 +71,67 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
     <b>Пока вы здесь — заберите памятку</b>
     <p>«Что делать в типовых ситуациях»: 12 коротких ответов именно для вашей роли. PDF придёт на почту.</p>
     <a class="btn" id="exit-go" href="index.html#podarki">Посмотреть памятки</a>
+  </div>
+  <div class="call-modal" id="call-modal" role="dialog" aria-modal="true" aria-labelledby="call-title" hidden>
+    <form class="call-box" id="call-form" novalidate>
+      <button type="button" class="call-x" id="call-x" aria-label="Закрыть">×</button>
+      <b id="call-title">Заказать звонок</b>
+      <p>Оставьте телефон&nbsp;— перезвоним в&nbsp;рабочее время.</p>
+      <label for="call-phone">Телефон</label>
+      <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="call-err">
+      <span class="err" id="call-err" hidden>Укажите телефон: 10 цифр после +7</span>
+      <input type="hidden" name="page"><input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
+      <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="note" value="Заказ звонка (окно)">
+      <div class="hp" aria-hidden="true"><label for="call-website">Сайт</label><input id="call-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="consent"><input id="call-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных по <a href="politika.html" target="_blank" rel="noopener">политике конфиденциальности</a></span></label>
+      <button class="btn" type="submit" id="call-submit">Жду звонка</button>
+      <span class="form-status" id="call-status" role="status"></span>
+    </form>
   </div>'''
 # EMAIL и OFFICE на сайт не выводить (её решение 10.10: «любые контактные данные убери — всё через заявку, по UTM видно, чей клиент»)
 EMAIL = "order@frivent.msk.ru"
+
+# 27.10 (её «все, добавляй» по сравнению с prioritet-ing.ru, п.6): места под телефон и мессенджеры в шапке и подвале.
+# Данных «Смарт Люкс» пока нет (Андрей пришлёт) — пустое не выводится; прежнее решение 10.10 «без контактов» действует, пока пусто.
+# Заполнить: phone="+7 …", whatsapp="https://wa.me/…", telegram="https://t.me/…", email="…@…" → python site/build.py
+CONTACTS = dict(phone="", whatsapp="", telegram="", email="")
+
+
+def contacts_html():
+    c = CONTACTS
+    out = []
+    if c["phone"]:
+        out.append(f'<a class="top-phone" href="tel:{"".join(ch for ch in c["phone"] if ch.isdigit() or ch == "+")}">{c["phone"]}</a>')
+    for key, label in (("whatsapp", "WhatsApp"), ("telegram", "Telegram")):
+        if c[key]:
+            out.append(f'<a class="top-msg" href="{c[key]}" rel="noopener" target="_blank">{label}</a>')
+    if c["email"]:
+        out.append(f'<a class="top-msg" href="mailto:{c["email"]}">{c["email"]}</a>')
+    return ("\n      " + "\n      ".join(out)) if out else ""
+
+
+def foot_contacts():
+    c = CONTACTS
+    parts = [c["phone"]] if c["phone"] else []
+    parts += [f'<a href="{c[k]}" rel="noopener" target="_blank">{lbl}</a>' for k, lbl in (("whatsapp", "WhatsApp"), ("telegram", "Telegram")) if c[k]]
+    if c["email"]:
+        parts.append(f'<a href="mailto:{c["email"]}">{c["email"]}</a>')
+    return (" · " + " · ".join(parts)) if parts else ""
+
+
+def facts_html():
+    """блок цифр под первым экраном (у «Приоритета» — 150+ объектов, 200 брендов…); цифры «Смарт Люкс» — demo_content.FACTS"""
+    if not DC.FACTS or (not DC.DEMO and all(not f[0].strip("0+") for f in DC.FACTS)):
+        return ""
+    cells = "\n".join(
+        f'      <div><b>{n}</b><span>{t}{" " + DEMO_TAG if demo else ""}</span></div>' for n, t, demo in DC.FACTS)
+    return f'''<section class="facts-band" id="cifry" aria-label="Смарт Люкс в цифрах">
+  <div class="wrap">
+    <div class="facts">
+{cells}
+    </div>
+  </div>
+</section>'''
 
 
 def ld(obj):
@@ -410,7 +468,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
   <footer>
     <div class="wrap">
       <span>Смарт Люкс — загородный дом под ключ. Новая Рига, Рублёвка, Ильинское шоссе</span>
-      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a></address>{usl}
+      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a>{req_line()}{foot_contacts()}</address>{usl}
     </div>
   </footer>
   {ORG_LD}
@@ -1316,9 +1374,9 @@ def utp_html():
     e = lambda x: escape(x, quote=False)
     stub = ' <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span>'
     cards = []
-    for u in UTP:
+    for i, u in enumerate(UTP, 1):
         pts = "".join(f"<li>{e(x)}</li>" for x in u["points"])
-        cards.append(f'''      <div class="who-card">
+        cards.append(f'''      <div class="who-card" id="napr-{i}">
         <h3 class="who-title">{e(u["title"])}{stub if u.get("stub") else ""}</h3>
         <ul class="utp-points">{pts}</ul>
         <a class="btn" href="#zayavka" data-ask="{e(u["key"])}" data-ask-prefix="Интересует: ">Оставить заявку</a>
@@ -1508,8 +1566,10 @@ def works_html():
     # правки Паши 13.10, п.5: фото отелей и тяжёлые фото убраны — на главной только резиденция Kol Gali, без перехода на страницу
     for o in [o for o in OBJECTS if o["slug"] == "kol-gali"]:
         city = o["place"].split(",")[0] if "Летний" not in o["name"] else "Летний сад, Санкт-Петербург"
+        # 27.10, п.3 сравнения с «Приоритетом»: строка фактов «площадь · место · год»; год на старом сайте не указан — не выдумываем
+        fact = " · ".join([f'{o["facts"][0][0]} {o["facts"][0][1]}'] + [city] + ([str(o["year"])] if o.get("year") else []))
         rows.append(f'''      <article class="wk">
-        <div class="wk-half wk-obj">{pic(o["img"], o["name"], o["pos"])}<div class="wk-cap"><span class="wk-tag">Объект</span><h3>{e(o["name"])}</h3><p>{e(city)}</p></div></div>
+        <div class="wk-half wk-obj">{pic(o["img"], o["name"], o["pos"])}<div class="wk-cap"><span class="wk-tag">Объект</span><h3>{e(o["name"])}</h3><p class="wk-facts">{e(fact)}</p></div></div>
         <div class="wk-half wk-job">{pic(o["img"] + "-job", o["name"] + ": монтаж оборудования")}<div class="wk-cap"><span class="wk-tag">Что сделали</span><h3>{e(o["job"])}</h3><p>{e(o["job_sub"])}</p></div></div>
       </article>''')
     return "\n" + "\n".join(rows) + "\n  "
@@ -1845,6 +1905,8 @@ if __name__ == "__main__":
     s = idx.read_text("utf-8")
     s = replace_between(s, "<!--HEADMETA-->", "<!--/HEADMETA-->", OG_IMG + chr(10) + ICONS)
     s = replace_between(s, "<!--HEADER-->", "<!--/HEADER-->", header())
+    if "<!--FACTS-->" in s:
+        s = replace_between(s, "<!--FACTS-->", "<!--/FACTS-->", facts_html())
     if "<!--GIFTS-->" in s:
         s = replace_between(s, "<!--GIFTS-->", "<!--/GIFTS-->", gifts_html())
     # главная — один лендинг (правки Паши 13.10): в подвале без ссылок на другие страницы, кроме политики

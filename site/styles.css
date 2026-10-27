@@ -1167,3 +1167,36 @@ form[aria-busy="true"] .btn{opacity:.7;cursor:progress}
 .who-utp .btn{align-self:end;margin-top:auto}
 .who-utp .who-card{display:flex;flex-direction:column;align-items:flex-start}
 .who-utp .who-card .btn{align-self:flex-start}
+
+/* ===== 27.10: приёмы из сравнения с prioritet-ing.ru (быстрые кнопки, цифры, «Почему мы», окно звонка, контакты шапки) ===== */
+.hero-quick{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.hero-quick .btn{padding-block:10px;font-size:var(--fs-xs)}
+.why{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.why li{background:var(--paper);padding:26px 24px 28px;display:grid;gap:10px;align-content:start}
+.why h3{margin:0;font:400 var(--fs-h3)/1.2 var(--display)}
+.why p{font-size:var(--fs-s);color:var(--ink-soft);line-height:1.5}
+@media (max-width:1000px){.why{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.why{grid-template-columns:1fr}}
+.wk-facts{font-size:var(--fs-s)}
+.top-phone,.top-msg{color:inherit;text-decoration:none;font-size:var(--fs-s);padding-block:6px}
+.top-phone{font-weight:600}
+.top-phone:hover,.top-msg:hover{text-decoration:underline}
+.call-modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(27,43,71,.55)}
+.call-modal[hidden]{display:none}
+.call-box{position:relative;width:min(420px,100%);display:grid;gap:12px;padding:32px 28px 28px;background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.call-box b{font:400 var(--fs-h3)/1.2 var(--display);padding-right:28px}
+.call-box p{font-size:var(--fs-s);color:var(--ink-soft)}
+.call-box label{font-size:var(--fs-xs)}
+.call-box input[type=tel]{width:100%;padding:12px 2px;border:0;border-bottom:1px solid var(--ink);background:transparent;font:inherit;color:inherit}
+.call-box input[type=tel]:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+.call-box .consent{font-size:var(--fs-xs);color:var(--ink-soft);display:flex;gap:8px;align-items:flex-start}
+.call-box .btn{background:var(--wine);color:var(--paper);border-color:var(--wine);justify-self:start}
+.call-box .btn::after{content:none}
+.call-x{position:absolute;top:8px;right:10px;width:44px;height:44px;border:0;background:transparent;font-size:var(--fs-h3);cursor:pointer;color:inherit}
+.call-x:focus-visible{outline:2px solid var(--accent-ink)}
+body.call-open{overflow:hidden}
+.foot-addr{display:flex;flex-wrap:wrap;gap:0 .4em;align-items:baseline}
+.call-box{grid-template-columns:minmax(0,1fr)}
+.call-box>*{grid-column:1/-1}
+.call-box input[type=tel]{max-width:none;min-width:0;box-sizing:border-box}
+.call-box .btn{white-space:nowrap}
