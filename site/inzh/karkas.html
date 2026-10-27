@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Каркас: Смарт Инжиниринг</title>
+<style>
+/* Каркас без дизайна: серые блоки, чёрный текст. Цвета, шрифты, картинки — после согласования. */
+body{font:15px/1.5 Arial,sans-serif;background:#fff;color:#111;margin:0}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px 60px}
+.note{background:#fff7d6;border:1px solid #e0c870;padding:12px 16px;margin:16px 0;font-size:14px}
+.blk{border:2px solid #999;margin:14px 0;padding:14px 18px;background:#f4f4f4}
+.blk .n{display:inline-block;background:#111;color:#fff;border-radius:50%;width:26px;height:26px;text-align:center;line-height:26px;font-size:13px;margin-right:8px}
+.blk h2{margin:0 0 4px;font-size:19px}
+.blk .id{color:#666;font-size:12px;margin-bottom:8px}
+.blk p{margin:6px 0}
+.btn{display:inline-block;border:2px solid #111;padding:5px 14px;margin:3px 6px 3px 0;background:#fff;font-size:13px}
+.cards{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.card{flex:1 1 200px;border:1px dashed #777;background:#fff;padding:8px 10px;font-size:14px}
+.q{color:#b00020;font-size:13px}
+.ph{border:1px dashed #777;background:#e6e6e6;height:70px;text-align:center;line-height:70px;color:#555;margin-top:8px;font-size:13px}
+.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Каркас сайта «Смарт Инжиниринг»</h1>
+<div class="note">
+<b>Это только каркас — порядок блоков и черновые заголовки.</b> Без дизайна, цветов и картинок.<br>
+Одна страница: пункты меню и кнопки ведут <b>вниз по этой же странице</b> (якоря #…). Другие страницы не открываются.<br>
+Образец структуры — «ГК Приоритет» (prioritet-ing.ru): порядок блоков похож, тексты, цифры и картинки — свои, не копия.<br>
+Красным — вопросы к Андрею. Серые «[…]» — данные, которых у нас пока нет (не выдумываем).
+</div>
+
+<div class="blk" id="shapka">
+<h2><span class="n">1</span>Шапка (закреплена)</h2>
+<div class="id">#top</div>
+<div class="top"><b>[логотип словом: Смарт Инжиниринг]</b>
+<span class="btn">Услуги ↓</span><span class="btn">Проекты ↓</span><span class="btn">О компании ↓</span><span class="btn">Оставить заявку ↓</span></div>
+<p class="q">❓ Телефон и почта в шапке — показывать или нет? (по её старому правилу «без контактов» связь только через заявку с меткой; Андрей обещал прислать телефон и почту)</p>
+</div>
+
+<div class="blk" id="pervyy">
+<h2><span class="n">2</span>Первый экран</h2>
+<div class="id">#hero</div>
+<p><b>Заголовок (черновик):</b> Инженерные системы и оборудование для вашего объекта — от проекта до обслуживания</p>
+<p><b>Подзаголовок (черновик):</b> Поставляем и монтируем климатическое и инженерное оборудование; заменяем европейское. [регион — уточнить у Андрея]</p>
+<span class="btn">Оставить заявку</span><span class="btn">Что мы делаем ↓</span>
+<div class="ph">[фон: объект / оборудование, без людей]</div>
+</div>
+
+<div class="blk">
+<h2><span class="n">3</span>Что мы делаем — направления</h2>
+<div class="id">#uslugi</div>
+<p>Только то, что делаем своими силами, без партнёров. Каждая карточка — якорь к форме с вписанным «Интересует: …».</p>
+<div class="cards">
+<div class="card"><b>Подбор и поставка оборудования</b><br>замена европейского [какие марки/классы — от Андрея]</div>
+<div class="card"><b>Проектирование инженерных систем</b><br>[подтвердить: делаем ли сами]</div>
+<div class="card"><b>Монтаж и пусконаладка</b><br>[подтвердить]</div>
+<div class="card"><b>Сервис и обслуживание</b><br>[подтвердить]</div>
+</div>
+<p class="q">❓ Какие именно направления входят в «своими силами» — вентиляция, осушение бассейнов, климат, что-то ещё? (список уточнить у Андрея)</p>
+</div>
+
+<div class="blk">
+<h2><span class="n">4</span>Оборудование: замена европейского</h2>
+<div class="id">#oborudovanie</div>
+<p><b>Заголовок (черновик):</b> Европейское оборудование ушло — чем его заменить</p>
+<p>Коротко: что заменяем, чем, сроки поставки, гарантия. [данные — от Андрея; без выдуманных цифр]</p>
+<div class="cards">
+<div class="card">Было (европейское): […]</div>
+<div class="card">Стало (наше): […]</div>
+<div class="card">Срок / гарантия: […]</div>
+</div>
+</div>
+
+<div class="blk">
+<h2><span class="n">5</span>Проекты</h2>
+<div class="id">#proekty</div>
+<p>3–4 карточки объектов: название, тип, площадь, место. Без людей на фото; с согласия владельцев, без адресов.</p>
+<div class="cards"><div class="card">Объект 1 […]</div><div class="card">Объект 2 […]</div><div class="card">Объект 3 […]</div></div>
+<p class="q">❓ Какие объекты можно показать? Kol Gali (по Паше) — оставляем? Нужны названия, год, площадь от Андрея.</p>
+</div>
+
+<div class="blk">
+<h2><span class="n">6</span>О компании — коротко и цифры</h2>
+<div class="id">#o-kompanii</div>
+<p>Короткое описание + 3–5 цифр (объектов, лет, брендов…). Цифры — только подтверждённые.</p>
+<div class="cards"><div class="card">[цифра] объектов</div><div class="card">[цифра] лет</div><div class="card">[цифра] …</div></div>
+<p class="q">❓ Кто пишет тексты, раз Паша выбыл до Нового года? Какие цифры можно называть?</p>
+</div>
+
+<div class="blk">
+<h2><span class="n">7</span>Почему мы (3–4 довода)</h2>
+<div class="id">#pochemu</div>
+<p>Свои производство и склад / сроки / гарантия / сервис — что подтвердит Андрей. Без архитекторов и дизайнеров.</p>
+</div>
+
+<div class="blk">
+<h2><span class="n">8</span>Как мы работаем — этапы</h2>
+<div class="id">#etapy</div>
+<p>Заявка → расчёт → договор → поставка и монтаж → сервис. [сроки не обещаем, пока не даст Андрей]</p>
+</div>
+
+<div class="blk" style="border-color:#111">
+<h2><span class="n">9</span>Заявка (единственная форма)</h2>
+<div class="id">#zayavka</div>
+<p><b>Поля: только телефон.</b> Без имени, фамилии и почты (чтобы не возникала лишняя обязанность оператора данных).</p>
+<p>☐ Согласие на обработку персональных данных [текст как у «Приоритета» — переписать под нас] + ссылка на политику</p>
+<span class="btn">Ждём вашего звонка</span>
+<p>Скрытые поля: UTM-метки, «Интересует: …», секунды заполнения (защита от ботов). Заявка → Bitrix24.</p>
+<p class="q">❓ «Двитрес» в записи — это Битрикс24? Нужны ли хостинг в РФ и юрлицо оператора для политики (152-ФЗ)?</p>
+</div>
+
+<div class="blk">
+<h2><span class="n">10</span>Подвал</h2>
+<div class="id">#footer</div>
+<p>Логотип словом · © 2026 · реквизиты [юрлицо, ИНН — от Андрея] · ссылки-якоря наверх · Политика конфиденциальности · уведомление о cookie</p>
+<p class="q">❓ Телефон и почта в подвале — да или нет? Название домена?</p>
+</div>
+
+<div class="note">
+<b>Чего на странице нет (по звонку 22.10):</b> архитекторов и дизайнеров, текстиля и мебели, фото людей, имён сотрудников, меню на другие страницы, калькуляторов и квизов.<br>
+<b>Вопросы к Андрею:</b> 1) 10-е какого месяца и что входит в «простой вид»; 2) телефон и почта на странице — да/нет; 3) кто пишет тексты; 4) домен.
+</div>
+</div>
+</body>
+</html>
