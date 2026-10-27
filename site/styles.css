@@ -1305,3 +1305,9 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.14),tran
 .rv{border-radius:var(--r);border:1px solid rgb(255 255 255/.8);background:var(--glass);box-shadow:var(--sh-1)}
 .top .btn{white-space:nowrap}
 @media (max-width:520px){.top .wrap{padding-inline:16px}.top .btn{padding:11px 16px}}
+/* 27.10 вечер: картинки направлений (Gemini v2) сверху карточек «Что мы делаем» — build.py utp_html, img/utp/dir1..4 */
+.who-utp .who-card{padding-top:0}
+.who-utp .who-card .who-img{display:block;width:calc(100% + 52px);margin:0 -26px 14px;aspect-ratio:4/3;overflow:hidden;border-radius:var(--r) var(--r) 0 0}
+.who-utp .who-card .who-img img{width:100%;height:100%;object-fit:cover;display:block}
+/* 27.10 вечер: на узком телефоне (≤430px) логотип + «Заказать звонок» вылезали за экран (ширина страницы 413 при 390) */
+@media (max-width:430px){.top .wrap{gap:10px}.logo.logo-word{font-size:var(--fs-m);letter-spacing:.08em;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.top .top-contacts .btn{padding:10px 12px;font-size:var(--fs-xs)}}

@@ -1,0 +1,47 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Картинки v2 рядом с&nbsp;блоками сайта&nbsp;— 27.10</title>
+<style>
+@font-face{font-family:"Vela Sans";src:url(fonts/vela-regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Vela Sans";src:url(fonts/vela-medium.woff2) format("woff2");font-weight:500}
+@font-face{font-family:"Vela Sans";src:url(fonts/vela-semibold.woff2) format("woff2");font-weight:600}
+:root{--paper:#f1eef3;--ink:#2a2530;--accent-ink:#5c3b65;--accent:#b4a27c;--wine:#704779;--dk:#221c29;--dk2:#4a3156}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 "Vela Sans",system-ui;padding:24px}
+h1{font-size:28px;font-weight:600;margin:0 0 6px}p.note{color:var(--accent-ink);margin:0 0 24px;max-width:80ch}
+.hero{position:relative;border-radius:40px;overflow:hidden;height:min(56vw,560px);margin:0 0 18px;box-shadow:0 24px 60px rgb(42 37 48/.18)}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .txt{position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(90deg,rgb(34 28 41/.62) 0,rgb(34 28 41/.25) 50%,transparent 80%);padding:clamp(28px,5vw,64px);display:flex;flex-direction:column;justify-content:flex-end;color:#f1eef3}
+.hero h2{font-size:clamp(28px,4.6vw,64px);line-height:1.05;letter-spacing:-.03em;margin:0 0 14px;font-weight:600;max-width:14ch}.hero h2 em{font-style:normal;color:#dccb9f}
+.hero .lead{max-width:48ch;margin:0 0 20px;opacity:.92}
+.btn{display:inline-block;padding:12px 24px;border-radius:999px;background:linear-gradient(180deg,#8355a0,#704779);color:#f1eef3;text-decoration:none;font-weight:500;box-shadow:inset 0 1px 0 rgb(255 255 255/.25),0 8px 20px rgb(112 71 121/.35)}
+.btn.ghost{background:rgb(255 255 255/.14);box-shadow:none;border:1px solid rgb(255 255 255/.35);margin-left:8px}
+.tag{font-size:12px;color:var(--accent-ink);margin:0 0 8px;letter-spacing:.02em}
+.island{background:linear-gradient(135deg,var(--dk),var(--dk2));border-radius:48px;padding:40px clamp(20px,4vw,56px);color:#f1eef3;margin:40px 0}
+.island h2{font-size:36px;letter-spacing:-.03em;margin:0 0 24px;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.card{background:rgb(255 255 255/.08);border:1px solid rgb(255 255 255/.14);border-radius:28px;overflow:hidden;backdrop-filter:blur(8px)}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.card .b{padding:18px 20px 22px}.card h3{margin:0 0 8px;font-size:18px;font-weight:600}.card p{margin:0 0 14px;opacity:.85;font-size:14px}
+.card .btn{padding:9px 18px;font-size:13px}
+.line{display:flex;align-items:center;gap:10px;margin:0 0 12px}.ring{width:14px;height:14px;border:2px solid var(--accent);border-radius:50%}
+</style>
+<h1>Картинки v2 рядом с&nbsp;блоками сайта</h1>
+<p class="note">Первый экран&nbsp;— 5 слайдов (hero1–hero5) в&nbsp;скруглённой карточке, как на&nbsp;сайте. Ниже&nbsp;— тёмный «остров» направлений с&nbsp;карточками dir1–dir4. Промты и&nbsp;пары «их → наш»&nbsp;— docs\promty_kartinok_foto_2810.html. Блоки здесь собраны в&nbsp;палитре сайта, тексты&nbsp;— с&nbsp;главной.</p>
+<p class="tag">Слайд 1&nbsp;— hero1 (усадьба у&nbsp;воды)</p>
+<div class="hero"><img src="img/new/hero1.jpg" alt=""><div class="txt"><h2>Инженерные системы <em>и&nbsp;оборудование</em></h2><p class="lead">Подбор, проектирование, монтаж и&nbsp;сервис инженерных систем для&nbsp;домов и&nbsp;коммерческих объектов.</p><div><a class="btn" href="#">Оставить заявку</a><a class="btn ghost" href="#">Оборудование</a><a class="btn ghost" href="#">Монтаж</a></div></div></div>
+<p class="tag">Слайд 2&nbsp;— hero2 (современная вилла в&nbsp;синий час)</p>
+<div class="hero"><img src="img/new/hero2.jpg" alt=""><div class="txt"><h2>Инженерные системы <em>и&nbsp;оборудование</em></h2><p class="lead">Подбор, проектирование, монтаж и&nbsp;сервис инженерных систем для&nbsp;домов и&nbsp;коммерческих объектов.</p><div><a class="btn" href="#">Оставить заявку</a></div></div></div>
+<p class="tag">Слайд 3&nbsp;— hero3 (СПА с&nbsp;бассейном, вентиляция встроена в&nbsp;потолок)</p>
+<div class="hero"><img src="img/new/hero3.jpg" alt=""><div class="txt"><h2>Инженерные системы <em>и&nbsp;оборудование</em></h2><p class="lead">Подбор, проектирование, монтаж и&nbsp;сервис инженерных систем для&nbsp;домов и&nbsp;коммерческих объектов.</p><div><a class="btn" href="#">Оставить заявку</a></div></div></div>
+<p class="tag">Слайд 4&nbsp;— hero4 (лобби премиум-офиса)</p>
+<div class="hero"><img src="img/new/hero4.jpg" alt=""><div class="txt"><h2>Инженерные системы <em>и&nbsp;оборудование</em></h2><p class="lead">Подбор, проектирование, монтаж и&nbsp;сервис инженерных систем для&nbsp;домов и&nbsp;коммерческих объектов.</p><div><a class="btn" href="#">Оставить заявку</a></div></div></div>
+<p class="tag">Слайд 5&nbsp;— hero5 (чистая новая венткамера, как у&nbsp;конкурента)</p>
+<div class="hero"><img src="img/new/hero5.jpg" alt="" style="object-position:50% 60%"><div class="txt"><h2>Инженерные системы <em>и&nbsp;оборудование</em></h2><p class="lead">Подбор, проектирование, монтаж и&nbsp;сервис инженерных систем для&nbsp;домов и&nbsp;коммерческих объектов.</p><div><a class="btn" href="#">Оставить заявку</a></div></div></div>
+<section class="island">
+<div class="line"><span class="ring"></span><span style="opacity:.8">Направления</span></div>
+<h2>Что мы делаем</h2>
+<div class="grid">
+<div class="card"><img src="img/new/dir1.jpg" alt=""><div class="b"><h3>Подбор и&nbsp;поставка оборудования</h3><p>Климатическое оборудование от&nbsp;производителей, замена европейского&nbsp;— подбор аналога под&nbsp;ваш объект.</p><a class="btn" href="#">Интересует</a></div></div>
+<div class="card"><img src="img/new/dir2.jpg" alt=""><div class="b"><h3>Проектирование</h3><p>Описание направления&nbsp;— от&nbsp;Андрея.</p><a class="btn" href="#">Интересует</a></div></div>
+<div class="card"><img src="img/new/dir3.jpg" alt=""><div class="b"><h3>Монтаж</h3><p>Описание направления&nbsp;— от&nbsp;Андрея.</p><a class="btn" href="#">Интересует</a></div></div>
+<div class="card"><img src="img/new/dir4.jpg" alt=""><div class="b"><h3>Сервис</h3><p>Диагностика и&nbsp;обслуживание инженерных систем: вентиляция, отопление, кондиционирование, водоподготовка.</p><a class="btn" href="#">Интересует</a></div></div>
+</div></section>
+</html>

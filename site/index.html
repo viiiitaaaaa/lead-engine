@@ -14,7 +14,7 @@
 <script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=e3dec126">
+<link rel="stylesheet" href="styles.css?v=ec041216">
 </head>
 <body data-page="index">
 
@@ -31,10 +31,14 @@
 <!-- первый экран — как в v69 (её просьба 10.10: «верни как было на прошлой версии»), не по образцу clearwater -->
 <section class="hero">
   <div class="slides" id="slides" role="region" aria-roledescription="слайдер" aria-label="Фото объектов">
-    <!-- 27.10: инженерный кадр hero1 (Gemini, машинный зал); остальные слайды ждут Gemini — docs/promty_kartinok_2710.html -->
-    <figure class="ph slide has-photo is-on" data-photo="hero1" aria-label="Машинный зал: вентиляционные установки и медные трубопроводы"><picture><source srcset="img/slides/hero1-m.webp 1280w, img/slides/hero1.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/hero1.jpg" srcset="img/slides/hero1-m.jpg 1280w, img/slides/hero1.jpg 2560w" sizes="100vw" alt="Машинный зал: вентиляционные установки и медные трубопроводы" style="object-position:50% 55%" fetchpriority="high"></picture></figure>
+    <!-- 27.10 вечер: 5 кадров Gemini v2 (чистые люксовые места, по референсу Приоритета) — docs/promty_kartinok_foto_2810.html; исходники img/new/hero1..5.jpg -->
+    <figure class="ph slide has-photo is-on" data-photo="hero1" aria-roledescription="слайд" aria-label="1 из 5"><picture><source srcset="img/slides/hero1-m.webp 1280w, img/slides/hero1.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/hero1.jpg" srcset="img/slides/hero1-m.jpg 1280w, img/slides/hero1.jpg 2560w" sizes="100vw" alt="Загородная резиденция из светлого камня у пруда вечером" style="object-position:50% 55%" fetchpriority="high"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero2" aria-roledescription="слайд" aria-label="2 из 5"><picture><source data-srcset="img/slides/hero2-m.webp 1280w, img/slides/hero2.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero2.jpg" data-srcset="img/slides/hero2-m.jpg 1280w, img/slides/hero2.jpg 2560w" sizes="100vw" alt="Современная вилла из стекла и камня с бассейном в синий час" style="object-position:50% 55%"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero3" aria-roledescription="слайд" aria-label="3 из 5"><picture><source data-srcset="img/slides/hero3-m.webp 1280w, img/slides/hero3.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero3.jpg" data-srcset="img/slides/hero3-m.jpg 1280w, img/slides/hero3.jpg 2560w" sizes="100vw" alt="Частный СПА с бассейном: вентиляция встроена в потолок" style="object-position:50% 55%"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero4" aria-roledescription="слайд" aria-label="4 из 5"><picture><source data-srcset="img/slides/hero4-m.webp 1280w, img/slides/hero4.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero4.jpg" data-srcset="img/slides/hero4-m.jpg 1280w, img/slides/hero4.jpg 2560w" sizes="100vw" alt="Лобби бизнес-центра с линейными диффузорами в потолке" style="object-position:50% 55%"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero5" aria-roledescription="слайд" aria-label="5 из 5"><picture><source data-srcset="img/slides/hero5-m.webp 1280w, img/slides/hero5.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero5.jpg" data-srcset="img/slides/hero5-m.jpg 1280w, img/slides/hero5.jpg 2560w" sizes="100vw" alt="Новая венткамера: вентиляционные установки и трубопроводы" style="object-position:50% 60%"></picture></figure>
   </div>
-  <div class="slider-ui" hidden role="group" aria-label="Листать фото">
+  <div class="slider-ui" role="group" aria-label="Листать фото">
     <button type="button" class="sl-prev" aria-label="Предыдущее фото">←</button>
     <span class="sl-count num"><b id="sl-n">01</b> / 5</span>
     <span class="sl-dots" id="sl-dots"></span>
@@ -84,21 +88,25 @@
           </div>
     <div class="who who-utp"><!--UTP-->
       <div class="who-card" id="napr-1">
+        <picture class="who-img"><source srcset="img/utp/dir1-m.webp 800w, img/utp/dir1.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir1.jpg" srcset="img/utp/dir1-m.jpg 800w, img/utp/dir1.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
         <h3 class="who-title">Подбор и&nbsp;поставка оборудования</h3>
         <ul class="utp-points"><li>Климатическое оборудование от&nbsp;производителей: рециркуляторы против аллергии, конвекторы, алюминиевые радиаторы, кондиционеры, увлажнители и&nbsp;водоподготовка</li><li>Замена европейского оборудования&nbsp;— подбор аналога под&nbsp;ваш объект</li></ul>
         <a class="btn" href="#zayavka" data-ask="Оборудование" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
       <div class="who-card" id="napr-2">
+        <picture class="who-img"><source srcset="img/utp/dir2-m.webp 800w, img/utp/dir2.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir2.jpg" srcset="img/utp/dir2-m.jpg 800w, img/utp/dir2.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
         <h3 class="who-title">Проектирование инженерных систем <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span></h3>
         <ul class="utp-points"><li>Описание направления&nbsp;— от&nbsp;Андрея</li></ul>
         <a class="btn" href="#zayavka" data-ask="Проектирование" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
       <div class="who-card" id="napr-3">
+        <picture class="who-img"><source srcset="img/utp/dir3-m.webp 800w, img/utp/dir3.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir3.jpg" srcset="img/utp/dir3-m.jpg 800w, img/utp/dir3.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
         <h3 class="who-title">Монтаж и&nbsp;пусконаладка <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span></h3>
         <ul class="utp-points"><li>Описание направления&nbsp;— от&nbsp;Андрея</li></ul>
         <a class="btn" href="#zayavka" data-ask="Монтаж" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
       <div class="who-card" id="napr-4">
+        <picture class="who-img"><source srcset="img/utp/dir4-m.webp 800w, img/utp/dir4.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir4.jpg" srcset="img/utp/dir4-m.jpg 800w, img/utp/dir4.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
         <h3 class="who-title">Сервис и&nbsp;обслуживание</h3>
         <ul class="utp-points"><li>Диагностика и&nbsp;обслуживание инженерных систем: вентиляция, отопление, кондиционирование, водоподготовка, сантехника</li></ul>
         <a class="btn" href="#zayavka" data-ask="Сервис" data-ask-prefix="Интересует: ">Оставить заявку</a>

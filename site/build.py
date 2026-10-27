@@ -1336,8 +1336,13 @@ def utp_html():
     cards = []
     for i, u in enumerate(UTP, 1):
         pts = "".join(f"<li>{e(x)}</li>" for x in u["points"])
+        # 27.10: картинка направления — img/utp/dir<i>.jpg (Gemini v2, 4:3); нет файла — карточка без картинки
+        img = ""
+        if (SITE / "img" / "utp" / f"dir{i}.jpg").exists():
+            img = (f'<picture class="who-img"><source srcset="img/utp/dir{i}-m.webp 800w, img/utp/dir{i}.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp">'
+                   f'<img src="img/utp/dir{i}.jpg" srcset="img/utp/dir{i}-m.jpg 800w, img/utp/dir{i}.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>\n        ')
         cards.append(f'''      <div class="who-card" id="napr-{i}">
-        <h3 class="who-title">{e(u["title"])}{stub if u.get("stub") else ""}</h3>
+        {img}<h3 class="who-title">{e(u["title"])}{stub if u.get("stub") else ""}</h3>
         <ul class="utp-points">{pts}</ul>
         <a class="btn" href="#zayavka" data-ask="{e(u["key"])}" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>''')
