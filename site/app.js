@@ -289,12 +289,9 @@ document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click"
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
   setTimeout(() => form.elements.phone.focus({preventScroll: true}), 600);
 }));
-const giftLink = (test) => {
+const giftLink = () => {
   if (!gift) return "";
-  const em = form.elements.email && form.elements.email.value.trim();
-  let s = em ? " Памятка «" + gift.title + "» придёт на " + em + "." : " Памятка «" + gift.title + "» придёт на почту, которую вы укажете менеджеру.";
-  if (test) s += ' <a href="' + gift.file + '" target="_blank" rel="noopener">Открыть PDF</a>.';
-  return s;
+  return ' Памятка «' + gift.title + '»: <a href="' + gift.file + '" target="_blank" rel="noopener">открыть PDF</a>.';
 };
 if (form) {
   /* метки UTM: из адреса, а если человек ушёл по ссылкам внутри сайта — из памяти вкладки */
@@ -344,7 +341,7 @@ if (form) {
     delete data.website;
     if (!CONFIG.leadEndpoint) {
       /* честное состояние, пока сервера нет: «принято» не пишем (находки 12.10) */
-      setState("test", "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink(true));
+      setState("test", "Тестовый режим: приём заявок ещё не подключён, заявка не отправлена." + giftLink());
       console.log("Заявка (тест):", data);
       return;
     }
@@ -356,7 +353,7 @@ if (form) {
       if (!r.ok) throw new Error(r.status);
       goal("form_submit"); clearDraft(); // цель и очистка черновика — только когда сервер принял заявку
       form.reset(); if (whoSelect) whoSelect.value = data.who;
-      setState("ok", "Заявка принята." + giftLink(false) + NEXT);
+      setState("ok", "Заявка принята." + giftLink() + NEXT);
     } catch (err) {
       /* запасной путь без контактов (её решение 10.10 — только заявка): данные остаются в форме и в черновике браузера */
       setState("error", "Заявка не дошла до нас — сбой связи или сервера. Всё, что вы ввели, сохранено: нажмите кнопку ещё раз через минуту. Если закроете страницу, поля заполнятся сами, когда вернётесь.");

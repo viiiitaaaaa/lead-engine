@@ -66,6 +66,12 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
     <p>Сайт использует cookies и сервис статистики посещений, чтобы считать заявки и улучшать страницы. <a href="politika.html">Подробнее</a></p>
     <button type="button" class="btn" id="cookie-ok">Хорошо</button>
   </div>
+  <div class="exit-card" id="exit-card" role="dialog" aria-label="Памятка для вас" hidden>
+    <button type="button" class="exit-x" id="exit-x" aria-label="Закрыть">×</button>
+    <b>Пока вы здесь&nbsp;— заберите памятку</b>
+    <p>«Что делать в типовых ситуациях»: 12 коротких ответов для вашей роли. PDF откроется сразу после заявки.</p>
+    <a class="btn" id="exit-go" href="index.html#podarki">Посмотреть памятки</a>
+  </div>
   <div class="call-modal" id="call-modal" role="dialog" aria-modal="true" aria-labelledby="call-title" hidden>
     <form class="call-box" id="call-form" novalidate>
       <button type="button" class="call-x" id="call-x" aria-label="Закрыть">×</button>
@@ -1358,7 +1364,7 @@ def gifts_html():
     e = lambda x: escape(x, quote=False)
     cards = []
     for href, who, label in NAV:
-        if who == "dizayner":  # 27.10: сайт инженерный — памятки дизайнеру на нём нет
+        if who not in ("montazh", "zastroyshchik", "kommerciya"):  # 27.10: сайт инженерный — памятки владельцу, ассистенту и дизайнеру на нём нет
             continue
         g = GIFT[who]
         cards.append(f'''      <article class="gift-card">
@@ -1373,7 +1379,7 @@ def gifts_html():
     <div class="sec-head">
       <span class="eyebrow">Памятка</span>
       <h2>Мы приготовили для вас памятку</h2>
-      <p class="lead">Памятка «Что делать в типовых ситуациях» — 12 коротких ответов именно для вашей роли. Выберите свою и оставьте контакты: PDF придёт вам на почту.</p>
+      <p class="lead">Памятка «Что делать в типовых ситуациях» — 12 коротких ответов именно для вашей роли. Выберите свою и оставьте телефон: PDF откроется сразу после заявки.</p>
     </div>
     <div class="gift-grid">
 ''' + "\n".join(cards) + '''
