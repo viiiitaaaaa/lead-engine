@@ -342,6 +342,8 @@ if (form) {
     /* сколько секунд заполняли форму: уходит на сервер, он отсеивает ботов до Bitrix24 и цели Метрики (находки 12.10) */
     form.elements.fill_s.value = Math.round((Date.now() - (firstTouch || Date.now())) / 1000);
     const data = Object.fromEntries(new FormData(form));
+    /* ст. 9 ч. 3 152-ФЗ: доказать согласие обязан оператор — уходит версия текста и время отметки (28.10) */
+    data.consent_ver = "soglasie-2026-10-28"; data.consent_ts = new Date().toISOString();
     /* защита от спам-ботов (книга Мукминова: B2B-формы первыми получают ботов): невидимое поле заполнено
        — делаем вид, что приняли, и ничего не шлём. Быстрее 3 секунд после открытия (автозаполнение, быстрый человек) —
        не пишем «принято», а тихо ждём до 3 секунд и отправляем (дизайн-ревью 12.10) */
@@ -408,6 +410,7 @@ if (form) {
     if (!ok.checked) { st.dataset.state = "error"; st.textContent = "Отметьте согласие на обработку данных"; return ok.focus(); }
     if (btn.disabled) return;
     const data = Object.fromEntries(new FormData(cf));
+    data.consent_ver = "soglasie-2026-10-28"; data.consent_ts = new Date().toISOString();
     if (data.website) { st.dataset.state = "ok"; st.textContent = "Заявка принята."; return; }
     delete data.website;
     data.who = CONFIG.defaultWho; data.fill_s = Math.round((Date.now() - (t0 || Date.now())) / 1000);

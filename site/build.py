@@ -815,6 +815,16 @@ def head(**kw):
     return HEAD.format(**kw)
 
 
+
+def op_fill(text):
+    """подставляет реквизиты оператора из demo_content.OPERATOR в тексты согласия и политики (28.10); пусто — пометка"""
+    o = getattr(DC, "OPERATOR", {})
+    mark = lambda s: f"[{s} — указывается перед запуском формы]"
+    full = ", ".join(x for x in (o.get("name"), ("ИНН " + o["inn"]) if o.get("inn") else "", ("ОГРН " + o["ogrn"]) if o.get("ogrn") else "",
+                                  ("адрес: " + o["address"]) if o.get("address") else "") if x) or mark("полное наименование юридического лица, ИНН, ОГРН, адрес")
+    return (text.replace("{{OPERATOR}}", full).replace("{{RESPONSIBLE}}", o.get("responsible") or mark("ФИО, должность"))
+                .replace("{{PROCESSOR}}", o.get("processor") or mark("наименование и адрес, если обработка поручена (например, оператор CRM)")))
+
 def politika_html(doc="politika"):
     """Политика обработки персональных данных (152-ФЗ) — без неё галочка согласия в форме ничего не стоит
     (noted-news akuliabuhta/1032; dropship-lessons). Реквизиты оператора — из demo_content.py (пока «пример»).
@@ -826,6 +836,7 @@ def politika_html(doc="politika"):
     else:
         from politika_content import POLICY
     is_s = doc == "soglasie"
+    POLICY = [op_fill(x) for x in POLICY]
     e = lambda x: escape(x, quote=False)
     rows, out = [], []
     for l in POLICY:
