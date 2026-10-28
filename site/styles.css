@@ -1346,3 +1346,27 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.14),tran
 .logo.logo-img{display:block;line-height:0}
 .logo.logo-img img{height:54px;width:auto;display:block}
 @media (max-width:520px){.logo.logo-img img{height:40px}}
+
+/* ===== 28.10 МАКЕТ ПО ПРИОРИТЕТУ (её слово: «делай просто, я посмотрю на примере») ===== */
+/* направления — ряды «фото + текст», как услуги у «Приоритета» */
+.who.who-utp{grid-template-columns:1fr;gap:clamp(36px,4vw,64px);background:none;border:0}
+.who.who-utp .who-card,.who.who-utp .who-card:hover,.who.who-utp .who-card:focus-visible{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-areas:"img title" "img pts" "img btn";column-gap:clamp(28px,4.5vw,72px);row-gap:14px;align-content:center;padding:0;background:none;box-shadow:none;color:var(--ink);min-height:0}
+.who.who-utp .who-card:nth-child(even){grid-template-columns:minmax(0,6fr) minmax(0,5fr);grid-template-areas:"title img" "pts img" "btn img"}
+.who.who-utp .who-img{grid-area:img;display:block;border-radius:26px;overflow:hidden;box-shadow:0 18px 40px rgb(42 37 48/.18)}
+.who.who-utp .who-img img{width:100%;height:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.who.who-utp .who-title{grid-area:title;align-self:end;font-size:clamp(22px,2.4vw,34px);line-height:1.15}
+.who.who-utp .utp-points{grid-area:pts;margin:0;padding-left:18px;display:grid;gap:8px;color:var(--ink-soft)}
+.who.who-utp .who-card>.btn{grid-area:btn;justify-self:start;align-self:start;margin-top:8px}
+@media (max-width:860px){.who.who-utp .who-card,.who.who-utp .who-card:nth-child(even),.who.who-utp .who-card:hover{grid-template-columns:1fr;grid-template-areas:"img" "title" "pts" "btn"}}
+/* проекты — карточки с фото, годом, площадью и местом (в скобках, как у «Приоритета») */
+.proj-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
+.proj{background:var(--glass,rgb(255 255 255/.7));border-radius:24px;overflow:hidden;box-shadow:0 14px 36px rgb(42 37 48/.12);display:grid;align-content:start;gap:10px;padding-bottom:22px}
+.proj img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.proj h3,.proj p{padding-inline:22px;margin:0}
+.proj h3{font-size:var(--fs-l);padding-top:8px}
+.proj-meta{display:grid;grid-template-columns:repeat(3,auto);gap:10px;justify-content:start;font-size:var(--fs-xs);color:var(--ink-soft)}
+.proj-meta span{display:grid;gap:2px}.proj-meta b{font:400 var(--fs-m)/1.2 var(--display);color:var(--accent-ink)}
+@media (max-width:900px){.proj-grid{grid-template-columns:1fr}}
+.proj img{height:auto}
+@media (max-width:700px){.top-msg{display:none}}
+@media (max-width:480px){.top-phone{display:none}}

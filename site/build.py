@@ -94,7 +94,7 @@ EMAIL = "order@frivent.msk.ru"
 # 27.10 (её «все, добавляй» по сравнению с prioritet-ing.ru, п.6): места под телефон и мессенджеры в шапке и подвале.
 # Данных «Смарт Инжиниринг» пока нет (Андрей пришлёт) — пустое не выводится; прежнее решение 10.10 «без контактов» действует, пока пусто.
 # Заполнить: phone="+7 …", whatsapp="https://wa.me/…", telegram="https://t.me/…", email="…@…" → python site/build.py
-CONTACTS = dict(phone="", whatsapp="", telegram="", email="")
+CONTACTS = dict(phone="+7 (495) 000-00-00", whatsapp="https://wa.me/74950000000", telegram="https://t.me/example", email="")  # 28.10: ПРИМЕР для макета (её слово), настоящие — от Андрея
 
 
 def contacts_html():
