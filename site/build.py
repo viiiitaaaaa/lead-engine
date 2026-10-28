@@ -49,7 +49,7 @@ def header(active=""):
     # (раскрывающиеся блоки с УТП, utp_content.py). Логотип — словом, пока нет нового знака «Смарт Инжиниринг».
     return f'''<header class="top" id="top">
   <div class="wrap">
-    <a class="logo logo-word" href="index.html">{BRAND}</a>
+    <a class="logo logo-img" href="index.html" aria-label="{BRAND}"><img src="img/logo-smart.png" alt="Смарт Инжиниринг" width="1200" height="368"></a>
     <div class="top-contacts">{contacts_html()}
       <a class="btn" href="#zayavka" data-call>Заказать звонок</a>
     </div>

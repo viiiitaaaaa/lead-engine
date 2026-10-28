@@ -1341,3 +1341,8 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.14),tran
 .facts-band{overflow:hidden} /* кольца за цифрами не должны расширять страницу */
 .facts > div > span:has(.demo)::before,.facts > div > span:has(.demo)::after{content:none} /* пока стоит бирка «пример», скобки не ставим — переносились */
 @media (max-width:640px){.stage-row summary{grid-template-columns:auto 1fr auto;gap:12px}.stage-row summary::after{grid-column:auto}}
+
+/* 28.10 логотип картинкой (Gemini, вариант 1, её выбор) */
+.logo.logo-img{display:block;line-height:0}
+.logo.logo-img img{height:54px;width:auto;display:block}
+@media (max-width:520px){.logo.logo-img img{height:40px}}
