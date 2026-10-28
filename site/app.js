@@ -284,6 +284,7 @@ document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click"
   const note = form.elements.note, line = "Хочу получить памятку «" + gift.title + "»";
   if (!note.value.includes(line)) note.value = (note.value ? note.value + "\n" : "") + line;
   if (form.elements.gift) form.elements.gift.value = b.dataset.gift;
+  const eb = document.getElementById("f-email-box"); if (eb) { eb.hidden = false; form.elements.email.required = true; }
   if (b.dataset.giftWho && whoSelect) whoSelect.value = b.dataset.giftWho;
   added(line);
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
@@ -301,6 +302,8 @@ if (form) {
     if (v) form.elements[k].value = v;
   });
   form.elements.page.value = location.href;
+  /* откуда пришёл человек, если нет метки UTM: страница-источник запоминается на вкладку (28.10, её вопрос про источник заявки) */
+  { let r = ""; try { r = sessionStorage.getItem("ref") || (document.referrer && !document.referrer.includes(location.host) ? document.referrer : ""); if (r) sessionStorage.setItem("ref", r); } catch (e) {} form.elements.referrer.value = r; }
 
   /* черновик формы (Fraser «SaaS Playbook»: не терять тех, кто начал и ушёл): поля хранятся только в этом браузере,
      при возврате подставляются; после отправки черновик стирается */
@@ -327,6 +330,12 @@ if (form) {
     const phoneBad = !(digits.length === 11 && /^[78]/.test(digits)) && digits.length !== 10;
     setErr(phone, "e-phone", phoneBad);
     if (phoneBad) return phone.focus();
+    const email = form.elements.email;
+    if (email && !email.closest("#f-email-box").hidden) {
+      const mailBad = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim());
+      setErr(email, "e-email", mailBad);
+      if (mailBad) return email.focus();
+    }
     consent.setAttribute("aria-invalid", !consent.checked); consent.closest(".consent").classList.toggle("bad", !consent.checked);
     if (!consent.checked) { status.textContent = "Отметьте согласие на обработку данных — галочка над кнопкой"; return consent.focus(); }
     if (submit.disabled) return; // уже отправляется — второй клик не шлёт дубль
@@ -353,7 +362,8 @@ if (form) {
       if (!r.ok) throw new Error(r.status);
       goal("form_submit"); clearDraft(); // цель и очистка черновика — только когда сервер принял заявку
       form.reset(); if (whoSelect) whoSelect.value = data.who;
-      setState("ok", "Заявка принята." + giftLink() + NEXT);
+      { const eb = document.getElementById("f-email-box"); if (eb) { eb.hidden = true; form.elements.email.required = false; } }
+      setState("ok", "Заявка принята." + (data.email ? " Памятку отправим на " + data.email.replace(/[<>&]/g, "") + "." : "") + giftLink() + NEXT);
     } catch (err) {
       /* запасной путь без контактов (её решение 10.10 — только заявка): данные остаются в форме и в черновике браузера */
       setState("error", "Заявка не дошла до нас — сбой связи или сервера. Всё, что вы ввели, сохранено: нажмите кнопку ещё раз через минуту. Если закроете страницу, поля заполнятся сами, когда вернётесь.");

@@ -167,11 +167,17 @@
         <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="e-phone">
         <span class="err" id="e-phone" hidden>Укажите телефон: 10 цифр после +7</span>
       </div>
+      <!-- 28.10 (её просьба): почта появляется и обязательна, только когда человек нажал «Получить памятку» -->
+      <div class="field" id="f-email-box" hidden>
+        <label for="f-email">Почта&nbsp;— пришлём памятку <span class="req">*</span></label>
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@company.ru" aria-describedby="e-email">
+        <span class="err" id="e-email" hidden>Укажите почту, например name@company.ru</span>
+      </div>
       <!-- 27.10: в форме только телефон; позиции из «Интересует: …» копятся в скрытом поле, менеджер видит их в заявке -->
       <input type="hidden" name="note"><input type="hidden" id="f-who" name="who" value="pomoshchnik">
       <!-- метки UTM: заполняются скриптом из адреса страницы -->
       <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
-      <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page"><input type="hidden" name="gift">
+      <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="page"><input type="hidden" name="referrer"><input type="hidden" name="gift">
       <!-- сколько секунд человек заполнял форму — сервер отсеивает ботов (< 3 с) до записи в Bitrix24 и цели Метрики -->
       <input type="hidden" name="fill_s">
       <!-- ловушка для спам-ботов: человек это поле не видит и не заполняет -->
@@ -220,6 +226,6 @@
 </section>
 </main>
 
-<script src="app.js?v=d6d3785f" defer></script>
+<script src="app.js?v=a228a203" defer></script>
 </body>
 </html>
