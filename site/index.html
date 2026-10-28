@@ -14,7 +14,7 @@
 <script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=2c52565e">
+<link rel="stylesheet" href="styles.css?v=66ef3940">
 </head>
 <body data-page="index">
 
@@ -33,6 +33,7 @@
 <main>
 <!-- первый экран — как в v69 (её просьба 10.10: «верни как было на прошлой версии»), не по образцу clearwater -->
 <section class="hero">
+  <div class="hero-media">
   <div class="slides" id="slides" role="region" aria-roledescription="слайдер" aria-label="Фото объектов">
     <!-- 28.10: 5 настоящих фото с Pexels (её слово: «картинки нейронные» → стоки) — источники docs/foto_istochniki_2810.md; исходники img/new/hero1..5.jpg -->
     <figure class="ph slide has-photo is-on" data-photo="hero1" aria-roledescription="слайд" aria-label="1 из 9"><picture><source srcset="img/slides/hero1-m.webp 1280w, img/slides/hero1.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/hero1.jpg" srcset="img/slides/hero1-m.jpg 1280w, img/slides/hero1.jpg 2560w" sizes="100vw" alt="Современный загородный дом с вечерней подсветкой" style="object-position:50% 55%" fetchpriority="high"></picture></figure>
@@ -52,18 +53,20 @@
     <button type="button" class="sl-next" aria-label="Следующее фото">→</button>
     <button type="button" class="sl-pause" aria-label="Остановить смену фото" aria-pressed="false">❚❚</button>
   </div>
+  <!-- 29.10 (её слово): плашки «Наши работы / Что мы делаем / Оборудование…» — поверх большого фото, фото первое -->
+  <div class="hero-chips">
+    <div class="hero-actions">
+      <a class="btn" href="#raboty">Наши работы</a>
+      <a class="btn ghost" href="#dlya-kogo">Что мы делаем</a>
+    </div>
+    <nav class="hero-quick" aria-label="Быстрый переход к направлению"><a class="btn ghost" href="#napr-1">Оборудование</a><a class="btn ghost" href="#napr-2">Проектирование</a><a class="btn ghost" href="#napr-3">Монтаж</a><a class="btn ghost" href="#napr-4">Сервис</a></nav>
+  </div>
+  </div>
   <div class="wrap">
     <div class="hero-text">
       <span class="eyebrow">Инженерные системы · Москва и&nbsp;область</span>
       <h1>Инженерные системы <em>и&nbsp;оборудование</em></h1>
       <p class="lead">Поставляем, проектируем, монтируем и&nbsp;обслуживаем инженерное и&nbsp;климатическое оборудование. Заменяем европейское оборудование. <span class="demo" title="Черновик заголовка и подзаголовка: текст даст Андрей">черновик</span></p>
-      <div class="hero-actions">
-        <a class="btn" href="#raboty">Наши работы</a>
-        <a class="btn ghost" href="#dlya-kogo">Что мы делаем</a>
-      </div>
-      <!-- вернувшийся посетитель: app.js открывает одну ссылку — раздел, где он был (Dahlström, гл. 13) -->
-      <!-- 27.10 (сравнение с prioritet-ing.ru, п.1): быстрые кнопки по направлениям — якоря к карточкам «Что мы делаем» -->
-      <nav class="hero-quick" aria-label="Быстрый переход к направлению"><a class="btn ghost" href="#napr-1">Оборудование</a><a class="btn ghost" href="#napr-2">Проектирование</a><a class="btn ghost" href="#napr-3">Монтаж</a><a class="btn ghost" href="#napr-4">Сервис</a></nav>
     </div>
   </div>
 </section>
