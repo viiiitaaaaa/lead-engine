@@ -83,7 +83,7 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
       <input type="hidden" name="page"><input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="note" value="Заказ звонка (окно)">
       <div class="hp" aria-hidden="true"><label for="call-website">Сайт</label><input id="call-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-      <label class="consent"><input id="call-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных по <a href="politika.html" target="_blank" rel="noopener">политике конфиденциальности</a></span></label>
+      <label class="consent"><input id="call-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">согласия</a>. С <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a> ознакомлен</span></label>
       <button class="btn" type="submit" id="call-submit">Жду звонка</button>
       <span class="form-status" id="call-status" role="status"></span>
     </form>
@@ -424,7 +424,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       <input type="hidden" name="fill_s">
       <!-- ловушка для спам-ботов: человек это поле не видит и не заполняет -->
       <div class="hp" aria-hidden="true"><label for="f-website">Сайт</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-      <label class="consent"><input id="f-consent" name="consent" type="checkbox" required> <span>Согласен на обработку персональных данных по <a href="politika.html" target="_blank" rel="noopener">политике конфиденциальности</a></span></label>
+      <label class="consent"><input id="f-consent" name="consent" type="checkbox" required> <span>Согласен на обработку персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">согласия</a>. С <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a> ознакомлен</span></label>
       <div class="form-actions">
         <button class="btn" type="submit" id="f-submit">{button}</button>
         <span class="form-status" id="f-status" role="status"></span>
@@ -815,13 +815,17 @@ def head(**kw):
     return HEAD.format(**kw)
 
 
-def politika_html():
+def politika_html(doc="politika"):
     """Политика обработки персональных данных (152-ФЗ) — без неё галочка согласия в форме ничего не стоит
     (noted-news akuliabuhta/1032; dropship-lessons). Реквизиты оператора — из demo_content.py (пока «пример»).
     Текст — типовой, перед запуском показать юристу."""
     # текст — с frivent.ru/privacy (её решение 10.10), файл politika_content.py; почта оператора заменена на форму заявки
     import re as _re
-    from politika_content import POLICY
+    if doc == "soglasie":
+        from soglasie_content import CONSENT as POLICY
+    else:
+        from politika_content import POLICY
+    is_s = doc == "soglasie"
     e = lambda x: escape(x, quote=False)
     rows, out = [], []
     for l in POLICY:
@@ -834,15 +838,15 @@ def politika_html():
         else:
             out.append(f"      <p>{e(l)}</p>")
     body = "\n".join(out)
-    return head(css_v=ver("styles.css"), title="Политика обработки персональных данных | Смарт Инжиниринг",
+    return head(css_v=ver("styles.css"), title=("Согласие на обработку персональных данных | Смарт Инжиниринг" if is_s else "Политика обработки персональных данных | Смарт Инжиниринг"),
                 desc="Как «Смарт Инжиниринг» обрабатывает персональные данные из формы заявки: что получаем, зачем, как храним и как отозвать согласие.",
-                page="politika", who="sobstvennik") + header().replace('href="#zayavka"', 'href="index.html#zayavka"') + f'''
+                page=doc, who="sobstvennik") + header().replace('href="#zayavka"', 'href="index.html#zayavka"') + f'''
 
 <main>
 <section class="cat-hero">
   <div class="wrap">
     <span class="eyebrow">Документы</span>
-    <h1>Политика в отношении обработки персональных данных</h1>
+    <h1>{"Согласие на обработку персональных данных" if is_s else "Политика в отношении обработки персональных данных"}</h1>
     <p class="lead">«Смарт Инжиниринг». По закону 152-ФЗ «О персональных данных». Вопросы, уточнение данных и отзыв согласия — через форму заявки на сайте.</p>
   </div>
 </section>
@@ -1874,6 +1878,7 @@ def statya_html(i):
 if __name__ == "__main__":
     (SITE / "zhurnal.html").write_text(zhurnal_html(), "utf-8")
     (SITE / "politika.html").write_text(politika_html(), "utf-8")
+    (SITE / "soglasie.html").write_text(politika_html("soglasie"), "utf-8")
     (SITE / "kontakty.html").write_text(kontakty_html(), "utf-8")
     for i, a in enumerate(ARTICLES):
         (SITE / f'statya-{a["slug"]}.html').write_text(statya_html(i), "utf-8")
