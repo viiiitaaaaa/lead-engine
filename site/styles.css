@@ -1370,3 +1370,28 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.14),tran
 .proj img{height:auto}
 @media (max-width:700px){.top-msg{display:none}}
 @media (max-width:480px){.top-phone{display:none}}
+
+/* ===== 28.10 ПЕРВЫЙ ЭКРАН ПО ПРИОРИТЕТУ: текст НАД фото на светлом фоне, фото ниже во всю ширину (её «делай») ===== */
+.hero{display:flex;flex-direction:column;height:auto;min-height:0;overflow:visible;background:none;color:var(--ink);border-radius:0;box-shadow:none;align-items:stretch}
+.hero .wrap{order:1;padding-block:clamp(36px,4.5vw,72px) clamp(24px,2.6vw,40px);padding-inline:var(--gut)}
+.hero-text{max-width:1180px}
+.hero h1,.hero .lead,.hero .eyebrow,.hero .dirs{text-shadow:none}
+.hero .eyebrow{color:var(--accent-ink)}
+.hero h1{color:var(--ink);font-size:clamp(32px,4.6vw,72px)}
+.hero h1 em{color:var(--accent-ink)}
+.hero .hero-text .lead{background:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;color:var(--ink-soft);box-shadow:none;border-radius:0}
+.hero .demo{color:var(--accent-ink)}
+.hero .btn,.hero .btn:hover{background:linear-gradient(180deg,#7a4f84,var(--wine));color:#fff;border-color:transparent;box-shadow:0 1px 0 rgb(255 255 255/.2) inset,0 10px 24px -10px rgb(92 59 101/.6)}
+.hero .btn:hover{background:linear-gradient(180deg,#6a4273,var(--wine-2))}
+.hero .btn.ghost,.hero .btn.ghost:hover{background:rgb(255 255 255/.6);color:var(--ink);border:1px solid rgb(42 37 48/.2);box-shadow:var(--sh-1)}
+.hero .btn.ghost:hover{background:#fff}
+.hero .slides{order:2;position:relative;inset:auto;aspect-ratio:2/1;max-height:76svh;width:100%;border-radius:40px;overflow:hidden;box-shadow:var(--sh-2)}
+.hero > .slides .ph::after,.hero > .slides .ph.light::after{background:linear-gradient(180deg,transparent 60%,rgb(var(--shade)/.35) 100%)}
+.slider-ui{right:calc(var(--gut) + 6px);bottom:24px}
+@media (max-width:860px){
+  .hero .slides{aspect-ratio:4/3;border-radius:28px}
+  .hero .wrap{padding-block:28px 20px}
+  .hero{min-height:0}
+  .slider-ui{right:18px;bottom:14px}
+  body.cookie-on .hero .wrap{padding-bottom:20px}
+}
