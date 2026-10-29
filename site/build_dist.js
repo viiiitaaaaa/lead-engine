@@ -33,7 +33,7 @@ for (const f of fs.readdirSync(SRC).filter(f => f.endsWith(".css"))) {
   fs.writeFileSync(path.join(DST, f), out.styles);
 }
 // JS: запутать (без переименования глобальных имён — страницы на них не ссылаются, но так безопаснее)
-for (const f of fs.readdirSync(SRC).filter(f => f.endsWith(".js") && !f.startsWith("_"))) {
+for (const f of fs.readdirSync(SRC).filter(f => f.endsWith(".js") && !f.startsWith("_") && f !== "build_dist.js")) {
   const code = Obf.obfuscate(fs.readFileSync(path.join(SRC, f), "utf8"), {
     compact: true, controlFlowFlattening: false, deadCodeInjection: false, stringArray: true,
     stringArrayEncoding: ["base64"], stringArrayThreshold: 0.75, renameGlobals: false, selfDefending: false,
@@ -43,7 +43,7 @@ for (const f of fs.readdirSync(SRC).filter(f => f.endsWith(".js") && !f.startsWi
 }
 // HTML: без комментариев и лишних пробелов, встроенные стили/скрипты сжаты
 (async () => {
-  const pages = fs.readdirSync(SRC).filter(f => f.endsWith(".html") && !f.startsWith("_"));
+  const pages = fs.readdirSync(SRC).filter(f => f.endsWith(".html") && !f.startsWith("_") && !/^(kartinki_sravnenie|logo_vybor|shrift_vybor|sravnenie_prioritet|obekt-|usluga-|statya-|zhurnal|ssylki_menedzherov)/.test(f));
   for (const f of pages) {
     let h = fs.readFileSync(path.join(SRC, f), "utf8");
     if (!INDEX && !/name="robots"/.test(h)) h = h.replace("<head>", '<head><meta name="robots" content="noindex, nofollow">');

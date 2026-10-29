@@ -4,6 +4,7 @@
 Тексты страниц — в PAGES ниже (основа: docs/лендинг_основа.md, разделы 5–8, 7а). Правила оформления — site/CLAUDE.md.
 Шапка и форма главной (index.html) заменяются между метками <!--HEADER--> и <!--FORM-->.
 """
+import re
 from html import escape
 from pathlib import Path
 from catalog_data import ITEMS, CATALOGS
@@ -15,6 +16,8 @@ from uslugi_content import USLUGI, STAGES
 from zhurnal_content import ARTICLES
 import demo_content as DC
 
+# рабочие страницы для неё и старые страницы про дом (объекты, услуги, статьи, журнал; её «да» 29.10) — не в выкладку и не в sitemap; файлы остаются в папке
+WORK_PAGES = re.compile(r"(kartinki_sravnenie|logo_vybor|shrift_vybor|sravnenie_prioritet|obekt-|usluga-|statya-|zhurnal|ssylki_menedzherov)")
 SITE = Path(__file__).resolve().parent
 # бренд сайта — «Смарт Инжиниринг» (встреча с Пашей 13.10, п.4: Frivent убрать везде). Адрес — пока публичная ссылка Cloudflare;
 # появится свой домен — поменять здесь (canonical, og, карта сайта, разметка)
@@ -78,14 +81,14 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
       <b id="call-title">Заказать звонок</b>
       <p>Оставьте телефон&nbsp;— перезвоним в&nbsp;рабочее время.</p>
       <label for="call-phone">Телефон</label>
-      <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="call-err">
+      <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00…" required aria-describedby="call-err">
       <span class="err" id="call-err" hidden>Укажите телефон: 10 цифр после +7</span>
       <input type="hidden" name="page"><input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="note" value="Заказ звонка (окно)">
       <div class="hp" aria-hidden="true"><label for="call-website">Сайт</label><input id="call-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
       <label class="consent"><input id="call-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">согласия</a>. С <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a> ознакомлен</span></label>
       <button class="btn" type="submit" id="call-submit">Жду звонка</button>
-      <span class="form-status" id="call-status" role="status"></span>
+      <span class="form-status" id="call-status" role="status" aria-live="polite"></span>
     </form>
   </div>'''
 # EMAIL и OFFICE на сайт не выводить (её решение 10.10: «любые контактные данные убери — всё через заявку, по UTM видно, чей клиент»)
@@ -94,7 +97,15 @@ EMAIL = "order@frivent.msk.ru"
 # 27.10 (её «все, добавляй» по сравнению с prioritet-ing.ru, п.6): места под телефон и мессенджеры в шапке и подвале.
 # Данных «Смарт Инжиниринг» пока нет (Андрей пришлёт) — пустое не выводится; прежнее решение 10.10 «без контактов» действует, пока пусто.
 # Заполнить: phone="+7 …", whatsapp="https://wa.me/…", telegram="https://t.me/…", email="…@…" → python site/build.py
-CONTACTS = dict(phone="+7 (495) 000-00-00", whatsapp="https://wa.me/74950000000", telegram="https://t.me/example", email="")  # 28.10: ПРИМЕР для макета (её слово), настоящие — от Андрея
+CONTACTS = dict(phone="", whatsapp="https://wa.me/74950000000", telegram="https://t.me/example", max="https://max.ru/example", email="")  # 28.10: ПРИМЕР для макета (её слово), настоящие — от Андрея
+
+
+ICON_WA = '<svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2z"/><path fill="#fff" d="M17.4 16.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.4 0 .1 0 .7-.2 1.2z"/></svg>'
+ICON_TG = '<svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10" fill="#229ED9"/><path fill="#fff" d="M17.8 7.2 5.9 11.8c-.8.3-.8.8-.1 1l3 .9 1.1 3.4c.1.4.2.5.5.5s.4-.1.6-.3l1.5-1.4 3 2.2c.5.3.9.1 1-.5l1.9-9c.2-.8-.3-1.1-.9-.9zm-1.4 1.6-5.6 5-.2 2.1-1-3.1 6.8-4z"/></svg>'
+ICON_MAX = '<svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><defs><linearGradient id="mxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FB5FF"/><stop offset="1" stop-color="#7A3CF0"/></linearGradient></defs><rect width="24" height="24" rx="7" fill="url(#mxg)"/><path fill="#fff" d="M12 4.6c-4 0-7 2.9-7 6.7 0 2 .8 3.6 2 4.8-.1 1.2-.5 2.1-1.2 2.9 1.4 0 2.6-.4 3.6-1.2.8.3 1.6.4 2.6.4 4 0 7-2.9 7-6.7S16 4.6 12 4.6zm-3 8.3V9.4h1.2l1.3 2.1 1.3-2.1H14v3.5h-1.1v-1.8l-1 1.6h-.2l-1-1.6v1.8H9z"/></svg>'
+MSG_ICON = {"WhatsApp": ICON_WA, "Telegram": ICON_TG, "MAX": ICON_MAX}
+
+CONTACT_DEMO = '<span class="demo" title="Условные контакты — заменить настоящими от Андрея: CONTACTS в build.py">пример</span>'
 
 
 def contacts_html():
@@ -102,20 +113,24 @@ def contacts_html():
     out = []
     if c["phone"]:
         out.append(f'<a class="top-phone" href="tel:{"".join(ch for ch in c["phone"] if ch.isdigit() or ch == "+")}">{c["phone"]}</a>')
-    for key, label in (("whatsapp", "WhatsApp"), ("telegram", "Telegram")):
+    for key, label in (("whatsapp", "WhatsApp"), ("telegram", "Telegram"), ("max", "MAX")):
         if c[key]:
-            out.append(f'<a class="top-msg" href="{c[key]}" rel="noopener" target="_blank">{label}</a>')
+            out.append(f'<a class="top-msg" href="{c[key]}" rel="noopener" target="_blank">{MSG_ICON[label]}{label}</a>')
     if c["email"]:
         out.append(f'<a class="top-msg" href="mailto:{c["email"]}">{c["email"]}</a>')
+    if out and DC.DEMO:  # 29.10 (её слово): всё выдуманное — с мелкой пометкой «пример»
+        out.append(CONTACT_DEMO)
     return ("\n      " + "\n      ".join(out)) if out else ""
 
 
 def foot_contacts():
     c = CONTACTS
     parts = [c["phone"]] if c["phone"] else []
-    parts += [f'<a href="{c[k]}" rel="noopener" target="_blank">{lbl}</a>' for k, lbl in (("whatsapp", "WhatsApp"), ("telegram", "Telegram")) if c[k]]
+    parts += [f'<a class="top-msg" href="{c[k]}" rel="noopener" target="_blank">{MSG_ICON[lbl]}{lbl}</a>' for k, lbl in (("whatsapp", "WhatsApp"), ("telegram", "Telegram"), ("max", "MAX")) if c[k]]
     if c["email"]:
         parts.append(f'<a href="mailto:{c["email"]}">{c["email"]}</a>')
+    if parts and DC.DEMO:
+        parts.append(CONTACT_DEMO)
     return (" · " + " · ".join(parts)) if parts else ""
 
 
@@ -164,6 +179,25 @@ def typo(text_part):
     t = _re_t.sub(r"№ (?=\d)", "№&nbsp;", t)
     t = _re_t.sub(r" (же|бы|ли)(?![\w])", r"&nbsp;\1", t)              # частица держится за слово перед ней
     return t
+
+
+def add_img_dims(html):
+    """Vercel-правило: у каждой картинки width/height (страница не прыгает при загрузке); размеры читаются из файла."""
+    from PIL import Image
+    def fix(m):
+        t = m.group(0)
+        if "width=" in t and "height=" in t:
+            return t
+        src = re.search(r'\s(?:data-)?src="([^"]+)"', t)
+        if not src or src.group(1).startswith(("http", "data:")):
+            return t
+        f = SITE / src.group(1).split("?")[0]
+        try:
+            w, h = Image.open(f).size
+        except Exception:
+            return t
+        return t[:-1].rstrip("/") + f' width="{w}" height="{h}">'
+    return re.sub(r"<img[^>]*>", fix, html)
 
 
 def typograf(html):
@@ -406,15 +440,16 @@ def form_section(who="sobstvennik", title="Оставить заявку",
     <form id="lead-form" novalidate>
       <div class="field">
         <label for="f-phone">Телефон <span class="req">*</span></label>
-        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="e-phone">
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00…" required aria-describedby="e-phone">
         <span class="err" id="e-phone" hidden>Укажите телефон: 10 цифр после +7</span>
       </div>
-      <!-- 28.10 (её просьба): почта появляется и обязательна, только когда человек нажал «Получить памятку» -->
-      <div class="field" id="f-email-box" hidden>
-        <label for="f-email">Почта — пришлём памятку <span class="req">*</span></label>
-        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@company.ru" aria-describedby="e-email">
-        <span class="err" id="e-email" hidden>Укажите почту, например name@company.ru</span>
+      <div class="field" id="f-email-box">
+        <label for="f-email">Почта <span class="opt">(по желанию)</span></label>
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@company.ru…" aria-describedby="e-email">
+        <span class="err" id="e-email" hidden>Проверьте почту, например name@company.ru</span>
       </div>
+      <label class="consent consent-mail"><input id="f-mail-ok" name="mail_ok" type="checkbox"> <span>Присылать памятки и материалы на&nbsp;эту почту</span></label>
+      <label class="consent consent-mail"><input id="f-news-ok" name="news_ok" type="checkbox"> <span>Присылать новости и&nbsp;журнал компании. Без галочки — ничего не&nbsp;присылаем</span></label>
       <!-- 27.10: в форме только телефон; позиции из «Интересует: …» копятся в скрытом поле, менеджер видит их в заявке -->
       <input type="hidden" name="note"><input type="hidden" id="f-who" name="who" value="{who}">
       <!-- метки UTM: заполняются скриптом из адреса страницы -->
@@ -427,7 +462,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
       <label class="consent"><input id="f-consent" name="consent" type="checkbox" required> <span>Согласен на обработку персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">согласия</a>. С <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a> ознакомлен</span></label>
       <div class="form-actions">
         <button class="btn" type="submit" id="f-submit">{button}</button>
-        <span class="form-status" id="f-status" role="status"></span>
+        <span class="form-status" id="f-status" role="status" aria-live="polite"></span>
       </div>
     </form>
   </div>
@@ -799,6 +834,7 @@ HEAD = '''<!doctype html>
 <link rel="stylesheet" href="styles.css?v={css_v}">
 </head>
 <body data-page="{page}" data-who="{who}">
+<a class="skip" href="#main">К&nbsp;содержимому</a>
 '''
 HEAD = HEAD.replace("{OG_IMG}", OG_IMG).replace("{ICONS}", ICONS).replace("{BASE_URL}", BASE_URL)
 
@@ -853,7 +889,7 @@ def politika_html(doc="politika"):
                 desc="Как «Смарт Инжиниринг» обрабатывает персональные данные из формы заявки: что получаем, зачем, как храним и как отозвать согласие.",
                 page=doc, who="sobstvennik") + header().replace('href="#zayavka"', 'href="index.html#zayavka"') + f'''
 
-<main>
+<main id="main">
 <section class="cat-hero">
   <div class="wrap">
     <span class="eyebrow">Документы</span>
@@ -901,7 +937,7 @@ def kontakty_html():
                 desc=f"Как связаться со «Смарт Инжиниринг»: заявка с сайта. Работаем на Новой Риге, Рублёвке и Ильинском шоссе. Ответ на заявку {ANSWER_TIME}.",
                 page="kontakty", who="sobstvennik") + header() + f'''
 
-<main>
+<main id="main">
 <section class="cat-hero">
   <div class="wrap">
     <span class="eyebrow">Контакты</span>
@@ -1158,7 +1194,7 @@ def page_html(p):
         faq += "\n" + "\n".join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)} {DEMO_TAG}</p></details>' for q, a in DC.FAQ)
     return head(css_v=ver("styles.css"), title=e(p["title"]), desc=e(p["desc"]), page=p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
-<main>
+<main id="main">
 {page_hero(e(p["eyebrow"]), e(p["h1"]), e(p["lead"]),
          f'<a class="btn" href="#zayavka">{e(p["cta"])}</a>\n        <a class="btn ghost" href="#chto-delaem">Что мы делаем</a>',
          slide_media(p["img"], p["pos"], light))}
@@ -1263,7 +1299,7 @@ def page_html(p):
         <ul>
 {inside}
         </ul>
-        <span class="fname">PDF, {len(g["items"])} ситуаций · <b>придёт на почту после заявки</b></span>
+        <span class="fname">PDF, {len(g["items"])} ситуаций · <b>откроется сразу после заявки</b></span>
         <a class="btn" href="#zayavka" data-gift="{g["file"]}" data-gift-title="{e(g["title"])}">{gift_btn(g)}</a>
       </div>
     </div>
@@ -1322,7 +1358,7 @@ def catalog_html(p):
     desc = f"Каталог товаров и услуг «Смарт Инжиниринг»: {', '.join(n for n, _ in cats).lower()}. Цена — по запросу."
     return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="katalog-" + p["file"][:-5], who=p["who"]) + header(p["file"]) + f'''
 
-<main>
+<main id="main">
 <section class="cat-hero" id="vse">
   <div class="wrap">
     <span class="eyebrow">Каталог · {e(p["eyebrow"])}</span>
@@ -1359,9 +1395,9 @@ def utp_html():
         pts = "".join(f"<li>{e(x)}</li>" for x in u["points"])
         # 27.10: картинка направления — img/utp/dir<i>.jpg (Gemini v2, 4:3); нет файла — карточка без картинки
         img = ""
-        if (SITE / "img" / "utp" / f"dir{i}.jpg").exists():
-            img = (f'<picture class="who-img"><source srcset="img/utp/dir{i}-m.webp 800w, img/utp/dir{i}.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp">'
-                   f'<img src="img/utp/dir{i}.jpg" srcset="img/utp/dir{i}-m.jpg 800w, img/utp/dir{i}.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>\n        ')
+        if (SITE / "img" / "utp" / f"dir{u.get('img', i)}.jpg").exists():
+            img = (f'<picture class="who-img"><source srcset="img/utp/dir{u.get('img', i)}-m.webp 800w, img/utp/dir{u.get('img', i)}.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp">'
+                   f'<img src="img/utp/dir{u.get('img', i)}.jpg" srcset="img/utp/dir{u.get('img', i)}-m.jpg 800w, img/utp/dir{u.get('img', i)}.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>\n        ')
         cards.append(f'''      <div class="who-card" id="napr-{i}">
         {img}<h3 class="who-title">{e(u["title"])}{stub if u.get("stub") else ""}</h3>
         <ul class="utp-points">{pts}</ul>
@@ -1469,7 +1505,6 @@ def plans_html():
 DOGOVOR = [
  "Цена — в договоре, после оплаты не растёт. Импортное оборудование — по курсу на день оплаты",
  "Даты поставки оборудования и этапов работ",
- "Ваш менеджер: имя и прямой телефон",
  "Оригинальное оборудование с паспортами и сертификатами",
  "Приёмка с замерами, фото и актом",
  "Схемы, паспорта и инструкции к сдаче — в одной папке",
@@ -1486,7 +1521,7 @@ def dogovor_html():
   <div class="wrap terms-wrap">
     <div class="sec-head">
       <span class="eyebrow">Договорённости</span>
-      <h2>Что мы фиксируем в договоре</h2>
+      <h2>Что мы фиксируем <em>в договоре</em></h2>
       <p class="lead">Главные жалобы на подрядчиков — пропадают, растёт смета, срывают сроки. Поэтому всё важное записываем на бумаге до начала работ.</p>
     </div>
     <div class="terms-box">
@@ -1599,7 +1634,7 @@ def obj_html(i):
     desc = f'{o["name"]}, {o["place"]}: {o["job"].lower()}. {o["lead"]}'
     return head(css_v=ver("styles.css"), title=e(title), desc=e(desc), page="obekt-" + o["slug"], who="sobstvennik") + header() + f'''
 
-<main>
+<main id="main">
 {cw_hero(e(o["kind"]) + " · " + e(o["place"]), e(o["name"]), e(o["lead"]),
          f'<a class="btn" href="#zayavka" data-ask="{escape(o["name"])}" data-ask-prefix="Похожий проект: ">Обсудить похожий проект</a>',
          pic(o["img"], o["name"], o["pos"], eager=True))}
@@ -1685,7 +1720,7 @@ def usl_html(u):
     img, pos = u["img"], u["pos"]
     return head(css_v=ver("styles.css"), title=e(u["title"]), desc=e(u["desc"]), page="usluga-" + u["slug"], who="pomoshchnik") + header() + f'''
 
-<main>
+<main id="main">
 {cw_hero(e(u["name"]), e(u["h1"]), e(u["lead"]),
          f'<a class="btn" href="#zayavka" data-ask="{escape(u["name"])}" data-ask-prefix="Услуга: ">Оставить заявку</a>\n        <a class="btn ghost" href="#etapy">На каком вы этапе</a>',
          slide_media(img, pos))}
@@ -1791,7 +1826,7 @@ def zhurnal_html():
     e = lambda x: escape(x, quote=False)
     cards = "\n".join(f'''      <a class="art-card" href="statya-{a["slug"]}.html">
         <span class="eyebrow">{e(a["tag"])}</span>
-        <h3>{e(a["title"])}</h3>
+        <h2 class="art-t">{e(a["title"])}</h2>
         <p>{e(a["lead"])}</p>
         <span class="serv-go">Читать →</span>
       </a>''' for a in ARTICLES)
@@ -1799,7 +1834,7 @@ def zhurnal_html():
                        desc="Статьи о главных проблемах загородного дома: шум вентиляции, сырость и плесень, конденсат у бассейна, духота, обмерзание рекуператора, сервис европейского оборудования.",
                        page="zhurnal", who="pomoshchnik") + header() + f'''
 
-<main>
+<main id="main">
 <section class="cat-hero">
   <div class="wrap">
     <span class="eyebrow">Журнал</span>
@@ -1840,7 +1875,7 @@ def statya_html(i):
     return head(css_v=ver("styles.css"), title=e(a["title"]) + " | Смарт Инжиниринг", desc=e(a["lead"]),
                        page="statya-" + a["slug"], who="pomoshchnik") + header() + f'''
 
-<main>
+<main id="main">
 <article>
 <section class="cat-hero">
   <div class="wrap">
@@ -1943,14 +1978,14 @@ if __name__ == "__main__":
         if f.name.startswith("_"):
             continue
         h = f.read_text("utf-8")
-        h2 = typograf(h)
+        h2 = add_img_dims(typograf(h))
         if h2 != h:
             f.write_text(h2, "utf-8"); nt += 1
     print("типограф: страниц поправлено", nt)
     # карта сайта для Яндекса и Google (Clarke «SEO 2025»: сайт без CMS — sitemap.xml в корень + отправить в Вебмастер).
     # Домен ещё не выбран (открытый вопрос) — BASE поменять, когда она решит; служебные _*.html не включаем.
     BASE = BASE_URL
-    pages = sorted(f.name for f in SITE.glob("*.html") if not f.name.startswith("_"))
+    pages = sorted(f.name for f in SITE.glob("*.html") if not f.name.startswith("_") and not WORK_PAGES.match(f.name))
     urls = "\n".join(f"  <url><loc>{BASE}{'' if n == 'index.html' else n}</loc></url>" for n in pages)
     (SITE / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "\n</urlset>\n", "utf-8")

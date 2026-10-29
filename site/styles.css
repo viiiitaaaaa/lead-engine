@@ -332,7 +332,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-bet
 /* журнал (09.10) */
 .art-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
 .art-card{display:flex;flex-direction:column;gap:12px;padding:clamp(22px,2.4vw,32px);background:var(--sand);color:var(--ink);text-decoration:none;border-top:2px solid var(--accent);transition:background .2s}
-.art-card h3{font-size:var(--fs-h3)}
+.art-card h3,.art-card h2.art-t{font-size:var(--fs-h3)}
 .art-card p{font-size:var(--fs-s);line-height:1.55;color:var(--ink-soft);flex:1}
 .art-card:hover{background:#d3c9bd}
 .art-card .serv-go{color:var(--accent);opacity:1}
@@ -754,8 +754,8 @@ h1,h2,.facts b{letter-spacing:-.03em}
 
 /* ---------- карточки как «Discover our projects»: скругление, название, короткая линия, серый текст ---------- */
 .pain-card{border-top:0;padding-top:0;gap:16px}
-.pain-card h3,.gift-card h3,.plan h3,.art-card h3,.cat-card h3{font-size:var(--fs-h3);line-height:1.2;font-weight:400}
-.pain-card h3::after,.gift-card h3::after,.art-card h3::after,.cat-card h3::after{content:"";display:block;width:58%;height:1px;
+.pain-card h3,.gift-card h3,.plan h3,.art-card h3,.art-card h2.art-t,.cat-card h3{font-size:var(--fs-h3);line-height:1.2;font-weight:400}
+.pain-card h3::after,.gift-card h3::after,.art-card h3::after,.art-card h2.art-t::after,.cat-card h3::after{content:"";display:block;width:58%;height:1px;
   background:rgb(var(--shade)/.35);margin-top:18px}
 .pain-card p{font-size:var(--fs-m)}
 .gift-card,.plan,.cert,.member,.art-card,.cat-card,.rv,.gift-doc{border:0;border-radius:var(--r);background:var(--glass);box-shadow:none}
@@ -960,7 +960,7 @@ footer{margin-top:clamp(40px,5vw,72px)}
 .cat-card>.cat-img{grid-row:1}.cat-card>.cat-kind{grid-row:2}.cat-card>h3{grid-row:3}.cat-card>p:not(.cat-brand){grid-row:4}
 .cat-card>ul{grid-row:5}.cat-card>.cat-brand{grid-row:6}.cat-card>.cat-ask{grid-row:7;align-self:end;justify-self:start}
 /* линия под заголовком — у нижнего края полосы заголовка, а не сразу под текстом */
-.pain-card h3,.gift-card h3,.art-card h3,.cat-card h3{display:flex;flex-direction:column;justify-content:space-between}
+.pain-card h3,.gift-card h3,.art-card h3,.art-card h2.art-t,.cat-card h3{display:flex;flex-direction:column;justify-content:space-between}
 .gift-card>.btn,.plan>.btn,.art-card>.serv-go{align-self:end}
 .team-card img.team-ph{width:100%;height:auto;object-fit:cover;border-radius:var(--r);display:block}
 
@@ -1397,8 +1397,8 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.14),tran
 }
 
 /* ===== 29.10 фото первое (сверху), плашки-кнопки лежат поверх фото, заголовок под ним (её слово) ===== */
-.hero-media{order:1;position:relative}
-.hero .wrap{order:2}
+.hero-media{order:2;position:relative}
+.hero .wrap{order:1}
 .hero-media .slides{width:100%}
 .hero-chips{position:absolute;left:clamp(16px,2.4vw,40px);bottom:clamp(16px,2.4vw,36px);z-index:3;display:grid;gap:10px;max-width:calc(100% - 200px)}
 .hero-chips .hero-quick,.hero-chips .hero-actions{margin:0}
@@ -1416,3 +1416,84 @@ body{background:radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.14),tran
   .hero-chips .hero-quick .btn{flex:none;padding:8px 12px}
 }
 @media (max-width:860px){.hero-chips{bottom:18px;max-width:calc(100% - 78px)}}
+
+
+/* 29.10 — сверка по Vercel и qa_site: ссылка «к содержимому», размеры картинок, зона нажатия на телефоне */
+.skip{position:absolute;left:12px;top:-60px;z-index:1000;padding:10px 16px;border-radius:99px;background:var(--wine);color:var(--paper);font:600 var(--fs-s)/1 var(--body);text-decoration:none}
+.skip:focus-visible{top:12px}
+:where(img[width][height]){height:auto}
+a,button,input,select,textarea,summary{touch-action:manipulation}
+[id]{scroll-margin-top:84px}
+@media (max-width:860px){
+  :root{--fs-xs:12px}
+  .btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+  .cookie a,footer a,.consent a,.foot-addr a{display:inline-block;padding-block:8px}
+}
+
+/* 29.10 — зона нажатия на телефоне: списки ссылок, хлебные крошки, галочка согласия */
+@media (max-width:860px){
+  main li>a,.eyebrow>a,.wk-cap a,.obj-nav a,.crumbs a{display:inline-block;padding-block:8px}
+  .consent input[type=checkbox]{width:32px;height:32px}
+}
+@media (max-width:860px){main li>a,.eyebrow>a,.wk-cap a,.obj-nav a,.crumbs a,footer a{padding-block:10px}}
+@media (max-width:860px){.foot-links a,.eyebrow a{display:inline-block;padding-block:10px}}
+
+
+/* 29.10 — значки WhatsApp и Telegram у контактов; тёмно-фиолетовое затемнение снизу слева под плашками-кнопками первого экрана (её слово) */
+a.top-msg{display:inline-flex;align-items:center;gap:6px}
+.ico{flex:none;display:inline-block;vertical-align:middle}
+.hero-media::after{content:"";position:absolute;inset:0;border-radius:40px;pointer-events:none;z-index:2;
+  background:radial-gradient(ellipse 62% 72% at 0% 100%,rgb(34 28 41/.9) 0%,rgb(58 38 70/.68) 38%,rgb(74 49 86/.28) 62%,transparent 80%)}
+@media (max-width:860px){.hero-media::after{background:linear-gradient(0deg,rgb(34 28 41/.88) 0%,rgb(58 38 70/.6) 36%,transparent 70%)}}
+@media (max-width:700px){a.top-msg{display:none}}
+.hero-media::after{background:radial-gradient(ellipse 70% 80% at 0% 100%,rgb(34 28 41/.92) 0%,rgb(58 38 70/.74) 40%,rgb(74 49 86/.36) 64%,transparent 84%)}
+@media (max-width:860px){.hero-media::after{background:linear-gradient(0deg,rgb(34 28 41/.88) 0%,rgb(58 38 70/.6) 36%,transparent 70%)}}
+
+/* 29.10 — блок «Что мы фиксируем в договоре» и такие же плашки: текст не впритык к краям (её скрин), правая колонка шире */
+.terms-wrap{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)}
+.terms-box,.section.alt .terms-box{padding:clamp(28px,3.6vw,52px);gap:clamp(24px,2.6vw,36px)}
+.terms-box .proofs{gap:22px clamp(28px,3.4vw,56px)}
+.terms-box .proofs li{padding-right:6px}
+@media (max-width:860px){.terms-wrap{grid-template-columns:1fr}.terms-box,.section.alt .terms-box{padding:24px 20px}}
+
+/* 29.10 вечер — её слово «убери плашки примера, не портить картину»: пометки «пример»/«черновик» скрыты (в HTML остаются; вернуть — убрать это правило) */
+.demo{display:none !important}
+
+/* 29.10 вечер — её «фиолетовый врезается в глаза»: затемнение под кнопками первого экрана НЕЙТРАЛЬНОЕ (графит), мягче и меньше */
+.hero-media::after{background:radial-gradient(ellipse 62% 66% at 0% 100%,rgb(18 18 22/.72) 0%,rgb(18 18 22/.46) 42%,rgb(18 18 22/.16) 66%,transparent 84%)}
+@media (max-width:860px){.hero-media::after{background:linear-gradient(0deg,rgb(18 18 22/.7) 0%,rgb(18 18 22/.4) 40%,transparent 72%)}}
+
+/* 29.10 вечер — карточки «Чего опасаются заказчики» и памятки: внутренний отступ, текст не впритык к краю (её скрин) */
+.pain-card,.gift-card{padding:clamp(22px,2.2vw,32px)}
+@media (max-width:860px){.pain-card,.gift-card{padding:22px 20px}}
+
+/* затемнение под кнопками первого экрана — ещё темнее, нейтральный графит (её «на светлых картинках не видно») */
+.hero-media::after{background:radial-gradient(ellipse 74% 82% at 0% 100%,rgb(14 14 18/.9) 0%,rgb(14 14 18/.72) 38%,rgb(14 14 18/.34) 64%,transparent 86%)}
+@media (max-width:860px){.hero-media::after{background:linear-gradient(0deg,rgb(14 14 18/.88) 0%,rgb(14 14 18/.6) 42%,transparent 76%)}}
+
+.consent-mail{margin-top:-6px}
+.opt{opacity:.65;font-weight:400}
+
+/* 29.10 ночь — «Чего опасаются заказчики»: заголовок «Страх: …» без своей рамки и тени и без линии (её скрин: «маленькая рамка, линия, несуразно»); плашка — вся карточка */
+.pain-card>.fear{border-radius:0;box-shadow:none;background:none;padding:0}
+.pain-card>.fear::after{display:block;margin-top:12px}  /* тёмная черта под заголовком — её «симпатично», но вплотную к тексту */
+
+/* 29.10 ночь — на светлых кадрах кнопки внизу не видно: тёмная горизонтальная полоса вдоль всего низа фото (плотнее слева) + угол слева внизу */
+.hero-media::after{background:
+  linear-gradient(0deg,rgb(14 14 18/.88) 0%,rgb(14 14 18/.72) 16%,rgb(14 14 18/.4) 32%,transparent 52%),
+  radial-gradient(ellipse 70% 75% at 0% 100%,rgb(14 14 18/.55) 0%,rgb(14 14 18/.25) 50%,transparent 80%)}
+@media (max-width:860px){.hero-media::after{background:linear-gradient(0deg,rgb(14 14 18/.9) 0%,rgb(14 14 18/.7) 30%,rgb(14 14 18/.32) 55%,transparent 80%)}}
+
+/* 29.10 ночь — фон всей страницы: по мере прокрутки вниз мягко переливается в светло-фиолетовые и чуть более глубокие тона (её слово) */
+html{background:#d6c9e3}
+body{background:
+  radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.12),transparent 60%),
+  linear-gradient(180deg,#f4f0f7 0%,#ede5f3 16%,#e4d9ee 34%,#eee6f3 52%,#e1d4ec 70%,#d9cbe7 86%,#d2c3e1 100%);
+  background-size:100% 100%;background-repeat:no-repeat}
+
+/* 29.10 ночь — золотой акцент в части заголовков и цифр (её слово: «благородный золотой») */
+:root{--gold:#9a7a2c;--gold-grad:linear-gradient(100deg,#8a6a22 0%,#c4a25a 42%,#a07e30 100%);--gold-grad-dk:linear-gradient(100deg,#d9bf84 0%,#f0dcaa 45%,#cfae66 100%)}
+h1 em,h2 em,.facts b,.num,.stage-n{font-style:normal;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.section.dark h2 em{background-image:var(--gold-grad-dk)}
+.hero h1 em{background-image:var(--gold-grad)}  /* заголовок первого экрана теперь на светлом фоне — тёмное золото */
+.proj-meta b{color:var(--gold)}

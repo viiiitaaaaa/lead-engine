@@ -284,7 +284,6 @@ document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click"
   const note = form.elements.note, line = "Хочу получить памятку «" + gift.title + "»";
   if (!note.value.includes(line)) note.value = (note.value ? note.value + "\n" : "") + line;
   if (form.elements.gift) form.elements.gift.value = b.dataset.gift;
-  const eb = document.getElementById("f-email-box"); if (eb) { eb.hidden = false; form.elements.email.required = true; }
   if (b.dataset.giftWho && whoSelect) whoSelect.value = b.dataset.giftWho;
   added(line);
   document.getElementById("zayavka").scrollIntoView({behavior: "smooth", block: "start"});
@@ -294,11 +293,32 @@ const giftLink = () => {
   if (!gift) return "";
   return ' Памятка «' + gift.title + '»: <a href="' + gift.file + '" target="_blank" rel="noopener">открыть PDF</a>.';
 };
+/* метка UTM живёт 90 дней на этом устройстве и ЗАКРЕПЛЯЕТСЯ ЗА ПЕРВЫМ менеджером (её решение 29.10: другой менеджер не может
+   перехватить клиента своей ссылкой). Пока первая метка жива, ссылки с другими метками не принимаются. Запись названа в политике, раздел 13. */
+const UTM_DAYS = 90, UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+let utmSet = null;
+function utmKeep(k, params) {
+  if (!utmSet) {
+    let first = null;
+    try { first = JSON.parse(localStorage.getItem("utm_first") || "null"); } catch (e) {}
+    if (first && Date.now() - first.t >= UTM_DAYS * 864e5) { try { localStorage.removeItem("utm_first"); } catch (e) {} first = null; }
+    if (!first) {
+      try { first = JSON.parse(sessionStorage.getItem("utm_first") || "null"); } catch (e) {}
+    }
+    if (!first && params.get("utm_source")) {
+      first = {t: Date.now(), v: Object.fromEntries(UTM_KEYS.map(x => [x, params.get(x) || ""]))};
+      try { localStorage.setItem("utm_first", JSON.stringify(first)); } catch (e) {}
+      try { sessionStorage.setItem("utm_first", JSON.stringify(first)); } catch (e) {}
+    }
+    utmSet = first ? first.v : {};
+  }
+  return utmSet[k] || "";
+}
+
 if (form) {
   /* метки UTM: из адреса, а если человек ушёл по ссылкам внутри сайта — из памяти вкладки */
   ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => {
-    let v = params.get(k);
-    try { if (v) sessionStorage.setItem(k, v); else v = sessionStorage.getItem(k); } catch (e) {}
+    const v = utmKeep(k, params);
     if (v) form.elements[k].value = v;
   });
   form.elements.page.value = location.href;
@@ -330,8 +350,8 @@ if (form) {
     const phoneBad = !(digits.length === 11 && /^[78]/.test(digits)) && digits.length !== 10;
     setErr(phone, "e-phone", phoneBad);
     if (phoneBad) return phone.focus();
-    const email = form.elements.email;
-    if (email && !email.closest("#f-email-box").hidden) {
+    const email = form.elements.email;  // почта необязательна и уходит с заявкой, если заполнена; галочка «присылать памятки» — только про то, шлём ли мы ей материалы
+    if (email && email.value.trim()) {
       const mailBad = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim());
       setErr(email, "e-email", mailBad);
       if (mailBad) return email.focus();
@@ -342,6 +362,8 @@ if (form) {
     /* сколько секунд заполняли форму: уходит на сервер, он отсеивает ботов до Bitrix24 и цели Метрики (находки 12.10) */
     form.elements.fill_s.value = Math.round((Date.now() - (firstTouch || Date.now())) / 1000);
     const data = Object.fromEntries(new FormData(form));
+    data.news_ok = data.news_ok ? "да" : "нет";  // новости и журнал компании на почту — только при отметке
+    data.mail_ok = data.mail_ok ? "да" : "нет";  // менеджер видит: можно ли присылать на почту памятки и материалы (рекламную рассылку не шлём в любом случае)
     /* ст. 9 ч. 3 152-ФЗ: доказать согласие обязан оператор — уходит версия текста и время отметки (28.10) */
     data.consent_ver = "soglasie-2026-10-28"; data.consent_ts = new Date().toISOString();
     /* защита от спам-ботов (книга Мукминова: B2B-формы первыми получают ботов): невидимое поле заполнено
@@ -364,8 +386,7 @@ if (form) {
       if (!r.ok) throw new Error(r.status);
       goal("form_submit"); clearDraft(); // цель и очистка черновика — только когда сервер принял заявку
       form.reset(); if (whoSelect) whoSelect.value = data.who;
-      { const eb = document.getElementById("f-email-box"); if (eb) { eb.hidden = true; form.elements.email.required = false; } }
-      setState("ok", "Заявка принята." + (data.email ? " Памятку отправим на " + data.email.replace(/[<>&]/g, "") + "." : "") + giftLink() + NEXT);
+      setState("ok", "Заявка принята." + (data.email && data.mail_ok === "да" ? " Памятку отправим на " + data.email.replace(/[<>&]/g, "") + "." : "") + giftLink() + NEXT);
     } catch (err) {
       /* запасной путь без контактов (её решение 10.10 — только заявка): данные остаются в форме и в черновике браузера */
       setState("error", "Заявка не дошла до нас — сбой связи или сервера. Всё, что вы ввели, сохранено: нажмите кнопку ещё раз через минуту. Если закроете страницу, поля заполнятся сами, когда вернётесь.");
@@ -392,8 +413,7 @@ if (form) {
   modal.addEventListener("click", e => { if (e.target === modal) close(); });
   addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) close(); });
   ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => {
-    let v = params.get(k);
-    try { if (v) sessionStorage.setItem(k, v); else v = sessionStorage.getItem(k); } catch (e) {}
+    const v = utmKeep(k, params);
     if (v) cf.elements[k].value = v;
   });
   cf.elements.page.value = location.href;

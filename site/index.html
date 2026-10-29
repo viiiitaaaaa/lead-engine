@@ -14,37 +14,39 @@
 <script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=66ef3940">
+<link rel="stylesheet" href="styles.css?v=cd9b6ef2">
 </head>
 <body data-page="index">
+<a class="skip" href="#main">К&nbsp;содержимому</a>
 
 <!--HEADER--><header class="top" id="top">
   <div class="wrap">
     <a class="logo logo-img" href="index.html" aria-label="Смарт Инжиниринг"><img src="img/logo-smart.png" alt="Смарт Инжиниринг" width="1200" height="368"></a>
     <div class="top-contacts">
-      <a class="top-phone" href="tel:+74950000000">+7 (495) 000-00-00</a>
-      <a class="top-msg" href="https://wa.me/74950000000" rel="noopener" target="_blank">WhatsApp</a>
-      <a class="top-msg" href="https://t.me/example" rel="noopener" target="_blank">Telegram</a>
+      <a class="top-msg" href="https://wa.me/74950000000" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2z"/><path fill="#fff" d="M17.4 16.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.4 0 .1 0 .7-.2 1.2z"/></svg>WhatsApp</a>
+      <a class="top-msg" href="https://t.me/example" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10" fill="#229ED9"/><path fill="#fff" d="M17.8 7.2 5.9 11.8c-.8.3-.8.8-.1 1l3 .9 1.1 3.4c.1.4.2.5.5.5s.4-.1.6-.3l1.5-1.4 3 2.2c.5.3.9.1 1-.5l1.9-9c.2-.8-.3-1.1-.9-.9zm-1.4 1.6-5.6 5-.2 2.1-1-3.1 6.8-4z"/></svg>Telegram</a>
+      <a class="top-msg" href="https://max.ru/example" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><defs><linearGradient id="mxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FB5FF"/><stop offset="1" stop-color="#7A3CF0"/></linearGradient></defs><rect width="24" height="24" rx="7" fill="url(#mxg)"/><path fill="#fff" d="M12 4.6c-4 0-7 2.9-7 6.7 0 2 .8 3.6 2 4.8-.1 1.2-.5 2.1-1.2 2.9 1.4 0 2.6-.4 3.6-1.2.8.3 1.6.4 2.6.4 4 0 7-2.9 7-6.7S16 4.6 12 4.6zm-3 8.3V9.4h1.2l1.3 2.1 1.3-2.1H14v3.5h-1.1v-1.8l-1 1.6h-.2l-1-1.6v1.8H9z"/></svg>MAX</a>
+      <span class="demo" title="Условные контакты — заменить настоящими от Андрея: CONTACTS в build.py">пример</span>
       <a class="btn" href="#zayavka" data-call>Заказать звонок</a>
     </div>
   </div>
 </header><!--/HEADER-->
 
-<main>
+<main id="main">
 <!-- первый экран — как в v69 (её просьба 10.10: «верни как было на прошлой версии»), не по образцу clearwater -->
 <section class="hero">
   <div class="hero-media">
   <div class="slides" id="slides" role="region" aria-roledescription="слайдер" aria-label="Фото объектов">
     <!-- 28.10: 5 настоящих фото с Pexels (её слово: «картинки нейронные» → стоки) — источники docs/foto_istochniki_2810.md; исходники img/new/hero1..5.jpg -->
-    <figure class="ph slide has-photo is-on" data-photo="hero1" aria-roledescription="слайд" aria-label="1 из 9"><picture><source srcset="img/slides/hero1-m.webp 1280w, img/slides/hero1.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/hero1.jpg" srcset="img/slides/hero1-m.jpg 1280w, img/slides/hero1.jpg 2560w" sizes="100vw" alt="Современный загородный дом с вечерней подсветкой" style="object-position:50% 55%" fetchpriority="high"></picture></figure>
-    <figure class="ph slide has-photo light" data-photo="hero2" aria-roledescription="слайд" aria-label="2 из 9"><picture><source data-srcset="img/slides/hero2-m.webp 1280w, img/slides/hero2.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero2.jpg" data-srcset="img/slides/hero2-m.jpg 1280w, img/slides/hero2.jpg 2560w" sizes="100vw" alt="Вилла с бассейном в сумерках" style="object-position:50% 55%"></picture></figure>
-    <figure class="ph slide has-photo" data-photo="hero6" aria-roledescription="слайд" aria-label="3 из 9"><picture><source data-srcset="img/slides/hero6-m.webp 1280w, img/slides/hero6.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero6.jpg" data-srcset="img/slides/hero6-m.jpg 1280w, img/slides/hero6.jpg 2560w" sizes="100vw" alt="Вентиляционные установки на кровле здания" style="object-position:50% 60%"></picture></figure>
-    <figure class="ph slide has-photo light" data-photo="hero3" aria-roledescription="слайд" aria-label="4 из 9"><picture><source data-srcset="img/slides/hero3-m.webp 1280w, img/slides/hero3.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero3.jpg" data-srcset="img/slides/hero3-m.jpg 1280w, img/slides/hero3.jpg 2560w" sizes="100vw" alt="Крытый бассейн-СПА в частном доме" style="object-position:50% 55%"></picture></figure>
-    <figure class="ph slide has-photo light" data-photo="hero8" aria-roledescription="слайд" aria-label="5 из 9"><picture><source data-srcset="img/slides/hero8-m.webp 1280w, img/slides/hero8.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero8.jpg" data-srcset="img/slides/hero8-m.jpg 1280w, img/slides/hero8.jpg 2560w" sizes="100vw" alt="Наружные чиллеры и трубопроводы на кровле" style="object-position:50% 50%"></picture></figure>
-    <figure class="ph slide has-photo light" data-photo="hero4" aria-roledescription="слайд" aria-label="6 из 9"><picture><source data-srcset="img/slides/hero4-m.webp 1280w, img/slides/hero4.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero4.jpg" data-srcset="img/slides/hero4-m.jpg 1280w, img/slides/hero4.jpg 2560w" sizes="100vw" alt="Лобби бизнес-центра с мраморной отделкой" style="object-position:50% 55%"></picture></figure>
-    <figure class="ph slide has-photo light" data-photo="hero7" aria-roledescription="слайд" aria-label="7 из 9"><picture><source data-srcset="img/slides/hero7-m.webp 1280w, img/slides/hero7.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero7.jpg" data-srcset="img/slides/hero7-m.jpg 1280w, img/slides/hero7.jpg 2560w" sizes="100vw" alt="Наружные блоки тепловых насосов у дома" style="object-position:50% 50%"></picture></figure>
-    <figure class="ph slide has-photo light" data-photo="hero9" aria-roledescription="слайд" aria-label="8 из 9"><picture><source data-srcset="img/slides/hero9-m.webp 1280w, img/slides/hero9.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero9.jpg" data-srcset="img/slides/hero9-m.jpg 1280w, img/slides/hero9.jpg 2560w" sizes="100vw" alt="Спиральный воздуховод в офисе с деревянными балками" style="object-position:50% 40%"></picture></figure>
-    <figure class="ph slide has-photo light" data-photo="hero5" aria-roledescription="слайд" aria-label="9 из 9"><picture><source data-srcset="img/slides/hero5-m.webp 1280w, img/slides/hero5.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero5.jpg" data-srcset="img/slides/hero5-m.jpg 1280w, img/slides/hero5.jpg 2560w" sizes="100vw" alt="Чистая венткамера: воздуховоды под потолком" style="object-position:50% 60%"></picture></figure>
+    <figure class="ph slide has-photo is-on" data-photo="hero1" aria-roledescription="слайд" aria-label="1 из 9"><picture><source srcset="img/slides/hero1-m.webp 1280w, img/slides/hero1.webp 2560w" sizes="100vw" type="image/webp"><img src="img/slides/hero1.jpg" srcset="img/slides/hero1-m.jpg 1280w, img/slides/hero1.jpg 2560w" sizes="100vw" alt="Современный загородный дом с вечерней подсветкой" style="object-position:50% 55%" fetchpriority="high" width="2560" height="1266"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero2" aria-roledescription="слайд" aria-label="2 из 9"><picture><source data-srcset="img/slides/hero2-m.webp 1280w, img/slides/hero2.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero2.jpg" data-srcset="img/slides/hero2-m.jpg 1280w, img/slides/hero2.jpg 2560w" sizes="100vw" alt="Вилла с бассейном в сумерках" style="object-position:50% 55%" width="2560" height="1266"></picture></figure>
+    <figure class="ph slide has-photo" data-photo="hero6" aria-roledescription="слайд" aria-label="3 из 9"><picture><source data-srcset="img/slides/hero6-m.webp 1280w, img/slides/hero6.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero6.jpg" data-srcset="img/slides/hero6-m.jpg 1280w, img/slides/hero6.jpg 2560w" sizes="100vw" alt="Вентиляционные установки на кровле здания" style="object-position:50% 60%" width="2560" height="1266"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero3" aria-roledescription="слайд" aria-label="4 из 9"><picture><source data-srcset="img/slides/hero3-m.webp 1280w, img/slides/hero3.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero3.jpg" data-srcset="img/slides/hero3-m.jpg 1280w, img/slides/hero3.jpg 2560w" sizes="100vw" alt="Крытый бассейн-СПА в частном доме" style="object-position:50% 55%" width="2560" height="1265"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero8" aria-roledescription="слайд" aria-label="5 из 9"><picture><source data-srcset="img/slides/hero8-m.webp 1280w, img/slides/hero8.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero8.jpg" data-srcset="img/slides/hero8-m.jpg 1280w, img/slides/hero8.jpg 2560w" sizes="100vw" alt="Наружные чиллеры и трубопроводы на кровле" style="object-position:50% 50%" width="2560" height="1266"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero4" aria-roledescription="слайд" aria-label="6 из 9"><picture><source data-srcset="img/slides/hero4-m.webp 1280w, img/slides/hero4.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero4.jpg" data-srcset="img/slides/hero4-m.jpg 1280w, img/slides/hero4.jpg 2560w" sizes="100vw" alt="Лобби бизнес-центра с мраморной отделкой" style="object-position:50% 55%" width="2560" height="1266"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero7" aria-roledescription="слайд" aria-label="7 из 9"><picture><source data-srcset="img/slides/hero7-m.webp 1280w, img/slides/hero7.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero7.jpg" data-srcset="img/slides/hero7-m.jpg 1280w, img/slides/hero7.jpg 2560w" sizes="100vw" alt="Наружные блоки тепловых насосов у дома" style="object-position:50% 50%" width="2560" height="1266"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero9" aria-roledescription="слайд" aria-label="8 из 9"><picture><source data-srcset="img/slides/hero9-m.webp 1280w, img/slides/hero9.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero9.jpg" data-srcset="img/slides/hero9-m.jpg 1280w, img/slides/hero9.jpg 2560w" sizes="100vw" alt="Спиральный воздуховод в офисе с деревянными балками" style="object-position:50% 40%" width="2560" height="1266"></picture></figure>
+    <figure class="ph slide has-photo light" data-photo="hero5" aria-roledescription="слайд" aria-label="9 из 9"><picture><source data-srcset="img/slides/hero5-m.webp 1280w, img/slides/hero5.webp 2560w" sizes="100vw" type="image/webp"><img data-src="img/slides/hero5.jpg" data-srcset="img/slides/hero5-m.jpg 1280w, img/slides/hero5.jpg 2560w" sizes="100vw" alt="Чистая венткамера: воздуховоды под потолком" style="object-position:50% 60%" width="2560" height="1265"></picture></figure>
   </div>
   <div class="slider-ui" role="group" aria-label="Листать фото">
     <button type="button" class="sl-prev" aria-label="Предыдущее фото">←</button>
@@ -59,7 +61,7 @@
       <a class="btn" href="#raboty">Наши работы</a>
       <a class="btn ghost" href="#dlya-kogo">Что мы делаем</a>
     </div>
-    <nav class="hero-quick" aria-label="Быстрый переход к направлению"><a class="btn ghost" href="#napr-1">Оборудование</a><a class="btn ghost" href="#napr-2">Проектирование</a><a class="btn ghost" href="#napr-3">Монтаж</a><a class="btn ghost" href="#napr-4">Сервис</a></nav>
+    <nav class="hero-quick" aria-label="Быстрый переход к вашему типу клиента"><a class="btn ghost" href="#napr-1">Монтажной компании</a><a class="btn ghost" href="#napr-2">Застройщику</a><a class="btn ghost" href="#napr-3">Коммерции</a><a class="btn ghost" href="#napr-4">Архитектору</a></nav>
   </div>
   </div>
   <div class="wrap">
@@ -109,33 +111,33 @@
 <section class="section" id="dlya-kogo">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Что поставляем</span>
-      <h2>Что мы делаем</h2>
+      <span class="eyebrow">Для&nbsp;кого</span>
+      <h2>Что мы делаем <em>для&nbsp;вас</em></h2>
           </div>
     <div class="who who-utp"><!--UTP-->
       <div class="who-card" id="napr-1">
-        <picture class="who-img"><source srcset="img/utp/dir1-m.webp 800w, img/utp/dir1.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir1.jpg" srcset="img/utp/dir1-m.jpg 800w, img/utp/dir1.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
-        <h3 class="who-title">Подбор и&nbsp;поставка оборудования</h3>
-        <ul class="utp-points"><li>Климатическое оборудование от&nbsp;производителей: рециркуляторы против аллергии, конвекторы, алюминиевые радиаторы, кондиционеры, увлажнители и&nbsp;водоподготовка</li><li>Замена европейского оборудования&nbsp;— подбор аналога под&nbsp;ваш объект</li></ul>
-        <a class="btn" href="#zayavka" data-ask="Оборудование" data-ask-prefix="Интересует: ">Оставить заявку</a>
+        <picture class="who-img"><source srcset="img/utp/dir3-m.webp 800w, img/utp/dir3.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir3.jpg" srcset="img/utp/dir3-m.jpg 800w, img/utp/dir3.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
+        <h3 class="who-title">Я&nbsp;— монтажная компания <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span></h3>
+        <ul class="utp-points"><li>Подбор и&nbsp;поставка оборудования под&nbsp;ваш объект: климат, кондиционеры, увлажнители, водоподготовка</li><li>Подбор аналога вместо европейского оборудования</li><li>Подключаемся на&nbsp;любом этапе&nbsp;— от&nbsp;проекта до&nbsp;пусконаладки</li><li>Паспорта, схемы и&nbsp;инструкции для&nbsp;сдачи объекта</li><li>Запчасти и&nbsp;сервис после сдачи, в&nbsp;том числе для&nbsp;европейского оборудования других марок</li></ul>
+        <a class="btn" href="#zayavka" data-ask="Монтажная компания" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
       <div class="who-card" id="napr-2">
-        <picture class="who-img"><source srcset="img/utp/dir2-m.webp 800w, img/utp/dir2.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir2.jpg" srcset="img/utp/dir2-m.jpg 800w, img/utp/dir2.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
-        <h3 class="who-title">Проектирование инженерных систем <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span></h3>
-        <ul class="utp-points"><li>Описание направления&nbsp;— от&nbsp;Андрея</li></ul>
-        <a class="btn" href="#zayavka" data-ask="Проектирование" data-ask-prefix="Интересует: ">Оставить заявку</a>
+        <picture class="who-img"><source srcset="img/utp/dir1-m.webp 800w, img/utp/dir1.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir1.jpg" srcset="img/utp/dir1-m.jpg 800w, img/utp/dir1.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
+        <h3 class="who-title">Я&nbsp;— застройщик <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span></h3>
+        <ul class="utp-points"><li>Поставка оборудования по&nbsp;этапам и&nbsp;датам, записанным в&nbsp;договоре</li><li>Замена европейского оборудования без&nbsp;переделки проекта</li><li>Один подрядчик&nbsp;— от&nbsp;подбора до&nbsp;сервиса</li><li>Комплект документов к&nbsp;сдаче: схемы, паспорта, инструкции</li><li>Гарантия и&nbsp;сроки выезда&nbsp;— в&nbsp;договоре</li></ul>
+        <a class="btn" href="#zayavka" data-ask="Застройщик" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
       <div class="who-card" id="napr-3">
-        <picture class="who-img"><source srcset="img/utp/dir3-m.webp 800w, img/utp/dir3.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir3.jpg" srcset="img/utp/dir3-m.jpg 800w, img/utp/dir3.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
-        <h3 class="who-title">Монтаж и&nbsp;пусконаладка <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span></h3>
-        <ul class="utp-points"><li>Описание направления&nbsp;— от&nbsp;Андрея</li></ul>
-        <a class="btn" href="#zayavka" data-ask="Монтаж" data-ask-prefix="Интересует: ">Оставить заявку</a>
+        <picture class="who-img"><source srcset="img/utp/dir4-m.webp 800w, img/utp/dir4.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir4.jpg" srcset="img/utp/dir4-m.jpg 800w, img/utp/dir4.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
+        <h3 class="who-title">Я&nbsp;— коммерческий объект <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span></h3>
+        <ul class="utp-points"><li>Подбор оборудования под&nbsp;нагрузку объекта: общепит, торговые центры, медицина, фитнес</li><li>Замена европейского оборудования, которое вышло из&nbsp;строя или&nbsp;снято с&nbsp;поддержки</li><li>Обслуживание по&nbsp;сезонам и&nbsp;запчасти</li><li>Сроки и&nbsp;этапы работ&nbsp;— в&nbsp;договоре</li></ul>
+        <a class="btn" href="#zayavka" data-ask="Коммерция" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
       <div class="who-card" id="napr-4">
-        <picture class="who-img"><source srcset="img/utp/dir4-m.webp 800w, img/utp/dir4.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir4.jpg" srcset="img/utp/dir4-m.jpg 800w, img/utp/dir4.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
-        <h3 class="who-title">Сервис и&nbsp;обслуживание</h3>
-        <ul class="utp-points"><li>Диагностика и&nbsp;обслуживание инженерных систем: вентиляция, отопление, кондиционирование, водоподготовка, сантехника</li></ul>
-        <a class="btn" href="#zayavka" data-ask="Сервис" data-ask-prefix="Интересует: ">Оставить заявку</a>
+        <picture class="who-img"><source srcset="img/utp/dir2-m.webp 800w, img/utp/dir2.webp 1200w" sizes="(max-width:860px) 100vw, 25vw" type="image/webp"><img src="img/utp/dir2.jpg" srcset="img/utp/dir2-m.jpg 800w, img/utp/dir2.jpg 1200w" sizes="(max-width:860px) 100vw, 25vw" alt="" loading="lazy" width="1200" height="900"></picture>
+        <h3 class="who-title">Я&nbsp;— архитектор <span class="demo" title="Текст-заглушка (site/utp_content.py)">пример</span></h3>
+        <ul class="utp-points"><li>Подбираем оборудование под&nbsp;концепцию вашего проекта: что-то нужно спрятать, что-то массивное не&nbsp;помещается</li><li>Вид вентиляции&nbsp;— под&nbsp;архитектуру и&nbsp;дизайн, а&nbsp;не&nbsp;наоборот</li><li>Согласуем узлы и&nbsp;размещение до&nbsp;начала работ</li><li>Замена европейского оборудования без&nbsp;переделки архитектуры</li></ul>
+        <a class="btn" href="#zayavka" data-ask="Архитектор" data-ask-prefix="Интересует: ">Оставить заявку</a>
       </div>
     <!--/UTP--></div>
   </div>
@@ -145,10 +147,10 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Наши проекты</span>
-      <h2>Объекты, которые мы сделали</h2>
+      <h2>Объекты, <em>которые мы сделали</em></h2>
     </div>
     <div class="proj-grid">
-      <article class="proj"><img src="img/slides/hero1-m.jpg" alt="Загородный дом с бассейном" loading="lazy" width="1280" height="633"><h3>Загородный дом с&nbsp;бассейном</h3><p class="proj-meta"><span><b>2023</b>[ год ]</span><span><b>1&nbsp;200</b>[ площадь, м² ]</span><span><b>Новая Рига</b>[ место ]</span></p><p>Вентиляция, осушение бассейна и&nbsp;климат дома&nbsp;— одно решение на&nbsp;весь объект. <span class="demo" title="Пример для макета">пример</span></p></article>
+      <article class="proj"><img src="img/raboty/kolgaliresort-m.jpg" alt="Kol Gali Resort &amp; Spa 5*: бассейн курорта" loading="lazy" width="1200" height="776" style="object-position:50% 62%"><h3>Kol Gali Resort &amp; Spa 5*</h3><p class="proj-meta"><span><b>315&nbsp;м²</b>[ основной бассейн ]</span><span><b>Болгар</b>[ место ]</span></p><p>Климат бассейнов: сухой и&nbsp;тёплый воздух в&nbsp;трёх водных зонах курорта&nbsp;— большой, детский и&nbsp;джакузи. Объект показан с&nbsp;согласия владельца.</p></article>
       <article class="proj"><img src="img/slides/hero4-m.jpg" alt="Крытый бассейн и СПА" loading="lazy" width="1280" height="633"><h3>СПА-комплекс</h3><p class="proj-meta"><span><b>2021</b>[ год ]</span><span><b>2&nbsp;360</b>[ площадь, м² ]</span><span><b>Рублёвка</b>[ место ]</span></p><p>Поставка, монтаж и&nbsp;пусконаладка систем вентиляции и&nbsp;осушения. <span class="demo" title="Пример для макета">пример</span></p></article>
       <article class="proj"><img src="img/slides/hero8-m.jpg" alt="Инженерное оборудование на кровле" loading="lazy" width="1280" height="633"><h3>Бизнес-центр</h3><p class="proj-meta"><span><b>2019</b>[ год ]</span><span><b>18&nbsp;500</b>[ площадь, м² ]</span><span><b>Москва</b>[ место ]</span></p><p>Холодоснабжение и&nbsp;вентиляция: чиллеры на&nbsp;кровле, трассы, автоматика. <span class="demo" title="Пример для макета">пример</span></p></article>
     </div>
@@ -160,7 +162,7 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Почему мы</span>
-      <h2>Почему выбирают нас</h2>
+      <h2>Почему <em>выбирают нас</em></h2>
     </div>
     <ul class="why">
       <li><h3>Один подрядчик</h3><p>От&nbsp;первой встречи до&nbsp;сервиса отвечает одна компания.</p></li>
@@ -175,7 +177,7 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Как работаем</span>
-      <h2>Все этапы&nbsp;— у&nbsp;одного подрядчика</h2>
+      <h2>Все этапы&nbsp;— <em>у&nbsp;одного подрядчика</em></h2>
       <p class="lead">От&nbsp;первой встречи до&nbsp;сервиса через годы отвечает одна компания. Вам не&nbsp;нужно сводить между собой проектировщика, поставщика и&nbsp;монтажников.</p>
     </div>
     <ol class="steps">
@@ -216,14 +218,13 @@
   <div class="wrap terms-wrap">
     <div class="sec-head">
       <span class="eyebrow">Договорённости</span>
-      <h2>Что мы фиксируем в&nbsp;договоре</h2>
+      <h2>Что мы фиксируем <em>в&nbsp;договоре</em></h2>
       <p class="lead">Главные жалобы на&nbsp;подрядчиков&nbsp;— пропадают, растёт смета, срывают сроки. Поэтому всё важное записываем на&nbsp;бумаге до&nbsp;начала работ.</p>
     </div>
     <div class="terms-box">
       <ul class="proofs">
         <li>Цена&nbsp;— в&nbsp;договоре, после оплаты не&nbsp;растёт. Импортное оборудование&nbsp;— по&nbsp;курсу на&nbsp;день оплаты</li>
         <li>Даты поставки оборудования и&nbsp;этапов работ</li>
-        <li>Ваш менеджер: имя и&nbsp;прямой телефон</li>
         <li>Оригинальное оборудование с&nbsp;паспортами и&nbsp;сертификатами</li>
         <li>Приёмка с&nbsp;замерами, фото и&nbsp;актом</li>
         <li>Схемы, паспорта и&nbsp;инструкции к&nbsp;сдаче&nbsp;— в&nbsp;одной папке</li>
@@ -318,15 +319,16 @@
     <form id="lead-form" novalidate>
       <div class="field">
         <label for="f-phone">Телефон <span class="req">*</span></label>
-        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="e-phone">
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00…" required aria-describedby="e-phone">
         <span class="err" id="e-phone" hidden>Укажите телефон: 10 цифр после +7</span>
       </div>
-      <!-- 28.10 (её просьба): почта появляется и обязательна, только когда человек нажал «Получить памятку» -->
-      <div class="field" id="f-email-box" hidden>
-        <label for="f-email">Почта&nbsp;— пришлём памятку <span class="req">*</span></label>
-        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@company.ru" aria-describedby="e-email">
-        <span class="err" id="e-email" hidden>Укажите почту, например name@company.ru</span>
+      <div class="field" id="f-email-box">
+        <label for="f-email">Почта <span class="opt">(по&nbsp;желанию)</span></label>
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@company.ru…" aria-describedby="e-email">
+        <span class="err" id="e-email" hidden>Проверьте почту, например name@company.ru</span>
       </div>
+      <label class="consent consent-mail"><input id="f-mail-ok" name="mail_ok" type="checkbox"> <span>Присылать памятки и&nbsp;материалы на&nbsp;эту почту</span></label>
+      <label class="consent consent-mail"><input id="f-news-ok" name="news_ok" type="checkbox"> <span>Присылать новости и&nbsp;журнал компании. Без&nbsp;галочки&nbsp;— ничего не&nbsp;присылаем</span></label>
       <!-- 27.10: в форме только телефон; позиции из «Интересует: …» копятся в скрытом поле, менеджер видит их в заявке -->
       <input type="hidden" name="note"><input type="hidden" id="f-who" name="who" value="sobstvennik">
       <!-- метки UTM: заполняются скриптом из адреса страницы -->
@@ -339,14 +341,14 @@
       <label class="consent"><input id="f-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных на&nbsp;условиях <a href="soglasie.html" target="_blank" rel="noopener">согласия</a>. С <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a> ознакомлен</span></label>
       <div class="form-actions">
         <button class="btn" type="submit" id="f-submit">Оставить заявку</button>
-        <span class="form-status" id="f-status" role="status"></span>
+        <span class="form-status" id="f-status" role="status" aria-live="polite"></span>
       </div>
     </form>
   </div>
   <footer>
     <div class="wrap">
       <span>Смарт Инжиниринг&nbsp;— инженерные системы и&nbsp;оборудование</span>
-      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a> · +7 (495) 000-00-00 · <a href="https://wa.me/74950000000" rel="noopener" target="_blank">WhatsApp</a> · <a href="https://t.me/example" rel="noopener" target="_blank">Telegram</a></address>
+      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a> · <a class="top-msg" href="https://wa.me/74950000000" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2z"/><path fill="#fff" d="M17.4 16.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.4 0 .1 0 .7-.2 1.2z"/></svg>WhatsApp</a> · <a class="top-msg" href="https://t.me/example" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10" fill="#229ED9"/><path fill="#fff" d="M17.8 7.2 5.9 11.8c-.8.3-.8.8-.1 1l3 .9 1.1 3.4c.1.4.2.5.5.5s.4-.1.6-.3l1.5-1.4 3 2.2c.5.3.9.1 1-.5l1.9-9c.2-.8-.3-1.1-.9-.9zm-1.4 1.6-5.6 5-.2 2.1-1-3.1 6.8-4z"/></svg>Telegram</a> · <a class="top-msg" href="https://max.ru/example" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><defs><linearGradient id="mxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FB5FF"/><stop offset="1" stop-color="#7A3CF0"/></linearGradient></defs><rect width="24" height="24" rx="7" fill="url(#mxg)"/><path fill="#fff" d="M12 4.6c-4 0-7 2.9-7 6.7 0 2 .8 3.6 2 4.8-.1 1.2-.5 2.1-1.2 2.9 1.4 0 2.6-.4 3.6-1.2.8.3 1.6.4 2.6.4 4 0 7-2.9 7-6.7S16 4.6 12 4.6zm-3 8.3V9.4h1.2l1.3 2.1 1.3-2.1H14v3.5h-1.1v-1.8l-1 1.6h-.2l-1-1.6v1.8H9z"/></svg>MAX</a> · <span class="demo" title="Условные контакты — заменить настоящими от Андрея: CONTACTS в build.py">пример</span></address>
     </div>
   </footer>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Смарт Инжиниринг", "url": "https://frivent-site.frivent-dom.workers.dev/", "description": "Поставляем, проектируем, монтируем и обслуживаем инженерное и климатическое оборудование. Заменяем европейское оборудование.", "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]}</script>
@@ -366,20 +368,20 @@
       <b id="call-title">Заказать звонок</b>
       <p>Оставьте телефон&nbsp;— перезвоним в&nbsp;рабочее время.</p>
       <label for="call-phone">Телефон</label>
-      <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="call-err">
+      <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00…" required aria-describedby="call-err">
       <span class="err" id="call-err" hidden>Укажите телефон: 10 цифр после +7</span>
       <input type="hidden" name="page"><input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="note" value="Заказ звонка (окно)">
       <div class="hp" aria-hidden="true"><label for="call-website">Сайт</label><input id="call-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
       <label class="consent"><input id="call-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных на&nbsp;условиях <a href="soglasie.html" target="_blank" rel="noopener">согласия</a>. С <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a> ознакомлен</span></label>
       <button class="btn" type="submit" id="call-submit">Жду звонка</button>
-      <span class="form-status" id="call-status" role="status"></span>
+      <span class="form-status" id="call-status" role="status" aria-live="polite"></span>
     </form>
   </div>
 </section><!--/FORM-->
 </main>
 
 
-<script src="app.js?v=de02abd8" defer></script>
+<script src="app.js?v=4fa2a47b" defer></script>
 </body>
 </html>

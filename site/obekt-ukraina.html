@@ -14,22 +14,24 @@
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml"><link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="theme-color" content="#efebe6">
 <link rel="preload" href="fonts/vela-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/vela-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=66ef3940">
+<link rel="stylesheet" href="styles.css?v=cd9b6ef2">
 </head>
 <body data-page="obekt-ukraina" data-who="sobstvennik">
+<a class="skip" href="#main">К&nbsp;содержимому</a>
 <header class="top" id="top">
   <div class="wrap">
     <a class="logo logo-img" href="index.html" aria-label="Смарт Инжиниринг"><img src="img/logo-smart.png" alt="Смарт Инжиниринг" width="1200" height="368"></a>
     <div class="top-contacts">
-      <a class="top-phone" href="tel:+74950000000">+7 (495) 000-00-00</a>
-      <a class="top-msg" href="https://wa.me/74950000000" rel="noopener" target="_blank">WhatsApp</a>
-      <a class="top-msg" href="https://t.me/example" rel="noopener" target="_blank">Telegram</a>
+      <a class="top-msg" href="https://wa.me/74950000000" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2z"/><path fill="#fff" d="M17.4 16.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.4 0 .1 0 .7-.2 1.2z"/></svg>WhatsApp</a>
+      <a class="top-msg" href="https://t.me/example" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10" fill="#229ED9"/><path fill="#fff" d="M17.8 7.2 5.9 11.8c-.8.3-.8.8-.1 1l3 .9 1.1 3.4c.1.4.2.5.5.5s.4-.1.6-.3l1.5-1.4 3 2.2c.5.3.9.1 1-.5l1.9-9c.2-.8-.3-1.1-.9-.9zm-1.4 1.6-5.6 5-.2 2.1-1-3.1 6.8-4z"/></svg>Telegram</a>
+      <a class="top-msg" href="https://max.ru/example" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><defs><linearGradient id="mxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FB5FF"/><stop offset="1" stop-color="#7A3CF0"/></linearGradient></defs><rect width="24" height="24" rx="7" fill="url(#mxg)"/><path fill="#fff" d="M12 4.6c-4 0-7 2.9-7 6.7 0 2 .8 3.6 2 4.8-.1 1.2-.5 2.1-1.2 2.9 1.4 0 2.6-.4 3.6-1.2.8.3 1.6.4 2.6.4 4 0 7-2.9 7-6.7S16 4.6 12 4.6zm-3 8.3V9.4h1.2l1.3 2.1 1.3-2.1H14v3.5h-1.1v-1.8l-1 1.6h-.2l-1-1.6v1.8H9z"/></svg>MAX</a>
+      <span class="demo" title="Условные контакты — заменить настоящими от Андрея: CONTACTS в build.py">пример</span>
       <a class="btn" href="#zayavka" data-call>Заказать звонок</a>
     </div>
   </div>
 </header>
 
-<main>
+<main id="main">
 <section class="cw-hero">
   <div class="wrap cw-type">
     <div class="cw-title">
@@ -44,7 +46,7 @@
     </div>
   </div>
   <div class="cw-media">
-    <picture class="wk-img" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAAVABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDmQMVJhgm7HFOij3uAWAH1rS8qJrTy9ykj3r6PFZlSpOKTv39DClQnK9zIZqKJ1CMQMkCiumOJoyV1Ihwknqh1ukeB8g/OrkCRgE7B0oor5XMko2sephFe9yjeTFQwUAcUUUV3UEuRHNVfvH//2Q==);background-size:cover;background-position:45% 45%"><source srcset="img/raboty/ukraine-m.webp 1200w, img/raboty/ukraine.webp 2400w" sizes="100vw" type="image/webp"><img style="object-position:45% 45%" src="img/raboty/ukraine.jpg" srcset="img/raboty/ukraine-m.jpg 1200w, img/raboty/ukraine.jpg 2400w" sizes="100vw" alt="Гостиница «Украина» (Radisson)" fetchpriority="high"></picture>
+    <picture class="wk-img" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAAVABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDmQMVJhgm7HFOij3uAWAH1rS8qJrTy9ykj3r6PFZlSpOKTv39DClQnK9zIZqKJ1CMQMkCiumOJoyV1Ihwknqh1ukeB8g/OrkCRgE7B0oor5XMko2sephFe9yjeTFQwUAcUUUV3UEuRHNVfvH//2Q==);background-size:cover;background-position:45% 45%"><source srcset="img/raboty/ukraine-m.webp 1200w, img/raboty/ukraine.webp 2400w" sizes="100vw" type="image/webp"><img style="object-position:45% 45%" src="img/raboty/ukraine.jpg" srcset="img/raboty/ukraine-m.jpg 1200w, img/raboty/ukraine.jpg 2400w" sizes="100vw" alt="Гостиница «Украина» (Radisson)" fetchpriority="high" width="2400" height="2051"></picture>
   </div>
 </section>
 
@@ -71,7 +73,7 @@
           <li>Тепло из&nbsp;удаляемого влажного воздуха возвращается в&nbsp;здание, а&nbsp;не&nbsp;уходит на&nbsp;улицу</li>
       </ul>
     </div>
-    <figure class="obj-job"><picture class="wk-img" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAALABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDe8UyRz2qL/tiub1C3jtB5oPFaWtDFiCOu4VkXZLoA5yMDrSeo1oV5Li1XULcTM20jnFFVGjR9Sj3qDiimrBqf/9k=);background-size:cover"><source srcset="img/raboty/ukraine-job-m.webp 1200w, img/raboty/ukraine-job.webp 2400w" sizes="(max-width: 860px) 100vw, 60vw" type="image/webp"><img src="img/raboty/ukraine-job.jpg" srcset="img/raboty/ukraine-job-m.jpg 1200w, img/raboty/ukraine-job.jpg 2400w" sizes="(max-width: 860px) 100vw, 60vw" alt="Гостиница «Украина» (Radisson): осушение бассейна" loading="lazy"></picture></figure>
+    <figure class="obj-job"><picture class="wk-img" style="background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAALABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDe8UyRz2qL/tiub1C3jtB5oPFaWtDFiCOu4VkXZLoA5yMDrSeo1oV5Li1XULcTM20jnFFVGjR9Sj3qDiimrBqf/9k=);background-size:cover"><source srcset="img/raboty/ukraine-job-m.webp 1200w, img/raboty/ukraine-job.webp 2400w" sizes="(max-width: 860px) 100vw, 60vw" type="image/webp"><img src="img/raboty/ukraine-job.jpg" srcset="img/raboty/ukraine-job-m.jpg 1200w, img/raboty/ukraine-job.jpg 2400w" sizes="(max-width: 860px) 100vw, 60vw" alt="Гостиница «Украина» (Radisson): осушение бассейна" loading="lazy" width="2400" height="1138"></picture></figure>
   </div>
 </section>
 
@@ -142,15 +144,16 @@
     <form id="lead-form" novalidate>
       <div class="field">
         <label for="f-phone">Телефон <span class="req">*</span></label>
-        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="e-phone">
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00…" required aria-describedby="e-phone">
         <span class="err" id="e-phone" hidden>Укажите телефон: 10 цифр после +7</span>
       </div>
-      <!-- 28.10 (её просьба): почта появляется и обязательна, только когда человек нажал «Получить памятку» -->
-      <div class="field" id="f-email-box" hidden>
-        <label for="f-email">Почта&nbsp;— пришлём памятку <span class="req">*</span></label>
-        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@company.ru" aria-describedby="e-email">
-        <span class="err" id="e-email" hidden>Укажите почту, например name@company.ru</span>
+      <div class="field" id="f-email-box">
+        <label for="f-email">Почта <span class="opt">(по&nbsp;желанию)</span></label>
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@company.ru…" aria-describedby="e-email">
+        <span class="err" id="e-email" hidden>Проверьте почту, например name@company.ru</span>
       </div>
+      <label class="consent consent-mail"><input id="f-mail-ok" name="mail_ok" type="checkbox"> <span>Присылать памятки и&nbsp;материалы на&nbsp;эту почту</span></label>
+      <label class="consent consent-mail"><input id="f-news-ok" name="news_ok" type="checkbox"> <span>Присылать новости и&nbsp;журнал компании. Без&nbsp;галочки&nbsp;— ничего не&nbsp;присылаем</span></label>
       <!-- 27.10: в форме только телефон; позиции из «Интересует: …» копятся в скрытом поле, менеджер видит их в заявке -->
       <input type="hidden" name="note"><input type="hidden" id="f-who" name="who" value="sobstvennik">
       <!-- метки UTM: заполняются скриптом из адреса страницы -->
@@ -163,14 +166,14 @@
       <label class="consent"><input id="f-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных на&nbsp;условиях <a href="soglasie.html" target="_blank" rel="noopener">согласия</a>. С <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a> ознакомлен</span></label>
       <div class="form-actions">
         <button class="btn" type="submit" id="f-submit">Оставить заявку</button>
-        <span class="form-status" id="f-status" role="status"></span>
+        <span class="form-status" id="f-status" role="status" aria-live="polite"></span>
       </div>
     </form>
   </div>
   <footer>
     <div class="wrap">
       <span>Смарт Инжиниринг&nbsp;— инженерные системы и&nbsp;оборудование</span>
-      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a> · +7 (495) 000-00-00 · <a href="https://wa.me/74950000000" rel="noopener" target="_blank">WhatsApp</a> · <a href="https://t.me/example" rel="noopener" target="_blank">Telegram</a></address>
+      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a> · <a class="top-msg" href="https://wa.me/74950000000" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2z"/><path fill="#fff" d="M17.4 16.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.4 0 .1 0 .7-.2 1.2z"/></svg>WhatsApp</a> · <a class="top-msg" href="https://t.me/example" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10" fill="#229ED9"/><path fill="#fff" d="M17.8 7.2 5.9 11.8c-.8.3-.8.8-.1 1l3 .9 1.1 3.4c.1.4.2.5.5.5s.4-.1.6-.3l1.5-1.4 3 2.2c.5.3.9.1 1-.5l1.9-9c.2-.8-.3-1.1-.9-.9zm-1.4 1.6-5.6 5-.2 2.1-1-3.1 6.8-4z"/></svg>Telegram</a> · <a class="top-msg" href="https://max.ru/example" rel="noopener" target="_blank"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><defs><linearGradient id="mxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FB5FF"/><stop offset="1" stop-color="#7A3CF0"/></linearGradient></defs><rect width="24" height="24" rx="7" fill="url(#mxg)"/><path fill="#fff" d="M12 4.6c-4 0-7 2.9-7 6.7 0 2 .8 3.6 2 4.8-.1 1.2-.5 2.1-1.2 2.9 1.4 0 2.6-.4 3.6-1.2.8.3 1.6.4 2.6.4 4 0 7-2.9 7-6.7S16 4.6 12 4.6zm-3 8.3V9.4h1.2l1.3 2.1 1.3-2.1H14v3.5h-1.1v-1.8l-1 1.6h-.2l-1-1.6v1.8H9z"/></svg>MAX</a> · <span class="demo" title="Условные контакты — заменить настоящими от Андрея: CONTACTS в build.py">пример</span></address>
     </div>
   </footer>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Смарт Инжиниринг", "url": "https://frivent-site.frivent-dom.workers.dev/", "description": "Поставляем, проектируем, монтируем и обслуживаем инженерное и климатическое оборудование. Заменяем европейское оборудование.", "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]}</script>
@@ -190,19 +193,19 @@
       <b id="call-title">Заказать звонок</b>
       <p>Оставьте телефон&nbsp;— перезвоним в&nbsp;рабочее время.</p>
       <label for="call-phone">Телефон</label>
-      <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 ___ ___-__-__" required aria-describedby="call-err">
+      <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00…" required aria-describedby="call-err">
       <span class="err" id="call-err" hidden>Укажите телефон: 10 цифр после +7</span>
       <input type="hidden" name="page"><input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="note" value="Заказ звонка (окно)">
       <div class="hp" aria-hidden="true"><label for="call-website">Сайт</label><input id="call-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
       <label class="consent"><input id="call-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных на&nbsp;условиях <a href="soglasie.html" target="_blank" rel="noopener">согласия</a>. С <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a> ознакомлен</span></label>
       <button class="btn" type="submit" id="call-submit">Жду звонка</button>
-      <span class="form-status" id="call-status" role="status"></span>
+      <span class="form-status" id="call-status" role="status" aria-live="polite"></span>
     </form>
   </div>
 </section>
 </main>
 
-<script src="app.js?v=de02abd8" defer></script>
+<script src="app.js?v=4fa2a47b" defer></script>
 </body>
 </html>
