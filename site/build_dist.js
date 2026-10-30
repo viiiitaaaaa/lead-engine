@@ -43,7 +43,7 @@ for (const f of fs.readdirSync(SRC).filter(f => f.endsWith(".js") && !f.startsWi
 }
 // HTML: без комментариев и лишних пробелов, встроенные стили/скрипты сжаты
 (async () => {
-  const pages = fs.readdirSync(SRC).filter(f => f.endsWith(".html") && !f.startsWith("_") && !/^(kartinki_sravnenie|logo_vybor|shrift_vybor|sravnenie_prioritet|obekt-|usluga-|statya-|zhurnal|ssylki_menedzherov)/.test(f));
+  const pages = fs.readdirSync(SRC).filter(f => f.endsWith(".html") && !f.startsWith("_") && !/^(kartinki_sravnenie|logo_vybor|shrift_vybor|sravnenie_prioritet|obekt-|usluga-|ssylki_menedzherov)/.test(f));
   for (const f of pages) {
     let h = fs.readFileSync(path.join(SRC, f), "utf8");
     if (!INDEX && !/name="robots"/.test(h)) h = h.replace("<head>", '<head><meta name="robots" content="noindex, nofollow">');

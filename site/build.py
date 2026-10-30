@@ -14,15 +14,17 @@ from objects_content import OBJECTS
 import service_content as SC
 from uslugi_content import USLUGI, STAGES
 from zhurnal_content import ARTICLES
+from seo_content import SERVICES, NEW_ARTICLES
+ARTICLES = NEW_ARTICLES + ARTICLES
 import demo_content as DC
 
 # рабочие страницы для неё и старые страницы про дом (объекты, услуги, статьи, журнал; её «да» 29.10) — не в выкладку и не в sitemap; файлы остаются в папке
-WORK_PAGES = re.compile(r"(kartinki_sravnenie|logo_vybor|shrift_vybor|sravnenie_prioritet|obekt-|usluga-|statya-|zhurnal|ssylki_menedzherov)")
+WORK_PAGES = re.compile(r"(kartinki_sravnenie|logo_vybor|shrift_vybor|sravnenie_prioritet|obekt-|usluga-|ssylki_menedzherov)")
 SITE = Path(__file__).resolve().parent
 # бренд сайта — «Смарт Инжиниринг» (встреча с Пашей 13.10, п.4: Frivent убрать везде). Адрес — пока публичная ссылка Cloudflare;
 # появится свой домен — поменять здесь (canonical, og, карта сайта, разметка)
 BRAND = "Смарт Инжиниринг"
-BASE_URL = "https://frivent-site.frivent-dom.workers.dev/"
+BASE_URL = "https://smart-eng.frivent-dom.workers.dev/"
 
 
 def ver(name):
@@ -54,7 +56,7 @@ def header(active=""):
   <div class="wrap">
     <a class="logo logo-img" href="index.html" aria-label="{BRAND}"><img src="img/logo-smart.png" alt="Смарт Инжиниринг" width="1200" height="368"></a>
     <div class="top-contacts">{contacts_html()}
-      <a class="btn" href="#zayavka" data-call>Заказать звонок</a>
+      <a class="btn" href="#zayavka" data-call>Оставить заявку</a>
     </div>
   </div>
 </header>'''
@@ -63,7 +65,7 @@ def header(active=""):
 # контакты из frivent.ru/contacts (проверено 10.10): офис в Москве, общая почта, производство — Переславль-Залесский.
 # ИНН/ОГРН на сайте нет — дописать, когда она даст (книги: юрлицо и адрес — главные сигналы доверия в B2B и для Яндекса).
 OFFICE = "111020, Москва, ул. 2-я Синичкина, 9А, стр. 3"
-ANSWER_TIME = "в течение часа в рабочее время"  # её слово 12.10 (было 4 часа); то же — в app.js (сообщение после отправки)
+ANSWER_TIME = "в ближайшее рабочее время"  # 30.10: без срока, пока Андрей не подтвердит; раньше 4 часа (10.10) и час (12.10); то же — в app.js (сообщение после отправки)
 # плашка про cookies (её решение 10.10: «баннер не запрещала») — один раз, в углу, не закрывает страницу; показывает app.js
 COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" hidden>
     <p>Сайт использует cookies и сервис статистики посещений, чтобы считать заявки и улучшать страницы. <a href="politika.html">Подробнее</a></p>
@@ -71,15 +73,15 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
   </div>
   <div class="exit-card" id="exit-card" role="dialog" aria-label="Памятка для вас" hidden>
     <button type="button" class="exit-x" id="exit-x" aria-label="Закрыть">×</button>
-    <b>Пока вы здесь&nbsp;— заберите памятку</b>
-    <p>«Что делать в типовых ситуациях»: 12 коротких ответов для вашей роли. PDF откроется сразу после заявки.</p>
+    <b>Заберите памятку</b>
+    <p>12 коротких ответов для вашей роли.</p>
     <a class="btn" id="exit-go" href="index.html#podarki">Посмотреть памятки</a>
   </div>
   <div class="call-modal" id="call-modal" role="dialog" aria-modal="true" aria-labelledby="call-title" hidden>
     <form class="call-box" id="call-form" novalidate>
       <button type="button" class="call-x" id="call-x" aria-label="Закрыть">×</button>
-      <b id="call-title">Заказать звонок</b>
-      <p>Оставьте телефон&nbsp;— перезвоним в&nbsp;рабочее время.</p>
+      <b id="call-title">Оставить заявку</b>
+      <p>Оставьте телефон&nbsp;— перезвоним в&nbsp;ближайшее рабочее время.</p>
       <label for="call-phone">Телефон</label>
       <input id="call-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00…" required aria-describedby="call-err">
       <span class="err" id="call-err" hidden>Укажите телефон: 10 цифр после +7</span>
@@ -87,7 +89,7 @@ COOKIE = '''<div class="cookie" id="cookie" role="region" aria-label="Cookies" h
       <input type="hidden" name="utm_content"><input type="hidden" name="utm_term"><input type="hidden" name="note" value="Заказ звонка (окно)">
       <div class="hp" aria-hidden="true"><label for="call-website">Сайт</label><input id="call-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
       <label class="consent"><input id="call-consent" name="consent" type="checkbox" required> <span>Согласен на&nbsp;обработку персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">согласия</a>. С <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a> ознакомлен</span></label>
-      <button class="btn" type="submit" id="call-submit">Жду звонка</button>
+      <button class="btn" type="submit" id="call-submit">Оставить заявку</button>
       <span class="form-status" id="call-status" role="status" aria-live="polite"></span>
     </form>
   </div>'''
@@ -236,10 +238,10 @@ PRICE_NOTE = ("Цена импортного оборудования и мат�
 # «Чего опасаются заказчики» (Трейси «Marketing», гл. 2: четыре страха покупателя). Её решение 10.10: «пиши как правильно,
 # правки внесу после сдачи заказчикам» — оплата по этапам по актам ещё НЕ подтверждена Frivent.
 FEARS = [
-    ("Переплатить", "Цена фиксируется в договоре и после оплаты не растёт. Все работы и оборудование — в смете заранее."),
-    ("Получить не то", "Каждую систему рассчитывает инженер под ваш объект. При сдаче проверяем результат замерами и фиксируем в акте."),
-    ("Потерять деньги", "Оплата по этапам: вы платите за выполненный этап после того, как подписали акт."),
-    ("Остаться одному после сдачи", "Гарантия, обслуживание по сезонам и запчасти. Ваш менеджер остаётся на связи и после сдачи."),
+    ("Переплатить", "Цена и состав работ — в договоре и смете. После оплаты цена не растёт."),
+    ("Получить не то", "Инженер рассчитывает каждую систему. При сдаче проверяем замерами и фиксируем в акте."),
+    ("Потерять деньги", "Платите за этап после подписания акта."),
+    ("Остаться одному после сдачи", "Гарантия, обслуживание и запчасти. Менеджер на связи и после сдачи."),
 ]
 
 
@@ -259,7 +261,7 @@ def strahi_html():
     <div class="sec-head">
       <span class="eyebrow">Без рисков</span>
       <h2>Чего опасаются заказчики&nbsp;— и&nbsp;что мы с этим делаем</h2>
-      <p class="lead">Четыре главных страха перед большим проектом. На каждый у нас есть ответ, и он записан в договоре.</p>
+      <p class="lead">Четыре страха перед большим проектом. На каждый есть ответ в договоре.</p>
     </div>
     <div class="pain-grid">
 {cards}
@@ -384,15 +386,11 @@ def results_html(slug):
 # «Частые вопросы» на главной (10.10): ответы, удобные для пересказа ИИ-поиском (Котлер 7.0; Clarke «SEO 2025» — FAQPage),
 # и «чего мы не делаем» (Social Media Marketing: узкая фраза отсекает чужие запросы). Только уже данные обещания.
 HOME_FAQ = [
-    ("Можно заказать только один этап — проект, поставку или сервис?",
-     "Да. Подключаемся на любом этапе: от эскиза до обслуживания готового дома. Если проект уже есть — берём поставку, монтаж или сервис."),
-    ("Где вы работаете?", "Новая Рига, Рублёвка и Ильинское шоссе — до 60 км от МКАД."),
-    ("Обслуживаете оборудование, которое ставили другие?",
-     "Да. Обслуживаем, ремонтируем и поставляем запчасти для европейского оборудования других марок."),
-    ("Кто делает монтаж?", "Свои бригады, по одному графику для всех работ; пусконаладку климата делает производитель — замеры и акт."),
-    ("Работаете с квартирами и небольшими объектами?",
-     "Только премиум-класса: загородные дома, промышленные предприятия и отели, а также коммерческие объекты — рестораны, клиники, фитнес и СПА. Типовые квартиры и бюджетные решения — не наш профиль."),
-    ("Сколько стоит?", "Зависит от дома и состава работ. После встречи на объекте готовим смету; цена фиксируется в договоре и после оплаты не растёт. " + PRICE_NOTE),
+    ("Можно заказать только один этап?", "Да. Подключаемся на любом этапе: проект, поставка, монтаж или сервис."),
+    ("Обслуживаете оборудование других подрядчиков?", "Да, в том числе европейское других марок: сервис, ремонт, запчасти."),
+    ("Кто делает монтаж?", "Свои бригады по одному графику. Пусконаладку проводит инженер: замеры и акт."),
+    ("Работаете с квартирами?", "Нет. Только премиум: загородные дома, отели, промышленные и коммерческие объекты. Типовые квартиры и бюджетные решения — не наш профиль."),
+    ("Сколько стоит?", "Зависит от объекта и состава работ. После встречи готовим смету; цена фиксируется в договоре. Импортное оборудование — по курсу на день оплаты."),
 ]
 
 
@@ -419,13 +417,13 @@ def faq_ld(pairs):
 
 
 def form_section(who="sobstvennik", title="Оставить заявку",
-                 lead="Оставьте телефон. Менеджер перезвонит, уточнит задачу и объект и договорится о встрече.",
+                 lead="Оставьте телефон. Менеджер перезвонит и уточнит задачу.",
                  button="Оставить заявку", uslugi=None):
     # ссылки на страницы услуг в подвале — везде, кроме страниц владельца (без тех. слов, её правило 06.10)
     if uslugi is None:
         uslugi = who != "sobstvennik"
     usl = ('\n      <nav class="foot-links" aria-label="Услуги">' + " · ".join(
-        f'<a href="usluga-{u["slug"]}.html">{u["name"]}</a>' for u in USLUGI) + ' · <a href="zhurnal.html">Журнал</a></nav>') if uslugi else ""
+        f'<a href="uslugi-{u["slug"]}.html">{u["name"]}</a>' for u in SERVICES) + ' · <a href="zhurnal.html">Журнал</a></nav>') if uslugi else ""
     # срок ответа на заявку — её цифра 10.10: «4 часа напиши» (Котлер ММ, Трейси: сервис обещать цифрой)
     lead = lead.replace("перезвонит", f"перезвонит {ANSWER_TIME}", 1) if "перезвонит" in lead else f"{lead} Ответим {ANSWER_TIME}."
     opts ="\n".join(f'          <option value="{v}"{" selected" if v == who else ""}>{t}</option>' for v, t in WHO_OPTIONS)
@@ -469,7 +467,7 @@ def form_section(who="sobstvennik", title="Оставить заявку",
   <footer>
     <div class="wrap">
       <span>Смарт Инжиниринг — инженерные системы и оборудование</span>
-      <address class="foot-addr"><a href="politika.html">Политика конфиденциальности</a>{req_line()}{foot_contacts()}</address>{usl}
+      <address class="foot-addr"><a href="zhurnal.html">Журнал</a> · <a href="politika.html">Политика конфиденциальности</a>{req_line()}{foot_contacts()}</address>{usl}
     </div>
   </footer>
   {ORG_LD}
@@ -1372,7 +1370,7 @@ def catalog_html(p):
 
 {chr(10).join(blocks)}
 
-{form_section(p["who"], "Запросить цену", lead="Оставьте телефон и адрес объекта. Менеджер уточнит задачу и пришлёт расчёт.", button="Запросить цену")}
+{form_section(p["who"], "Запросить цену", lead="Оставьте телефон. Менеджер уточнит задачу и пришлёт расчёт.", button="Запросить цену")}
 </main>
 
 <script src="app.js?v={ver('app.js')}" defer></script>
@@ -1401,7 +1399,7 @@ def utp_html():
         cards.append(f'''      <div class="who-card" id="napr-{i}">
         {img}<h3 class="who-title">{e(u["title"])}{stub if u.get("stub") else ""}</h3>
         <ul class="utp-points">{pts}</ul>
-        <a class="btn" href="#zayavka" data-ask="{e(u["key"])}" data-ask-prefix="Интересует: ">Оставить заявку</a>
+        <a class="btn" href="#zayavka" data-ask="{e(u["key"])}" data-ask-prefix="Интересует: ">{e(u.get("cta", "Оставить заявку"))}</a>
       </div>''')
     return "\n" + "\n".join(cards) + "\n    "
 
@@ -1436,6 +1434,13 @@ def gift_btn(g):
 
 
 # ===== Памятки на главной (без слова «подарок», её решение 10.10) (её просьба 06.10): памятка-PDF для каждого специалиста, в конце перед формой =====
+GIFT_SHORT = {  # 30.10: короткие подписи карточек памяток на главной (полные тексты — в PDF и gift_content.py)
+    "montazh": ("Оборудование и сдача без простоев", "Что делать при задержке поставки, некомплекте и претензиях после сдачи"),
+    "zastroyshchik": ("Инженерия домов без претензий жителей", "Что делать, когда жалуются на сырость и духоту, и что обещать покупателям"),
+    "kommerciya": ("Воздух, который не мешает бизнесу", "Что делать при духоте, запахах, сырости у бассейна и перед проверкой"),
+}
+
+
 def gifts_html():
     e = lambda x: escape(x, quote=False)
     cards = []
@@ -1445,8 +1450,8 @@ def gifts_html():
         g = GIFT[who]
         cards.append(f'''      <article class="gift-card">
         <span class="eyebrow">{e(label)}</span>
-        <h3>{e(g["title"])}</h3>
-        <p>{e(g["subtitle"])}</p>
+        <h3>{e(GIFT_SHORT[who][0])}</h3>
+        <p>{e(GIFT_SHORT[who][1])}</p>
         <span class="fname">PDF · {len(g["items"])} ситуаций</span>
         <a class="btn" href="#zayavka" data-gift="{g["file"]}" data-gift-title="{e(g["title"])}" data-gift-who="{who}">{gift_btn(g)}</a>
       </article>''')
@@ -1455,7 +1460,7 @@ def gifts_html():
     <div class="sec-head">
       <span class="eyebrow">Памятка</span>
       <h2>Мы приготовили для вас памятку</h2>
-      <p class="lead">Памятка «Что делать в типовых ситуациях» — 12 коротких ответов именно для вашей роли. Выберите свою и оставьте телефон: PDF откроется сразу после заявки.</p>
+      <p class="lead">12 коротких ответов для вашей роли. Выберите роль и оставьте телефон: PDF откроется после заявки.</p>
     </div>
     <div class="gift-grid">
 ''' + "\n".join(cards) + '''
@@ -1503,13 +1508,12 @@ def plans_html():
 
 # ===== «Договорённости» на главной (раздел 18, п.16): что фиксируем в договоре — только уже данные на сайте обещания =====
 DOGOVOR = [
- "Цена — в договоре, после оплаты не растёт. Импортное оборудование — по курсу на день оплаты",
- "Даты поставки оборудования и этапов работ",
- "Оригинальное оборудование с паспортами и сертификатами",
+ "Цена: после оплаты не растёт. Импортное оборудование — по курсу на день оплаты",
+ "Даты поставки и этапов работ",
+ "Оригинальное оборудование с паспортами",
  "Приёмка с замерами, фото и актом",
- "Схемы, паспорта и инструкции к сдаче — в одной папке",
- "Гарантия, сроки выезда и состав сервиса",
- "Обслуживание и запчасти, в том числе для европейского оборудования других марок",
+ "Схемы, паспорта и инструкции к сдаче",
+ "Гарантия, сроки выезда, состав сервиса",
 ]
 
 
@@ -1522,7 +1526,7 @@ def dogovor_html():
     <div class="sec-head">
       <span class="eyebrow">Договорённости</span>
       <h2>Что мы фиксируем <em>в договоре</em></h2>
-      <p class="lead">Главные жалобы на подрядчиков — пропадают, растёт смета, срывают сроки. Поэтому всё важное записываем на бумаге до начала работ.</p>
+      <p class="lead">Всё важное записываем на бумаге до начала работ.</p>
     </div>
     <div class="terms-box">
       <ul class="proofs">
@@ -1812,7 +1816,7 @@ def usl_html(u):
        "areaServed": ["Новорижское шоссе", "Рублёво-Успенское шоссе", "Ильинское шоссе"]})}
 </section>
 
-{form_section("pomoshchnik", "Обсудить задачу", lead="Оставьте телефон и адрес объекта. Инженер перезвонит, уточнит, что стоит в доме, и договорится об осмотре.")}
+{form_section("pomoshchnik", "Обсудить задачу", lead="Оставьте телефон. Инженер перезвонит, уточнит, что стоит в доме, и договорится об осмотре.")}
 </main>
 
 <script src="app.js?v={ver('app.js')}" defer></script>
@@ -1830,7 +1834,7 @@ def zhurnal_html():
         <p>{e(a["lead"])}</p>
         <span class="serv-go">Читать →</span>
       </a>''' for a in ARTICLES)
-    return head(css_v=ver("styles.css"), title="Журнал — климат и инженерия загородного дома — Смарт Инжиниринг",
+    return head(css_v=ver("styles.css"), title="Журнал — вентиляция, климат и инженерные системы — Смарт Инжиниринг",
                        desc="Статьи о главных проблемах загородного дома: шум вентиляции, сырость и плесень, конденсат у бассейна, духота, обмерзание рекуператора, сервис европейского оборудования.",
                        page="zhurnal", who="pomoshchnik") + header() + f'''
 
@@ -1838,7 +1842,7 @@ def zhurnal_html():
 <section class="cat-hero">
   <div class="wrap">
     <span class="eyebrow">Журнал</span>
-    <h1>Климат и инженерия загородного дома</h1>
+    <h1>Журнал: вентиляция, климат и инженерные системы</h1>
     <p class="lead">О том, с чем владельцы загородных домов сталкиваются чаще всего. Коротко: почему так бывает и что делать.</p>
   </div>
 </section>
@@ -1851,7 +1855,7 @@ def zhurnal_html():
   </div>
 </section>
 
-{form_section("pomoshchnik", "Задать вопрос инженеру", lead="Оставьте телефон и адрес объекта. Инженер перезвонит и разберёт вашу ситуацию.")}
+{form_section("pomoshchnik", "Задать вопрос инженеру", lead="Оставьте телефон. Инженер перезвонит и разберёт вашу ситуацию.")}
 </main>
 
 <script src="app.js?v={ver('app.js')}" defer></script>
@@ -1872,6 +1876,9 @@ def statya_html(i):
         else:
             body += [f"      <p>{e(p)}</p>" for p in paras]
     more = "\n".join(f'      <li><a href="statya-{x["slug"]}.html">{e(x["title"])}</a></li>' for x in ARTICLES if x is not a)
+    svc = next((s for s in SERVICES if s["slug"] == a.get("svc")), None)
+    cta_name = svc["name"] if svc else u["name"]
+    svc_btn = (f'<a class="btn ghost" href="uslugi-{svc["slug"]}.html">Подробнее: {e(svc["name"][0].lower() + svc["name"][1:])}</a>' if svc else "")
     return head(css_v=ver("styles.css"), title=e(a["title"]) + " | Смарт Инжиниринг", desc=e(a["lead"]),
                        page="statya-" + a["slug"], who="pomoshchnik") + header() + f'''
 
@@ -1891,8 +1898,8 @@ def statya_html(i):
 {f'    <p class="art-short"><b>Коротко.</b> {e(a["short"])}</p>' if a.get("short") else ""}
 {chr(10).join(body)}
     <div class="art-cta">
-      <p>Это наша работа: «{e(u["name"])}» — от расчёта и монтажа до сервиса, в том числе для европейского оборудования других марок.</p>
-      <a class="btn ghost" href="usluga-{u["slug"]}.html">Подробнее: {e(u["name"][0].lower() + u["name"][1:])}</a>
+      <p>Это наша работа: «{e(cta_name)}» — от расчёта и монтажа до сервиса, в том числе для европейского оборудования других марок.</p>
+      {svc_btn}
       <a class="btn" href="#zayavka" data-ask="{escape(a["title"])}" data-ask-prefix="Вопрос по статье: ">Задать вопрос инженеру</a>
     </div>
   </div>
@@ -1912,7 +1919,7 @@ def statya_html(i):
   </div>
 </section>
 
-{form_section("pomoshchnik", "Задать вопрос инженеру", lead="Оставьте телефон и адрес объекта. Инженер перезвонит и разберёт вашу ситуацию.")}
+{form_section("pomoshchnik", "Задать вопрос инженеру", lead="Оставьте телефон. Инженер перезвонит и разберёт вашу ситуацию.")}
 </main>
 
 <script src="app.js?v={ver('app.js')}" defer></script>
@@ -1921,11 +1928,289 @@ def statya_html(i):
 '''
 
 
+def zamena_html():
+    # 30.10 (совет Perplexity + главная боль по Андрею 22.10): отдельный сценарий «Замена европейского»; без выдуманных цифр, сроков и цен
+    e = lambda x: escape(x, quote=False)
+    stub = ' <span class="demo" title="Текст-заглушка: уточнить у Андрея">пример</span>'
+    cases = [
+        ("Нужна запчасть", "фото шильдика, модель, серийный номер", "проверку детали и возможность поставки"),
+        ("Оборудование не работает", "модель, симптомы, коды ошибок", "план диагностики"),
+        ("Нужен аналог", "спецификацию, параметры, ограничения по месту", "сравнение по параметрам и список изменений"),
+        ("Нужна модернизация", "документацию, состояние, новые требования", "варианты: сохранить, заменить узел или целиком"),
+    ]
+    cards = chr(10).join(f'      <div class="pain-card"><span class="fear">{e(t)}</span><div><p><b>Пришлите:</b> {e(a)}</p><p><b>Получите:</b> {e(b)}</p></div></div>' for t, a, b in cases)
+    params = ["рабочая точка, а не паспортная производительность", "габариты и подключения", "питание, управление, совместимость с вашей автоматикой",
+              "шум и условия его замера", "расходники и сервисные узлы", "что придётся переделать"]
+    plist = "".join(f"<li>{e(x)}</li>" for x in params)
+    return f"""<section class="section" id="zamena">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Главное для вас сейчас</span>
+      <h2>Заменяем <em>европейское</em> оборудование{stub}</h2>
+      <p class="lead">Запчасть, ремонт, замена узла, аналог или модернизация. Сначала смотрим, что у вас стоит.</p>
+    </div>
+    <div class="pain-grid">
+{cards}
+    </div>
+    <div class="pain-card wide">
+      <span class="fear">Как проверяем аналог</span>
+      <ul class="utp-points">{plist}</ul>
+    </div>
+    <p class="zamena-cta"><a class="btn" href="#zayavka" data-ask="Замена европейского оборудования" data-ask-prefix="Интересует: ">Отправить фото шильдика</a>
+    <small>Оставьте телефон: инженер напишет, куда прислать фото.</small></p>
+  </div>
+</section>"""
+
+
+def montazh_html():
+    # 30.10: блок для монтажных компаний; честный ответ на «вы и поставщик, и подрядчик» (Perplexity). Условия и скидки — только от Андрея, здесь процессы без цифр
+    e = lambda x: escape(x, quote=False)
+    stub = ' <span class="demo" title="Текст-заглушка: условия подтвердить у Андрея">пример</span>'
+    items = [
+        ("Поставка по спецификации", "Проверим спецификацию и скажем, чего не хватает."),
+        ("Комплектность", "Сверяем автоматику, датчики, обвязку и крепёж до отгрузки."),
+        ("Документация", "Паспорта, схемы, настройки и инструкции на конкретную модель."),
+        ("Шефмонтаж и пусконаладка", "Состав работ и условия готовности объекта согласуем заранее."),
+        ("Наличие и резерв", "Скажем, что в наличии, что под заказ и на какую дату подтверждён срок."),
+        ("Правила работы с вашим заказчиком", "Согласуем письменно до начала работ."),
+        ("Рекламации", "Один контакт и понятный порядок диагностики."),
+    ]
+    cards = chr(10).join(f'      <div class="pain-card"><span class="fear">{e(t)}</span><p>{e(x)}</p></div>' for t, x in items)
+    return f"""<section class="section alt" id="montazhnikam">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Партнёрам</span>
+      <h2>Монтажным компаниям: <em>поставщик</em> и технический партнёр{stub}</h2>
+      <p class="lead">Мы поставляем оборудование и работаем как подрядчик. Когда монтируете вы, мы остаёмся поставщиком и инженером на связи.</p>
+    </div>
+    <div class="pain-grid">
+{cards}
+    </div>
+    <p class="zamena-cta"><a class="btn" href="#zayavka" data-ask="Монтажная компания: условия сотрудничества" data-ask-prefix="Интересует: ">Получить условия для монтажных компаний</a></p>
+  </div>
+</section>"""
+
+
+CHEKLISTS = [
+    ("Монтажной компании", "комплектность перед отгрузкой",
+     ["Модели и количество совпадают с проектом", "Есть автоматика, датчики, обвязка, крепёж", "Паспорта и схемы на каждую позицию", "Определено, кто и когда проводит пусконаладку"]),
+    ("Застройщику", "что нужно для расчёта и сдачи",
+     ["Проект инженерного раздела и график объекта", "Допустимые замены согласованы письменно", "Изменения оформляются дополнением", "К сдаче: схемы, паспорта, акты, протоколы"]),
+    ("Коммерческому объекту", "данные для расчёта",
+     ["Тип объекта, режим работы, пиковая загрузка", "Площади, высоты, назначение помещений", "Что уже стоит и в каком состоянии", "Ограничения: шум, доступ, окна работ"]),
+    ("Архитектору и дизайнеру", "что согласовать до утверждения потолков",
+     ["Высоты и трассы воздуховодов", "Решётки, диффузоры и люки", "Зоны обслуживания и встроенная мебель", "Кто согласует изменения"]),
+    ("Владельцу дома", "что предусмотреть до отделки",
+     ["Место для оборудования и доступ к нему", "Трассы и отверстия — до отделки", "Шум выброса воздуха для вас и соседей", "Полная стоимость: оборудование, монтаж, запуск, обслуживание"]),
+]
+
+
+def chek_html():
+    # 30.10 (Perplexity): открытые полезные материалы без заявки; за заявку — разбор конкретного проекта. Общие профессиональные списки, без утверждений о нашей компании
+    e = lambda x: escape(x, quote=False)
+    cards = chr(10).join(
+        '      <div class="pain-card"><span class="fear">' + e(who) + ': ' + e(t) + '</span><ul class="utp-points">'
+        + "".join("<li>" + e(x) + "</li>" for x in pts) + '</ul></div>' for who, t, pts in CHEKLISTS)
+    return f"""<section class="section" id="chek">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Без заявки</span>
+      <h2>Короткие <em>чек-листы</em> для вашей задачи</h2>
+      <p class="lead">Нужен разбор вашего проекта — оставьте телефон.</p>
+    </div>
+    <div class="pain-grid chek-grid">
+{cards}
+    </div>
+  </div>
+</section>"""
+
+
+def cases_html():
+    # 30.10 (её «три кейса, пока заглушки»): структура кейса — задача, роль, что сделали, сроки, что проверили. Kol Gali — по данным объекта; два других — заглушки «пример»
+    e = lambda x: escape(x, quote=False)
+    stub = ' <span class="demo" title="Пример для макета: заменить данными Андрея">пример</span>'
+    cases = [
+        dict(img='<img src="img/raboty/kolgaliresort-m.jpg" alt="Kol Gali Resort &amp; Spa 5*: бассейн курорта" loading="lazy" width="1200" height="776" style="object-position:50% 62%">',
+             name="Kol Gali Resort & Spa 5*", meta=[("315 м²", "основной бассейн"), ("Болгар", "место")], stub=False,
+             rows=[("Задача", "Три водные зоны с разной температурой и влажностью; гостям везде комфортно.", False),
+                   ("Наша роль", "Климат бассейнов: вентиляция с осушением.", False),
+                   ("Что сделали", "Отдельные режимы для большого бассейна, детского и джакузи.", False),
+                   ("Проверили при сдаче", "Температуру и влажность в каждой зоне.", True)]),
+        dict(img='<img src="img/slides/hero4-m.jpg" alt="Крытый бассейн и СПА" loading="lazy" width="1280" height="633">',
+             name="СПА-комплекс", meta=[("2021", "год"), ("2 360", "площадь, м²"), ("Рублёвка", "место")], stub=True,
+             rows=[("Задача", "Влажность у бассейна и комфорт в зонах отдыха без шума и сквозняков.", True),
+                   ("Наша роль", "Поставка, монтаж, пусконаладка.", True),
+                   ("Что сделали", "Раздельные режимы для бассейна и зон отдыха.", True),
+                   ("Проверили при сдаче", "Температуру, влажность и шум.", True)]),
+        dict(img='<img src="img/slides/hero8-m.jpg" alt="Инженерное оборудование на кровле" loading="lazy" width="1280" height="633">',
+             name="Бизнес-центр", meta=[("2019", "год"), ("18 500", "площадь, м²"), ("Москва", "место")], stub=True,
+             rows=[("Задача", "Холодоснабжение и вентиляция действующего здания без остановки арендаторов.", True),
+                   ("Наша роль", "Поставка, монтаж, пусконаладка.", True),
+                   ("Что сделали", "Чиллеры на кровле, трассы, автоматика.", True),
+                   ("Проверили при сдаче", "Параметры по зонам, акт пусконаладки.", True)]),
+    ]
+    out = []
+    for c in cases:
+        meta = "".join(f'<span><b>{e(n)}</b>[ {e(t)} ]</span>' for n, t in c["meta"])
+        rows = "".join(f'<div><dt>{e(k)}</dt><dd>{e(v)}{stub if s else ""}</dd></div>' for k, v, s in c["rows"])
+        out.append(f'      <article class="proj">{c["img"]}<h3>{e(c["name"])}{stub if c["stub"] else ""}</h3><p class="proj-meta">{meta}</p><dl class="case-dl">{rows}</dl></article>')
+    return chr(10) + chr(10).join(out) + chr(10) + '    '
+
+
+def priemka_html():
+    # 30.10 (её «поставить для примера»): критерии приёмки, образцы документов, матрица гарантий. Без цифр и сроков: всё, что в цифрах, — «в договоре»
+    e = lambda x: escape(x, quote=False)
+    stub = ' <span class="demo" title="Пример для макета: уточнить у Андрея">пример</span>'
+    crit = ["Расходы воздуха совпадают с проектом", "Температура и влажность в заданных пределах", "Шум замерен",
+            "Автоматика работает во всех режимах", "Результаты записаны в протокол"]
+    docs = ["Паспорта и сертификаты", "Схемы подключения", "Акт пусконаладки и протокол замеров", "Инструкция для пользователя", "График обслуживания"]
+    rows = [("Оборудование", "Заводские дефекты в гарантийный срок", "Паспорт, талон"),
+            ("Монтаж", "Дефекты работ", "Акт монтажа"),
+            ("Результат системы", "Параметры из договора", "Протокол замеров"),
+            ("Сроки", "График этапов", "Акты по этапам"),
+            ("Поддержка", "Ответ и выезд по обращению", "Условия в договоре"),
+            ("Стоимость", "Объём работ и допработы", "Смета и дополнения")]
+    ul = lambda items: "".join(f"<li>{e(x)}</li>" for x in items)
+    trs = "".join(f"<tr><th scope=\"row\">{e(a)}</th><td>{e(b)}</td><td>{e(c)}</td></tr>" for a, b, c in rows)
+    return f"""<section class="section alt" id="priemka">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Результат</span>
+      <h2>Как мы <em>принимаем результат</em>{stub}</h2>
+      <p class="lead">Критерии, документы и гарантии записываем в договор до начала работ.</p>
+    </div>
+    <div class="pain-grid prm-grid">
+      <div class="pain-card"><span class="fear">Критерии приёмки</span><ul class="utp-points">{ul(crit)}</ul></div>
+      <div class="pain-card"><span class="fear">Документы при сдаче</span><ul class="utp-points">{ul(docs)}</ul></div>
+    </div>
+    <h3 class="solve-title strahi-g">Матрица гарантий</h3>
+    <div class="matrix-wrap"><table class="matrix">
+      <thead><tr><th>Что</th><th>Что покрывает</th><th>Чем подтверждается</th></tr></thead>
+      <tbody>{trs}</tbody>
+    </table></div>
+  </div>
+</section>"""
+
+
+def materialy_html():
+    # 30.10 (её «видео, подборщик, калькулятор, кабинет проектировщика, DWG/BIM — поставь как пример»): витрина «скоро» + внутренние ссылки на страницы услуг и журнал
+    e = lambda x: escape(x, quote=False)
+    stub = ' <span class="demo" title="Пример для макета: придумано, не обещание">пример</span>'
+    items = [("Видео: как проходит пусконаладка", "Короткий ролик с инженером: что проверяем, как читать протокол замеров."),
+             ("Подборщик задачи", "Четыре вопроса: тип объекта, задача, стадия, что у вас уже есть. В ответ — список данных для расчёта."),
+             ("Калькулятор состава бюджета", "Показывает, из чего складывается стоимость: оборудование, монтаж, запуск, обслуживание. Без цены «по площади»."),
+             ("Кабинет проектировщика", "Паспорта, схемы и чертежи по моделям оборудования в одном месте."),
+             ("DWG и BIM-файлы", "Чертежи и модели оборудования по запросу для вашего проекта.")]
+    cards = chr(10).join(f'      <div class="pain-card"><span class="fear">{e(t)} <span class="soon">скоро</span></span><p>{e(x)}</p></div>' for t, x in items)
+    links = " · ".join(f'<a href="uslugi-{s["slug"]}.html">{e(s["name"])}</a>' for s in SERVICES) + ' · <a href="zhurnal.html">Журнал</a>'
+    return f"""<section class="section" id="materialy">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Материалы</span>
+      <h2>Что мы <em>готовим</em> для проектировщиков и монтажников{stub}</h2>
+      <p class="lead">Инструменты, которые помогут принять решение до заявки. Появляются по мере готовности.</p>
+    </div>
+    <div class="pain-grid chek-grid">
+{cards}
+    </div>
+    <p class="usl-others">Уже сейчас: {links}</p>
+  </div>
+</section>"""
+
+
+def svc_html(s):
+    # 30.10 (её «сделать как пример»): страница услуги под поисковые запросы; без цифр, цен и сроков; тексты проверяет Андрей
+    e = lambda x: escape(x, quote=False)
+    cards = chr(10).join(f'      <div class="pain-card"><span class="fear">{e(t)}</span><div><p><b>Пришлите:</b> {e(a)}</p><p><b>Получите:</b> {e(b)}</p></div></div>' for t, a, b in s["cases"])
+    checks = "".join(f"<li>{e(x)}</li>" for x in s["checks"])
+    faq = chr(10).join(f'      <details class="faq-item"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in s["faq"])
+    arts = [a for a in ARTICLES if a.get("svc") == s["slug"]]
+    art_links = (' <p class="usl-others">Статьи по теме: ' + " · ".join(f'<a href="statya-{a["slug"]}.html">{e(a["title"])}</a>' for a in arts) + '</p>') if arts else ""
+    others = " · ".join(f'<a href="uslugi-{x["slug"]}.html">{e(x["name"])}</a>' for x in SERVICES if x is not s)
+    faq_ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in s["faq"]]}
+    return head(css_v=ver("styles.css"), title=e(s["title"]), desc=e(s["desc"]), page="uslugi-" + s["slug"], who="pomoshchnik") + header() + f"""
+
+<main id="main">
+<section class="cat-hero">
+  <div class="wrap">
+    <span class="eyebrow"><a href="index.html">Главная</a> · Услуги</span>
+    <h1>{e(s["h1"])}</h1>
+    <p class="lead">{e(s["lead"])}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head"><h2>С чем к нам <em>обращаются</em></h2></div>
+    <div class="pain-grid">
+{cards}
+    </div>
+    <div class="pain-card wide"><span class="fear">На что смотрим</span><ul class="utp-points">{checks}</ul></div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap faq-wrap">
+    <div class="sec-head"><h2>Частые <em>вопросы</em></h2></div>
+    <div class="faq">
+{faq}
+    </div>
+    <p class="usl-others">Другие услуги: {others}</p>{art_links}
+  </div>
+</section>
+{ld(faq_ld)}
+{crumbs_ld(("Главная", ""), (s["name"], "uslugi-" + s["slug"] + ".html"))}
+
+{form_section("pomoshchnik", "Обсудить задачу", lead="Оставьте телефон. Менеджер перезвонит, уточнит задачу и объект.")}
+</main>
+
+<script src="app.js?v={ver('app.js')}" defer></script>
+</body>
+</html>
+"""
+
+
+def cta_band_html():
+    # 30.10 (её «заявка должна быть вверху»; cro, storybrand: прямой призыв повторять по странице) — полоса-призыв после доказательств
+    return """<section class="section dark cta-band" id="cta-mid" aria-label="Оставить заявку">
+  <div class="wrap">
+    <p class="cta-lead">Расскажите о задаче: инженер посмотрит исходные данные и предложит решение.</p>
+    <a class="btn" href="#zayavka" data-call>Оставить заявку</a>
+  </div>
+</section>"""
+
+
+def journal_home_html():
+    e = lambda x: escape(x, quote=False)
+    cards = chr(10).join(f'''      <a class="art-card" href="statya-{a["slug"]}.html">
+        <span class="eyebrow">{e(a["tag"])}</span>
+        <h3 class="art-t">{e(a["title"])}</h3>
+        <p>{e(a["lead"])}</p>
+        <span class="serv-go">Читать →</span>
+      </a>''' for a in ARTICLES[:3])
+    return f'''<section class="section" id="zhurnal">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Журнал</span>
+      <h2>Разбираем <em>инженерию</em> простыми словами</h2>
+      <p class="lead">Коротко о вентиляции, климате и оборудовании.</p>
+    </div>
+    <div class="art-grid">
+{cards}
+    </div>
+    <p class="art-all"><a class="btn ghost" href="zhurnal.html">Все статьи журнала →</a></p>
+  </div>
+</section>'''
+
+
 if __name__ == "__main__":
     (SITE / "zhurnal.html").write_text(zhurnal_html(), "utf-8")
     (SITE / "politika.html").write_text(politika_html(), "utf-8")
     (SITE / "soglasie.html").write_text(politika_html("soglasie"), "utf-8")
     (SITE / "kontakty.html").write_text(kontakty_html(), "utf-8")
+    for s in SERVICES:
+        (SITE / f'uslugi-{s["slug"]}.html').write_text(svc_html(s), "utf-8")
     for i, a in enumerate(ARTICLES):
         (SITE / f'statya-{a["slug"]}.html').write_text(statya_html(i), "utf-8")
     print("журнал: статей", len(ARTICLES))
@@ -1947,7 +2232,23 @@ if __name__ == "__main__":
     if "<!--GIFTS-->" in s:
         s = replace_between(s, "<!--GIFTS-->", "<!--/GIFTS-->", gifts_html())
     # главная — один лендинг (правки Паши 13.10): в подвале без ссылок на другие страницы, кроме политики
-    s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section(uslugi=False).replace('          <option value="dizayner">Дизайнер, архитектор</option>' + chr(10), ""))
+    if "<!--ZAMENA-->" in s:
+        s = replace_between(s, "<!--ZAMENA-->", "<!--/ZAMENA-->", zamena_html())
+    if "<!--MONTAZH-->" in s:
+        s = replace_between(s, "<!--MONTAZH-->", "<!--/MONTAZH-->", montazh_html())
+    if "<!--CTAB-->" in s:
+        s = replace_between(s, "<!--CTAB-->", "<!--/CTAB-->", cta_band_html())
+    if "<!--CASES-->" in s:
+        s = replace_between(s, "<!--CASES-->", "<!--/CASES-->", cases_html())
+    if "<!--PRIEMKA-->" in s:
+        s = replace_between(s, "<!--PRIEMKA-->", "<!--/PRIEMKA-->", priemka_html())
+    if "<!--MATERIALY-->" in s:
+        s = replace_between(s, "<!--MATERIALY-->", "<!--/MATERIALY-->", materialy_html())
+    if "<!--CHEK-->" in s:
+        s = replace_between(s, "<!--CHEK-->", "<!--/CHEK-->", chek_html())
+    if "<!--JOURNAL-->" in s:
+        s = replace_between(s, "<!--JOURNAL-->", "<!--/JOURNAL-->", journal_home_html())
+    s = replace_between(s, "<!--FORM-->", "<!--/FORM-->", form_section(uslugi=True).replace('          <option value="dizayner">Дизайнер, архитектор</option>' + chr(10), ""))
     if "<!--UTP-->" in s:
         s = replace_between(s, "<!--UTP-->", "<!--/UTP-->", utp_html())
     if "<!--WORKS-->" in s:

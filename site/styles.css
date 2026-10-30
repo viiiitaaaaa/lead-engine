@@ -1480,20 +1480,99 @@ a.top-msg{display:inline-flex;align-items:center;gap:6px}
 
 /* 29.10 ночь — на светлых кадрах кнопки внизу не видно: тёмная горизонтальная полоса вдоль всего низа фото (плотнее слева) + угол слева внизу */
 .hero-media::after{background:
-  linear-gradient(0deg,rgb(14 14 18/.88) 0%,rgb(14 14 18/.72) 16%,rgb(14 14 18/.4) 32%,transparent 52%),
-  radial-gradient(ellipse 70% 75% at 0% 100%,rgb(14 14 18/.55) 0%,rgb(14 14 18/.25) 50%,transparent 80%)}
-@media (max-width:860px){.hero-media::after{background:linear-gradient(0deg,rgb(14 14 18/.9) 0%,rgb(14 14 18/.7) 30%,rgb(14 14 18/.32) 55%,transparent 80%)}}
+  linear-gradient(0deg,rgb(14 14 18/.6) 0%,rgb(14 14 18/.34) 12%,rgb(14 14 18/.12) 24%,transparent 36%),
+  radial-gradient(ellipse 45% 40% at 0% 100%,rgb(14 14 18/.3) 0%,transparent 80%)}
+@media (max-width:860px){.hero-media::after{background:linear-gradient(0deg,rgb(14 14 18/.65) 0%,rgb(14 14 18/.35) 22%,transparent 45%)}}
 
 /* 29.10 ночь — фон всей страницы: по мере прокрутки вниз мягко переливается в светло-фиолетовые и чуть более глубокие тона (её слово) */
-html{background:#d6c9e3}
+html{background:#ece4f2}
 body{background:
   radial-gradient(1100px 600px at 8% -4%,rgb(180 162 124/.12),transparent 60%),
-  linear-gradient(180deg,#f4f0f7 0%,#ede5f3 16%,#e4d9ee 34%,#eee6f3 52%,#e1d4ec 70%,#d9cbe7 86%,#d2c3e1 100%);
+  linear-gradient(180deg,#f9f8fb 0%,#f5f1f8 14%,#f1f4f8 32%,#f8f4ee 50%,#f5f1f8 68%,#f1f4f8 84%,#f4eff8 100%);
   background-size:100% 100%;background-repeat:no-repeat}
 
 /* 29.10 ночь — золотой акцент в части заголовков и цифр (её слово: «благородный золотой») */
 :root{--gold:#9a7a2c;--gold-grad:linear-gradient(100deg,#8a6a22 0%,#c4a25a 42%,#a07e30 100%);--gold-grad-dk:linear-gradient(100deg,#d9bf84 0%,#f0dcaa 45%,#cfae66 100%)}
-h1 em,h2 em,.facts b,.num,.stage-n{font-style:normal;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.section.dark h2 em{background-image:var(--gold-grad-dk)}
-.hero h1 em{background-image:var(--gold-grad)}  /* заголовок первого экрана теперь на светлом фоне — тёмное золото */
-.proj-meta b{color:var(--gold)}
+h1 em{font-style:normal}
+.facts b{font-style:normal;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+h2 em{font-style:normal}
+/* h1 em — обычный цвет */  /* заголовок первого экрана теперь на светлом фоне — тёмное золото */
+/* золото оставлено только в заголовке первого экрана и цифрах фактов (её «слишком много золотых акцентов», 30.10) */
+
+/* 30.10 — управление слайдером (стрелки, чёрточки, пауза) ПОВЕРХ тёмной полосы и яркое (её скрин: «не видно под градиентом») */
+.hero .slider-ui{z-index:5;background:rgb(255 255 255/.16);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.slider-ui button{color:#fff;background:rgb(255 255 255/.22);border-color:rgb(255 255 255/.6)}
+.sl-dots i{background:rgb(255 255 255/.65)}
+.sl-dots i.on{background:#fff}
+
+/* 30.10 — полоса над шапкой (её скрин): отступ шапки «вылезал» из body, и сверху на 12px виден цвет html. Держим отступ внутри body; цвет html = верх градиента */
+body{display:flow-root}
+html{background:#f9f8fb}
+
+/* 30.10 (её «эти цифры тоже золотым»): 60 км и номера 01–03 направлений — золото, как цифры блока фактов */
+.terr-km .num,.road-n{font-style:normal;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+
+/* 30.10 — журнал на главной: ссылка «Все статьи» по центру */
+.art-all{margin-top:clamp(20px,2.4vw,32px);text-align:center}
+
+/* 30.10 (её три скрина): 1) у блоков «Я — …» убран серый прямоугольник-подложка вокруг фото и текста (виднелась полоса под фото) — только само фото с тенью;
+   2) плашки «Страх…», «Что фиксируем в договоре», памятки больше не сливаются с фоном: светлая заливка, тонкая фиолетовая рамка, заметная тень */
+.who.who-utp .who-card,.who.who-utp .who-card:hover,.who.who-utp .who-card:focus-visible{background:none;box-shadow:none;border:0;overflow:visible}
+.pain-card,.gift-card,.terms-box{background:rgb(255 255 255/.92);border:1px solid rgb(92 59 101/.22);box-shadow:0 10px 30px rgb(42 37 48/.12),0 2px 6px rgb(42 37 48/.08)}
+
+/* 30.10 (её скрин телефона): управление слайдером (стрелки, чёрточки, пауза) на телефоне налезало на кнопки направлений — на ≤860px скрыто; фото листается само и свайпом */
+@media (max-width:860px){.hero .slider-ui{display:none}}
+
+/* 30.10 (её слово): на телефоне на первом экране только «Наши работы» и «Что мы делаем»; кнопки типов клиентов (монтажной компании, застройщику, коммерции, архитектору) скрыты */
+@media (max-width:860px){.hero .hero-quick{display:none}}
+
+/* 30.10 — блоки «Замена европейского», «Монтажным компаниям», чек-листы: те же плашки .pain-card, широкая плашка и кнопка под сеткой */
+.pain-card.wide{grid-column:1/-1;grid-row:auto;display:block;margin-top:clamp(20px,2.4vw,36px)}
+.pain-card.wide .utp-points{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px;margin-top:14px}
+@media (max-width:700px){.pain-card.wide .utp-points{grid-template-columns:1fr}}
+.pain-card>div>p+p{margin-top:10px}
+.zamena-cta{margin-top:clamp(20px,2.4vw,32px);display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.zamena-cta small{color:var(--ink-soft);max-width:46ch}
+.chek-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:1100px){.chek-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.chek-grid{grid-template-columns:1fr}}
+.chek-grid .pain-card .utp-points{margin-top:12px}
+
+/* 30.10 — кейсы, приёмка, материалы, шаги после заявки */
+.case-dl{display:grid;gap:8px;margin:0;padding:4px 22px 0}
+.case-dl div{display:grid;gap:2px}
+.case-dl dt{font-size:var(--fs-xs);color:var(--accent-ink);letter-spacing:.02em}
+.case-dl dd{margin:0;font-size:var(--fs-s);line-height:1.5;color:var(--ink-soft)}
+.prm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:700px){.prm-grid{grid-template-columns:1fr}}
+.matrix-wrap{overflow-x:auto;margin-top:clamp(12px,1.6vw,20px)}
+.matrix{width:100%;border-collapse:separate;border-spacing:0;background:rgb(255 255 255/.92);border:1px solid rgb(92 59 101/.22);border-radius:20px;overflow:hidden;font-size:var(--fs-s)}
+.matrix th,.matrix td{padding:12px 16px;text-align:left;vertical-align:top;border-bottom:1px solid rgb(92 59 101/.12)}
+.matrix thead th{background:rgb(112 71 121/.1);color:var(--accent-ink);font-weight:500}
+.matrix tbody th{font-weight:500}
+.matrix tr:last-child th,.matrix tr:last-child td{border-bottom:0}
+.soon{display:inline-block;margin-left:6px;padding:1px 9px;border:1px solid rgb(92 59 101/.35);border-radius:999px;font:400 var(--fs-xs)/1.5 var(--body);color:var(--accent-ink);vertical-align:middle}
+.after-steps{margin:14px 0 0;padding-left:1.3em;display:grid;gap:4px;font-size:var(--fs-s);color:var(--on-dark-soft,inherit);max-width:60ch}
+.usl-others{margin-top:clamp(16px,2vw,28px);font-size:var(--fs-s);color:var(--ink-soft)}
+.usl-others a{color:var(--accent-ink)}
+
+/* 30.10 (её «мало золотого на тексте, где логично, и покрасить другим цветом — всё сплошной чёрный»): акценты в тексте, не в заголовках-цифрах:
+   золото — подписи-метки [ ... ], маркеры списков, «Пришлите / Получите», подписи кейсов; фиолет — выделенные слова в h2 и заголовки блоков «Я — …» */
+:root{--gold-text:#86671f}
+.eyebrow{color:var(--gold-text)}
+.utp-points li::marker,.pain-card ul li::marker{color:var(--gold-text)}
+.pain-card p b,.case-dl dt{color:var(--gold-text)}
+.proj-meta span{color:var(--ink-soft)}
+h2 em{color:var(--accent-ink)}
+.section.dark h2 em{color:#e3d6bd}
+.who.who-utp .who-title{color:var(--accent-ink)}
+.faq-item summary::marker{color:var(--gold-text)}
+
+/* 30.10 (её «слайды перекрывают иконки, внести слайдер в верхний правый угол»): управление слайдером — вверху справа на фото, кнопки направлений внизу ничем не перекрыты */
+.hero .slider-ui{top:clamp(14px,1.8vw,24px);bottom:auto;right:clamp(14px,1.8vw,24px)}
+body.cookie-on .hero .slider-ui{bottom:auto}
+
+/* 30.10 — полоса-призыв посреди страницы (после доказательств) */
+.cta-band .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
+.cta-band .cta-lead{margin:0;max-width:40ch;font:400 var(--fs-l)/1.4 var(--display)}
+.cta-band{margin-bottom:clamp(16px,2vw,28px)}

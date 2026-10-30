@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlencode
 
 sys.stdout.reconfigure(encoding="utf-8")
-BASE = "https://frivent-site.frivent-dom.workers.dev/"  # сменить, когда будет свой домен
+BASE = "https://smart-eng.frivent-dom.workers.dev/"  # сменить, когда будет свой домен
 MANAGERS = {"manager-1": "Менеджер 1 (пример)", "manager-2": "Менеджер 2 (пример)", "manager-3": "Менеджер 3 (пример)"}
 
 rows = []

@@ -19,3 +19,7 @@ site/img/raboty/_old/
 site/img/katalog/_src/_old/
 site/img/slides/_old/
 site/.playwright-mcp/
+
+# резервные копии правок (не в git)
+site/*.bak_*
+site/*.bak

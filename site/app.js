@@ -252,7 +252,7 @@ if (catCards.length && document.querySelector(".chips .chip")) {
 }
 
 /* «что дальше» после заявки (Fraser «SaaS Playbook»: сразу сказать, кто и когда свяжется, и дать, чем заняться) */
-const NEXT = ' <span class="next">Что дальше: менеджер позвонит в течение часа в рабочее время, договоримся о встрече на объекте и пришлём смету. Пока ждёте — посмотрите <a href="index.html#raboty">наши объекты</a>.</span>';
+const NEXT = ' <span class="next">Что дальше: менеджер позвонит в ближайшее рабочее время, договоримся о встрече на объекте и пришлём смету. Пока ждёте — посмотрите <a href="index.html#raboty">наши объекты</a>.</span>';
 
 /* форма заявки */
 const form = document.getElementById("lead-form");
@@ -313,6 +313,19 @@ function utmKeep(k, params) {
     utmSet = first ? first.v : {};
   }
   return utmSet[k] || "";
+}
+
+/* ГОТОВЫЙ ТЕКСТ В ССЫЛКАХ МЕССЕНДЖЕРОВ (её решение 30.10): без кода менеджера — код в тексте можно подменить на чужой.
+   Клиент открывает чат с обычным приветствием; чей он — определяем не по тексту, а по заявке с меткой и по номеру в Битриксе. */
+{
+  const text = "Здравствуйте! Хочу получить консультацию.";
+  document.querySelectorAll('a[href*="wa.me/"], a[href*="t.me/"], a[href*="max.ru/"]').forEach(a => {
+    try {
+      const u = new URL(a.href);
+      u.searchParams.set("text", text);
+      a.href = u.toString();
+    } catch (e) {}
+  });
 }
 
 if (form) {
@@ -439,7 +452,7 @@ if (form) {
     try {
       const r = await fetch(CONFIG.leadEndpoint, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)});
       if (!r.ok) throw new Error(r.status);
-      goal("form_submit"); cf.reset(); st.dataset.state = "ok"; st.textContent = "Заявка принята. Перезвоним " + "в течение часа в рабочее время.";
+      goal("form_submit"); cf.reset(); st.dataset.state = "ok"; st.textContent = "Заявка принята. Перезвоним " + "в ближайшее рабочее время.";
     } catch (x) { st.dataset.state = "error"; st.textContent = "Не дошло — нажмите ещё раз через минуту."; }
     finally { btn.disabled = false; }
   });
